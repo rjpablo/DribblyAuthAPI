@@ -29,6 +29,8 @@ namespace DribblyAuthAPI.Providers
         /// <returns></returns>
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
+            //allow CORS
+            context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
             //check if the username-passowrd combination exists
             using (AuthRepository _repo = new AuthRepository())

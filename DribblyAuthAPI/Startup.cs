@@ -25,6 +25,8 @@ namespace DribblyAuthAPI.API
             //to method “Register” in “WebApiConfig” class.
             HttpConfiguration config = new HttpConfiguration();
             WebApiConfig.Register(config);
+            //Allow CORS
+            app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             //we’ll pass the “config” object to the extension method “UseWebApi” which will be responsible
             //to wire up ASP.NET Web API to our Owin server pipeline
             app.UseWebApi(config);
