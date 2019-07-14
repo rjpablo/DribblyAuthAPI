@@ -6,6 +6,8 @@ using System.Web.Http;
 [assembly: OwinStartup(typeof(DribblyAuthAPI.API.Startup))]
 namespace DribblyAuthAPI.API
 {
+    //NOTE: No need to use Global.asax Class class and fire up the Application_Start event after we’ve
+    //configured our “Startup” class so feel free to delete it.
     public class Startup
     {
         /// <summary>
