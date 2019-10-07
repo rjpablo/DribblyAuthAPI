@@ -1,6 +1,7 @@
 ﻿//reference: http://bitoftech.net/2014/06/01/token-based-authentication-asp-net-web-api-2-owin-asp-net-identity/
 using DribblyAuthAPI.Providers;
 using Microsoft.Owin;
+using Microsoft.Owin.Security.Facebook;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
@@ -13,6 +14,9 @@ namespace DribblyAuthAPI.API
     //configured our “Startup” class so feel free to delete it.
     public class Startup
     {
+        public static OAuthBearerAuthenticationOptions OAuthBearerOptions { get; private set; }
+        public static FacebookAuthenticationOptions facebookAuthOptions { get; private set; }
+
         /// <summary>
         /// The “Configuration” method accepts parameter of type “IAppBuilder” this parameter will be
         /// supplied by the host at run-time. This “app” parameter is an interface which will be used
@@ -35,6 +39,19 @@ namespace DribblyAuthAPI.API
 
         public void ConfigureOAuth(IAppBuilder app)
         {
+            //use a cookie to temporarily store information about a user logging in with a third party login provider
+            app.UseExternalSignInCookie(Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ExternalCookie);
+            OAuthBearerOptions = new OAuthBearerAuthenticationOptions();
+
+            //Configure Facebook External Login
+            facebookAuthOptions = new FacebookAuthenticationOptions()
+            {
+                AppId = "972264056446245",
+                AppSecret = "73439dad77437fb56efcb57e0421b3b6",
+                Provider = new FacebookAuthProvider()
+            };
+            app.UseFacebookAuthentication(facebookAuthOptions);
+
             OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
             {
                 AllowInsecureHttp = true,
