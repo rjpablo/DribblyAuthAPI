@@ -141,6 +141,10 @@
     <Compile Include="Migrations\201907141720333_InitialCreate.Designer.cs">
       <DependentUpon>201907141720333_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910072231505_addRefreshTokenEntities.cs" />
+    <Compile Include="Migrations\201910072231505_addRefreshTokenEntities.Designer.cs">
+      <DependentUpon>201910072231505_addRefreshTokenEntities.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AuthContext.cs" />
     <Compile Include="Models\Client.cs" />
@@ -172,6 +176,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201907141720333_InitialCreate.resx">
       <DependentUpon>201907141720333_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910072231505_addRefreshTokenEntities.resx">
+      <DependentUpon>201910072231505_addRefreshTokenEntities.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
