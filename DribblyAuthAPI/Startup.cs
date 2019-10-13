@@ -1,10 +1,12 @@
 ﻿//reference: http://bitoftech.net/2014/06/01/token-based-authentication-asp-net-web-api-2-owin-asp-net-identity/
+using DribblyAuthAPI.Models;
 using DribblyAuthAPI.Providers;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Facebook;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
+using System.Data.Entity;
 using System.Web.Http;
 
 [assembly: OwinStartup(typeof(DribblyAuthAPI.API.Startup))]
@@ -35,6 +37,7 @@ namespace DribblyAuthAPI.API
             //we’ll pass the “config” object to the extension method “UseWebApi” which will be responsible
             //to wire up ASP.NET Web API to our Owin server pipeline
             app.UseWebApi(config);
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AuthContext, Migrations.Configuration>());
         }
 
         public void ConfigureOAuth(IAppBuilder app)

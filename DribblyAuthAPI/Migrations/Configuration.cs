@@ -1,31 +1,41 @@
 namespace DribblyAuthAPI.Migrations
 {
-    using System;
-    using System.Data.Entity;
+    using DribblyAuthAPI.Enums;
+    using DribblyAuthAPI.Models;
+    using System.Collections.Generic;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<DribblyAuthAPI.Models.AuthContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<AuthContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(DribblyAuthAPI.Models.AuthContext context)
+        protected override void Seed(AuthContext context)
         {
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            context.Clients.AddRange(BuildClientsList());
+            base.Seed(context);
         }
+
+        private static List<Client> BuildClientsList()
+        {
+
+            List<Client> clients = new List<Client>
+            {
+                new Client
+                { Id = "dribbly-web",
+                    Secret= Helper.GetHash("abc@123"),
+                    Name="Dribbly Web Client",
+                    ApplicationType =  ApplicationTypesEnum.JavaScript,
+                    Active = true,
+                    RefreshTokenLifeTime = 7200,
+                    AllowedOrigin = "*"
+                }
+            };
+
+            return clients;
+        }
+
     }
 }
