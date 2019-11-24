@@ -14,7 +14,7 @@ namespace DribblyAuthAPI.Migrations
 
         protected override void Seed(AuthContext context)
         {
-            context.Clients.AddRange(BuildClientsList());
+            context.Clients.AddOrUpdate(BuildClientsList()[0]);
             base.Seed(context);
         }
 
