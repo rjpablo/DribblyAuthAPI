@@ -162,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\Local IIS %28DribblyAuthAPI%29.pubxml" />
     <None Include="Properties\PublishProfiles\Somee File System.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
