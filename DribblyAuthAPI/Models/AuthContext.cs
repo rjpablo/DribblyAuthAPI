@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using DribblyAuthAPI.Models.Courts;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
 
 namespace DribblyAuthAPI.Models
@@ -17,5 +18,6 @@ namespace DribblyAuthAPI.Models
 
         public DbSet<Client> Clients { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<CourtModel> Courts { get; set; }
     }
 }
