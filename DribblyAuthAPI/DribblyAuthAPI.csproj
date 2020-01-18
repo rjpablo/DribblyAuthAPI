@@ -160,6 +160,10 @@
     <Compile Include="Migrations\202001131222447_AddCourtCityProperty.Designer.cs">
       <DependentUpon>202001131222447_AddCourtCityProperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001172142089_renameCourtCityToAddress.cs" />
+    <Compile Include="Migrations\202001172142089_renameCourtCityToAddress.Designer.cs">
+      <DependentUpon>202001172142089_renameCourtCityToAddress.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AuthContext.cs" />
     <Compile Include="Models\Auth\Client.cs" />
@@ -174,7 +178,11 @@
     <Compile Include="Providers\SimpleRefreshTokenProvider.cs" />
     <Compile Include="Repositories\AuthRepository.cs" />
     <Compile Include="Repositories\CourtsRepository.cs" />
+    <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
+    <Compile Include="Services\ICourtsService.cs" />
+    <Compile Include="Services\CourtsService.cs" />
+    <Compile Include="Services\BaseService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -190,7 +198,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201907141720333_InitialCreate.resx">
@@ -207,6 +214,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001131222447_AddCourtCityProperty.resx">
       <DependentUpon>202001131222447_AddCourtCityProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001172142089_renameCourtCityToAddress.resx">
+      <DependentUpon>202001172142089_renameCourtCityToAddress.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

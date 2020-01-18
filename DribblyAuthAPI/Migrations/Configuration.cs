@@ -27,50 +27,50 @@ namespace DribblyAuthAPI.Migrations
                 new CourtModel
                 {
                     Name = "Phoenix Sports Center Basketball Court",
-                    City = "Mandaluyong City",
+                    Address = "Mandaluyong City",
                     Id = 1,
                     DateAdded = new DateTime(2020, 1, 2),
-                    PrimaryPhotoUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTt94BvQ4bMGZ2lV0niViDfaE-VhgDe79_7z5Xz8i4oY0VBfW9jpw&s",
+                    PrimaryPhotoUrl = "./images/test_images/courts/court_1.jpg",
                     RatePerHour = 2500,
                     Rating = 0.6M
                 },
                 new CourtModel
                 {
                     Name = "Sports world Basketball Court",
-                    City = "Makati City",
+                    Address = "Makati City",
                     Id = 2,
                     DateAdded = new DateTime(2020, 1, 5),
-                    PrimaryPhotoUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMxs6CAw2EWIe4-DuZf0y5CKWRlbokJEcb-o0C2Wt68zyzDP5C&s",
+                    PrimaryPhotoUrl = "./images/test_images/courts/court_2.jpg",
                     RatePerHour = 250,
                     Rating = 0.8M
                 },
                 new CourtModel
                 {
                     Name = "Balls World Basketball Court",
-                    City = "San Juan City",
+                    Address = "San Juan City",
                     Id = 3,
                     DateAdded = new DateTime(2020, 1, 5),
-                    PrimaryPhotoUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXd5jc-QAAcaI9ep-qICHghaR16EivD8LFzQbH1td7pFXqDy6R&s",
+                    PrimaryPhotoUrl = "./images/test_images/courts/court_3.jpg",
                     RatePerHour = 450,
                     Rating = 0.3M
                 },
                 new CourtModel
                 {
                     Name = "Brgy Pag-asa Basketball Court",
-                    City = "San Juan City",
+                    Address = "San Juan City",
                     Id = 4,
                     DateAdded = new DateTime(2020, 1, 5),
-                    PrimaryPhotoUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqwRPjxCjGIZK7l3Y6A9k7e0327hcI2Ds6ElWvJbJxDY_nu9whsQ&s",
+                    PrimaryPhotoUrl = "./images/test_images/courts/court_4.jpg",
                     RatePerHour = 300,
                     Rating = 0.5M
                 },
                 new CourtModel
                 {
                     Name = "MOA Arena Basketball Court",
-                    City = "Pasay City",
+                    Address = "Pasay City",
                     Id = 5,
                     DateAdded = new DateTime(2020, 1, 5),
-                    PrimaryPhotoUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPwCRmDgp9P_dAC2Kr3KG2EqaGMNAx0iyKPFKgZr04Haqa7H-76Q&s",
+                    PrimaryPhotoUrl = "./images/test_images/courts/court_5.jpg",
                     RatePerHour = 250,
                     Rating = 0.6M
                 });
