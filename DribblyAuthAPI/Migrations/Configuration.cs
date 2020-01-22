@@ -27,7 +27,6 @@ namespace DribblyAuthAPI.Migrations
                 new CourtModel
                 {
                     Name = "Phoenix Sports Center Basketball Court",
-                    Address = "Mandaluyong City",
                     Id = 1,
                     DateAdded = new DateTime(2020, 1, 2),
                     PrimaryPhotoUrl = "./images/test_images/courts/court_1.jpg",
@@ -37,7 +36,6 @@ namespace DribblyAuthAPI.Migrations
                 new CourtModel
                 {
                     Name = "Sports world Basketball Court",
-                    Address = "Makati City",
                     Id = 2,
                     DateAdded = new DateTime(2020, 1, 5),
                     PrimaryPhotoUrl = "./images/test_images/courts/court_2.jpg",
@@ -47,7 +45,6 @@ namespace DribblyAuthAPI.Migrations
                 new CourtModel
                 {
                     Name = "Balls World Basketball Court",
-                    Address = "San Juan City",
                     Id = 3,
                     DateAdded = new DateTime(2020, 1, 5),
                     PrimaryPhotoUrl = "./images/test_images/courts/court_3.jpg",
@@ -57,7 +54,6 @@ namespace DribblyAuthAPI.Migrations
                 new CourtModel
                 {
                     Name = "Brgy Pag-asa Basketball Court",
-                    Address = "San Juan City",
                     Id = 4,
                     DateAdded = new DateTime(2020, 1, 5),
                     PrimaryPhotoUrl = "./images/test_images/courts/court_4.jpg",
@@ -67,7 +63,6 @@ namespace DribblyAuthAPI.Migrations
                 new CourtModel
                 {
                     Name = "MOA Arena Basketball Court",
-                    Address = "Pasay City",
                     Id = 5,
                     DateAdded = new DateTime(2020, 1, 5),
                     PrimaryPhotoUrl = "./images/test_images/courts/court_5.jpg",
