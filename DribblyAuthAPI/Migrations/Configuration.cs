@@ -6,9 +6,12 @@ namespace DribblyAuthAPI.Migrations
     using System;
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
+    using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<AuthContext>
     {
+        AuthContext _context;
+
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
@@ -16,14 +19,41 @@ namespace DribblyAuthAPI.Migrations
 
         protected override void Seed(AuthContext context)
         {
-            context.Clients.AddOrUpdate(BuildClientsList()[0]);
-            AddCourts(context);
-            base.Seed(context);
+            _context = context;
+            SeedClients();
+            AddCourts();
+            SeedSettings();
+
+            _context.SaveChanges();
+            base.Seed(_context);
         }
 
-        public void AddCourts(AuthContext context)
+        void SeedSettings()
         {
-            context.Courts.AddOrUpdate(
+            List<SettingModel> settings = new List<SettingModel>()
+            {
+                new SettingModel(0, "googleMapApiKey", "Google Map Api Key", "AIzaSyCQwPkj7HcSjORBr6z8ZGf56e4uXNPHUuY")
+            };
+
+            foreach(SettingModel setting in settings)
+            {
+                var s = _context.Settings.FirstOrDefault(x => x.Key == setting.Key);
+                if(s != null)
+                {
+                    s.Key = setting.Key;
+                    s.Description = setting.Description;
+                    s.DefaultValue = setting.DefaultValue;
+                }
+                else
+                {
+                    _context.Settings.Add(setting);
+                }
+            }
+        }
+
+        public void AddCourts()
+        {
+            _context.Courts.AddOrUpdate(
                 new CourtModel
                 {
                     Name = "Phoenix Sports Center Basketball Court",
@@ -71,23 +101,18 @@ namespace DribblyAuthAPI.Migrations
                 });
         }
 
-        private static List<Client> BuildClientsList()
+        void SeedClients()
         {
-
-            List<Client> clients = new List<Client>
+            _context.Clients.AddOrUpdate(new Client
             {
-                new Client
-                { Id = "dribbly-web",
-                    Secret= Helper.GetHash("abc@123"),
-                    Name="Dribbly Web Client",
-                    ApplicationType =  ApplicationTypesEnum.JavaScript,
-                    Active = true,
-                    RefreshTokenLifeTime = 7200,
-                    AllowedOrigin = "*"
-                }
-            };
-
-            return clients;
+                Id = "dribbly-web",
+                Secret = Helper.GetHash("abc@123"),
+                Name = "Dribbly Web Client",
+                ApplicationType = ApplicationTypesEnum.JavaScript,
+                Active = true,
+                RefreshTokenLifeTime = 7200,
+                AllowedOrigin = "*"
+            });
         }
 
     }

@@ -9,6 +9,7 @@ namespace DribblyAuthAPI.Models
         DbSet<Client> Clients { get; set; }
         DbSet<RefreshToken> RefreshTokens { get; set; }
         DbSet<CourtModel> Courts { get; set; }
+        DbSet<SettingModel> Settings { get; set; }
         int SaveChanges();
     }
 
@@ -27,5 +28,6 @@ namespace DribblyAuthAPI.Models
         public DbSet<Client> Clients { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<CourtModel> Courts { get; set; }
+        public DbSet<SettingModel> Settings { get; set; }
     }
 }

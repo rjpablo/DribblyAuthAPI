@@ -20,9 +20,20 @@ namespace DribblyAuthAPI.Services
             return All();
         }
 
+        public CourtModel GetCourt(long id)
+        {
+            return GetById(id);
+        }
+
         public void Register(CourtModel court)
         {
             Add(court);
+            _context.SaveChanges();
+        }
+
+        public void UpdateCourt(CourtModel court)
+        {
+            Update(court);
             _context.SaveChanges();
         }
     }

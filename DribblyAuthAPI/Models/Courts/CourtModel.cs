@@ -8,7 +8,7 @@ namespace DribblyAuthAPI.Models.Courts
     public class CourtModel : BaseModel
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key]
-        public long Id { get; set; }
+        public new long Id { get; set; }
 
         public long OwnerId { get; set; }
 
@@ -26,6 +26,8 @@ namespace DribblyAuthAPI.Models.Courts
         public double Longitude { get; set; }
 
         public bool IsPublic { get; set; }
+
+        public string AdditionalInfo { get; set; }
 
     }
 }

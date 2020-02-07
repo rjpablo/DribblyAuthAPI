@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 
 namespace DribblyAuthAPI.Services
@@ -24,6 +26,21 @@ namespace DribblyAuthAPI.Services
         {
             entity.DateAdded = DateTime.Now;
             _dbSet.Add(entity);
+        }
+
+        protected T GetById(long id)
+        {
+            return _dbSet.SingleOrDefault(e => e.Id == id);
+        }
+
+        protected void Update(T entity)
+        {
+            _dbSet.AddOrUpdate(entity);
+        }
+
+        protected T SingleOrDefault(Expression<Func<T, bool>> predicate)
+        {
+            return _dbSet.SingleOrDefault(predicate);
         }
     }
 }

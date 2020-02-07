@@ -26,6 +26,21 @@ namespace DribblyAuthAPI.Controllers
             return _service.GetAll();
         }
 
+        [HttpGet]
+        [Route("GetCourt/{id}")]
+        public CourtModel GetCourt(long id)
+        {
+            return _service.GetCourt(id);
+        }
+
+        // POSTs
+        [HttpPost]
+        [Route("UpdateCourt")]
+        public void UpdateCourt([FromBody] CourtModel model)
+        {
+            _service.UpdateCourt(model);
+        }
+
         // POSTs
         [HttpPost]
         [Route("Register")]
