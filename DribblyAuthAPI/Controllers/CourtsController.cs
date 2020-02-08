@@ -13,9 +13,9 @@ namespace DribblyAuthAPI.Controllers
     {
         private ICourtsService _service = null;
 
-        public CourtsController() : base()
+        public CourtsController(ICourtsService service) : base()
         {
-            _service = new CourtsService(new AuthContext());
+            _service = service;
         }
 
         //GETs

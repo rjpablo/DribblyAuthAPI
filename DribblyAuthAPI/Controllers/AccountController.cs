@@ -21,11 +21,11 @@ namespace DribblyAuthAPI.Controllers
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
-        private AuthRepository _repo = null;
+        private IAuthRepository _repo = null;
 
-        public AccountController()
+        public AccountController(IAuthRepository repo)
         {
-            _repo = new AuthRepository();
+            _repo = repo;
         }
 
         // POST api/Account/Register

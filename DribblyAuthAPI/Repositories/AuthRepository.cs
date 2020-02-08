@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DribblyAuthAPI.Repositories
 {
-    public class AuthRepository : IDisposable
+    public class AuthRepository : IAuthRepository, IDisposable
     {
         private AuthContext _ctx;
 

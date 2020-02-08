@@ -11,6 +11,9 @@ namespace DribblyAuthAPI
         {
             // Web API configuration and services
 
+            // Register services for Dependency Injection
+            UnityConfig.RegisterComponents(config);
+
             // Web API routes
             config.MapHttpAttributeRoutes();
 

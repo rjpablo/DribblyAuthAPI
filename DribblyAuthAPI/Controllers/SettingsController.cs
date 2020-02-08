@@ -11,9 +11,9 @@ namespace DribblyAuthAPI.Controllers
     {
         private ISettingsService _service = null;
 
-        public SettingsController() : base()
+        public SettingsController(ISettingsService service) : base()
         {
-            _service = new SettingsService(new AuthContext());
+            _service = service;
         }
 
         //GETs
