@@ -1,7 +1,10 @@
+using Dribbly.Core;
 using DribblyAuthAPI.Models;
 using DribblyAuthAPI.Services;
+using System.Web;
 using System.Web.Http;
 using Unity;
+using Unity.Injection;
 using Unity.WebApi;
 
 namespace DribblyAuthAPI
@@ -14,6 +17,10 @@ namespace DribblyAuthAPI
 
             // register all your components with the container here
             // it is NOT necessary to register your controllers
+
+            // Register Core components
+
+            CoreUnityConfig.RegisterComponents(container);
 
             container.RegisterType<ICourtsService, CourtsService>();
             container.RegisterType<IAuthContext, AuthContext>();
