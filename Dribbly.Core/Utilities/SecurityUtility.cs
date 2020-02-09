@@ -28,7 +28,7 @@ namespace Dribbly.Core.Utilities
 
         public string GetUserId()
         {
-            return GetClaims()?.SingleOrDefault(c => c.Type == "userid")?.Value;
+            return GetClaims()?.SingleOrDefault(c => c.Type == "userId")?.Value;
         }
 
     }

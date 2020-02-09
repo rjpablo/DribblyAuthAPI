@@ -10,7 +10,7 @@ namespace DribblyAuthAPI.Models.Courts
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key]
         public new long Id { get; set; }
 
-        public long OwnerId { get; set; }
+        public string OwnerId { get; set; }
 
         [Required, MaxLength(100)]
         public string Name { get; set; }

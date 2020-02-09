@@ -42,11 +42,11 @@ namespace DribblyAuthAPI.Controllers
         }
 
         // POSTs
-        [HttpPost]
+        [HttpPost, Authorize]
         [Route("Register")]
-        public void Register([FromBody] CourtModel model)
+        public long Register([FromBody] CourtModel model)
         {
-            _service.Register(model);
+            return _service.Register(model);
         }
     }
 }

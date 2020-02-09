@@ -31,7 +31,5 @@ namespace DribblyAuthAPI.Repositories
         Task<RefreshToken> FindRefreshToken(string refreshTokenId);
 
         List<RefreshToken> GetAllRefreshTokens();
-
-        void Dispose();
     }
 }

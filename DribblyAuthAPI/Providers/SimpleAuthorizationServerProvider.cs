@@ -90,9 +90,11 @@ namespace DribblyAuthAPI.Providers
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
+            IdentityUser user = null;
+
             using (AuthRepository _repo = new AuthRepository())
             {
-                IdentityUser user = await _repo.FindUser(context.UserName, context.Password);
+                user = await _repo.FindUser(context.UserName, context.Password);
 
                 if (user == null)
                 {
@@ -103,6 +105,7 @@ namespace DribblyAuthAPI.Providers
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
+            identity.AddClaim(new Claim("userId", user.Id));
             identity.AddClaim(new Claim("sub", context.UserName));
             identity.AddClaim(new Claim("role", "user"));
 
@@ -113,6 +116,9 @@ namespace DribblyAuthAPI.Providers
                     },
                     {
                         "userName", context.UserName
+                    },
+                    {
+                        "userId", user.Id
                     }
                 });
 

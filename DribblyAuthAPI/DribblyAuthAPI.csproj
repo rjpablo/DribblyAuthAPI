@@ -193,6 +193,10 @@
     <Compile Include="Migrations\202002071345227_AddSettings.Designer.cs">
       <DependentUpon>202002071345227_AddSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002081135557_CourtModel_ChangeOwnerIdTypeToString.cs" />
+    <Compile Include="Migrations\202002081135557_CourtModel_ChangeOwnerIdTypeToString.Designer.cs">
+      <DependentUpon>202002081135557_CourtModel_ChangeOwnerIdTypeToString.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AuthContext.cs" />
     <Compile Include="Models\Auth\Client.cs" />
@@ -260,6 +264,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202002071345227_AddSettings.resx">
       <DependentUpon>202002071345227_AddSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002081135557_CourtModel_ChangeOwnerIdTypeToString.resx">
+      <DependentUpon>202002081135557_CourtModel_ChangeOwnerIdTypeToString.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

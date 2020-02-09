@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Dribbly.Core.Utilities;
 using DribblyAuthAPI.Models;
 using DribblyAuthAPI.Models.Courts;
 
@@ -10,9 +11,16 @@ namespace DribblyAuthAPI.Services
     public class CourtsService : BaseService<CourtModel>, ICourtsService
     {
         IAuthContext _context;
-        public CourtsService(IAuthContext context):base(context.Courts)
+        HttpContextBase _httpContext;
+        ISecurityUtility _securityUtility;
+
+        public CourtsService(IAuthContext context,
+            HttpContextBase httpContext,
+            ISecurityUtility securityUtility) :base(context.Courts)
         {
             _context = context;
+            _httpContext = httpContext;
+            _securityUtility = securityUtility;
         }
 
         public IEnumerable<CourtModel> GetAll()
@@ -25,10 +33,12 @@ namespace DribblyAuthAPI.Services
             return GetById(id);
         }
 
-        public void Register(CourtModel court)
+        public long Register(CourtModel court)
         {
+            court.OwnerId = _securityUtility.GetUserId();
             Add(court);
             _context.SaveChanges();
+            return court.Id;
         }
 
         public void UpdateCourt(CourtModel court)

@@ -9,7 +9,7 @@ namespace DribblyAuthAPI.Services
 
         CourtModel GetCourt(long id);
 
-        void Register(CourtModel court);
+        long Register(CourtModel court);
 
         void UpdateCourt(CourtModel court);
     }
