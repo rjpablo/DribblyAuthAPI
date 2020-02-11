@@ -1,5 +1,6 @@
 using Dribbly.Core;
 using DribblyAuthAPI.Models;
+using DribblyAuthAPI.Repositories;
 using DribblyAuthAPI.Services;
 using System.Web;
 using System.Web.Http;
@@ -25,6 +26,8 @@ namespace DribblyAuthAPI
             container.RegisterType<ICourtsService, CourtsService>();
             container.RegisterType<IAuthContext, AuthContext>();
             container.RegisterType<ISettingsService, SettingsService>();
+            container.RegisterType<IFileService, FileService>();
+            container.RegisterType<IAuthRepository, AuthRepository>();
 
             config.DependencyResolver = new UnityDependencyResolver(container);
         }

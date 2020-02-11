@@ -145,7 +145,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.config" />
+    <Content Include="Files\Upload\files\uploads\court\202002092212248386114.jpg" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\UnityConfig.cs" />
@@ -216,6 +219,8 @@
     <Compile Include="Repositories\CourtsRepository.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
+    <Compile Include="Services\IFileService.cs" />
+    <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\ICourtsService.cs" />
@@ -224,6 +229,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Files\Web.config" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\Local IIS %28DribblyAuthAPI%29.pubxml" />
     <None Include="Properties\PublishProfiles\Somee File System.pubxml" />

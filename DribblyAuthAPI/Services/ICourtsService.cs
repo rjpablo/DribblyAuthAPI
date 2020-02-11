@@ -12,5 +12,7 @@ namespace DribblyAuthAPI.Services
         long Register(CourtModel court);
 
         void UpdateCourt(CourtModel court);
+
+        void UpdateCourtPhoto(long courtId);
     }
 }

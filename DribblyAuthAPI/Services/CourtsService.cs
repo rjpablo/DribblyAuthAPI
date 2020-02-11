@@ -13,14 +13,17 @@ namespace DribblyAuthAPI.Services
         IAuthContext _context;
         HttpContextBase _httpContext;
         ISecurityUtility _securityUtility;
+        IFileService _fileService;
 
         public CourtsService(IAuthContext context,
             HttpContextBase httpContext,
-            ISecurityUtility securityUtility) :base(context.Courts)
+            ISecurityUtility securityUtility,
+            IFileService fileService) :base(context.Courts)
         {
             _context = context;
             _httpContext = httpContext;
             _securityUtility = securityUtility;
+            _fileService = fileService;
         }
 
         public IEnumerable<CourtModel> GetAll()
@@ -41,10 +44,20 @@ namespace DribblyAuthAPI.Services
             return court.Id;
         }
 
+        public void UpdateCourtPhoto(long courtId)
+        {
+            HttpFileCollection files = HttpContext.Current.Request.Files;
+            string uploadPath = _fileService.Upload(files[0], "court/");
+            CourtModel court = GetById(courtId);
+            court.PrimaryPhotoUrl = uploadPath;
+            UpdateCourt(court);
+        }
+
         public void UpdateCourt(CourtModel court)
         {
             Update(court);
             _context.SaveChanges();
         }
+
     }
 }

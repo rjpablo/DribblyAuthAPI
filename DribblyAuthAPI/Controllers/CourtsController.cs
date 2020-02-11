@@ -35,13 +35,19 @@ namespace DribblyAuthAPI.Controllers
 
         // POSTs
         [HttpPost]
+        [Route("UpdateCourtPhoto/{courtId}")]
+        public void UpdateCourtPhoto(long courtId)
+        {
+            _service.UpdateCourtPhoto(courtId);
+        }
+
+        [HttpPost]
         [Route("UpdateCourt")]
         public void UpdateCourt([FromBody] CourtModel model)
         {
             _service.UpdateCourt(model);
         }
 
-        // POSTs
         [HttpPost, Authorize]
         [Route("Register")]
         public long Register([FromBody] CourtModel model)
