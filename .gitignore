@@ -11,6 +11,7 @@
 *.userprefs
 
 Deployment Files/
+DribblyAuthAPI/Files
 
 # Build results
 [Dd]ebug/
