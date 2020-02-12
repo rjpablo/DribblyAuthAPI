@@ -59,7 +59,7 @@ namespace DribblyAuthAPI.Migrations
                     Name = "Phoenix Sports Center Basketball Court",
                     Id = 1,
                     DateAdded = new DateTime(2020, 1, 2),
-                    PrimaryPhotoUrl = "./images/test_images/courts/court_1.jpg",
+                    PrimaryPhotoUrl = "./dest/images/test_images/courts/court_1.jpg",
                     RatePerHour = 2500,
                     Rating = 0.6M
                 },
@@ -68,7 +68,7 @@ namespace DribblyAuthAPI.Migrations
                     Name = "Sports world Basketball Court",
                     Id = 2,
                     DateAdded = new DateTime(2020, 1, 5),
-                    PrimaryPhotoUrl = "./images/test_images/courts/court_2.jpg",
+                    PrimaryPhotoUrl = "./dest/images/test_images/courts/court_2.jpg",
                     RatePerHour = 250,
                     Rating = 0.8M
                 },
@@ -77,7 +77,7 @@ namespace DribblyAuthAPI.Migrations
                     Name = "Balls World Basketball Court",
                     Id = 3,
                     DateAdded = new DateTime(2020, 1, 5),
-                    PrimaryPhotoUrl = "./images/test_images/courts/court_3.jpg",
+                    PrimaryPhotoUrl = "./dest/images/test_images/courts/court_3.jpg",
                     RatePerHour = 450,
                     Rating = 0.3M
                 },
@@ -86,7 +86,7 @@ namespace DribblyAuthAPI.Migrations
                     Name = "Brgy Pag-asa Basketball Court",
                     Id = 4,
                     DateAdded = new DateTime(2020, 1, 5),
-                    PrimaryPhotoUrl = "./images/test_images/courts/court_4.jpg",
+                    PrimaryPhotoUrl = "./dest/images/test_images/courts/court_4.jpg",
                     RatePerHour = 300,
                     Rating = 0.5M
                 },
@@ -95,7 +95,7 @@ namespace DribblyAuthAPI.Migrations
                     Name = "MOA Arena Basketball Court",
                     Id = 5,
                     DateAdded = new DateTime(2020, 1, 5),
-                    PrimaryPhotoUrl = "./images/test_images/courts/court_5.jpg",
+                    PrimaryPhotoUrl = "./dest/images/test_images/courts/court_5.jpg",
                     RatePerHour = 250,
                     Rating = 0.6M
                 });
