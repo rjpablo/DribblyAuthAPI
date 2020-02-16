@@ -10,6 +10,8 @@ namespace DribblyAuthAPI.Models
         DbSet<RefreshToken> RefreshTokens { get; set; }
         DbSet<CourtModel> Courts { get; set; }
         DbSet<SettingModel> Settings { get; set; }
+        DbSet<CourtPhotoModel> CourtPhotos { get; set; }
+        DbSet<PhotoModel> Photos { get; set; }
         int SaveChanges();
     }
 
@@ -22,12 +24,14 @@ namespace DribblyAuthAPI.Models
         public AuthContext()
             : base("AuthContext")
         {
-
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public DbSet<Client> Clients { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<CourtModel> Courts { get; set; }
         public DbSet<SettingModel> Settings { get; set; }
+        public DbSet<PhotoModel> Photos { get; set; }
+        public DbSet<CourtPhotoModel> CourtPhotos { get; set; }
     }
 }

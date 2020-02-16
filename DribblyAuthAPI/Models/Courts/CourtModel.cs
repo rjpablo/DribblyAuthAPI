@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -28,6 +29,8 @@ namespace DribblyAuthAPI.Models.Courts
         public bool IsPublic { get; set; }
 
         public string AdditionalInfo { get; set; }
+
+        public virtual ICollection<CourtPhotoModel> Photos { get; set; }
 
     }
 }

@@ -200,6 +200,10 @@
     <Compile Include="Migrations\202002081135557_CourtModel_ChangeOwnerIdTypeToString.Designer.cs">
       <DependentUpon>202002081135557_CourtModel_ChangeOwnerIdTypeToString.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002161412347_Add_PhotoModelAndCourtPhotoModel.cs" />
+    <Compile Include="Migrations\202002161412347_Add_PhotoModelAndCourtPhotoModel.Designer.cs">
+      <DependentUpon>202002161412347_Add_PhotoModelAndCourtPhotoModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AuthContext.cs" />
     <Compile Include="Models\Auth\Client.cs" />
@@ -209,6 +213,8 @@
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\Courts\CourtModel.cs" />
     <Compile Include="Models\Settings\SettingModel.cs" />
+    <Compile Include="Models\Shared\CourtPhotoModel.cs" />
+    <Compile Include="Models\Shared\PhotoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\FacebookAuthProvider.cs" />
     <Compile Include="Providers\SimpleAuthorizationServerProvider.cs" />
@@ -273,6 +279,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202002081135557_CourtModel_ChangeOwnerIdTypeToString.resx">
       <DependentUpon>202002081135557_CourtModel_ChangeOwnerIdTypeToString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002161412347_Add_PhotoModelAndCourtPhotoModel.resx">
+      <DependentUpon>202002161412347_Add_PhotoModelAndCourtPhotoModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

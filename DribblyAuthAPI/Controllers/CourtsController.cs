@@ -33,15 +33,22 @@ namespace DribblyAuthAPI.Controllers
             return _service.GetCourt(id);
         }
 
+        [HttpGet]
+        [Route("GetCourtPhotos/{courtId}")]
+        public IEnumerable<PhotoModel> GetCourtPhotos(long courtId)
+        {
+            return _service.GetCourtPhotos(courtId);
+        }
+
         // POSTs
-        [HttpPost]
+        [HttpPost, Authorize]
         [Route("UpdateCourtPhoto/{courtId}")]
         public void UpdateCourtPhoto(long courtId)
         {
             _service.UpdateCourtPhoto(courtId);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         [Route("UpdateCourt")]
         public void UpdateCourt([FromBody] CourtModel model)
         {

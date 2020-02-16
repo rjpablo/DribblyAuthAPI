@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using Dribbly.Core.Utilities;
@@ -50,6 +51,17 @@ namespace DribblyAuthAPI.Services
             string uploadPath = _fileService.Upload(files[0], "court/");
             CourtModel court = GetById(courtId);
             court.PrimaryPhotoUrl = uploadPath;
+            PhotoModel photo = new PhotoModel {
+                Url = uploadPath,
+                UploadedById = _securityUtility.GetUserId(),
+                DateAdded = DateTime.Now
+            };
+            _context.Photos.Add(photo);
+            _context.CourtPhotos.Add(new CourtPhotoModel
+            {
+                CourtId = courtId,
+                PhotoId = photo.Id
+            });
             UpdateCourt(court);
         }
 
@@ -57,6 +69,12 @@ namespace DribblyAuthAPI.Services
         {
             Update(court);
             _context.SaveChanges();
+        }
+
+        public IEnumerable<PhotoModel> GetCourtPhotos(long courtId)
+        {
+            CourtModel court = _context.Courts.Include(c => c.Photos.Select(p => p.Photo)).FirstOrDefault(_court => _court.Id == courtId);
+            return court.Photos.Select(p => p.Photo).OrderByDescending(x=>x.DateAdded);
         }
 
     }
