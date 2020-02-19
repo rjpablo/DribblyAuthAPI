@@ -13,6 +13,8 @@ namespace DribblyAuthAPI.Services
 
         long Register(CourtModel court);
 
+        IEnumerable<PhotoModel> AddPhotos(long courtId);
+
         void UpdateCourt(CourtModel court);
 
         void UpdateCourtPhoto(long courtId);

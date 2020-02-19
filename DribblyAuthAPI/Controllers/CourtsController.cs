@@ -49,6 +49,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost, Authorize]
+        [Route("AddCourtPhotos/{courtId}")]
+        public IEnumerable<PhotoModel> AddCourtPhotos(long courtId)
+        {
+            return _service.AddPhotos(courtId);
+        }
+
+        [HttpPost, Authorize]
         [Route("UpdateCourt")]
         public void UpdateCourt([FromBody] CourtModel model)
         {

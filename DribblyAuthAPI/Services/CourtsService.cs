@@ -19,7 +19,7 @@ namespace DribblyAuthAPI.Services
         public CourtsService(IAuthContext context,
             HttpContextBase httpContext,
             ISecurityUtility securityUtility,
-            IFileService fileService) :base(context.Courts)
+            IFileService fileService) : base(context.Courts)
         {
             _context = context;
             _httpContext = httpContext;
@@ -45,13 +45,27 @@ namespace DribblyAuthAPI.Services
             return court.Id;
         }
 
+        public IEnumerable<PhotoModel> AddPhotos(long courtId)
+        {
+            HttpFileCollection files = HttpContext.Current.Request.Files;
+            List<PhotoModel> photos = new List<PhotoModel>();
+            for (int i = 0; i < files.Count; i++)
+            {
+                photos.Add(AddCourtPhoto(courtId, files[i]));
+                _context.SaveChanges();
+            }
+
+            return photos;
+        }
+
         public void UpdateCourtPhoto(long courtId)
         {
             HttpFileCollection files = HttpContext.Current.Request.Files;
             string uploadPath = _fileService.Upload(files[0], "court/");
             CourtModel court = GetById(courtId);
             court.PrimaryPhotoUrl = uploadPath;
-            PhotoModel photo = new PhotoModel {
+            PhotoModel photo = new PhotoModel
+            {
                 Url = uploadPath,
                 UploadedById = _securityUtility.GetUserId(),
                 DateAdded = DateTime.Now
@@ -74,7 +88,26 @@ namespace DribblyAuthAPI.Services
         public IEnumerable<PhotoModel> GetCourtPhotos(long courtId)
         {
             CourtModel court = _context.Courts.Include(c => c.Photos.Select(p => p.Photo)).FirstOrDefault(_court => _court.Id == courtId);
-            return court.Photos.Select(p => p.Photo).OrderByDescending(x=>x.DateAdded);
+            return court.Photos.Select(p => p.Photo).OrderByDescending(x => x.DateAdded);
+        }
+
+        private PhotoModel AddCourtPhoto(long courtId, HttpPostedFile file)
+        {
+            string uploadPath = _fileService.Upload(file, "court/");
+            PhotoModel photo = new PhotoModel
+            {
+                Url = uploadPath,
+                UploadedById = _securityUtility.GetUserId(),
+                DateAdded = DateTime.Now
+            };
+            _context.Photos.Add(photo);
+            _context.CourtPhotos.Add(new CourtPhotoModel
+            {
+                CourtId = courtId,
+                PhotoId = photo.Id
+            });
+
+            return photo;
         }
 
     }
