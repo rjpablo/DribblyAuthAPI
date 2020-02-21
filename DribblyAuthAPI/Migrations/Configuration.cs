@@ -21,7 +21,7 @@ namespace DribblyAuthAPI.Migrations
         {
             _context = context;
             SeedClients();
-            AddCourts();
+            //AddCourts();
             SeedSettings();
 
             _context.SaveChanges();
