@@ -1,4 +1,4 @@
-namespace DribblyAuthAPI.Migrations
+﻿namespace DribblyAuthAPI.Migrations
 {
     using DribblyAuthAPI.Enums;
     using DribblyAuthAPI.Models;
@@ -110,7 +110,7 @@ namespace DribblyAuthAPI.Migrations
                 Name = "Dribbly Web Client",
                 ApplicationType = ApplicationTypesEnum.JavaScript,
                 Active = true,
-                RefreshTokenLifeTime = 7200,
+                RefreshTokenLifeTime = 20160,
                 AllowedOrigin = "*"
             });
         }
