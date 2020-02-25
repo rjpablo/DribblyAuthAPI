@@ -1,5 +1,6 @@
 ﻿using DribblyAuthAPI.Models;
 using DribblyAuthAPI.Models.Courts;
+using DribblyAuthAPI.Models.Games;
 using DribblyAuthAPI.Repositories;
 using DribblyAuthAPI.Services;
 using System;
@@ -38,6 +39,13 @@ namespace DribblyAuthAPI.Controllers
         public IEnumerable<PhotoModel> GetCourtPhotos(long courtId)
         {
             return _service.GetCourtPhotos(courtId);
+        }
+
+        [HttpGet]
+        [Route("GetCourtGames/{courtId}")]
+        public IEnumerable<GameModel> GetCourtGames(long courtId)
+        {
+            return _service.GetCourtGames(courtId);
         }
 
         // POSTs

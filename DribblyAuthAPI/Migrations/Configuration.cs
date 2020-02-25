@@ -3,6 +3,7 @@
     using DribblyAuthAPI.Enums;
     using DribblyAuthAPI.Models;
     using DribblyAuthAPI.Models.Courts;
+    using DribblyAuthAPI.Models.Games;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
@@ -21,6 +22,7 @@
         {
             _context = context;
             SeedClients();
+            SeedGames();
             //AddCourts();
             SeedSettings();
 
@@ -35,10 +37,10 @@
                 new SettingModel(0, "googleMapApiKey", "Google Map Api Key", "AIzaSyCQwPkj7HcSjORBr6z8ZGf56e4uXNPHUuY")
             };
 
-            foreach(SettingModel setting in settings)
+            foreach (SettingModel setting in settings)
             {
                 var s = _context.Settings.FirstOrDefault(x => x.Key == setting.Key);
-                if(s != null)
+                if (s != null)
                 {
                     s.Key = setting.Key;
                     s.Description = setting.Description;
@@ -49,6 +51,20 @@
                     _context.Settings.Add(setting);
                 }
             }
+        }
+
+        public void SeedGames()
+        {
+            _context.Games.AddOrUpdate(
+                new GameModel
+                {
+                    Id = 1,
+                    Start = DateTime.Now,
+                    End = DateTime.Now.AddHours(3),
+                    DateAdded = DateTime.Now,
+                    CourtId = 4,
+                    Title = "Cardinals Tune Up Game"
+                });
         }
 
         public void AddCourts()

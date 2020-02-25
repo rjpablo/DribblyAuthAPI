@@ -1,4 +1,5 @@
 ﻿using DribblyAuthAPI.Models.Courts;
+using DribblyAuthAPI.Models.Games;
 using System.Collections.Generic;
 
 namespace DribblyAuthAPI.Services
@@ -8,6 +9,8 @@ namespace DribblyAuthAPI.Services
         IEnumerable<CourtModel> GetAll();
 
         CourtModel GetCourt(long id);
+
+        IEnumerable<GameModel> GetCourtGames(long courtId);
 
         IEnumerable<PhotoModel> GetCourtPhotos(long courtId);
 

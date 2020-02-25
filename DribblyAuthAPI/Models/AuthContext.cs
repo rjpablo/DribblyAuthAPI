@@ -1,4 +1,6 @@
 ﻿using DribblyAuthAPI.Models.Courts;
+using DribblyAuthAPI.Models.Games;
+using DribblyAuthAPI.Models.Shared;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
 
@@ -12,6 +14,8 @@ namespace DribblyAuthAPI.Models
         DbSet<SettingModel> Settings { get; set; }
         DbSet<CourtPhotoModel> CourtPhotos { get; set; }
         DbSet<PhotoModel> Photos { get; set; }
+        DbSet<EventModel> Events { get; set; }
+        DbSet<GameModel> Games { get; set; }
         int SaveChanges();
     }
 
@@ -33,5 +37,7 @@ namespace DribblyAuthAPI.Models
         public DbSet<SettingModel> Settings { get; set; }
         public DbSet<PhotoModel> Photos { get; set; }
         public DbSet<CourtPhotoModel> CourtPhotos { get; set; }
+        public DbSet<EventModel> Events { get; set; }
+        public DbSet<GameModel> Games { get; set; }
     }
 }

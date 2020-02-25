@@ -204,6 +204,10 @@
     <Compile Include="Migrations\202002161412347_Add_PhotoModelAndCourtPhotoModel.Designer.cs">
       <DependentUpon>202002161412347_Add_PhotoModelAndCourtPhotoModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002232111481_Add_GameModelAndEventModel.cs" />
+    <Compile Include="Migrations\202002232111481_Add_GameModelAndEventModel.Designer.cs">
+      <DependentUpon>202002232111481_Add_GameModelAndEventModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AuthContext.cs" />
     <Compile Include="Models\Auth\Client.cs" />
@@ -212,8 +216,10 @@
     <Compile Include="Models\Auth\UserModel.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\Courts\CourtModel.cs" />
+    <Compile Include="Models\Games\GameModel.cs" />
     <Compile Include="Models\Settings\SettingModel.cs" />
     <Compile Include="Models\Shared\CourtPhotoModel.cs" />
+    <Compile Include="Models\Shared\EventModel.cs" />
     <Compile Include="Models\Shared\PhotoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\FacebookAuthProvider.cs" />
@@ -282,6 +288,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202002161412347_Add_PhotoModelAndCourtPhotoModel.resx">
       <DependentUpon>202002161412347_Add_PhotoModelAndCourtPhotoModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002232111481_Add_GameModelAndEventModel.resx">
+      <DependentUpon>202002232111481_Add_GameModelAndEventModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

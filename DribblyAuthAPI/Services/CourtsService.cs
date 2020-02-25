@@ -6,6 +6,7 @@ using System.Web;
 using Dribbly.Core.Utilities;
 using DribblyAuthAPI.Models;
 using DribblyAuthAPI.Models.Courts;
+using DribblyAuthAPI.Models.Games;
 
 namespace DribblyAuthAPI.Services
 {
@@ -110,5 +111,9 @@ namespace DribblyAuthAPI.Services
             return photo;
         }
 
+        public IEnumerable<GameModel> GetCourtGames(long courtId)
+        {
+            return _context.Games.Where(g => g.CourtId == courtId);
+        }
     }
 }
