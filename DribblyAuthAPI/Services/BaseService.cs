@@ -24,7 +24,7 @@ namespace DribblyAuthAPI.Services
 
         protected void Add(T entity)
         {
-            entity.DateAdded = DateTime.Now;
+            entity.DateAdded = DateTime.UtcNow;
             _dbSet.Add(entity);
         }
 

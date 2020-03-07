@@ -153,6 +153,7 @@
   <ItemGroup>
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\GamesController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\CourtsController.cs" />
     <Compile Include="Controllers\RefreshTokensController.cs" />
@@ -231,6 +232,8 @@
     <Compile Include="Repositories\CourtsRepository.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
+    <Compile Include="Services\GamesService.cs" />
+    <Compile Include="Services\IGamesService.cs" />
     <Compile Include="Services\IFileService.cs" />
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\SettingsService.cs" />

@@ -113,7 +113,8 @@ namespace DribblyAuthAPI.Services
 
         public IEnumerable<GameModel> GetCourtGames(long courtId)
         {
-            return _context.Games.Where(g => g.CourtId == courtId);
+            var games = _context.Games.Where(g => g.CourtId == courtId).ToList();
+            return games;
         }
     }
 }
