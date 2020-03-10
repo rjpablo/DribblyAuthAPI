@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using Dribbly.Core.Utilities;
 using DribblyAuthAPI.Models;
@@ -59,6 +61,29 @@ namespace DribblyAuthAPI.Services
             return photos;
         }
 
+        public async Task DeletePhotoAsync(long courtId, long photoId)
+        {
+            CourtPhotoModel courtPhoto = await _context.CourtPhotos.Include(p2 => p2.Photo)
+                .SingleOrDefaultAsync(p => p.CourtId == courtId && p.PhotoId == photoId);
+            if (courtPhoto == null)
+            {
+                throw new InvalidOperationException("Photo not found.");
+            }
+            else
+            {
+                if (courtPhoto.Photo.UploadedById == _securityUtility.GetUserId())
+                {
+                    courtPhoto.Photo.DateDeleted = DateTime.UtcNow;
+                    _context.CourtPhotos.AddOrUpdate(courtPhoto);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    throw new UnauthorizedAccessException("You do not have access to delete this photo.");
+                }
+            }
+        }
+
         public void UpdateCourtPhoto(long courtId)
         {
             HttpFileCollection files = HttpContext.Current.Request.Files;
@@ -88,8 +113,12 @@ namespace DribblyAuthAPI.Services
 
         public IEnumerable<PhotoModel> GetCourtPhotos(long courtId)
         {
-            CourtModel court = _context.Courts.Include(c => c.Photos.Select(p => p.Photo)).FirstOrDefault(_court => _court.Id == courtId);
-            return court.Photos.Select(p => p.Photo).OrderByDescending(x => x.DateAdded);
+            //CourtModel court = _context.Courts.Include(c => c.Photos.Select(p => p.Photo).Where(p1=>p1.DateDeleted == null))
+            //    .FirstOrDefault(_court => _court.Id == courtId);
+            //return court.Photos.Select(p => p.Photo).OrderByDescending(x => x.DateAdded);
+            return _context.CourtPhotos.Include(p1=>p1.Photo)
+                .Where(p => p.CourtId == courtId && p.Photo.DateDeleted == null)
+                .Select(p => p.Photo).OrderByDescending(x => x.DateAdded);
         }
 
         private PhotoModel AddCourtPhoto(long courtId, HttpPostedFile file)

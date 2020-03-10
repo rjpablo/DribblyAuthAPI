@@ -5,6 +5,7 @@ using DribblyAuthAPI.Repositories;
 using DribblyAuthAPI.Services;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace DribblyAuthAPI.Controllers
@@ -75,6 +76,13 @@ namespace DribblyAuthAPI.Controllers
         public long Register([FromBody] CourtModel model)
         {
             return _service.Register(model);
+        }
+
+        [HttpPost, Authorize]
+        [Route("DeletePhoto/{courtId}/{photoId}")]
+        public async Task DeletePhoto(long courtId, long photoId)
+        {
+            await _service.DeletePhotoAsync(courtId, photoId);
         }
     }
 }

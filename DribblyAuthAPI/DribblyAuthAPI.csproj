@@ -209,6 +209,10 @@
     <Compile Include="Migrations\202002232111481_Add_GameModelAndEventModel.Designer.cs">
       <DependentUpon>202002232111481_Add_GameModelAndEventModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003081640272_Add_PhotoModel_DateDeletedField.cs" />
+    <Compile Include="Migrations\202003081640272_Add_PhotoModel_DateDeletedField.Designer.cs">
+      <DependentUpon>202003081640272_Add_PhotoModel_DateDeletedField.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AuthContext.cs" />
     <Compile Include="Models\Auth\Client.cs" />
@@ -294,6 +298,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202002232111481_Add_GameModelAndEventModel.resx">
       <DependentUpon>202002232111481_Add_GameModelAndEventModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003081640272_Add_PhotoModel_DateDeletedField.resx">
+      <DependentUpon>202003081640272_Add_PhotoModel_DateDeletedField.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

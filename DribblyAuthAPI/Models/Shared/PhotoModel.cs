@@ -9,5 +9,6 @@ namespace DribblyAuthAPI.Models.Courts
     {
         public string Url { get; set; }
         public string UploadedById { get; set; }
+        public DateTime? DateDeleted { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using DribblyAuthAPI.Models.Courts;
 using DribblyAuthAPI.Models.Games;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DribblyAuthAPI.Services
 {
@@ -21,5 +22,7 @@ namespace DribblyAuthAPI.Services
         void UpdateCourt(CourtModel court);
 
         void UpdateCourtPhoto(long courtId);
+
+        Task DeletePhotoAsync(long courtId, long photoId);
     }
 }
