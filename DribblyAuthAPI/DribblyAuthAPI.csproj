@@ -213,6 +213,10 @@
     <Compile Include="Migrations\202003081640272_Add_PhotoModel_DateDeletedField.Designer.cs">
       <DependentUpon>202003081640272_Add_PhotoModel_DateDeletedField.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003262158473_Modify_Events_UpdateConstraints.cs" />
+    <Compile Include="Migrations\202003262158473_Modify_Events_UpdateConstraints.Designer.cs">
+      <DependentUpon>202003262158473_Modify_Events_UpdateConstraints.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AuthContext.cs" />
     <Compile Include="Models\Auth\Client.cs" />
@@ -301,6 +305,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003081640272_Add_PhotoModel_DateDeletedField.resx">
       <DependentUpon>202003081640272_Add_PhotoModel_DateDeletedField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003262158473_Modify_Events_UpdateConstraints.resx">
+      <DependentUpon>202003262158473_Modify_Events_UpdateConstraints.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

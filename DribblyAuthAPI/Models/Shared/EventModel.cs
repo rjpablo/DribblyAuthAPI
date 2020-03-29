@@ -15,7 +15,9 @@ namespace DribblyAuthAPI.Models.Shared
         public DateTime Start { get; set; }
         [Required]
         public DateTime End { get; set; }
+        [MinLength(5)]
         public string Title { get; set; }
+        [Required]
         public string AddedBy { get; set; }
         [ForeignKey("Court"), Required]
         public long CourtId { get; set; }

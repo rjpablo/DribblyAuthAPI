@@ -22,7 +22,7 @@
         {
             _context = context;
             SeedClients();
-            SeedGames();
+            //SeedGames();
             //AddCourts();
             SeedSettings();
 
