@@ -1,5 +1,6 @@
 ﻿using DribblyAuthAPI.API;
 using DribblyAuthAPI.Models;
+using DribblyAuthAPI.Models.Auth;
 using DribblyAuthAPI.Repositories;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -139,7 +140,7 @@ namespace DribblyAuthAPI.Controllers
                 return BadRequest("Invalid Provider or External Access Token");
             }
 
-            IdentityUser user = await _repo.FindAsync(new UserLoginInfo(model.Provider, verifiedAccessToken.user_id));
+            ApplicationUser user = await _repo.FindAsync(new UserLoginInfo(model.Provider, verifiedAccessToken.user_id));
 
             bool hasRegistered = user != null;
 
@@ -148,7 +149,7 @@ namespace DribblyAuthAPI.Controllers
                 return BadRequest("External user is already registered");
             }
 
-            user = new IdentityUser() { UserName = model.UserName };
+            user = new ApplicationUser() { UserName = model.UserName };
 
             IdentityResult result = await _repo.CreateAsync(user);
             if (!result.Succeeded)

@@ -1,4 +1,5 @@
-﻿using DribblyAuthAPI.Models.Courts;
+﻿using DribblyAuthAPI.Models.Auth;
+using DribblyAuthAPI.Models.Courts;
 using DribblyAuthAPI.Models.Games;
 using DribblyAuthAPI.Models.Shared;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -23,7 +24,7 @@ namespace DribblyAuthAPI.Models
     //All Identity tranactions will run on this context
     //You can think about IdentityDbContext class as special version of the traditional “DbContext” Class
     //responsible for handling Identity transactions
-    public class AuthContext : IdentityDbContext<IdentityUser>, IAuthContext
+    public class AuthContext : IdentityDbContext<ApplicationUser>, IAuthContext
     {
         public AuthContext()
             : base("AuthContext")

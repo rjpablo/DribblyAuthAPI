@@ -1,9 +1,8 @@
 ﻿using DribblyAuthAPI.Models;
+using DribblyAuthAPI.Models.Auth;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DribblyAuthAPI.Repositories
@@ -12,11 +11,11 @@ namespace DribblyAuthAPI.Repositories
     {
         Task<IdentityResult> RegisterUser(UserModel userModel);
 
-        Task<IdentityUser> FindUser(string userName, string password);
+        Task<ApplicationUser> FindUser(string userName, string password);
 
-        Task<IdentityUser> FindAsync(UserLoginInfo loginInfo);
+        Task<ApplicationUser> FindAsync(UserLoginInfo loginInfo);
 
-        Task<IdentityResult> CreateAsync(IdentityUser user);
+        Task<IdentityResult> CreateAsync(ApplicationUser user);
 
         Task<IdentityResult> AddLoginAsync(string userId, UserLoginInfo login);
 

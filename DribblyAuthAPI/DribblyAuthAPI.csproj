@@ -44,9 +44,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
@@ -217,8 +215,18 @@
     <Compile Include="Migrations\202003262158473_Modify_Events_UpdateConstraints.Designer.cs">
       <DependentUpon>202003262158473_Modify_Events_UpdateConstraints.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003292009438_AspNetUsers_Add_SaltColumn.cs" />
+    <Compile Include="Migrations\202003292009438_AspNetUsers_Add_SaltColumn.Designer.cs">
+      <DependentUpon>202003292009438_AspNetUsers_Add_SaltColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004032225050_aspNetUsers_drop_discriminatorColumn.cs" />
+    <Compile Include="Migrations\202004032225050_aspNetUsers_drop_discriminatorColumn.Designer.cs">
+      <DependentUpon>202004032225050_aspNetUsers_drop_discriminatorColumn.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AuthContext.cs" />
+    <Compile Include="Models\Auth\ApplicationUser.cs" />
+    <Compile Include="Models\Auth\ApplicationUserManager.cs" />
     <Compile Include="Models\Auth\Client.cs" />
     <Compile Include="Models\Auth\RefreshToken.cs" />
     <Compile Include="Models\Auth\ExternalLoginModels.cs" />
@@ -308,6 +316,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003262158473_Modify_Events_UpdateConstraints.resx">
       <DependentUpon>202003262158473_Modify_Events_UpdateConstraints.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003292009438_AspNetUsers_Add_SaltColumn.resx">
+      <DependentUpon>202003292009438_AspNetUsers_Add_SaltColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004032225050_aspNetUsers_drop_discriminatorColumn.resx">
+      <DependentUpon>202004032225050_aspNetUsers_drop_discriminatorColumn.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

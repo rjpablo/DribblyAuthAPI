@@ -1,4 +1,5 @@
 ﻿using DribblyAuthAPI.Models;
+using DribblyAuthAPI.Models.Auth;
 using DribblyAuthAPI.Repositories;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
@@ -90,13 +91,13 @@ namespace DribblyAuthAPI.Providers
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
-            IdentityUser user = null;
+            ApplicationUser user = null;
 
             using (AuthRepository _repo = new AuthRepository())
             {
-                user = await _repo.FindUser(context.UserName, context.Password);
+                user = await _repo.FindUserByName(context.UserName);
 
-                if (user == null)
+                if (user == null || await _repo.FindUser(context.UserName, string.Concat(context.Password, user.Salt)) == null)
                 {
                     context.SetError("invalid_grant", "The user name or password is incorrect.");
                     return;

@@ -1,4 +1,5 @@
 ﻿using DribblyAuthAPI.Models;
+using DribblyAuthAPI.Models.Auth;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -12,17 +13,17 @@ namespace DribblyAuthAPI.Repositories
     {
         private AuthContext _ctx;
 
-        private UserManager<IdentityUser> _userManager;
+        private ApplicationUserManager<ApplicationUser> _userManager;
 
         public AuthRepository()
         {
             _ctx = new AuthContext();
-            _userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(_ctx));
+            _userManager = new ApplicationUserManager<ApplicationUser>(new UserStore<ApplicationUser>(_ctx));
         }
-
+        
         public async Task<IdentityResult> RegisterUser(UserModel userModel)
         {
-            IdentityUser user = new IdentityUser
+            ApplicationUser user = new ApplicationUser
             {
                 UserName = userModel.UserName
             };
@@ -32,21 +33,28 @@ namespace DribblyAuthAPI.Repositories
             return result;
         }
 
-        public async Task<IdentityUser> FindUser(string userName, string password)
+        public async Task<ApplicationUser> FindUser(string userName, string password)
         {
-            IdentityUser user = await _userManager.FindAsync(userName, password);
+            ApplicationUser user = await _userManager.FindAsync(userName, password);
 
             return user;
         }
 
-        public async Task<IdentityUser> FindAsync(UserLoginInfo loginInfo)
+        public async Task<ApplicationUser> FindUserByName(string userName)
         {
-            IdentityUser user = await _userManager.FindAsync(loginInfo);
+            ApplicationUser user = await _userManager.FindByNameAsync(userName);
 
             return user;
         }
 
-        public async Task<IdentityResult> CreateAsync(IdentityUser user)
+        public async Task<ApplicationUser> FindAsync(UserLoginInfo loginInfo)
+        {
+            ApplicationUser user = await _userManager.FindAsync(loginInfo);
+
+            return user;
+        }
+
+        public async Task<IdentityResult> CreateAsync(ApplicationUser user)
         {
             var result = await _userManager.CreateAsync(user);
 
