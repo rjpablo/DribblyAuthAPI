@@ -329,6 +329,10 @@
       <Project>{8a887a9e-e256-4a63-abe3-f8657b04e011}</Project>
       <Name>Dribbly.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dribbly.Email\Dribbly.Email.csproj">
+      <Project>{29f4a3cf-4259-46a5-b53b-d4e43eab6f76}</Project>
+      <Name>Dribbly.Email</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

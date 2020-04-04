@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DribblyAuthAPI", "DribblyAu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dribbly.Core", "Dribbly.Core\Dribbly.Core.csproj", "{8A887A9E-E256-4A63-ABE3-F8657B04E011}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dribbly.Email", "Dribbly.Email\Dribbly.Email.csproj", "{29F4A3CF-4259-46A5-B53B-D4E43EAB6F76}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{8A887A9E-E256-4A63-ABE3-F8657B04E011}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A887A9E-E256-4A63-ABE3-F8657B04E011}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A887A9E-E256-4A63-ABE3-F8657B04E011}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29F4A3CF-4259-46A5-B53B-D4E43EAB6F76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29F4A3CF-4259-46A5-B53B-D4E43EAB6F76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29F4A3CF-4259-46A5-B53B-D4E43EAB6F76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29F4A3CF-4259-46A5-B53B-D4E43EAB6F76}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
