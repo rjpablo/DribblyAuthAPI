@@ -1,12 +1,16 @@
 using Dribbly.Core;
+using Dribbly.Email.Models;
 using DribblyAuthAPI.Models;
 using DribblyAuthAPI.Repositories;
 using DribblyAuthAPI.Services;
 using System.Web;
 using System.Web.Http;
+using System.Configuration;
 using Unity;
 using Unity.Injection;
 using Unity.WebApi;
+using System;
+using Dribbly.Email.Services;
 
 namespace DribblyAuthAPI
 {
@@ -29,6 +33,8 @@ namespace DribblyAuthAPI
             container.RegisterType<ISettingsService, SettingsService>();
             container.RegisterType<IFileService, FileService>();
             container.RegisterType<IAuthRepository, AuthRepository>();
+            container.RegisterType<IEmailConfiguration, EmailConfiguration>();
+            container.RegisterType<IEmailService, EmailService>();
 
             config.DependencyResolver = new UnityDependencyResolver(container);
         }

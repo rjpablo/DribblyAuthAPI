@@ -1,4 +1,6 @@
-﻿using DribblyAuthAPI.API;
+﻿using Dribbly.Email.Models;
+using Dribbly.Email.Services;
+using DribblyAuthAPI.API;
 using DribblyAuthAPI.Models;
 using DribblyAuthAPI.Models.Auth;
 using DribblyAuthAPI.Repositories;
@@ -9,9 +11,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -23,10 +23,13 @@ namespace DribblyAuthAPI.Controllers
     public class AccountController : ApiController
     {
         private IAuthRepository _repo = null;
+        private IEmailService _emailSender = null;
 
-        public AccountController(IAuthRepository repo)
+        public AccountController(IAuthRepository repo,
+            IEmailService emailSender)
         {
             _repo = repo;
+            _emailSender = emailSender;
         }
 
         // POST api/Account/Register
@@ -206,6 +209,13 @@ namespace DribblyAuthAPI.Controllers
 
             return Ok(accessTokenResponse);
 
+        }
+
+        [HttpPost]
+        [Route("SendPasswordResetLink")]
+        public async Task SendPasswordResetLinkAsync(ForgotPasswordModel input)
+        {
+            await _repo.SendPasswordResetLinkAsync(input);
         }
 
         #region Helper Functions

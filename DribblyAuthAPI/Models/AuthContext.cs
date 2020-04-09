@@ -40,5 +40,10 @@ namespace DribblyAuthAPI.Models
         public DbSet<CourtPhotoModel> CourtPhotos { get; set; }
         public DbSet<EventModel> Events { get; set; }
         public DbSet<GameModel> Games { get; set; }
+
+        public static AuthContext Create()
+        {
+            return new AuthContext();
+        }
     }
 }

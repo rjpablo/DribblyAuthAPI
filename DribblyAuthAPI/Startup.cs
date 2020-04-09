@@ -1,5 +1,6 @@
 ﻿//reference: http://bitoftech.net/2014/06/01/token-based-authentication-asp-net-web-api-2-owin-asp-net-identity/
 using DribblyAuthAPI.Models;
+using DribblyAuthAPI.Models.Auth;
 using DribblyAuthAPI.Providers;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Facebook;
@@ -42,6 +43,9 @@ namespace DribblyAuthAPI.API
 
         public void ConfigureOAuth(IAppBuilder app)
         {
+            app.CreatePerOwinContext(AuthContext.Create);
+            app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
+
             //use a cookie to temporarily store information about a user logging in with a third party login provider
             app.UseExternalSignInCookie(Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ExternalCookie);
             OAuthBearerOptions = new OAuthBearerAuthenticationOptions();
@@ -59,7 +63,7 @@ namespace DribblyAuthAPI.API
             {
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/token"), //http://localhost:[port]/token
-                AccessTokenExpireTimeSpan = TimeSpan.FromSeconds(30), //set token validatity to 30 seconds
+                AccessTokenExpireTimeSpan = TimeSpan.FromSeconds(10), //set token validatity to 30 seconds
                 Provider = new SimpleAuthorizationServerProvider(), //specifies implementation on how to validate the credentials for users asking for tokens
                 RefreshTokenProvider = new SimpleRefreshTokenProvider()
             };
@@ -69,6 +73,5 @@ namespace DribblyAuthAPI.API
             app.UseOAuthBearerAuthentication(OAuthBearerOptions);
 
         }
-
     }
 }

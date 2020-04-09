@@ -30,5 +30,7 @@ namespace DribblyAuthAPI.Repositories
         Task<RefreshToken> FindRefreshToken(string refreshTokenId);
 
         List<RefreshToken> GetAllRefreshTokens();
+
+        Task SendPasswordResetLinkAsync(ForgotPasswordModel forgotPasswordModel);
     }
 }

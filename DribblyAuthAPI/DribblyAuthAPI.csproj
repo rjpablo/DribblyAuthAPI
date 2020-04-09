@@ -228,6 +228,7 @@
     <Compile Include="Models\Auth\ApplicationUser.cs" />
     <Compile Include="Models\Auth\ApplicationUserManager.cs" />
     <Compile Include="Models\Auth\Client.cs" />
+    <Compile Include="Models\Auth\ForgotPasswordModel.cs" />
     <Compile Include="Models\Auth\RefreshToken.cs" />
     <Compile Include="Models\Auth\ExternalLoginModels.cs" />
     <Compile Include="Models\Auth\UserModel.cs" />

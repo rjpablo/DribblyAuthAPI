@@ -1,4 +1,6 @@
-﻿using DribblyAuthAPI.Models;
+﻿using Dribbly.Email.Models;
+using Dribbly.Email.Services;
+using DribblyAuthAPI.Models;
 using DribblyAuthAPI.Models.Auth;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -6,21 +8,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net.Http;
+using System.Web;
+using System.Web.Http;
+using Microsoft.AspNet.Identity.Owin;
+using System.Configuration;
 
 namespace DribblyAuthAPI.Repositories
 {
     public class AuthRepository : IAuthRepository, IDisposable
     {
         private AuthContext _ctx;
+        private ApplicationUserManager _userManager;
+        private IEmailService _emailSender = null;
 
-        private ApplicationUserManager<ApplicationUser> _userManager;
-
-        public AuthRepository()
+        public AuthRepository(IEmailService emailSender)
         {
             _ctx = new AuthContext();
-            _userManager = new ApplicationUserManager<ApplicationUser>(new UserStore<ApplicationUser>(_ctx));
+            _userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>(); //new ApplicationUserManager(new UserStore<ApplicationUser>(_ctx));
+            _emailSender = emailSender;
         }
-        
+
         public async Task<IdentityResult> RegisterUser(UserModel userModel)
         {
             ApplicationUser user = new ApplicationUser
@@ -121,11 +129,25 @@ namespace DribblyAuthAPI.Repositories
             return _ctx.RefreshTokens.ToList();
         }
 
+        public async Task SendPasswordResetLinkAsync(ForgotPasswordModel forgotPasswordModel)
+        {
+            var user = await _userManager.FindByEmailAsync(forgotPasswordModel.Email);
+            string webClientHostName = ConfigurationManager.AppSettings["WEB_CLIENT_HOSTNAME"];
+            if (user == null)
+                return;
+
+            string token = await _userManager.GeneratePasswordResetTokenAsync(user.Id);
+            var message = new EmailMessage(new string[] { forgotPasswordModel.Email }, "Reset password",
+                string.Format("Please click <a href=\"{0}resetpassword?token={1}&email={2}\">here</a> to reset your password.",
+                webClientHostName, token, forgotPasswordModel.Email));
+            await _emailSender.SendEmailAsync(message);
+
+            return;
+        }
+
         public void Dispose()
         {
             _ctx.Dispose();
-            _userManager.Dispose();
-
         }
     }
 }

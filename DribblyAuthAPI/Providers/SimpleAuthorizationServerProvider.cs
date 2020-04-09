@@ -37,7 +37,7 @@ namespace DribblyAuthAPI.Providers
                 return Task.FromResult<object>(null); 
             }
 
-            using (AuthRepository _repo = new AuthRepository())
+            using (AuthRepository _repo = new AuthRepository(null))
             {
                 client = _repo.FindClient(context.ClientId);
             }
@@ -93,7 +93,7 @@ namespace DribblyAuthAPI.Providers
 
             ApplicationUser user = null;
 
-            using (AuthRepository _repo = new AuthRepository())
+            using (AuthRepository _repo = new AuthRepository(null))
             {
                 user = await _repo.FindUserByName(context.UserName);
 
