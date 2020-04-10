@@ -3,16 +3,14 @@ using Dribbly.Email.Services;
 using DribblyAuthAPI.Models;
 using DribblyAuthAPI.Models.Auth;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Net.Http;
-using System.Web;
-using System.Web.Http;
-using Microsoft.AspNet.Identity.Owin;
 using System.Configuration;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace DribblyAuthAPI.Repositories
 {
@@ -25,7 +23,7 @@ namespace DribblyAuthAPI.Repositories
         public AuthRepository(IEmailService emailSender)
         {
             _ctx = new AuthContext();
-            _userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>(); //new ApplicationUserManager(new UserStore<ApplicationUser>(_ctx));
+            _userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
             _emailSender = emailSender;
         }
 
@@ -39,6 +37,23 @@ namespace DribblyAuthAPI.Repositories
             var result = await _userManager.CreateAsync(user, userModel.Password);
 
             return result;
+        }
+
+        public async Task<bool> ResetPassword(ResetPasswordModel input)
+        {
+            var user = await _userManager.FindByEmailAsync(input.Email);
+            if (user == null)
+                return false;
+            input.Token = input.Token.Replace(" ", "+"); // +'s in the token are replaced with a space when token is sent using query strings.
+            IdentityResult resetPassResult = await _userManager.ResetPasswordAsync(user.Id, input.Token, input.Password);
+
+            if (!resetPassResult.Succeeded)
+            {
+                throw new Exception(resetPassResult.Errors.ElementAt(0));
+            }
+
+            return true;
+
         }
 
         public async Task<ApplicationUser> FindUser(string userName, string password)
@@ -138,7 +153,7 @@ namespace DribblyAuthAPI.Repositories
 
             string token = await _userManager.GeneratePasswordResetTokenAsync(user.Id);
             var message = new EmailMessage(new string[] { forgotPasswordModel.Email }, "Reset password",
-                string.Format("Please click <a href=\"{0}resetpassword?token={1}&email={2}\">here</a> to reset your password.",
+                string.Format("Please click <a href=\"{0}passwordreset?token={1}&email={2}\">here</a> to reset your password.",
                 webClientHostName, token, forgotPasswordModel.Email));
             await _emailSender.SendEmailAsync(message);
 

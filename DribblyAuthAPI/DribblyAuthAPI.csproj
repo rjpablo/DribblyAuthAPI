@@ -231,6 +231,7 @@
     <Compile Include="Models\Auth\ForgotPasswordModel.cs" />
     <Compile Include="Models\Auth\RefreshToken.cs" />
     <Compile Include="Models\Auth\ExternalLoginModels.cs" />
+    <Compile Include="Models\Auth\ResetPasswordModel.cs" />
     <Compile Include="Models\Auth\UserModel.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\Courts\CourtModel.cs" />

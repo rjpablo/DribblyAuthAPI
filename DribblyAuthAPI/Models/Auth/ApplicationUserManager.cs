@@ -32,6 +32,7 @@ namespace DribblyAuthAPI.Models.Auth
             // Configure validation logic for passwords
             manager.PasswordValidator = new PasswordValidator
             {
+                //These settings should be synchronized with the the front end validations
                 RequiredLength = 6,
                 RequireNonLetterOrDigit = true,
                 RequireDigit = true,
@@ -41,7 +42,7 @@ namespace DribblyAuthAPI.Models.Auth
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
-                manager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+                manager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("Dribbly API"));
             }
             return manager;
         }

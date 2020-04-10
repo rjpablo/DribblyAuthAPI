@@ -218,6 +218,13 @@ namespace DribblyAuthAPI.Controllers
             await _repo.SendPasswordResetLinkAsync(input);
         }
 
+        [HttpPost]
+        [Route("ResetPassword")]
+        public async Task ResetPassword(ResetPasswordModel input)
+        {
+            await _repo.ResetPassword(input);
+        }
+
         #region Helper Functions
         private string ValidateClientAndRedirectUri(HttpRequestMessage request, ref string redirectUriOutput)
         {
