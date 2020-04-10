@@ -31,7 +31,8 @@ namespace DribblyAuthAPI.Repositories
         {
             ApplicationUser user = new ApplicationUser
             {
-                UserName = userModel.UserName
+                UserName = userModel.UserName,
+                Email = userModel.Email
             };
 
             var result = await _userManager.CreateAsync(user, userModel.Password);

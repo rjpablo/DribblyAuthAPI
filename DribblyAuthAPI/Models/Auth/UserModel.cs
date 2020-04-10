@@ -5,6 +5,10 @@ namespace DribblyAuthAPI.Models
     public class UserModel
     {
         [Required]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+
+        [Required]
         public string UserName { get; set; }
 
         [Required]
