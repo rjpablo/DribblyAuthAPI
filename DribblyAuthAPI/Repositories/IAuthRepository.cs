@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 
 namespace DribblyAuthAPI.Repositories
 {
-    public interface IAuthRepository: IDisposable
+    public interface IAuthRepository : IDisposable
     {
-        Task<IdentityResult> RegisterUser(UserModel userModel);
+        Task<(IdentityResult result, ApplicationUser user)> RegisterUser(UserModel userModel);
 
         Task<ApplicationUser> FindUser(string userName, string password);
+
+        Task<ApplicationUser> FindUserByName(string userName);
 
         Task<ApplicationUser> FindAsync(UserLoginInfo loginInfo);
 

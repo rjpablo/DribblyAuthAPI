@@ -1,14 +1,18 @@
-﻿using DribblyAuthAPI.Models.Auth;
+﻿using DribblyAuthAPI.Models.Account;
+using DribblyAuthAPI.Models.Auth;
 using DribblyAuthAPI.Models.Courts;
 using DribblyAuthAPI.Models.Games;
 using DribblyAuthAPI.Models.Shared;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Data.Entity;
+using System.Threading.Tasks;
 
 namespace DribblyAuthAPI.Models
 {
-    public interface IAuthContext
+    public interface IAuthContext:IDisposable
     {
+        DbSet<AccountModel> Accounts { get; set; }
         DbSet<Client> Clients { get; set; }
         DbSet<RefreshToken> RefreshTokens { get; set; }
         DbSet<CourtModel> Courts { get; set; }
@@ -17,6 +21,7 @@ namespace DribblyAuthAPI.Models
         DbSet<PhotoModel> Photos { get; set; }
         DbSet<EventModel> Events { get; set; }
         DbSet<GameModel> Games { get; set; }
+        Task<int> SaveChangesAsync();
         int SaveChanges();
     }
 
@@ -32,6 +37,7 @@ namespace DribblyAuthAPI.Models
             this.Configuration.LazyLoadingEnabled = false;
         }
 
+        public DbSet<AccountModel> Accounts { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<CourtModel> Courts { get; set; }

@@ -1,9 +1,10 @@
-﻿using Dribbly.Email.Models;
-using Dribbly.Email.Services;
+﻿using Dribbly.Email.Services;
 using DribblyAuthAPI.API;
 using DribblyAuthAPI.Models;
+using DribblyAuthAPI.Models.Account;
 using DribblyAuthAPI.Models.Auth;
 using DribblyAuthAPI.Repositories;
+using DribblyAuthAPI.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -19,17 +20,29 @@ using System.Web.Http;
 
 namespace DribblyAuthAPI.Controllers
 {
+    //TODO: Move some logic to a service. Controllers should only pass the call to a service
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
         private IAuthRepository _repo = null;
         private IEmailService _emailSender = null;
+        private IAccountsService _accountService;
 
         public AccountController(IAuthRepository repo,
-            IEmailService emailSender)
+            IEmailService emailSender,
+            IAccountsService accountService)
         {
             _repo = repo;
             _emailSender = emailSender;
+            _accountService = accountService;
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("GetAccountByUsername/{userName}")]
+        public async Task<AccountModel> GetAccountByUsername(string userName)
+        {
+            return await _accountService.GetAccountByUsername(userName);
         }
 
         // POST api/Account/Register
@@ -42,9 +55,15 @@ namespace DribblyAuthAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            IdentityResult result = await _repo.RegisterUser(userModel);
+            (IdentityResult result, ApplicationUser user) result = await _repo.RegisterUser(userModel);
 
-            IHttpActionResult errorResult = GetErrorResult(result);
+            await _accountService.AddAsync(new AccountModel
+            {
+                IdentityUserId = result.user.Id,
+                DateAdded = DateTime.UtcNow
+            });
+
+            IHttpActionResult errorResult = GetErrorResult(result.result);
 
             if (errorResult != null)
             {

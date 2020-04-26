@@ -24,7 +24,6 @@
             SeedClients();
             //SeedGames();
             //AddCourts();
-            SeedSettings();
 
             _context.SaveChanges();
             base.Seed(_context);

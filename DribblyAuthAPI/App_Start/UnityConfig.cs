@@ -27,12 +27,14 @@ namespace DribblyAuthAPI
 
             CoreUnityConfig.RegisterComponents(container);
 
+            container.RegisterType<IAccountsService, AccountsService>();
             container.RegisterType<ICourtsService, CourtsService>();
             container.RegisterType<IGamesService, GamesService>();
             container.RegisterType<IAuthContext, AuthContext>();
             container.RegisterType<ISettingsService, SettingsService>();
             container.RegisterType<IFileService, FileService>();
             container.RegisterType<IAuthRepository, AuthRepository>();
+            container.RegisterType<IAccountRepository, AccountRepository>();
             container.RegisterType<IEmailConfiguration, EmailConfiguration>();
             container.RegisterType<IEmailService, EmailService>();
 

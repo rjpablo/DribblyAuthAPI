@@ -82,6 +82,7 @@
     <Reference Include="Microsoft.Owin.Security.OAuth, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Security.OAuth.2.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
@@ -114,6 +115,7 @@
     <Reference Include="System.Web.Http.Owin, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.7\lib\net45\System.Web.Http.Owin.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -158,6 +160,7 @@
     <Compile Include="Enums\ApplicationTypesEnum.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Enums\SexEnum.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Migrations\201907141720333_InitialCreate.cs" />
     <Compile Include="Migrations\201907141720333_InitialCreate.Designer.cs">
@@ -223,7 +226,24 @@
     <Compile Include="Migrations\202004032225050_aspNetUsers_drop_discriminatorColumn.Designer.cs">
       <DependentUpon>202004032225050_aspNetUsers_drop_discriminatorColumn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004121706035_Add_Accounts_Table.cs" />
+    <Compile Include="Migrations\202004121706035_Add_Accounts_Table.Designer.cs">
+      <DependentUpon>202004121706035_Add_Accounts_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004261031577_Modify_Accounts_Add_HeightInches_and_Sex_fields.cs" />
+    <Compile Include="Migrations\202004261031577_Modify_Accounts_Add_HeightInches_and_Sex_fields.Designer.cs">
+      <DependentUpon>202004261031577_Modify_Accounts_Add_HeightInches_and_Sex_fields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004261216071_Modify_Accounts_Add_ContactNo_and_BirthDate_fields.cs" />
+    <Compile Include="Migrations\202004261216071_Modify_Accounts_Add_ContactNo_and_BirthDate_fields.Designer.cs">
+      <DependentUpon>202004261216071_Modify_Accounts_Add_ContactNo_and_BirthDate_fields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004261422407_Modify_Accounts_Make_Sex_and_BirthDate_nullable.cs" />
+    <Compile Include="Migrations\202004261422407_Modify_Accounts_Make_Sex_and_BirthDate_nullable.Designer.cs">
+      <DependentUpon>202004261422407_Modify_Accounts_Make_Sex_and_BirthDate_nullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Account\AccountModel.cs" />
     <Compile Include="Models\AuthContext.cs" />
     <Compile Include="Models\Auth\ApplicationUser.cs" />
     <Compile Include="Models\Auth\ApplicationUserManager.cs" />
@@ -244,13 +264,17 @@
     <Compile Include="Providers\FacebookAuthProvider.cs" />
     <Compile Include="Providers\SimpleAuthorizationServerProvider.cs" />
     <Compile Include="Providers\SimpleRefreshTokenProvider.cs" />
+    <Compile Include="Repositories\AccountRepository.cs" />
+    <Compile Include="Repositories\IAccountRepository.cs" />
     <Compile Include="Repositories\IAuthRepository.cs" />
     <Compile Include="Repositories\AuthRepository.cs" />
     <Compile Include="Repositories\SettingsRepository.cs" />
     <Compile Include="Repositories\CourtsRepository.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
+    <Compile Include="Services\AccountsService.cs" />
     <Compile Include="Services\GamesService.cs" />
+    <Compile Include="Services\IAccountsService.cs" />
     <Compile Include="Services\IGamesService.cs" />
     <Compile Include="Services\IFileService.cs" />
     <Compile Include="Services\FileService.cs" />
@@ -324,6 +348,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004032225050_aspNetUsers_drop_discriminatorColumn.resx">
       <DependentUpon>202004032225050_aspNetUsers_drop_discriminatorColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004121706035_Add_Accounts_Table.resx">
+      <DependentUpon>202004121706035_Add_Accounts_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004261031577_Modify_Accounts_Add_HeightInches_and_Sex_fields.resx">
+      <DependentUpon>202004261031577_Modify_Accounts_Add_HeightInches_and_Sex_fields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004261216071_Modify_Accounts_Add_ContactNo_and_BirthDate_fields.resx">
+      <DependentUpon>202004261216071_Modify_Accounts_Add_ContactNo_and_BirthDate_fields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004261422407_Modify_Accounts_Make_Sex_and_BirthDate_nullable.resx">
+      <DependentUpon>202004261422407_Modify_Accounts_Make_Sex_and_BirthDate_nullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

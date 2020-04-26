@@ -14,20 +14,20 @@ using System.Web;
 
 namespace DribblyAuthAPI.Repositories
 {
-    public class AuthRepository : IAuthRepository, IDisposable
+    public class AuthRepository : IAuthRepository
     {
-        private AuthContext _ctx;
+        private IAuthContext _ctx;
         private ApplicationUserManager _userManager;
         private IEmailService _emailSender = null;
 
-        public AuthRepository(IEmailService emailSender)
+        public AuthRepository(IEmailService emailSender, IAuthContext context)
         {
-            _ctx = new AuthContext();
+            _ctx = context;
             _userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
             _emailSender = emailSender;
         }
 
-        public async Task<IdentityResult> RegisterUser(UserModel userModel)
+        public async Task<(IdentityResult result, ApplicationUser user)> RegisterUser(UserModel userModel)
         {
             ApplicationUser user = new ApplicationUser
             {
@@ -37,7 +37,7 @@ namespace DribblyAuthAPI.Repositories
 
             var result = await _userManager.CreateAsync(user, userModel.Password);
 
-            return result;
+            return (result, user);
         }
 
         public async Task<bool> ResetPassword(ResetPasswordModel input)
@@ -163,7 +163,7 @@ namespace DribblyAuthAPI.Repositories
 
         public void Dispose()
         {
-            _ctx.Dispose();
+            
         }
     }
 }

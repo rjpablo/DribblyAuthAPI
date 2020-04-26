@@ -27,7 +27,7 @@ namespace DribblyAuthAPI.Providers
 
             var refreshTokenId = Guid.NewGuid().ToString("n");
 
-            using (AuthRepository _repo = new AuthRepository(null))
+            using (AuthRepository _repo = new AuthRepository(null, new AuthContext()))
             {
                 var refreshTokenLifeTime = context.OwinContext.Get<string>("as:clientRefreshTokenLifeTime");
 
@@ -72,7 +72,7 @@ namespace DribblyAuthAPI.Providers
 
             string hashedTokenId = Helper.GetHash(context.Token);
 
-            using (AuthRepository _repo = new AuthRepository(null))
+            using (AuthRepository _repo = new AuthRepository(null, new AuthContext()))
             {
                 var refreshToken = await _repo.FindRefreshToken(hashedTokenId);
 
