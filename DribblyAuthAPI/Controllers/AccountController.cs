@@ -45,6 +45,14 @@ namespace DribblyAuthAPI.Controllers
             return await _accountService.GetAccountByUsername(userName);
         }
 
+        [HttpGet]
+        [Route("GetAccountSettings/{userId}")]
+        public async Task<AccountSettingsModel> GetAccountSettings(string userId)
+        {
+            return await _accountService.GetAccountSettingsAsync(userId);
+        }
+
+        #region Authentication
         // POST api/Account/Register
         [AllowAnonymous]
         [Route("Register")]
@@ -243,6 +251,7 @@ namespace DribblyAuthAPI.Controllers
         {
             await _repo.ResetPassword(input);
         }
+        #endregion
 
         #region Helper Functions
         private string ValidateClientAndRedirectUri(HttpRequestMessage request, ref string redirectUriOutput)

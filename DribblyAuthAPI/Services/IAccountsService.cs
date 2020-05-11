@@ -8,5 +8,7 @@ namespace DribblyAuthAPI.Services
         Task<AccountModel> GetAccountByUsername(string userName);
 
         Task AddAsync(AccountModel account);
+
+        Task<AccountSettingsModel> GetAccountSettingsAsync(string userId);
     }
 }

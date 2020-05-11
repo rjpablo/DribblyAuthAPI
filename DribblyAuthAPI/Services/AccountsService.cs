@@ -27,5 +27,11 @@ namespace DribblyAuthAPI.Services
             Add(account);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<AccountSettingsModel> GetAccountSettingsAsync(string userId)
+        {
+            return await Task.FromResult(new AccountSettingsModel());
+        }
+
     }
 }
