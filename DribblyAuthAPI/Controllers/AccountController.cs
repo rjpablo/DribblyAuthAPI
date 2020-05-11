@@ -251,6 +251,14 @@ namespace DribblyAuthAPI.Controllers
         {
             await _repo.ResetPassword(input);
         }
+
+        [HttpPost]
+        [Route("ChangePassword")]
+        public async Task<bool> ChangePassword(ChangePasswordModel model)
+        {
+            return await _repo.ChangePassword(model);
+        }
+
         #endregion
 
         #region Helper Functions

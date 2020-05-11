@@ -57,6 +57,21 @@ namespace DribblyAuthAPI.Repositories
 
         }
 
+        public async Task<bool> ChangePassword(ChangePasswordModel model)
+        {
+            ApplicationUser user = _userManager.FindById(model.Userid);
+
+            IdentityResult result = await _userManager.ChangePasswordAsync(model.Userid,
+                string.Concat(model.CurrentPassword, user.Salt), string.Concat(model.NewPassword, user.Salt));
+
+            if (!result.Succeeded)
+            {
+                throw new Exception(result.Errors.ElementAt(0));
+            }
+
+            return true;
+        }
+
         public async Task<ApplicationUser> FindUser(string userName, string password)
         {
             ApplicationUser user = await _userManager.FindAsync(userName, password);
@@ -163,7 +178,7 @@ namespace DribblyAuthAPI.Repositories
 
         public void Dispose()
         {
-            
+
         }
     }
 }

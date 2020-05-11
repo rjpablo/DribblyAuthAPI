@@ -36,5 +36,7 @@ namespace DribblyAuthAPI.Repositories
         Task SendPasswordResetLinkAsync(ForgotPasswordModel forgotPasswordModel);
 
         Task<bool> ResetPassword(ResetPasswordModel input);
+
+        Task<bool> ChangePassword(ChangePasswordModel model);
     }
 }
