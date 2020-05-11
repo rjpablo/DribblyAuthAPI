@@ -7,12 +7,12 @@ namespace DribblyAuthAPI.Models.Courts
     [Table("Settings")]
     public class SettingModel : BaseModel
     {
+        [Key]
+        public long Id { get; set; }
         public string Key { get; set; }
         public string Value { get; set; }
         public string DefaultValue { get; set; }
         public string Description { get; set; }
-        [NotMapped]
-        public new DateTime? DateAdded { get; set; }
 
         public SettingModel() { }
 

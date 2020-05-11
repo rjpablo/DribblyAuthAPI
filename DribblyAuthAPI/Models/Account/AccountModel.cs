@@ -10,7 +10,7 @@ namespace DribblyAuthAPI.Models.Account
     /// A clone of ApplicationUser class without the sensitive data.
     /// </summary>
     [Table("Accounts")]
-    public class AccountModel : BaseModel
+    public class AccountModel : BaseEntityModel
     {
         /// <summary>
         /// Serves as a foreign key to the AspNetUsers table.

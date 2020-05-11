@@ -9,7 +9,7 @@ using DribblyAuthAPI.Models.Games;
 
 namespace DribblyAuthAPI.Services
 {
-    public class GamesService : BaseService<GameModel>, IGamesService
+    public class GamesService : BaseEntityService<GameModel>, IGamesService
     {
         IAuthContext _context;
         HttpContextBase _httpContext;

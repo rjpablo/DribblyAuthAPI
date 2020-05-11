@@ -1,15 +1,13 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace DribblyAuthAPI.Models
+﻿namespace DribblyAuthAPI.Models
 {
+    /// <summary>
+    /// Models that are mapped to a database table should extend this model
+    /// to enable usage of common functions in BaseService.
+    /// Models that have Id, and DateAdded fields should extend BaseEntityModel
+    /// intead
+    /// </summary>
     public abstract class BaseModel
     {
-        public DateTime DateAdded { get; set; }
-        [Key]
-        public long Id { get; set; }
-        public BaseModel()
-        {            
-        }
+
     }
 }

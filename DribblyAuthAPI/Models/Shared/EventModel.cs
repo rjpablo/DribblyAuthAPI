@@ -9,7 +9,7 @@ namespace DribblyAuthAPI.Models.Shared
     /// All games (any sport) should extend this model
     /// </summary>
     [Table("Events")]
-    public abstract class EventModel: BaseModel
+    public abstract class EventModel: BaseEntityModel
     {
         [Required]
         public DateTime Start { get; set; }

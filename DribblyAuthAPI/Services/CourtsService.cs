@@ -12,7 +12,7 @@ using DribblyAuthAPI.Models.Games;
 
 namespace DribblyAuthAPI.Services
 {
-    public class CourtsService : BaseService<CourtModel>, ICourtsService
+    public class CourtsService : BaseEntityService<CourtModel>, ICourtsService
     {
         IAuthContext _context;
         HttpContextBase _httpContext;

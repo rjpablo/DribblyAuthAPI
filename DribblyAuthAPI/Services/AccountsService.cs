@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DribblyAuthAPI.Services
 {
-    public class AccountsService : BaseService<AccountModel>, IAccountsService
+    public class AccountsService : BaseEntityService<AccountModel>, IAccountsService
     {
         IAccountRepository _accountRepo;
         IAuthContext _context;

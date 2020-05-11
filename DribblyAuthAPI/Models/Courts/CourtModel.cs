@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DribblyAuthAPI.Models.Courts
 {
     [Table("Courts")]
-    public class CourtModel : BaseModel
+    public class CourtModel : BaseEntityModel
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key]
         public new long Id { get; set; }

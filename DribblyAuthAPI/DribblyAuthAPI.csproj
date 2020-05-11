@@ -244,6 +244,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account\AccountModel.cs" />
+    <Compile Include="Models\Account\AccountSettingsModel.cs" />
     <Compile Include="Models\AuthContext.cs" />
     <Compile Include="Models\Auth\ApplicationUser.cs" />
     <Compile Include="Models\Auth\ApplicationUserManager.cs" />
@@ -254,6 +255,7 @@
     <Compile Include="Models\Auth\ResetPasswordModel.cs" />
     <Compile Include="Models\Auth\UserModel.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\BaseEntityModel.cs" />
     <Compile Include="Models\Courts\CourtModel.cs" />
     <Compile Include="Models\Games\GameModel.cs" />
     <Compile Include="Models\Settings\SettingModel.cs" />
@@ -273,6 +275,7 @@
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Services\AccountsService.cs" />
+    <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\GamesService.cs" />
     <Compile Include="Services\IAccountsService.cs" />
     <Compile Include="Services\IGamesService.cs" />
@@ -282,7 +285,7 @@
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\ICourtsService.cs" />
     <Compile Include="Services\CourtsService.cs" />
-    <Compile Include="Services\BaseService.cs" />
+    <Compile Include="Services\BaseEntityService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
