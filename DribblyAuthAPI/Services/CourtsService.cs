@@ -9,6 +9,7 @@ using Dribbly.Core.Utilities;
 using DribblyAuthAPI.Models;
 using DribblyAuthAPI.Models.Courts;
 using DribblyAuthAPI.Models.Games;
+using DribblyAuthAPI.Repositories;
 
 namespace DribblyAuthAPI.Services
 {
@@ -18,16 +19,19 @@ namespace DribblyAuthAPI.Services
         HttpContextBase _httpContext;
         ISecurityUtility _securityUtility;
         IFileService _fileService;
+        ICourtsRepository _courtsRepo;
 
         public CourtsService(IAuthContext context,
             HttpContextBase httpContext,
             ISecurityUtility securityUtility,
-            IFileService fileService) : base(context.Courts)
+            IFileService fileService,
+            ICourtsRepository courtsRepo) : base(context.Courts)
         {
             _context = context;
             _httpContext = httpContext;
             _securityUtility = securityUtility;
             _fileService = fileService;
+            _courtsRepo = courtsRepo;
         }
 
         public IEnumerable<CourtModel> GetAll()
@@ -38,6 +42,11 @@ namespace DribblyAuthAPI.Services
         public CourtModel GetCourt(long id)
         {
             return GetById(id);
+        }
+
+        public async Task<IEnumerable<CourtModel>> FindCourtsAsync(CourtSearchInputModel input)
+        {
+            return await _courtsRepo.FindCourtsAsync(input);
         }
 
         public long Register(CourtModel court)

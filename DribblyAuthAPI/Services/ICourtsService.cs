@@ -24,5 +24,7 @@ namespace DribblyAuthAPI.Services
         void UpdateCourtPhoto(long courtId);
 
         Task DeletePhotoAsync(long courtId, long photoId);
+
+        Task<IEnumerable<CourtModel>> FindCourtsAsync(CourtSearchInputModel input);
     }
 }

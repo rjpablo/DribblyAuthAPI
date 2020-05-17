@@ -4,7 +4,7 @@ namespace DribblyAuthAPI.Repositories
 {
     public class BaseRepository<T> where T:class
     {
-        DbSet<T> _dbSet;
+        public DbSet<T> _dbSet;
         protected BaseRepository(DbSet<T> dbSet)
         {
             _dbSet = dbSet;

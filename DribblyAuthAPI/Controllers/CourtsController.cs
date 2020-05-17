@@ -49,6 +49,14 @@ namespace DribblyAuthAPI.Controllers
             return _service.GetCourtGames(courtId);
         }
 
+        [HttpPost]
+        [Route("FindCourts")]
+        public async Task<IEnumerable<CourtModel>> FindCourts
+            ([FromBody]CourtSearchInputModel input)
+        {
+            return await _service.FindCourtsAsync(input);
+        }
+
         // POSTs
         [HttpPost, Authorize]
         [Route("UpdateCourtPhoto/{courtId}")]

@@ -1,22 +1,24 @@
 ﻿using DribblyAuthAPI.Models;
 using DribblyAuthAPI.Models.Courts;
 using System.Collections.Generic;
+using System.Linq;
 using System.Data.Entity;
+using System.Threading.Tasks;
 
 namespace DribblyAuthAPI.Repositories
 {
-    public class CourtsRepository: BaseRepository<CourtModel>
+    public class CourtsRepository : BaseRepository<CourtModel>, ICourtsRepository
     {
-        AuthContext _context;
-
-        public CourtsRepository(IAuthContext context) :base(context.Courts)
-        {
-            _context = new AuthContext();
-        }
+        public CourtsRepository(IAuthContext context) : base(context.Courts) { }
 
         public IEnumerable<CourtModel> GetAll()
         {
-            return _context.Courts;
+            return _dbSet;
+        }
+
+        public async Task<IEnumerable<CourtModel>> FindCourtsAsync(CourtSearchInputModel input)
+        {
+            return await _dbSet.Where(c => c.Name.Contains(input.Name)).ToListAsync();
         }
 
     }

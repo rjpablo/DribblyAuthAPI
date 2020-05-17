@@ -34,6 +34,7 @@ namespace DribblyAuthAPI
             container.RegisterType<ISettingsService, SettingsService>();
             container.RegisterType<IFileService, FileService>();
             container.RegisterType<IAuthRepository, AuthRepository>();
+            container.RegisterType<ICourtsRepository, CourtsRepository>();
             container.RegisterType<IAccountRepository, AccountRepository>();
             container.RegisterType<IEmailConfiguration, EmailConfiguration>();
             container.RegisterType<IEmailService, EmailService>();
