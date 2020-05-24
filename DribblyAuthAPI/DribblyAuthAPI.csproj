@@ -242,6 +242,10 @@
     <Compile Include="Migrations\202004261422407_Modify_Accounts_Make_Sex_and_BirthDate_nullable.Designer.cs">
       <DependentUpon>202004261422407_Modify_Accounts_Make_Sex_and_BirthDate_nullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005242138489_Modify_CourtModel_MakeRatePerHourNonNullable.cs" />
+    <Compile Include="Migrations\202005242138489_Modify_CourtModel_MakeRatePerHourNonNullable.Designer.cs">
+      <DependentUpon>202005242138489_Modify_CourtModel_MakeRatePerHourNonNullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account\AccountModel.cs" />
     <Compile Include="Models\Account\AccountSettingsModel.cs" />
@@ -366,6 +370,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004261422407_Modify_Accounts_Make_Sex_and_BirthDate_nullable.resx">
       <DependentUpon>202004261422407_Modify_Accounts_Make_Sex_and_BirthDate_nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005242138489_Modify_CourtModel_MakeRatePerHourNonNullable.resx">
+      <DependentUpon>202005242138489_Modify_CourtModel_MakeRatePerHourNonNullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
