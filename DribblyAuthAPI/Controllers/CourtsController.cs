@@ -23,16 +23,16 @@ namespace DribblyAuthAPI.Controllers
         //GETs
         [HttpGet]
         [Route("GetAllCourts")]
-        public IEnumerable<CourtModel> GetAllCourts()
+        public async Task<IEnumerable<CourtModel>> GetAllAsync()
         {
-            return _service.GetAll();
+            return await _service.GetAllAsync();
         }
 
         [HttpGet]
         [Route("GetCourt/{id}")]
-        public CourtModel GetCourt(long id)
+        public async Task<CourtModel> GetCourtAsync(long id)
         {
-            return _service.GetCourt(id);
+            return await _service.GetCourtAsync(id);
         }
 
         [HttpGet]

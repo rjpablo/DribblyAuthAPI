@@ -252,6 +252,7 @@
       <DependentUpon>202006080709300_Add_ClientLogsTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Account\AccountBasicInfoModel.cs" />
     <Compile Include="Models\Account\AccountModel.cs" />
     <Compile Include="Models\Account\AccountSettingsModel.cs" />
     <Compile Include="Models\AuthContext.cs" />

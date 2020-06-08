@@ -59,5 +59,10 @@ namespace DribblyAuthAPI.Models.Account
                 Email = user.Email;
             }
         }
+
+        public AccountBasicInfoModel ToBasicInfo()
+        {
+            return new AccountBasicInfoModel(this);
+        }
     }
 }

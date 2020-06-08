@@ -7,9 +7,9 @@ namespace DribblyAuthAPI.Services
 {
     public interface ICourtsService
     {
-        IEnumerable<CourtModel> GetAll();
+        Task<IEnumerable<CourtModel>> GetAllAsync();
 
-        CourtModel GetCourt(long id);
+        Task<CourtModel> GetCourtAsync(long id);
 
         IEnumerable<GameModel> GetCourtGames(long courtId);
 

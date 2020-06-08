@@ -79,6 +79,11 @@ namespace DribblyAuthAPI.Repositories
             return user;
         }
 
+        public async Task<ApplicationUser> FindUserByIdAsync(string userId)
+        {
+            return await _userManager.FindByIdAsync(userId);
+        }
+
         public async Task<ApplicationUser> FindUserByName(string userName)
         {
             ApplicationUser user = await _userManager.FindByNameAsync(userName);

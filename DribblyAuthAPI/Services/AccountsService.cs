@@ -9,12 +9,15 @@ namespace DribblyAuthAPI.Services
     {
         IAccountRepository _accountRepo;
         IAuthContext _context;
+        IAuthRepository _authRepo;
 
         public AccountsService(IAuthContext context,
-            IAccountRepository accountRepo) : base(context.Accounts)
+            IAccountRepository accountRepo,
+            IAuthRepository authRepo) : base(context.Accounts)
         {
             _accountRepo = accountRepo;
             _context = context;
+            _authRepo = authRepo;
         }
 
         public Task<AccountModel> GetAccountByUsername(string userName)

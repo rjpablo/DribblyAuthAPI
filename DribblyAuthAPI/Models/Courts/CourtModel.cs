@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DribblyAuthAPI.Models.Account;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -31,6 +32,9 @@ namespace DribblyAuthAPI.Models.Courts
         public string AdditionalInfo { get; set; }
 
         public virtual ICollection<CourtPhotoModel> Photos { get; set; }
+
+        [NotMapped]
+        public virtual AccountBasicInfoModel Owner { get; set; }
 
     }
 }

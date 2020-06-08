@@ -20,28 +20,45 @@ namespace DribblyAuthAPI.Services
         ISecurityUtility _securityUtility;
         IFileService _fileService;
         ICourtsRepository _courtsRepo;
+        IAccountRepository _accountRepo;
 
         public CourtsService(IAuthContext context,
             HttpContextBase httpContext,
             ISecurityUtility securityUtility,
             IFileService fileService,
-            ICourtsRepository courtsRepo) : base(context.Courts)
+            ICourtsRepository courtsRepo,
+            IAccountRepository accountRepo) : base(context.Courts)
         {
             _context = context;
             _httpContext = httpContext;
             _securityUtility = securityUtility;
             _fileService = fileService;
             _courtsRepo = courtsRepo;
+            _accountRepo = accountRepo;
         }
 
-        public IEnumerable<CourtModel> GetAll()
+        public async Task<IEnumerable<CourtModel>> GetAllAsync()
         {
-            return All();
+            var allCourts = All();
+
+            foreach (var court in allCourts)
+            {
+                await PopulateOwner(court);
+            }
+
+            return allCourts;
         }
 
-        public CourtModel GetCourt(long id)
+        public async Task<CourtModel> GetCourtAsync(long id)
         {
-            return GetById(id);
+            CourtModel court = GetById(id);
+            await PopulateOwner(court);
+            return court;
+        }
+
+        private async Task PopulateOwner(CourtModel court)
+        {
+            court.Owner = await _accountRepo.GetAccountBasicInfo(court.OwnerId);
         }
 
         public async Task<IEnumerable<CourtModel>> FindCourtsAsync(CourtSearchInputModel input)

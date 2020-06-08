@@ -40,6 +40,23 @@ namespace DribblyAuthAPI.Repositories
             return account;
         }
 
+        public async Task<AccountModel> GetAccountById(string userId)
+        {
+            return await _context.Accounts.SingleOrDefaultAsync(a => a.IdentityUserId == userId);
+        }
+
+        public async Task<AccountBasicInfoModel> GetAccountBasicInfo(string userId)
+        {            
+            AccountModel account = await _dbSet.Include(a => a.ProfilePhoto).SingleOrDefaultAsync(a => a.IdentityUserId == userId);
+            if (account == null) return null;
+
+            ApplicationUser user = await _authRepo.FindUserByIdAsync(userId);
+            if (user == null) return null;
+            
+            account.Merge(user);
+            return account.ToBasicInfo();
+        }
+
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
