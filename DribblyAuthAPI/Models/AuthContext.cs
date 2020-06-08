@@ -2,6 +2,7 @@
 using DribblyAuthAPI.Models.Auth;
 using DribblyAuthAPI.Models.Courts;
 using DribblyAuthAPI.Models.Games;
+using DribblyAuthAPI.Models.Logs;
 using DribblyAuthAPI.Models.Shared;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -21,6 +22,7 @@ namespace DribblyAuthAPI.Models
         DbSet<PhotoModel> Photos { get; set; }
         DbSet<EventModel> Events { get; set; }
         DbSet<GameModel> Games { get; set; }
+        DbSet<ClientLogModel> ErrorLogs { get; set; }
         Task<int> SaveChangesAsync();
         int SaveChanges();
     }
@@ -46,6 +48,7 @@ namespace DribblyAuthAPI.Models
         public DbSet<CourtPhotoModel> CourtPhotos { get; set; }
         public DbSet<EventModel> Events { get; set; }
         public DbSet<GameModel> Games { get; set; }
+        public DbSet<ClientLogModel> ErrorLogs { get; set; }
 
         public static AuthContext Create()
         {

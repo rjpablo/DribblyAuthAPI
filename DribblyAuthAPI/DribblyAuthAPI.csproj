@@ -153,6 +153,7 @@
   <ItemGroup>
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\LogsController.cs" />
     <Compile Include="Controllers\GamesController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\CourtsController.cs" />
@@ -246,6 +247,10 @@
     <Compile Include="Migrations\202005242138489_Modify_CourtModel_MakeRatePerHourNonNullable.Designer.cs">
       <DependentUpon>202005242138489_Modify_CourtModel_MakeRatePerHourNonNullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202006080709300_Add_ClientLogsTable.cs" />
+    <Compile Include="Migrations\202006080709300_Add_ClientLogsTable.Designer.cs">
+      <DependentUpon>202006080709300_Add_ClientLogsTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account\AccountModel.cs" />
     <Compile Include="Models\Account\AccountSettingsModel.cs" />
@@ -264,6 +269,7 @@
     <Compile Include="Models\Courts\CourtModel.cs" />
     <Compile Include="Models\Courts\CourtSearchInputModel.cs" />
     <Compile Include="Models\Games\GameModel.cs" />
+    <Compile Include="Models\Logs\ErrorLogModel.cs" />
     <Compile Include="Models\Settings\SettingModel.cs" />
     <Compile Include="Models\Shared\CourtPhotoModel.cs" />
     <Compile Include="Models\Shared\EventModel.cs" />
@@ -283,6 +289,8 @@
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Services\AccountsService.cs" />
     <Compile Include="Services\BaseService.cs" />
+    <Compile Include="Services\ILogsService.cs" />
+    <Compile Include="Services\LogsService.cs" />
     <Compile Include="Services\GamesService.cs" />
     <Compile Include="Services\IAccountsService.cs" />
     <Compile Include="Services\IGamesService.cs" />
@@ -373,6 +381,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005242138489_Modify_CourtModel_MakeRatePerHourNonNullable.resx">
       <DependentUpon>202005242138489_Modify_CourtModel_MakeRatePerHourNonNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006080709300_Add_ClientLogsTable.resx">
+      <DependentUpon>202006080709300_Add_ClientLogsTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
