@@ -1,10 +1,10 @@
 ﻿using Dribbly.Email.Services;
 using DribblyAuthAPI.API;
-using DribblyAuthAPI.Models;
-using DribblyAuthAPI.Models.Account;
-using DribblyAuthAPI.Models.Auth;
-using DribblyAuthAPI.Repositories;
-using DribblyAuthAPI.Services;
+using Dribbly.Service.Models;
+using Dribbly.Service.Models.Account;
+using Dribbly.Service.Models.Auth;
+using Dribbly.Service.Repositories;
+using Dribbly.Service.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;

@@ -52,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\Hash.cs" />
     <Compile Include="Helpers\Salt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CoreUnityConfig.cs" />

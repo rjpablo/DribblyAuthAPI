@@ -1,9 +1,10 @@
 ﻿namespace DribblyAuthAPI.Migrations
 {
-    using DribblyAuthAPI.Enums;
-    using DribblyAuthAPI.Models;
-    using DribblyAuthAPI.Models.Courts;
-    using DribblyAuthAPI.Models.Games;
+    using Dribbly.Core.Helpers;
+    using Dribbly.Service.Enums;
+    using Dribbly.Service.Models;
+    using Dribbly.Service.Models.Courts;
+    using Dribbly.Service.Models.Games;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
@@ -121,7 +122,7 @@
             _context.Clients.AddOrUpdate(new Client
             {
                 Id = "dribbly-web",
-                Secret = Helper.GetHash("abc@123"),
+                Secret = Hash.GetHash("abc@123"),
                 Name = "Dribbly Web Client",
                 ApplicationType = ApplicationTypesEnum.JavaScript,
                 Active = true,

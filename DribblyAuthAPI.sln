@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dribbly.Core", "Dribbly.Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dribbly.Email", "Dribbly.Email\Dribbly.Email.csproj", "{29F4A3CF-4259-46A5-B53B-D4E43EAB6F76}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dribbly.Service", "Dribbly.Service\Dribbly.Service.csproj", "{F170175A-6462-4CC7-BC99-E032A86165BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{29F4A3CF-4259-46A5-B53B-D4E43EAB6F76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29F4A3CF-4259-46A5-B53B-D4E43EAB6F76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29F4A3CF-4259-46A5-B53B-D4E43EAB6F76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F170175A-6462-4CC7-BC99-E032A86165BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F170175A-6462-4CC7-BC99-E032A86165BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F170175A-6462-4CC7-BC99-E032A86165BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F170175A-6462-4CC7-BC99-E032A86165BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

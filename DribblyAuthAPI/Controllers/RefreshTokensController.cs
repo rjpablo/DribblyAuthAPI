@@ -1,4 +1,4 @@
-﻿using DribblyAuthAPI.Repositories;
+﻿using Dribbly.Service.Repositories;
 using System.Threading.Tasks;
 using System.Web.Http;
 

@@ -1,8 +1,8 @@
-﻿using DribblyAuthAPI.Models;
-using DribblyAuthAPI.Models.Courts;
-using DribblyAuthAPI.Models.Games;
-using DribblyAuthAPI.Repositories;
-using DribblyAuthAPI.Services;
+﻿using Dribbly.Service.Models;
+using Dribbly.Service.Models.Courts;
+using Dribbly.Service.Models.Games;
+using Dribbly.Service.Repositories;
+using Dribbly.Service.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

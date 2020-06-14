@@ -1,8 +1,8 @@
 using Dribbly.Core;
 using Dribbly.Email.Models;
-using DribblyAuthAPI.Models;
-using DribblyAuthAPI.Repositories;
-using DribblyAuthAPI.Services;
+using Dribbly.Service.Models;
+using Dribbly.Service.Repositories;
+using Dribbly.Service.Services;
 using System.Web;
 using System.Web.Http;
 using System.Configuration;

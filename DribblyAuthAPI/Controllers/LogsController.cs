@@ -1,5 +1,5 @@
-﻿using DribblyAuthAPI.Models.Logs;
-using DribblyAuthAPI.Services;
+﻿using Dribbly.Service.Models.Logs;
+using Dribbly.Service.Services;
 using System.Threading.Tasks;
 using System.Web.Http;
 

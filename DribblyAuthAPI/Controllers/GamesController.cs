@@ -1,5 +1,5 @@
-﻿using DribblyAuthAPI.Models.Games;
-using DribblyAuthAPI.Services;
+﻿using Dribbly.Service.Models.Games;
+using Dribbly.Service.Services;
 using System.Collections.Generic;
 using System.Web.Http;
 
