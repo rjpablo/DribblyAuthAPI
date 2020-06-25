@@ -1,9 +1,6 @@
-﻿using Dribbly.Service.Models;
-using Dribbly.Service.Models.Courts;
-using Dribbly.Service.Models.Games;
-using Dribbly.Service.Repositories;
+﻿using Dribbly.Model.Courts;
+using Dribbly.Model.Games;
 using Dribbly.Service.Services;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;

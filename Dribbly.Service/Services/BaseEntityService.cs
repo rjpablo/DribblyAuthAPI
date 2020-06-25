@@ -1,4 +1,4 @@
-﻿using Dribbly.Service.Models;
+﻿using Dribbly.Model;
 using System;
 using System.Data.Entity;
 using System.Linq;

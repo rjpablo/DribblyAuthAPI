@@ -1,4 +1,4 @@
-﻿using Dribbly.Service.Models.Logs;
+﻿using Dribbly.Model.Logs;
 using Dribbly.Service.Services;
 using System.Threading.Tasks;
 using System.Web.Http;

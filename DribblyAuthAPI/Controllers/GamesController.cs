@@ -1,4 +1,4 @@
-﻿using Dribbly.Service.Models.Games;
+﻿using Dribbly.Model.Games;
 using Dribbly.Service.Services;
 using System.Collections.Generic;
 using System.Web.Http;

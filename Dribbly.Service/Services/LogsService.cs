@@ -1,6 +1,6 @@
 ﻿using Dribbly.Core.Utilities;
-using Dribbly.Service.Models;
-using Dribbly.Service.Models.Logs;
+using Dribbly.Model;
+using Dribbly.Model.Logs;
 using System.Threading.Tasks;
 
 namespace Dribbly.Service.Services

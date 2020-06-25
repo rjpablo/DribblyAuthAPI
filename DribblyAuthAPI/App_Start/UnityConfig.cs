@@ -1,16 +1,12 @@
 using Dribbly.Core;
 using Dribbly.Email.Models;
-using Dribbly.Service.Models;
+using Dribbly.Email.Services;
+using Dribbly.Model;
 using Dribbly.Service.Repositories;
 using Dribbly.Service.Services;
-using System.Web;
 using System.Web.Http;
-using System.Configuration;
 using Unity;
-using Unity.Injection;
 using Unity.WebApi;
-using System;
-using Dribbly.Email.Services;
 
 namespace DribblyAuthAPI
 {

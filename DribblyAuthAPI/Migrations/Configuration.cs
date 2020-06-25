@@ -1,10 +1,11 @@
 ﻿namespace DribblyAuthAPI.Migrations
 {
+    using Dribbly.Authentication.Enums;
+    using Dribbly.Authentication.Models;
     using Dribbly.Core.Helpers;
-    using Dribbly.Service.Enums;
-    using Dribbly.Service.Models;
-    using Dribbly.Service.Models.Courts;
-    using Dribbly.Service.Models.Games;
+    using Dribbly.Model;
+    using Dribbly.Model.Courts;
+    using Dribbly.Model.Games;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;

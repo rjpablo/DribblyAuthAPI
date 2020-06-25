@@ -1,8 +1,5 @@
 ﻿using Dribbly.Email.Services;
 using DribblyAuthAPI.API;
-using Dribbly.Service.Models;
-using Dribbly.Service.Models.Account;
-using Dribbly.Service.Models.Auth;
 using Dribbly.Service.Repositories;
 using Dribbly.Service.Services;
 using Microsoft.AspNet.Identity;
@@ -17,6 +14,9 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Dribbly.Model.Account;
+using Dribbly.Authentication.Models;
+using Dribbly.Authentication.Models.Auth;
 
 namespace DribblyAuthAPI.Controllers
 {

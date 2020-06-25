@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Dribbly.Model;
+using Dribbly.Model.Courts;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Dribbly.Service.Models;
-using Dribbly.Service.Models.Courts;
 
 namespace Dribbly.Service.Services
 {

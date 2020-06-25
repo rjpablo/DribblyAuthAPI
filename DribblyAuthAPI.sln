@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dribbly.Email", "Dribbly.Em
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dribbly.Service", "Dribbly.Service\Dribbly.Service.csproj", "{F170175A-6462-4CC7-BC99-E032A86165BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dribbly.Model", "Dribbly.Model\Dribbly.Model.csproj", "{5FE646E5-BAB0-4635-9161-671F0D73CBCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dribbly.Authentication", "Dribbly.Authentication\Dribbly.Authentication.csproj", "{2B76E33B-6725-4567-9F2B-23B09396F799}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{F170175A-6462-4CC7-BC99-E032A86165BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F170175A-6462-4CC7-BC99-E032A86165BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F170175A-6462-4CC7-BC99-E032A86165BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FE646E5-BAB0-4635-9161-671F0D73CBCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FE646E5-BAB0-4635-9161-671F0D73CBCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FE646E5-BAB0-4635-9161-671F0D73CBCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FE646E5-BAB0-4635-9161-671F0D73CBCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B76E33B-6725-4567-9F2B-23B09396F799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B76E33B-6725-4567-9F2B-23B09396F799}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B76E33B-6725-4567-9F2B-23B09396F799}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B76E33B-6725-4567-9F2B-23B09396F799}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

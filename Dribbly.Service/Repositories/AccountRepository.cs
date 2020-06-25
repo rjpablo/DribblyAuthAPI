@@ -1,8 +1,7 @@
-﻿using Dribbly.Service.Models;
-using Dribbly.Service.Models.Account;
-using Dribbly.Service.Models.Auth;
+﻿using Dribbly.Authentication.Models.Auth;
+using Dribbly.Model;
+using Dribbly.Model.Account;
 using System.Data.Entity;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Dribbly.Service.Repositories

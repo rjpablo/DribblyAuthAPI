@@ -1,4 +1,4 @@
-﻿using Dribbly.Service.Models.Courts;
+﻿using Dribbly.Model.Courts;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

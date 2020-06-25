@@ -1,4 +1,4 @@
-﻿using Dribbly.Service.Models.Account;
+﻿using Dribbly.Model.Account;
 using System.Threading.Tasks;
 
 namespace Dribbly.Service.Services

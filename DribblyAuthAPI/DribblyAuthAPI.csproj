@@ -340,6 +340,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dribbly.Authentication\Dribbly.Authentication.csproj">
+      <Project>{2B76E33B-6725-4567-9F2B-23B09396F799}</Project>
+      <Name>Dribbly.Authentication</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dribbly.Core\Dribbly.Core.csproj">
       <Project>{8a887a9e-e256-4a63-abe3-f8657b04e011}</Project>
       <Name>Dribbly.Core</Name>
@@ -347,6 +351,10 @@
     <ProjectReference Include="..\Dribbly.Email\Dribbly.Email.csproj">
       <Project>{29f4a3cf-4259-46a5-b53b-d4e43eab6f76}</Project>
       <Name>Dribbly.Email</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dribbly.Model\Dribbly.Model.csproj">
+      <Project>{5FE646E5-BAB0-4635-9161-671F0D73CBCC}</Project>
+      <Name>Dribbly.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dribbly.Service\Dribbly.Service.csproj">
       <Project>{f170175a-6462-4cc7-bc99-e032a86165ba}</Project>

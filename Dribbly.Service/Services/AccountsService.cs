@@ -1,5 +1,5 @@
-﻿using Dribbly.Service.Models;
-using Dribbly.Service.Models.Account;
+﻿using Dribbly.Model;
+using Dribbly.Model.Account;
 using Dribbly.Service.Repositories;
 using System.Threading.Tasks;
 

@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Dribbly.Core.Utilities;
+using Dribbly.Model;
+using Dribbly.Model.Courts;
+using Dribbly.Model.Games;
+using Dribbly.Service.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using Dribbly.Core.Utilities;
-using Dribbly.Service.Models;
-using Dribbly.Service.Models.Courts;
-using Dribbly.Service.Models.Games;
-using Dribbly.Service.Repositories;
 
 namespace Dribbly.Service.Services
 {

@@ -90,31 +90,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\ApplicationTypesEnum.cs" />
-    <Compile Include="Enums\SexEnum.cs" />
-    <Compile Include="Models\Account\AccountBasicInfoModel.cs" />
-    <Compile Include="Models\Account\AccountModel.cs" />
-    <Compile Include="Models\Account\AccountSettingsModel.cs" />
-    <Compile Include="Models\AuthContext.cs" />
-    <Compile Include="Models\Auth\ApplicationUser.cs" />
-    <Compile Include="Models\Auth\ApplicationUserManager.cs" />
-    <Compile Include="Models\Auth\ChangePasswordModel.cs" />
-    <Compile Include="Models\Auth\Client.cs" />
-    <Compile Include="Models\Auth\ExternalLoginModels.cs" />
-    <Compile Include="Models\Auth\ForgotPasswordModel.cs" />
-    <Compile Include="Models\Auth\RefreshToken.cs" />
-    <Compile Include="Models\Auth\ResetPasswordModel.cs" />
-    <Compile Include="Models\Auth\UserModel.cs" />
-    <Compile Include="Models\BaseEntityModel.cs" />
-    <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\Courts\CourtModel.cs" />
-    <Compile Include="Models\Courts\CourtSearchInputModel.cs" />
-    <Compile Include="Models\Games\GameModel.cs" />
-    <Compile Include="Models\Logs\ErrorLogModel.cs" />
-    <Compile Include="Models\Settings\SettingModel.cs" />
-    <Compile Include="Models\Shared\CourtPhotoModel.cs" />
-    <Compile Include="Models\Shared\EventModel.cs" />
-    <Compile Include="Models\Shared\PhotoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\FacebookAuthProvider.cs" />
     <Compile Include="Providers\SimpleAuthorizationServerProvider.cs" />
@@ -128,6 +103,7 @@
     <Compile Include="Repositories\ICourtsRepository.cs" />
     <Compile Include="Repositories\SettingsRepository.cs" />
     <Compile Include="Services\AccountsService.cs" />
+    <Compile Include="Services\ApplicationUserManager.cs" />
     <Compile Include="Services\BaseEntityService.cs" />
     <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\CourtsService.cs" />
@@ -143,6 +119,10 @@
     <Compile Include="Services\SettingsService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dribbly.Authentication\Dribbly.Authentication.csproj">
+      <Project>{2B76E33B-6725-4567-9F2B-23B09396F799}</Project>
+      <Name>Dribbly.Authentication</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dribbly.Core\Dribbly.Core.csproj">
       <Project>{8a887a9e-e256-4a63-abe3-f8657b04e011}</Project>
       <Name>Dribbly.Core</Name>
@@ -150,6 +130,10 @@
     <ProjectReference Include="..\Dribbly.Email\Dribbly.Email.csproj">
       <Project>{29f4a3cf-4259-46a5-b53b-d4e43eab6f76}</Project>
       <Name>Dribbly.Email</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dribbly.Model\Dribbly.Model.csproj">
+      <Project>{5FE646E5-BAB0-4635-9161-671F0D73CBCC}</Project>
+      <Name>Dribbly.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

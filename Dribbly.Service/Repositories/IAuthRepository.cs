@@ -1,5 +1,5 @@
-﻿using Dribbly.Service.Models;
-using Dribbly.Service.Models.Auth;
+﻿using Dribbly.Authentication.Models;
+using Dribbly.Authentication.Models.Auth;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,5 @@
-﻿using Dribbly.Service.Models.Courts;
-using Dribbly.Service.Models.Games;
+﻿using Dribbly.Model.Courts;
+using Dribbly.Model.Games;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

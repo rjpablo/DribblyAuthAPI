@@ -1,8 +1,9 @@
-﻿using Dribbly.Core.Helpers;
-using Dribbly.Service.Models;
-using Dribbly.Service.Models.Auth;
+﻿using Dribbly.Authentication.Enums;
+using Dribbly.Authentication.Models;
+using Dribbly.Authentication.Models.Auth;
+using Dribbly.Core.Helpers;
+using Dribbly.Model;
 using Dribbly.Service.Repositories;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ namespace Dribbly.Service.Providers
                 return Task.FromResult<object>(null); 
             }
 
-            if (client.ApplicationType == Enums.ApplicationTypesEnum.NativeConfidential)
+            if (client.ApplicationType == ApplicationTypesEnum.NativeConfidential)
             {
                 if (string.IsNullOrWhiteSpace(clientSecret))
                 {

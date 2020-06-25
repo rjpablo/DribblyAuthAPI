@@ -1,7 +1,6 @@
-﻿using Dribbly.Service.Models;
-using Dribbly.Service.Models.Courts;
+﻿using Dribbly.Model;
+using Dribbly.Model.Courts;
 using System.Collections.Generic;
-using System.Data.Entity;
 
 namespace Dribbly.Service.Repositories
 {

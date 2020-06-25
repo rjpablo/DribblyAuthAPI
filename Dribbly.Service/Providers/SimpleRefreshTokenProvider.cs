@@ -1,12 +1,10 @@
-﻿using Dribbly.Core.Helpers;
-using Dribbly.Service.Models;
+﻿using Dribbly.Authentication.Models;
+using Dribbly.Core.Helpers;
+using Dribbly.Model;
 using Dribbly.Service.Repositories;
 using Microsoft.Owin.Security.Infrastructure;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace Dribbly.Service.Providers
 {

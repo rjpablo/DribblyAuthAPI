@@ -1,5 +1,4 @@
-﻿using Dribbly.Service.Models;
-using Dribbly.Service.Models.Courts;
+﻿using Dribbly.Model.Courts;
 using Dribbly.Service.Services;
 using System.Collections.Generic;
 using System.Web.Http;

@@ -1,7 +1,7 @@
 ﻿//reference: http://bitoftech.net/2014/06/01/token-based-authentication-asp-net-web-api-2-owin-asp-net-identity/
-using Dribbly.Service.Models;
-using Dribbly.Service.Models.Auth;
+using Dribbly.Model;
 using Dribbly.Service.Providers;
+using Dribbly.Service.Services;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Facebook;
 using Microsoft.Owin.Security.OAuth;

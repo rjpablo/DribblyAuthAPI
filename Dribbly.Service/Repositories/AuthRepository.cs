@@ -1,14 +1,15 @@
-﻿using Dribbly.Email.Models;
+﻿using Dribbly.Authentication.Models;
+using Dribbly.Authentication.Models.Auth;
+using Dribbly.Email.Models;
 using Dribbly.Email.Services;
-using Dribbly.Service.Models;
-using Dribbly.Service.Models.Auth;
+using Dribbly.Model;
+using Dribbly.Service.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 
