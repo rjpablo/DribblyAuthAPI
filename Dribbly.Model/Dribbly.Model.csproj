@@ -58,8 +58,6 @@
     <Compile Include="Account\AccountModel.cs" />
     <Compile Include="Account\AccountSettingsModel.cs" />
     <Compile Include="AuthContext.cs" />
-    <Compile Include="BaseEntityModel.cs" />
-    <Compile Include="BaseModel.cs" />
     <Compile Include="Courts\CourtModel.cs" />
     <Compile Include="Courts\CourtSearchInputModel.cs" />
     <Compile Include="Enums\SexEnum.cs" />
@@ -75,6 +73,10 @@
     <ProjectReference Include="..\Dribbly.Authentication\Dribbly.Authentication.csproj">
       <Project>{2b76e33b-6725-4567-9f2b-23b09396f799}</Project>
       <Name>Dribbly.Authentication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dribbly.Core\Dribbly.Core.csproj">
+      <Project>{8A887A9E-E256-4A63-ABE3-F8657B04E011}</Project>
+      <Name>Dribbly.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

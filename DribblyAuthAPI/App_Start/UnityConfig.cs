@@ -35,6 +35,8 @@ namespace DribblyAuthAPI
             container.RegisterType<IEmailConfiguration, EmailConfiguration>();
             container.RegisterType<IEmailService, EmailService>();
             container.RegisterType<ILogsService, LogsService>();
+            container.RegisterType<IPermissionsService, PermissionsService>();
+            container.RegisterType<IPermissionsRepository, PermissionsRepository>();
 
             config.DependencyResolver = new UnityDependencyResolver(container);
         }

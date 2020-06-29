@@ -1,4 +1,4 @@
-﻿namespace Dribbly.Model
+﻿namespace Dribbly.Core.Models
 {
     /// <summary>
     /// Models that are mapped to a database table should extend this model

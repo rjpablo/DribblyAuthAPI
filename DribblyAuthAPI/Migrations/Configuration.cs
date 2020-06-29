@@ -2,6 +2,8 @@
 {
     using Dribbly.Authentication.Enums;
     using Dribbly.Authentication.Models;
+    using Dribbly.Authentication.Models.Auth;
+    using Dribbly.Core.Enums.Permissions;
     using Dribbly.Core.Helpers;
     using Dribbly.Model;
     using Dribbly.Model.Courts;
@@ -24,11 +26,25 @@
         {
             _context = context;
             SeedClients();
+            SeedPermissions();
             //SeedGames();
             //AddCourts();
 
             _context.SaveChanges();
             base.Seed(_context);
+        }
+
+        void SeedPermissions()
+        {
+            ApplicationUser adminUser = _context.Users.FirstOrDefault(u => u.UserName.Equals("test1",StringComparison.OrdinalIgnoreCase));
+            if(adminUser != null)
+            {
+                List<UserPermissionModel> allPermissions =
+                    EnumFunctions.GenerateUserPermissions<CourtPermission>(adminUser.Id)
+                    .Union(EnumFunctions.GenerateUserPermissions<GamePermission>(adminUser.Id))
+                    .ToList();
+                _context.UserPermissions.AddOrUpdate(allPermissions.ToArray());
+            }
         }
 
         void SeedSettings()

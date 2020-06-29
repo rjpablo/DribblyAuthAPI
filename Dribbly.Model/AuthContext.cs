@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Dribbly.Model
 {
-    public interface IAuthContext:IDisposable
+    public interface IAuthContext : IDisposable
     {
         DbSet<AccountModel> Accounts { get; set; }
         DbSet<Client> Clients { get; set; }
@@ -24,6 +24,7 @@ namespace Dribbly.Model
         DbSet<EventModel> Events { get; set; }
         DbSet<GameModel> Games { get; set; }
         DbSet<ClientLogModel> ErrorLogs { get; set; }
+        DbSet<UserPermissionModel> UserPermissions { get; set; }
         Task<int> SaveChangesAsync();
         int SaveChanges();
     }
@@ -50,6 +51,7 @@ namespace Dribbly.Model
         public DbSet<EventModel> Events { get; set; }
         public DbSet<GameModel> Games { get; set; }
         public DbSet<ClientLogModel> ErrorLogs { get; set; }
+        public DbSet<UserPermissionModel> UserPermissions { get; set; }
 
         public static AuthContext Create()
         {

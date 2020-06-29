@@ -3,6 +3,7 @@ using Dribbly.Model.Courts;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using Dribbly.Authentication.Models.Auth;
+using Dribbly.Core.Models;
 
 namespace Dribbly.Model.Account
 {

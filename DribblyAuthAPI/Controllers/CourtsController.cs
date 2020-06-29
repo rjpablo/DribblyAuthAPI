@@ -1,4 +1,5 @@
-﻿using Dribbly.Model.Courts;
+﻿using Dribbly.Core.Enums.Permissions;
+using Dribbly.Model.Courts;
 using Dribbly.Model.Games;
 using Dribbly.Service.Services;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ namespace DribblyAuthAPI.Controllers
         {
             return await _service.GetAllAsync();
         }
+
 
         [HttpGet]
         [Route("GetCourt/{id}")]
@@ -69,7 +71,8 @@ namespace DribblyAuthAPI.Controllers
             return _service.AddPhotos(courtId);
         }
 
-        [HttpPost, Authorize]
+        [HttpPost]
+        [Authorize]
         [Route("UpdateCourt")]
         public void UpdateCourt([FromBody] CourtModel model)
         {

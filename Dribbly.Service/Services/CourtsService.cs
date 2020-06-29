@@ -1,4 +1,6 @@
-﻿using Dribbly.Core.Utilities;
+﻿using Dribbly.Authentication.Services;
+using Dribbly.Core.Enums.Permissions;
+using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Games;
@@ -130,8 +132,15 @@ namespace Dribbly.Service.Services
 
         public void UpdateCourt(CourtModel court)
         {
-            Update(court);
-            _context.SaveChanges();
+            if(court.OwnerId == _securityUtility.GetUserId() || AuthenticationService.HasPermission(CourtPermission.UpdateNotOwned))
+            {
+                Update(court);
+                _context.SaveChanges();
+            }
+            else
+            {
+                throw new UnauthorizedAccessException("Authorization failed when attempting to update court details.");
+            }
         }
 
         public IEnumerable<PhotoModel> GetCourtPhotos(long courtId)

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Dribbly.Core.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dribbly.Model.Logs
 {

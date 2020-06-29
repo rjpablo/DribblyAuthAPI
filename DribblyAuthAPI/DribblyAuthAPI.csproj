@@ -156,6 +156,7 @@
   <ItemGroup>
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\PermissionsController.cs" />
     <Compile Include="Controllers\LogsController.cs" />
     <Compile Include="Controllers\GamesController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
@@ -251,6 +252,10 @@
     <Compile Include="Migrations\202006080709300_Add_ClientLogsTable.Designer.cs">
       <DependentUpon>202006080709300_Add_ClientLogsTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202006271943216_Add_UserPermissionsTable.cs" />
+    <Compile Include="Migrations\202006271943216_Add_UserPermissionsTable.Designer.cs">
+      <DependentUpon>202006271943216_Add_UserPermissionsTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -337,6 +342,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202006080709300_Add_ClientLogsTable.resx">
       <DependentUpon>202006080709300_Add_ClientLogsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006271943216_Add_UserPermissionsTable.resx">
+      <DependentUpon>202006271943216_Add_UserPermissionsTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

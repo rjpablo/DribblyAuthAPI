@@ -7,6 +7,7 @@ using Dribbly.Service.Repositories;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -94,16 +95,24 @@ namespace Dribbly.Service.Providers
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
             ApplicationUser user = null;
+            List<PermissionModel> userPermissions = new List<PermissionModel>();
 
-            using (AuthRepository _repo = new AuthRepository(null, new AuthContext()))
+            using (var authContext = new AuthContext())
             {
-                user = await _repo.FindUserByName(context.UserName);
 
-                if (user == null || await _repo.FindUser(context.UserName, string.Concat(context.Password, user.Salt)) == null)
+                using (AuthRepository _repo = new AuthRepository(null, authContext))
                 {
-                    context.SetError("invalid_grant", "The user name or password is incorrect.");
-                    return;
+                    user = await _repo.FindUserByName(context.UserName);
+
+                    if (user == null || await _repo.FindUser(context.UserName, string.Concat(context.Password, user.Salt)) == null)
+                    {
+                        context.SetError("invalid_grant", "The user name or password is incorrect.");
+                        return;
+                    }
+
+                    userPermissions = (await PermissionsRepository.GetUserPermissionsAsync(authContext, user.Id)).ToList();
                 }
+
             }
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
@@ -111,6 +120,13 @@ namespace Dribbly.Service.Providers
             identity.AddClaim(new Claim("userId", user.Id));
             identity.AddClaim(new Claim("sub", context.UserName));
             identity.AddClaim(new Claim("role", "user"));
+
+            // Add user claims for authorization
+            // These claims are checked by DribblyAuthorizeAttribute
+            foreach (var userPermission in userPermissions)
+            {
+                identity.AddClaim(new Claim("Permission", userPermission.Value.ToString()));
+            }
 
             var props = new AuthenticationProperties(new Dictionary<string, string>
                 {

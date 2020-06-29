@@ -1,4 +1,5 @@
-﻿using Dribbly.Model.Account;
+﻿using Dribbly.Core.Models;
+using Dribbly.Model.Account;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
