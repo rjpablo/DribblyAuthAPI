@@ -164,6 +164,7 @@
     <Compile Include="Controllers\RefreshTokensController.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Filters\DribblyExceptionsFilter.cs" />
     <Compile Include="Migrations\201907141720333_InitialCreate.cs" />
     <Compile Include="Migrations\201907141720333_InitialCreate.Designer.cs">
       <DependentUpon>201907141720333_InitialCreate.cs</DependentUpon>
