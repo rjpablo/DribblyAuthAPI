@@ -17,6 +17,7 @@ using System.Web.Http;
 using Dribbly.Model.Account;
 using Dribbly.Authentication.Models;
 using Dribbly.Authentication.Models.Auth;
+using Dribbly.Model.Courts;
 
 namespace DribblyAuthAPI.Controllers
 {
@@ -50,6 +51,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task<AccountSettingsModel> GetAccountSettings(string userId)
         {
             return await _accountService.GetAccountSettingsAsync(userId);
+        }
+
+        [HttpPost, Authorize]
+        [Route("UploadPrimaryPhoto/{accountId}")]
+        public async Task<PhotoModel> UploadPrimaryPhoto(long accountId)
+        {
+            return await _accountService.UploadPrimaryPhotoAsync(accountId);
         }
 
         #region Authentication

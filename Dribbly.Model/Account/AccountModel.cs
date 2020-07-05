@@ -1,9 +1,11 @@
-﻿using Dribbly.Service.Enums;
-using Dribbly.Model.Courts;
-using System;
-using System.ComponentModel.DataAnnotations.Schema;
-using Dribbly.Authentication.Models.Auth;
+﻿using Dribbly.Authentication.Models.Auth;
 using Dribbly.Core.Models;
+using Dribbly.Model.Accounts;
+using Dribbly.Model.Courts;
+using Dribbly.Service.Enums;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dribbly.Model.Account
 {
@@ -49,6 +51,8 @@ namespace Dribbly.Model.Account
 
         [ForeignKey("ProfilePhoto")]
         public long? ProfilePhotoId { get; set; }
+               
+        public virtual ICollection<AccountPhotoModel> Photos { get; set; }
 
         public virtual PhotoModel ProfilePhoto { get; set; }
 

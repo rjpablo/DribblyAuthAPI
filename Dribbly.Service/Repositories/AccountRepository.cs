@@ -27,7 +27,8 @@ namespace Dribbly.Service.Repositories
                 return null;
             }
 
-            AccountModel account = await _context.Accounts.SingleOrDefaultAsync(a => a.IdentityUserId == user.Id);
+            AccountModel account = await _context.Accounts.Include(a=>a.ProfilePhoto)
+                .SingleOrDefaultAsync(a => a.IdentityUserId == user.Id);
 
             if(account == null)
             {

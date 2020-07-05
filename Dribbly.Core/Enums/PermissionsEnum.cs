@@ -1,5 +1,9 @@
 ﻿using static Dribbly.Core.Extensions.EnumExtensions;
 
+/// <summary>
+/// Each class under this namespace must be added to EnumFunctions.GetAllPermissions.
+/// UserPermission seeder may also need to be updated.
+/// </summary>
 namespace Dribbly.Core.Enums.Permissions
 {
     public enum CourtPermission
@@ -12,5 +16,11 @@ namespace Dribbly.Core.Enums.Permissions
     {
         [EnumAttribute(Subject = "Game", Action = "Approve")]
         Approve = 11,
+    }
+
+    public enum AccountPermission
+    {
+        [EnumAttribute(Subject = "Account", Action = "UpdatePhotoNotOwned")]
+        UpdatePhotoNotOwned = 21
     }
 }

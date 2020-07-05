@@ -1,4 +1,5 @@
 ﻿using Dribbly.Model.Account;
+using Dribbly.Model.Courts;
 using System.Threading.Tasks;
 
 namespace Dribbly.Service.Services
@@ -10,5 +11,7 @@ namespace Dribbly.Service.Services
         Task AddAsync(AccountModel account);
 
         Task<AccountSettingsModel> GetAccountSettingsAsync(string userId);
+
+        Task<PhotoModel> UploadPrimaryPhotoAsync(long accountId);
     }
 }

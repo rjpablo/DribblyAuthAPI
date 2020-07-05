@@ -42,6 +42,7 @@
                 List<UserPermissionModel> allPermissions =
                     EnumFunctions.GenerateUserPermissions<CourtPermission>(adminUser.Id)
                     .Union(EnumFunctions.GenerateUserPermissions<GamePermission>(adminUser.Id))
+                    .Union(EnumFunctions.GenerateUserPermissions<AccountPermission>(adminUser.Id))
                     .ToList();
                 _context.UserPermissions.AddOrUpdate(allPermissions.ToArray());
             }

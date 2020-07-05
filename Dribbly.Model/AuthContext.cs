@@ -1,6 +1,7 @@
 ﻿using Dribbly.Authentication.Models;
 using Dribbly.Authentication.Models.Auth;
 using Dribbly.Model.Account;
+using Dribbly.Model.Accounts;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Games;
 using Dribbly.Model.Logs;
@@ -25,6 +26,9 @@ namespace Dribbly.Model
         DbSet<GameModel> Games { get; set; }
         DbSet<ClientLogModel> ErrorLogs { get; set; }
         DbSet<UserPermissionModel> UserPermissions { get; set; }
+        DbSet<AccountPhotoModel> AccountPhotos { get; set; }
+
+        Database Database { get; }
         Task<int> SaveChangesAsync();
         int SaveChanges();
     }
@@ -52,6 +56,7 @@ namespace Dribbly.Model
         public DbSet<GameModel> Games { get; set; }
         public DbSet<ClientLogModel> ErrorLogs { get; set; }
         public DbSet<UserPermissionModel> UserPermissions { get; set; }
+        public DbSet<AccountPhotoModel> AccountPhotos { get; set; }
 
         public static AuthContext Create()
         {
