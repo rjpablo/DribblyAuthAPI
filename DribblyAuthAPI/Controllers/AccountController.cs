@@ -18,6 +18,7 @@ using Dribbly.Model.Account;
 using Dribbly.Authentication.Models;
 using Dribbly.Authentication.Models.Auth;
 using Dribbly.Model.Courts;
+using System.Collections.Generic;
 
 namespace DribblyAuthAPI.Controllers
 {
@@ -51,6 +52,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task<AccountSettingsModel> GetAccountSettings(string userId)
         {
             return await _accountService.GetAccountSettingsAsync(userId);
+        }
+
+        [HttpGet]
+        [Route("GetAccountPhotos/{accountId}")]
+        public async Task<IEnumerable<PhotoModel>> GetAccountPhotos(int accountId)
+        {
+            return await _accountService.GetAccountPhotosAsync(accountId);
         }
 
         [HttpPost, Authorize]

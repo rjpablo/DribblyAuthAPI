@@ -7,6 +7,9 @@ using Dribbly.Model.Accounts;
 using Dribbly.Model.Courts;
 using Dribbly.Service.Repositories;
 using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -47,6 +50,13 @@ namespace Dribbly.Service.Services
         public async Task<AccountSettingsModel> GetAccountSettingsAsync(string userId)
         {
             return await Task.FromResult(new AccountSettingsModel());
+        }
+
+        public async Task<IEnumerable<PhotoModel>> GetAccountPhotosAsync(int accountId)
+        {
+            return await _context.AccountPhotos.Include(p=>p.Photo)
+                .Where(p => p.AccountId == accountId).Select(p => p.Photo)
+                .ToListAsync();
         }
 
         public async Task<PhotoModel> UploadPrimaryPhotoAsync(long accountId)
