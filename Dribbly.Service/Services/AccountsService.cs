@@ -9,6 +9,8 @@ using Dribbly.Service.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -55,9 +57,37 @@ namespace Dribbly.Service.Services
         public async Task<IEnumerable<PhotoModel>> GetAccountPhotosAsync(int accountId)
         {
             return await _context.AccountPhotos.Include(p=>p.Photo)
-                .Where(p => p.AccountId == accountId).Select(p => p.Photo)
+                .Where(p => p.AccountId == accountId && p.Photo.DateDeleted == null)
+                .Select(p => p.Photo)
                 .ToListAsync();
         }
+
+        public async Task DeletePhoto(int photoId, int accountId)
+        {
+            AccountPhotoModel accountPhoto = await _context.AccountPhotos.Include(p2 => p2.Photo)
+                .SingleOrDefaultAsync(p => p.AccountId == accountId && p.PhotoId == photoId);
+            if (accountPhoto == null)
+            {
+                throw new ObjectNotFoundException
+                    (string.Format("Did not find a photo with the ID {0} that is associated to Account # {1}", photoId, accountId));
+            }
+            else
+            {
+                if (accountPhoto.Photo.UploadedById == _securityUtility.GetUserId() ||
+                    AuthenticationService.HasPermission(AccountPermission.DeletePhotoNotOwned))
+                {
+                    accountPhoto.Photo.DateDeleted = DateTime.UtcNow;
+                    _context.AccountPhotos.AddOrUpdate(accountPhoto);
+                    _context.SaveChanges();
+                    // TODO: delete file from server
+                }
+                else
+                {
+                    throw new UnauthorizedAccessException("Authorization failed when attempting to delete account photo.");
+                }
+            }
+        }
+
 
         public async Task<PhotoModel> UploadPrimaryPhotoAsync(long accountId)
         {

@@ -68,6 +68,13 @@ namespace DribblyAuthAPI.Controllers
             return await _accountService.UploadPrimaryPhotoAsync(accountId);
         }
 
+        [HttpPost, Authorize]
+        [Route("DeletePhoto/{photoId}/{accountId}")]
+        public async Task DeletePhoto(int photoId, int accountId)
+        {
+            await _accountService.DeletePhoto(photoId, accountId);
+        }
+
         #region Authentication
         // POST api/Account/Register
         [AllowAnonymous]

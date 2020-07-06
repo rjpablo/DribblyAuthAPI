@@ -16,5 +16,7 @@ namespace Dribbly.Service.Services
         Task<PhotoModel> UploadPrimaryPhotoAsync(long accountId);
 
         Task<IEnumerable<PhotoModel>> GetAccountPhotosAsync(int accountId);
+
+        Task DeletePhoto(int photoId, int accountId);
     }
 }
