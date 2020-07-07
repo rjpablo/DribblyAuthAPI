@@ -9,7 +9,9 @@ namespace Dribbly.Core.Enums.Permissions
     public enum CourtPermission
     {
         [EnumAttribute(Subject = "Court", Action = "UpdateNotOwned")]
-        UpdateNotOwned = 1
+        UpdateNotOwned = 1,
+        [EnumAttribute(Subject = "Court", Action = "DeletePhotoNotOwned")]
+        DeletePhotoNotOwned = 2,
     }
 
     public enum GamePermission

@@ -8,6 +8,7 @@ using Dribbly.Service.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace Dribbly.Service.Services
 
         public async Task<IEnumerable<CourtModel>> GetAllAsync()
         {
-            var allCourts = All();
+            var allCourts = await _context.Courts.Include(p=>p.PrimaryPhoto).ToListAsync();
 
             foreach (var court in allCourts)
             {
@@ -50,7 +51,7 @@ namespace Dribbly.Service.Services
 
         public async Task<CourtModel> GetCourtAsync(long id)
         {
-            CourtModel court = GetById(id);
+            CourtModel court = _context.Courts.Include(p => p.PrimaryPhoto).SingleOrDefault(p => p.Id == id);
             await PopulateOwner(court);
             return court;
         }
@@ -88,15 +89,20 @@ namespace Dribbly.Service.Services
 
         public async Task DeletePhotoAsync(long courtId, long photoId)
         {
-            CourtPhotoModel courtPhoto = await _context.CourtPhotos.Include(p2 => p2.Photo)
+            CourtPhotoModel courtPhoto = await _context.CourtPhotos.Include(p2 => p2.Photo).Include(p=>p.Court)
                 .SingleOrDefaultAsync(p => p.CourtId == courtId && p.PhotoId == photoId);
-            if (courtPhoto == null)
+            if (courtPhoto == null || courtPhoto.Photo == null)
             {
                 throw new InvalidOperationException("Photo not found.");
             }
+            else if(courtPhoto.Court == null)
+            {
+                throw new ObjectNotFoundException
+                    ("The court associated with the photo being deleted was not found.");
+            }
             else
             {
-                if (courtPhoto.Photo.UploadedById == _securityUtility.GetUserId())
+                if (courtPhoto.Court.OwnerId == _securityUtility.GetUserId() || AuthenticationService.HasPermission(CourtPermission.DeletePhotoNotOwned))
                 {
                     courtPhoto.Photo.DateDeleted = DateTime.UtcNow;
                     _context.CourtPhotos.AddOrUpdate(courtPhoto);
@@ -104,30 +110,44 @@ namespace Dribbly.Service.Services
                 }
                 else
                 {
-                    throw new UnauthorizedAccessException("You do not have access to delete this photo.");
+                    throw new UnauthorizedAccessException("Authorization failed when trying to delete court photo.");
                 }
             }
         }
 
-        public void UpdateCourtPhoto(long courtId)
+        public async Task UpdateCourtPhoto(long courtId)
         {
             HttpFileCollection files = HttpContext.Current.Request.Files;
             string uploadPath = _fileService.Upload(files[0], "court/");
             CourtModel court = GetById(courtId);
-            court.PrimaryPhotoUrl = uploadPath;
-            PhotoModel photo = new PhotoModel
+
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                Url = uploadPath,
-                UploadedById = _securityUtility.GetUserId(),
-                DateAdded = DateTime.Now
-            };
-            _context.Photos.Add(photo);
-            _context.CourtPhotos.Add(new CourtPhotoModel
-            {
-                CourtId = courtId,
-                PhotoId = photo.Id
-            });
-            UpdateCourt(court);
+                try
+                {
+                    PhotoModel photo = new PhotoModel
+                    {
+                        Url = uploadPath,
+                        UploadedById = _securityUtility.GetUserId(),
+                        DateAdded = DateTime.Now
+                    };
+                    _context.Photos.Add(photo);
+                    await _context.SaveChangesAsync();
+                    _context.CourtPhotos.Add(new CourtPhotoModel
+                    {
+                        CourtId = courtId,
+                        PhotoId = photo.Id
+                    });
+                    court.PrimaryPhotoId = photo.Id;
+                    UpdateCourt(court);
+                    transaction.Commit();
+                }
+                catch(Exception e)
+                {
+                    transaction.Rollback();
+                    throw e;
+                }
+            }
         }
 
         public void UpdateCourt(CourtModel court)
@@ -145,10 +165,7 @@ namespace Dribbly.Service.Services
 
         public IEnumerable<PhotoModel> GetCourtPhotos(long courtId)
         {
-            //CourtModel court = _context.Courts.Include(c => c.Photos.Select(p => p.Photo).Where(p1=>p1.DateDeleted == null))
-            //    .FirstOrDefault(_court => _court.Id == courtId);
-            //return court.Photos.Select(p => p.Photo).OrderByDescending(x => x.DateAdded);
-            return _context.CourtPhotos.Include(p1=>p1.Photo)
+            return _context.CourtPhotos.Include(p1 => p1.Photo)
                 .Where(p => p.CourtId == courtId && p.Photo.DateDeleted == null)
                 .Select(p => p.Photo).OrderByDescending(x => x.DateAdded);
         }

@@ -93,7 +93,6 @@
                     Name = "Phoenix Sports Center Basketball Court",
                     Id = 1,
                     DateAdded = new DateTime(2020, 1, 2),
-                    PrimaryPhotoUrl = "./dest/images/test_images/courts/court_1.jpg",
                     RatePerHour = 2500,
                     Rating = 0.6M
                 },
@@ -102,7 +101,6 @@
                     Name = "Sports world Basketball Court",
                     Id = 2,
                     DateAdded = new DateTime(2020, 1, 5),
-                    PrimaryPhotoUrl = "./dest/images/test_images/courts/court_2.jpg",
                     RatePerHour = 250,
                     Rating = 0.8M
                 },
@@ -111,7 +109,6 @@
                     Name = "Balls World Basketball Court",
                     Id = 3,
                     DateAdded = new DateTime(2020, 1, 5),
-                    PrimaryPhotoUrl = "./dest/images/test_images/courts/court_3.jpg",
                     RatePerHour = 450,
                     Rating = 0.3M
                 },
@@ -120,7 +117,6 @@
                     Name = "Brgy Pag-asa Basketball Court",
                     Id = 4,
                     DateAdded = new DateTime(2020, 1, 5),
-                    PrimaryPhotoUrl = "./dest/images/test_images/courts/court_4.jpg",
                     RatePerHour = 300,
                     Rating = 0.5M
                 },
@@ -129,7 +125,6 @@
                     Name = "MOA Arena Basketball Court",
                     Id = 5,
                     DateAdded = new DateTime(2020, 1, 5),
-                    PrimaryPhotoUrl = "./dest/images/test_images/courts/court_5.jpg",
                     RatePerHour = 250,
                     Rating = 0.6M
                 });

@@ -22,7 +22,8 @@ namespace Dribbly.Model.Courts
 
         public decimal? Rating { get; set; }
 
-        public string PrimaryPhotoUrl { get; set; }
+        [ForeignKey("PrimaryPhoto")]
+        public long? PrimaryPhotoId { get; set; }
 
         public double Latitude { get; set; }
 
@@ -33,6 +34,8 @@ namespace Dribbly.Model.Courts
         public string AdditionalInfo { get; set; }
 
         public virtual ICollection<CourtPhotoModel> Photos { get; set; }
+
+        public virtual PhotoModel PrimaryPhoto { get; set; }
 
         [NotMapped]
         public virtual AccountBasicInfoModel Owner { get; set; }

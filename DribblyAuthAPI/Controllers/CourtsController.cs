@@ -59,9 +59,9 @@ namespace DribblyAuthAPI.Controllers
         // POSTs
         [HttpPost, Authorize]
         [Route("UpdateCourtPhoto/{courtId}")]
-        public void UpdateCourtPhoto(long courtId)
+        public async Task UpdateCourtPhoto(long courtId)
         {
-            _service.UpdateCourtPhoto(courtId);
+            await _service.UpdateCourtPhoto(courtId);
         }
 
         [HttpPost, Authorize]

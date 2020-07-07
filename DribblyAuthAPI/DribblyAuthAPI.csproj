@@ -261,6 +261,10 @@
     <Compile Include="Migrations\202007042218406_AddAccountPhotos.Designer.cs">
       <DependentUpon>202007042218406_AddAccountPhotos.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007062131170_Modify_CourtModel_RemovePrimaryPhotoUrlAndAddPrimaryPhotoId.cs" />
+    <Compile Include="Migrations\202007062131170_Modify_CourtModel_RemovePrimaryPhotoUrlAndAddPrimaryPhotoId.Designer.cs">
+      <DependentUpon>202007062131170_Modify_CourtModel_RemovePrimaryPhotoUrlAndAddPrimaryPhotoId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -353,6 +357,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007042218406_AddAccountPhotos.resx">
       <DependentUpon>202007042218406_AddAccountPhotos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007062131170_Modify_CourtModel_RemovePrimaryPhotoUrlAndAddPrimaryPhotoId.resx">
+      <DependentUpon>202007062131170_Modify_CourtModel_RemovePrimaryPhotoUrlAndAddPrimaryPhotoId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -21,7 +21,7 @@ namespace Dribbly.Service.Services
 
         void UpdateCourt(CourtModel court);
 
-        void UpdateCourtPhoto(long courtId);
+        Task UpdateCourtPhoto(long courtId);
 
         Task DeletePhotoAsync(long courtId, long photoId);
 
