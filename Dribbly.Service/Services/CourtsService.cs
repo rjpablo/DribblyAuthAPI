@@ -4,12 +4,14 @@ using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Games;
+using Dribbly.Model.Shared;
 using Dribbly.Service.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Data.Entity.Migrations;
+using System.IdentityModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -39,7 +41,7 @@ namespace Dribbly.Service.Services
 
         public async Task<IEnumerable<CourtModel>> GetAllAsync()
         {
-            var allCourts = await _context.Courts.Include(p=>p.PrimaryPhoto).ToListAsync();
+            var allCourts = await _context.Courts.Include(p => p.PrimaryPhoto).ToListAsync();
 
             foreach (var court in allCourts)
             {
@@ -87,15 +89,44 @@ namespace Dribbly.Service.Services
             return photos;
         }
 
+        public async Task<IEnumerable<VideoModel>> GetCourtVideosAsync(long courtId)
+        {
+            CourtModel court = await _dbSet.FirstOrDefaultAsync(c => c.Id == courtId);
+
+            if(court == null)
+            {
+                throw new ObjectNotFoundException("No court was found with id " + courtId.ToString());
+            }
+
+            return _context.CourtVideos.Include(v => v.Court).Where(v => v.CourtId == courtId).Select(v => v.Video)
+                .OrderByDescending(v => v.DateAdded);
+        }
+
+        public async Task<VideoModel> AddVideoAsync(long courtId, VideoModel video, HttpPostedFile file)
+        {
+            CourtModel court = await GetCourtAsync(courtId);
+
+            if(court == null)
+            {
+                throw new ObjectNotFoundException("No court was found with id " + courtId.ToString());
+            }
+
+            AddCourtVideo(courtId, video, file);
+
+            _context.SaveChanges();
+
+            return video;
+        }
+
         public async Task DeletePhotoAsync(long courtId, long photoId)
         {
-            CourtPhotoModel courtPhoto = await _context.CourtPhotos.Include(p2 => p2.Photo).Include(p=>p.Court)
+            CourtPhotoModel courtPhoto = await _context.CourtPhotos.Include(p2 => p2.Photo).Include(p => p.Court)
                 .SingleOrDefaultAsync(p => p.CourtId == courtId && p.PhotoId == photoId);
             if (courtPhoto == null || courtPhoto.Photo == null)
             {
                 throw new InvalidOperationException("Photo not found.");
             }
-            else if(courtPhoto.Court == null)
+            else if (courtPhoto.Court == null)
             {
                 throw new ObjectNotFoundException
                     ("The court associated with the photo being deleted was not found.");
@@ -142,7 +173,7 @@ namespace Dribbly.Service.Services
                     UpdateCourt(court);
                     transaction.Commit();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     transaction.Rollback();
                     throw e;
@@ -152,7 +183,7 @@ namespace Dribbly.Service.Services
 
         public void UpdateCourt(CourtModel court)
         {
-            if(court.OwnerId == _securityUtility.GetUserId() || AuthenticationService.HasPermission(CourtPermission.UpdateNotOwned))
+            if (court.OwnerId == _securityUtility.GetUserId() || AuthenticationService.HasPermission(CourtPermission.UpdateNotOwned))
             {
                 Update(court);
                 _context.SaveChanges();
@@ -187,6 +218,25 @@ namespace Dribbly.Service.Services
             });
 
             return photo;
+        }
+
+        private VideoModel AddCourtVideo(long courtId, VideoModel video, HttpPostedFile file)
+        {
+            string uploadPath = _fileService.Upload(file, "video/");
+            video.Src = uploadPath;
+            video.AddedBy = _securityUtility.GetUserId();
+            video.DateAdded = DateTime.Now;
+            video.Size = file.ContentLength;
+            video.Type = file.ContentType;
+
+            _context.Videos.Add(video);
+            _context.CourtVideos.Add(new CourtVideoModel
+            {
+                CourtId = courtId,
+                VideoId = video.Id
+            });
+
+            return video;
         }
 
         public IEnumerable<GameModel> GetCourtGames(long courtId)

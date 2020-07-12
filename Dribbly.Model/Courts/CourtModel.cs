@@ -1,6 +1,6 @@
 ﻿using Dribbly.Core.Models;
 using Dribbly.Model.Account;
-using System;
+using Dribbly.Model.Shared;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -34,6 +34,8 @@ namespace Dribbly.Model.Courts
         public string AdditionalInfo { get; set; }
 
         public virtual ICollection<CourtPhotoModel> Photos { get; set; }
+
+        public virtual ICollection<CourtVideoModel> Videos { get; set; }
 
         public virtual PhotoModel PrimaryPhoto { get; set; }
 

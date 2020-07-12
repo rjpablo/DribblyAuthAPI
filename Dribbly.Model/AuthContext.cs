@@ -27,6 +27,8 @@ namespace Dribbly.Model
         DbSet<ClientLogModel> ErrorLogs { get; set; }
         DbSet<UserPermissionModel> UserPermissions { get; set; }
         DbSet<AccountPhotoModel> AccountPhotos { get; set; }
+        DbSet<CourtVideoModel> CourtVideos { get; set; }
+        DbSet<VideoModel> Videos { get; set; }
 
         Database Database { get; }
         Task<int> SaveChangesAsync();
@@ -57,6 +59,8 @@ namespace Dribbly.Model
         public DbSet<ClientLogModel> ErrorLogs { get; set; }
         public DbSet<UserPermissionModel> UserPermissions { get; set; }
         public DbSet<AccountPhotoModel> AccountPhotos { get; set; }
+        public DbSet<CourtVideoModel> CourtVideos { get; set; }
+        public DbSet<VideoModel> Videos { get; set; }
 
         public static AuthContext Create()
         {

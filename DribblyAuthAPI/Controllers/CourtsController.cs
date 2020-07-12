@@ -1,9 +1,14 @@
 ﻿using Dribbly.Core.Enums.Permissions;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Games;
+using Dribbly.Model.Shared;
 using Dribbly.Service.Services;
+using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.IdentityModel;
+using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace DribblyAuthAPI.Controllers
@@ -42,6 +47,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpGet]
+        [Route("GetCourtVideos/{courtId}")]
+        public async Task<IEnumerable<VideoModel>> GetCourtVideos(long courtId)
+        {
+            return await _service.GetCourtVideosAsync(courtId);
+        }
+
+        [HttpGet]
         [Route("GetCourtGames/{courtId}")]
         public IEnumerable<GameModel> GetCourtGames(long courtId)
         {
@@ -69,6 +81,35 @@ namespace DribblyAuthAPI.Controllers
         public IEnumerable<PhotoModel> AddCourtPhotos(long courtId)
         {
             return _service.AddPhotos(courtId);
+        }
+
+        [HttpPost, Authorize]
+        [Route("AddCourtVideo/{courtId}")]
+        public async Task<VideoModel> AddVideo(long courtId)
+        {
+            HttpFileCollection files = HttpContext.Current.Request.Files;
+            if (files.Count > 1)
+            {
+                throw new BadRequestException("Tried to upload multiple videos at once.");
+            }
+            else if (files.Count == 0)
+            {
+                if (HttpContext.Current.Response.ClientDisconnectedToken.IsCancellationRequested)
+                {
+                    return await Task.FromResult<VideoModel>(null);
+                }
+                else
+                {
+                    throw new BadRequestException("Tried to upload a video but no file was received.");
+                }
+            }
+
+            var result = await Request.Content.ReadAsMultipartAsync();
+
+            var requestJson = await result.Contents[1].ReadAsStringAsync();
+            var video = JsonConvert.DeserializeObject<VideoModel>(requestJson);
+
+            return await _service.AddVideoAsync(courtId, video, files[0]);
         }
 
         [HttpPost]
