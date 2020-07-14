@@ -225,7 +225,7 @@ namespace Dribbly.Service.Services
             string uploadPath = _fileService.Upload(file, "video/");
             video.Src = uploadPath;
             video.AddedBy = _securityUtility.GetUserId();
-            video.DateAdded = DateTime.Now;
+            video.DateAdded = DateTime.UtcNow;
             video.Size = file.ContentLength;
             video.Type = file.ContentType;
 
