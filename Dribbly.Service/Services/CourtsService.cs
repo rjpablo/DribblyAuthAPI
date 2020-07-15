@@ -93,7 +93,7 @@ namespace Dribbly.Service.Services
         {
             CourtModel court = await _dbSet.FirstOrDefaultAsync(c => c.Id == courtId);
 
-            if(court == null)
+            if (court == null)
             {
                 throw new ObjectNotFoundException("No court was found with id " + courtId.ToString());
             }
@@ -106,16 +106,34 @@ namespace Dribbly.Service.Services
         {
             CourtModel court = await GetCourtAsync(courtId);
 
-            if(court == null)
+            if (court == null)
             {
                 throw new ObjectNotFoundException("No court was found with id " + courtId.ToString());
             }
 
-            AddCourtVideo(courtId, video, file);
-
-            _context.SaveChanges();
-
-            return video;
+            if (_securityUtility.IsCurrentUser(court.OwnerId) || AuthenticationService.HasPermission(CourtPermission.AddVideoNotOwned))
+            {
+                using (var transaction = _context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        AddCourtVideo(courtId, video, file);
+                        _context.SaveChanges();
+                        transaction.Commit();
+                        return video;
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        throw e;
+                    }
+                }
+            }
+            else
+            {
+                throw new UnauthorizedAccessException
+                    (string.Format("Authorization failed when trying to upload a video to court with ID {0}", court.Id));
+            }
         }
 
         public async Task DeletePhotoAsync(long courtId, long photoId)
