@@ -8,5 +8,6 @@ namespace Dribbly.Core.Utilities
     {
         string GetUserName();
         string GetUserId();
+        bool IsCurrentUser(string userId);
     }
 }

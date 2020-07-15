@@ -26,5 +26,7 @@ namespace Dribbly.Core.Enums.Permissions
         UpdatePhotoNotOwned = 21,
         [EnumAttribute(Subject = "Account", Action = "DeletePhotoNotOwned")]
         DeletePhotoNotOwned = 22,
+        [EnumAttribute(Subject = "Account", Action = "AddVideoNotOwned")]
+        AddVideoNotOwned = 23
     }
 }

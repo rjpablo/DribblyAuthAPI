@@ -270,6 +270,10 @@
     <Compile Include="Migrations\202007121758051_Add_Videos_and_CourtVideos.Designer.cs">
       <DependentUpon>202007121758051_Add_Videos_and_CourtVideos.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007142305359_Add_AccountVideos.cs" />
+    <Compile Include="Migrations\202007142305359_Add_AccountVideos.Designer.cs">
+      <DependentUpon>202007142305359_Add_AccountVideos.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -368,6 +372,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007121758051_Add_Videos_and_CourtVideos.resx">
       <DependentUpon>202007121758051_Add_Videos_and_CourtVideos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007142305359_Add_AccountVideos.resx">
+      <DependentUpon>202007142305359_Add_AccountVideos.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

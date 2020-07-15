@@ -68,6 +68,7 @@
     <Compile Include="Settings\SettingModel.cs" />
     <Compile Include="Shared\AccountPhotoModel.cs" />
     <Compile Include="Shared\CourtPhotoModel.cs" />
+    <Compile Include="Shared\AccountVideoModel.cs" />
     <Compile Include="Shared\CourtVideoModel.cs" />
     <Compile Include="Shared\EventModel.cs" />
     <Compile Include="Shared\PhotoModel.cs" />

@@ -31,5 +31,10 @@ namespace Dribbly.Core.Utilities
             return GetClaims()?.SingleOrDefault(c => c.Type == "userId")?.Value;
         }
 
+        public bool IsCurrentUser(string userId)
+        {
+            return userId.Equals(GetUserId()) && !string.IsNullOrEmpty(userId);
+        }
+
     }
 }

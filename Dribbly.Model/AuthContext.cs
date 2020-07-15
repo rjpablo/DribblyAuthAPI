@@ -28,6 +28,7 @@ namespace Dribbly.Model
         DbSet<UserPermissionModel> UserPermissions { get; set; }
         DbSet<AccountPhotoModel> AccountPhotos { get; set; }
         DbSet<CourtVideoModel> CourtVideos { get; set; }
+        DbSet<AccountVideoModel> AccountVideos { get; set; }
         DbSet<VideoModel> Videos { get; set; }
 
         Database Database { get; }
@@ -60,6 +61,7 @@ namespace Dribbly.Model
         public DbSet<UserPermissionModel> UserPermissions { get; set; }
         public DbSet<AccountPhotoModel> AccountPhotos { get; set; }
         public DbSet<CourtVideoModel> CourtVideos { get; set; }
+        public DbSet<AccountVideoModel> AccountVideos { get; set; }
         public DbSet<VideoModel> Videos { get; set; }
 
         public static AuthContext Create()

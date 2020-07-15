@@ -19,6 +19,10 @@ using Dribbly.Authentication.Models;
 using Dribbly.Authentication.Models.Auth;
 using Dribbly.Model.Courts;
 using System.Collections.Generic;
+using Dribbly.Model.Shared;
+using System.Web;
+using System.IdentityModel;
+using Newtonsoft.Json;
 
 namespace DribblyAuthAPI.Controllers
 {
@@ -74,6 +78,46 @@ namespace DribblyAuthAPI.Controllers
         {
             await _accountService.DeletePhoto(photoId, accountId);
         }
+
+        #region Account Videos
+
+        [HttpPost, Authorize]
+        [Route("AddAccountVideo/{accountId}")]
+        public async Task<VideoModel> AddVideo(long accountId)
+        {
+            HttpFileCollection files = HttpContext.Current.Request.Files;
+            if (files.Count > 1)
+            {
+                throw new BadRequestException("Tried to upload multiple videos at once.");
+            }
+            else if (files.Count == 0)
+            {
+                if (HttpContext.Current.Response.ClientDisconnectedToken.IsCancellationRequested)
+                {
+                    return await Task.FromResult<VideoModel>(null);
+                }
+                else
+                {
+                    throw new BadRequestException("Tried to upload a video but no file was received.");
+                }
+            }
+
+            var result = await Request.Content.ReadAsMultipartAsync();
+
+            var requestJson = await result.Contents[1].ReadAsStringAsync();
+            var video = JsonConvert.DeserializeObject<VideoModel>(requestJson);
+
+            return await _accountService.AddVideoAsync(accountId, video, files[0]);
+        }
+
+        [HttpGet]
+        [Route("GetAccountVideos/{accountId}")]
+        public async Task<IEnumerable<VideoModel>> GetAccountVideos(long accountId)
+        {
+            return await _accountService.GetAccountVideosAsync(accountId);
+        }
+
+        #endregion
 
         #region Authentication
         // POST api/Account/Register

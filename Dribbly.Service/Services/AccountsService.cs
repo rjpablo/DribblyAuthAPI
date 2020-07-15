@@ -5,6 +5,7 @@ using Dribbly.Model;
 using Dribbly.Model.Account;
 using Dribbly.Model.Accounts;
 using Dribbly.Model.Courts;
+using Dribbly.Model.Shared;
 using Dribbly.Service.Repositories;
 using System;
 using System.Collections.Generic;
@@ -56,7 +57,7 @@ namespace Dribbly.Service.Services
 
         public async Task<IEnumerable<PhotoModel>> GetAccountPhotosAsync(int accountId)
         {
-            return await _context.AccountPhotos.Include(p=>p.Photo)
+            return await _context.AccountPhotos.Include(p => p.Photo)
                 .Where(p => p.AccountId == accountId && p.Photo.DateDeleted == null)
                 .Select(p => p.Photo)
                 .ToListAsync();
@@ -73,7 +74,7 @@ namespace Dribbly.Service.Services
             }
             else
             {
-                if (accountPhoto.Photo.UploadedById == _securityUtility.GetUserId() ||
+                if (_securityUtility.IsCurrentUser(accountPhoto.Photo.UploadedById) ||
                     AuthenticationService.HasPermission(AccountPermission.DeletePhotoNotOwned))
                 {
                     accountPhoto.Photo.DateDeleted = DateTime.UtcNow;
@@ -94,15 +95,15 @@ namespace Dribbly.Service.Services
             AccountModel account = GetById(accountId);
             string currentUserId = _securityUtility.GetUserId();
 
-            if(currentUserId != account.IdentityUserId && !AuthenticationService.HasPermission(AccountPermission.UpdatePhotoNotOwned))
+            if (currentUserId != account.IdentityUserId && !AuthenticationService.HasPermission(AccountPermission.UpdatePhotoNotOwned))
             {
                 throw new UnauthorizedAccessException("Authorization failed when attempting to update account primary photo.");
             }
 
             HttpFileCollection files = HttpContext.Current.Request.Files;
             string uploadPath = _fileService.Upload(files[0], "accountPhotos/");
-            
-            using(var transaction = _context.Database.BeginTransaction())
+
+            using (var transaction = _context.Database.BeginTransaction())
             {
                 try
                 {
@@ -123,18 +124,87 @@ namespace Dribbly.Service.Services
                     account.ProfilePhotoId = photo.Id;
                     Update(account);
                     await _context.SaveChangesAsync();
-
                     transaction.Commit();
 
                     return photo;
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     transaction.Rollback();
                     throw e;
                 }
             }
         }
+
+        #region Account Videos
+
+        public async Task<IEnumerable<VideoModel>> GetAccountVideosAsync(long accountId)
+        {
+            AccountModel account = await _dbSet.FirstOrDefaultAsync(c => c.Id == accountId);
+
+            if (account == null)
+            {
+                throw new ObjectNotFoundException("No account was found with id " + accountId.ToString());
+            }
+
+            return _context.AccountVideos.Include(v => v.Account).Where(v => v.AccountId == accountId).Select(v => v.Video)
+                .OrderByDescending(v => v.DateAdded);
+        }
+
+        public async Task<VideoModel> AddVideoAsync(long accountId, VideoModel video, HttpPostedFile file)
+        {
+            AccountModel account = await GetByIdAsync(accountId);
+
+            if (account == null)
+            {
+                throw new ObjectNotFoundException("No account was found with id " + accountId.ToString());
+            }
+
+            if (account.IdentityUserId == _securityUtility.GetUserId() || AuthenticationService.HasPermission(AccountPermission.AddVideoNotOwned))
+            {
+                using (var transaction = _context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        AddAccountVideo(accountId, video, file);
+                        _context.SaveChanges();
+                        transaction.Commit();
+                        return video;
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        throw e;
+                    }
+                }
+            }
+            else
+            {
+                throw new UnauthorizedAccessException
+                    (string.Format("Authorization failed when trying to upload a video to account with Account ID {0}", accountId));
+            }
+        }
+
+        private VideoModel AddAccountVideo(long accountId, VideoModel video, HttpPostedFile file)
+        {
+            string uploadPath = _fileService.Upload(file, "video/");
+            video.Src = uploadPath;
+            video.AddedBy = _securityUtility.GetUserId();
+            video.DateAdded = DateTime.UtcNow;
+            video.Size = file.ContentLength;
+            video.Type = file.ContentType;
+
+            _context.Videos.Add(video);
+            _context.AccountVideos.Add(new AccountVideoModel
+            {
+                AccountId = accountId,
+                VideoId = video.Id
+            });
+
+            return video;
+        }
+
+        #endregion
 
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Dribbly.Service.Services
 {
@@ -23,6 +24,11 @@ namespace Dribbly.Service.Services
         protected T GetById(long id)
         {
             return _dbSet.SingleOrDefault(e => e.Id == id);
+        }
+
+        protected async Task<T> GetByIdAsync(long id)
+        {
+            return await _dbSet.SingleOrDefaultAsync(e => e.Id == id);
         }
 
         protected new T SingleOrDefault(Expression<Func<T, bool>> predicate)
