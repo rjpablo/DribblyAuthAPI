@@ -32,5 +32,7 @@ namespace Dribbly.Service.Services
         Task<IEnumerable<CourtModel>> FindCourtsAsync(CourtSearchInputModel input);
 
         Task<VideoModel> AddVideoAsync(long courtId, VideoModel video, HttpPostedFile file);
+
+        Task DeleteCourtVideoAsync(long courtId, long videoId);
     }
 }

@@ -133,5 +133,12 @@ namespace DribblyAuthAPI.Controllers
         {
             await _service.DeletePhotoAsync(courtId, photoId);
         }
+
+        [HttpPost, Authorize]
+        [Route("DeleteCourtVideo/{courtId}/{videoId}")]
+        public async Task DeleteCourtVideo(long courtId, long videoId)
+        {
+            await _service.DeleteCourtVideoAsync(courtId, videoId);
+        }
     }
 }

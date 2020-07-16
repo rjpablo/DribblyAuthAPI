@@ -1,4 +1,5 @@
 ﻿using Dribbly.Core.Models;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.UI.WebControls;
@@ -21,5 +22,7 @@ namespace Dribbly.Model.Shared
         public long Size { get; set; }
 
         public string Type { get; set; }
+
+        public DateTime? DateDeleted { get; set; }
     }
 }

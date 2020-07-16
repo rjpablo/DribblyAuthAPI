@@ -39,6 +39,8 @@ namespace Dribbly.Service.Services
             _accountRepo = accountRepo;
         }
 
+        #region Generic Court methods
+
         public async Task<IEnumerable<CourtModel>> GetAllAsync()
         {
             var allCourts = await _context.Courts.Include(p => p.PrimaryPhoto).ToListAsync();
@@ -74,94 +76,6 @@ namespace Dribbly.Service.Services
             Add(court);
             _context.SaveChanges();
             return court.Id;
-        }
-
-        public IEnumerable<PhotoModel> AddPhotos(long courtId)
-        {
-            HttpFileCollection files = HttpContext.Current.Request.Files;
-            List<PhotoModel> photos = new List<PhotoModel>();
-            for (int i = 0; i < files.Count; i++)
-            {
-                photos.Add(AddCourtPhoto(courtId, files[i]));
-                _context.SaveChanges();
-            }
-
-            return photos;
-        }
-
-        public async Task<IEnumerable<VideoModel>> GetCourtVideosAsync(long courtId)
-        {
-            CourtModel court = await _dbSet.FirstOrDefaultAsync(c => c.Id == courtId);
-
-            if (court == null)
-            {
-                throw new ObjectNotFoundException("No court was found with id " + courtId.ToString());
-            }
-
-            return _context.CourtVideos.Include(v => v.Court).Where(v => v.CourtId == courtId).Select(v => v.Video)
-                .OrderByDescending(v => v.DateAdded);
-        }
-
-        public async Task<VideoModel> AddVideoAsync(long courtId, VideoModel video, HttpPostedFile file)
-        {
-            CourtModel court = await GetCourtAsync(courtId);
-
-            if (court == null)
-            {
-                throw new ObjectNotFoundException("No court was found with id " + courtId.ToString());
-            }
-
-            if (_securityUtility.IsCurrentUser(court.OwnerId) || AuthenticationService.HasPermission(CourtPermission.AddVideoNotOwned))
-            {
-                using (var transaction = _context.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        AddCourtVideo(courtId, video, file);
-                        _context.SaveChanges();
-                        transaction.Commit();
-                        return video;
-                    }
-                    catch (Exception e)
-                    {
-                        transaction.Rollback();
-                        throw e;
-                    }
-                }
-            }
-            else
-            {
-                throw new UnauthorizedAccessException
-                    (string.Format("Authorization failed when trying to upload a video to court with ID {0}", court.Id));
-            }
-        }
-
-        public async Task DeletePhotoAsync(long courtId, long photoId)
-        {
-            CourtPhotoModel courtPhoto = await _context.CourtPhotos.Include(p2 => p2.Photo).Include(p => p.Court)
-                .SingleOrDefaultAsync(p => p.CourtId == courtId && p.PhotoId == photoId);
-            if (courtPhoto == null || courtPhoto.Photo == null)
-            {
-                throw new InvalidOperationException("Photo not found.");
-            }
-            else if (courtPhoto.Court == null)
-            {
-                throw new ObjectNotFoundException
-                    ("The court associated with the photo being deleted was not found.");
-            }
-            else
-            {
-                if (courtPhoto.Court.OwnerId == _securityUtility.GetUserId() || AuthenticationService.HasPermission(CourtPermission.DeletePhotoNotOwned))
-                {
-                    courtPhoto.Photo.DateDeleted = DateTime.UtcNow;
-                    _context.CourtPhotos.AddOrUpdate(courtPhoto);
-                    _context.SaveChanges();
-                }
-                else
-                {
-                    throw new UnauthorizedAccessException("Authorization failed when trying to delete court photo.");
-                }
-            }
         }
 
         public async Task UpdateCourtPhoto(long courtId)
@@ -212,6 +126,61 @@ namespace Dribbly.Service.Services
             }
         }
 
+        #endregion
+
+        #region Court Games
+
+        public IEnumerable<GameModel> GetCourtGames(long courtId)
+        {
+            var games = _context.Games.Where(g => g.CourtId == courtId).ToList();
+            return games;
+        }
+
+        #endregion
+
+        #region Court Photos
+
+        public IEnumerable<PhotoModel> AddPhotos(long courtId)
+        {
+            HttpFileCollection files = HttpContext.Current.Request.Files;
+            List<PhotoModel> photos = new List<PhotoModel>();
+            for (int i = 0; i < files.Count; i++)
+            {
+                photos.Add(AddCourtPhoto(courtId, files[i]));
+                _context.SaveChanges();
+            }
+
+            return photos;
+        }
+
+        public async Task DeletePhotoAsync(long courtId, long photoId)
+        {
+            CourtPhotoModel courtPhoto = await _context.CourtPhotos.Include(p2 => p2.Photo).Include(p => p.Court)
+                .SingleOrDefaultAsync(p => p.CourtId == courtId && p.PhotoId == photoId);
+            if (courtPhoto == null || courtPhoto.Photo == null)
+            {
+                throw new InvalidOperationException("Photo not found.");
+            }
+            else if (courtPhoto.Court == null)
+            {
+                throw new ObjectNotFoundException
+                    ("The court associated with the photo being deleted was not found.");
+            }
+            else
+            {
+                if (courtPhoto.Court.OwnerId == _securityUtility.GetUserId() || AuthenticationService.HasPermission(CourtPermission.DeletePhotoNotOwned))
+                {
+                    courtPhoto.Photo.DateDeleted = DateTime.UtcNow;
+                    _context.CourtPhotos.AddOrUpdate(courtPhoto);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    throw new UnauthorizedAccessException("Authorization failed when trying to delete court photo.");
+                }
+            }
+        }
+
         public IEnumerable<PhotoModel> GetCourtPhotos(long courtId)
         {
             return _context.CourtPhotos.Include(p1 => p1.Photo)
@@ -238,6 +207,86 @@ namespace Dribbly.Service.Services
             return photo;
         }
 
+        #endregion
+
+        #region Court Videos
+
+        public async Task<IEnumerable<VideoModel>> GetCourtVideosAsync(long courtId)
+        {
+            CourtModel court = await _dbSet.FirstOrDefaultAsync(c => c.Id == courtId);
+
+            if (court == null)
+            {
+                throw new ObjectNotFoundException("No court was found with id " + courtId.ToString());
+            }
+
+            return _context.CourtVideos.Include(v => v.Court).Where(v => v.CourtId == courtId && v.Video.DateDeleted == null)
+                .Select(v => v.Video).OrderByDescending(v => v.DateAdded);
+        }
+
+        public async Task<VideoModel> AddVideoAsync(long courtId, VideoModel video, HttpPostedFile file)
+        {
+            CourtModel court = await GetCourtAsync(courtId);
+
+            if (court == null)
+            {
+                throw new ObjectNotFoundException("No court was found with id " + courtId.ToString());
+            }
+
+            if (_securityUtility.IsCurrentUser(court.OwnerId) || AuthenticationService.HasPermission(CourtPermission.AddVideoNotOwned))
+            {
+                using (var transaction = _context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        AddCourtVideo(courtId, video, file);
+                        _context.SaveChanges();
+                        transaction.Commit();
+                        return video;
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        throw e;
+                    }
+                }
+            }
+            else
+            {
+                throw new UnauthorizedAccessException
+                    (string.Format("Authorization failed when trying to upload a video to court with ID {0}", court.Id));
+            }
+        }
+
+        public async Task DeleteCourtVideoAsync(long courtId, long videoId)
+        {
+            CourtVideoModel courtVideo = await _context.CourtVideos.Include(p2 => p2.Video).Include(p => p.Court)
+                .SingleOrDefaultAsync(p => p.CourtId == courtId && p.VideoId == videoId);
+            if (courtVideo == null || courtVideo.Video == null)
+            {
+                throw new InvalidOperationException("Video not found.");
+            }
+            else if (courtVideo.Court == null)
+            {
+                throw new ObjectNotFoundException
+                    ("The court associated with the video being deleted was not found.");
+            }
+            else
+            {
+                if (_securityUtility.IsCurrentUser(courtVideo.Court.OwnerId) || _securityUtility.IsCurrentUser(courtVideo.Video.AddedBy) ||
+                    AuthenticationService.HasPermission(CourtPermission.DeleteVideoNotOwned))
+                {
+                    courtVideo.Video.DateDeleted = DateTime.UtcNow;
+                    _context.CourtVideos.AddOrUpdate(courtVideo);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    throw new UnauthorizedAccessException("Authorization failed when trying to delete court video.");
+                }
+            }
+        }
+
         private VideoModel AddCourtVideo(long courtId, VideoModel video, HttpPostedFile file)
         {
             string uploadPath = _fileService.Upload(file, "video/");
@@ -257,10 +306,6 @@ namespace Dribbly.Service.Services
             return video;
         }
 
-        public IEnumerable<GameModel> GetCourtGames(long courtId)
-        {
-            var games = _context.Games.Where(g => g.CourtId == courtId).ToList();
-            return games;
-        }
+        #endregion
     }
 }
