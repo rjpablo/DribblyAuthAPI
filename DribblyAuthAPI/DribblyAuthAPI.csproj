@@ -278,6 +278,10 @@
     <Compile Include="Migrations\202007160003204_Modify_CourtModel_Added_DateDeleted_Column.Designer.cs">
       <DependentUpon>202007160003204_Modify_CourtModel_Added_DateDeleted_Column.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007190947464_Modify_CourtModel_Rename_IsPublic_To_IsFreeToPlay_And_AddMobileNumber.cs" />
+    <Compile Include="Migrations\202007190947464_Modify_CourtModel_Rename_IsPublic_To_IsFreeToPlay_And_AddMobileNumber.Designer.cs">
+      <DependentUpon>202007190947464_Modify_CourtModel_Rename_IsPublic_To_IsFreeToPlay_And_AddMobileNumber.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -382,6 +386,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007160003204_Modify_CourtModel_Added_DateDeleted_Column.resx">
       <DependentUpon>202007160003204_Modify_CourtModel_Added_DateDeleted_Column.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007190947464_Modify_CourtModel_Rename_IsPublic_To_IsFreeToPlay_And_AddMobileNumber.resx">
+      <DependentUpon>202007190947464_Modify_CourtModel_Rename_IsPublic_To_IsFreeToPlay_And_AddMobileNumber.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

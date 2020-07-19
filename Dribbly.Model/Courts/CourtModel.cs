@@ -29,7 +29,9 @@ namespace Dribbly.Model.Courts
 
         public double Longitude { get; set; }
 
-        public bool IsPublic { get; set; }
+        public bool IsFreeToPlay { get; set; }
+
+        public string MobileNumber { get; set; }
 
         public string AdditionalInfo { get; set; }
 
