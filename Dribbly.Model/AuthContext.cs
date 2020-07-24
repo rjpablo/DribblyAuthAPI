@@ -30,6 +30,7 @@ namespace Dribbly.Model
         DbSet<CourtVideoModel> CourtVideos { get; set; }
         DbSet<AccountVideoModel> AccountVideos { get; set; }
         DbSet<VideoModel> Videos { get; set; }
+        DbSet<ContactModel> Contacts { get; set; }
 
         Database Database { get; }
         Task<int> SaveChangesAsync();
@@ -63,6 +64,7 @@ namespace Dribbly.Model
         public DbSet<CourtVideoModel> CourtVideos { get; set; }
         public DbSet<AccountVideoModel> AccountVideos { get; set; }
         public DbSet<VideoModel> Videos { get; set; }
+        public DbSet<ContactModel> Contacts { get; set; }
 
         public static AuthContext Create()
         {

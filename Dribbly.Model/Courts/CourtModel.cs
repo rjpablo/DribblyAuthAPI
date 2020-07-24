@@ -31,13 +31,16 @@ namespace Dribbly.Model.Courts
 
         public bool IsFreeToPlay { get; set; }
 
-        public string MobileNumber { get; set; }
+        [ForeignKey("Contact")]
+        public long? ContactId { get; set; }
 
         public string AdditionalInfo { get; set; }
 
         public virtual ICollection<CourtPhotoModel> Photos { get; set; }
 
         public virtual ICollection<CourtVideoModel> Videos { get; set; }
+
+        public virtual ContactModel Contact { get; set; }
 
         public virtual PhotoModel PrimaryPhoto { get; set; }
 

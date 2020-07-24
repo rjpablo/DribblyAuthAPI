@@ -2,6 +2,7 @@
 using Dribbly.Model;
 using Dribbly.Service.Providers;
 using Dribbly.Service.Services;
+using Dribbly.SMS.Services;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Facebook;
 using Microsoft.Owin.Security.OAuth;
@@ -39,6 +40,8 @@ namespace DribblyAuthAPI.API
             //to wire up ASP.NET Web API to our Owin server pipeline
             app.UseWebApi(config);
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<AuthContext, Migrations.Configuration>());
+
+            SMSService.Init();
         }
 
         public void ConfigureOAuth(IAppBuilder app)
@@ -63,7 +66,7 @@ namespace DribblyAuthAPI.API
             {
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/token"), //http://localhost:[port]/token
-                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30), //set token validatity to 30 seconds
+                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30), //set token validatity to 30 minutes
                 Provider = new SimpleAuthorizationServerProvider(), //specifies implementation on how to validate the credentials for users asking for tokens
                 RefreshTokenProvider = new SimpleRefreshTokenProvider()
             };

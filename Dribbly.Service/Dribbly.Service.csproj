@@ -109,6 +109,8 @@
     <Compile Include="Services\ApplicationUserManager.cs" />
     <Compile Include="Services\BaseEntityService.cs" />
     <Compile Include="Services\BaseService.cs" />
+    <Compile Include="Services\ContactsService.cs" />
+    <Compile Include="Services\IContactsService.cs" />
     <Compile Include="Services\PermissionService.cs" />
     <Compile Include="Services\CourtsService.cs" />
     <Compile Include="Services\FileService.cs" />
@@ -139,6 +141,10 @@
     <ProjectReference Include="..\Dribbly.Model\Dribbly.Model.csproj">
       <Project>{5FE646E5-BAB0-4635-9161-671F0D73CBCC}</Project>
       <Name>Dribbly.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dribbly.SMS\Dribbly.SMS.csproj">
+      <Project>{E15C5BC6-174C-4D8E-B323-6D756BF8E69C}</Project>
+      <Name>Dribbly.SMS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

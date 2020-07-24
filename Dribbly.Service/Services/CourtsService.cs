@@ -55,7 +55,7 @@ namespace Dribbly.Service.Services
 
         public async Task<CourtModel> GetCourtAsync(long id)
         {
-            CourtModel court = _context.Courts.Include(p => p.PrimaryPhoto).SingleOrDefault(p => p.Id == id);
+            CourtModel court = _context.Courts.Include(p => p.PrimaryPhoto).Include(p=>p.Contact).SingleOrDefault(p => p.Id == id);
             await PopulateOwner(court);
             return court;
         }
