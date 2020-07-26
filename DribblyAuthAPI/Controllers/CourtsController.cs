@@ -26,7 +26,7 @@ namespace DribblyAuthAPI.Controllers
         //GETs
         [HttpGet]
         [Route("GetAllCourts")]
-        public async Task<IEnumerable<CourtModel>> GetAllAsync()
+        public async Task<IEnumerable<CourtDetailsViewModel>> GetAllAsync()
         {
             return await _service.GetAllAsync();
         }
@@ -34,7 +34,7 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpGet]
         [Route("GetCourt/{id}")]
-        public async Task<CourtModel> GetCourtAsync(long id)
+        public async Task<CourtDetailsViewModel> GetCourtAsync(long id)
         {
             return await _service.GetCourtAsync(id);
         }
@@ -81,6 +81,13 @@ namespace DribblyAuthAPI.Controllers
         public IEnumerable<PhotoModel> AddCourtPhotos(long courtId)
         {
             return _service.AddPhotos(courtId);
+        }
+
+        [HttpPost, Authorize]
+        [Route("FollowCourt/{courtId}/{isFollowing?}")]
+        public Task<FollowResultModel> FollowCourt(long courtId, bool isFollowing = true)
+        {
+            return _service.FollowCourtAsync(courtId, isFollowing);
         }
 
         [HttpPost, Authorize]

@@ -19,6 +19,7 @@ namespace Dribbly.Model
         DbSet<Client> Clients { get; set; }
         DbSet<RefreshToken> RefreshTokens { get; set; }
         DbSet<CourtModel> Courts { get; set; }
+        DbSet<CourtFollowingModel> CourtFollowings { get; set; }
         DbSet<SettingModel> Settings { get; set; }
         DbSet<CourtPhotoModel> CourtPhotos { get; set; }
         DbSet<PhotoModel> Photos { get; set; }
@@ -53,6 +54,7 @@ namespace Dribbly.Model
         public DbSet<Client> Clients { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<CourtModel> Courts { get; set; }
+        public DbSet<CourtFollowingModel> CourtFollowings { get; set; }
         public DbSet<SettingModel> Settings { get; set; }
         public DbSet<PhotoModel> Photos { get; set; }
         public DbSet<CourtPhotoModel> CourtPhotos { get; set; }

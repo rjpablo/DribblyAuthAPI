@@ -9,9 +9,9 @@ namespace Dribbly.Service.Services
 {
     public interface ICourtsService
     {
-        Task<IEnumerable<CourtModel>> GetAllAsync();
+        Task<IEnumerable<CourtDetailsViewModel>> GetAllAsync();
 
-        Task<CourtModel> GetCourtAsync(long id);
+        Task<CourtDetailsViewModel> GetCourtAsync(long id);
 
         IEnumerable<GameModel> GetCourtGames(long courtId);
 
@@ -34,5 +34,8 @@ namespace Dribbly.Service.Services
         Task<VideoModel> AddVideoAsync(long courtId, VideoModel video, HttpPostedFile file);
 
         Task DeleteCourtVideoAsync(long courtId, long videoId);
+
+        Task<FollowResultModel> FollowCourtAsync(long courtId, bool isFollowing);
+
     }
 }

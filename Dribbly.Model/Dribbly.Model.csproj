@@ -59,6 +59,7 @@
     <Compile Include="Account\AccountModel.cs" />
     <Compile Include="Account\AccountSettingsModel.cs" />
     <Compile Include="AuthContext.cs" />
+    <Compile Include="Courts\CourtDetailsViewModel.cs" />
     <Compile Include="Courts\CourtModel.cs" />
     <Compile Include="Courts\CourtSearchInputModel.cs" />
     <Compile Include="Enums\SexEnum.cs" />
@@ -71,7 +72,9 @@
     <Compile Include="Shared\CourtPhotoModel.cs" />
     <Compile Include="Shared\AccountVideoModel.cs" />
     <Compile Include="Shared\CourtVideoModel.cs" />
+    <Compile Include="Courts\CourtFollowingModel.cs" />
     <Compile Include="Shared\EventModel.cs" />
+    <Compile Include="Shared\FollowResultModel.cs" />
     <Compile Include="Shared\PhoneVerificationResultModel.cs" />
     <Compile Include="Shared\PhotoModel.cs" />
     <Compile Include="Shared\VideoModel.cs" />

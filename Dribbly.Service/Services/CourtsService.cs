@@ -41,26 +41,38 @@ namespace Dribbly.Service.Services
 
         #region Generic Court methods
 
-        public async Task<IEnumerable<CourtModel>> GetAllAsync()
+        public async Task<IEnumerable<CourtDetailsViewModel>> GetAllAsync()
         {
-            var allCourts = await _context.Courts.Include(p => p.PrimaryPhoto).ToListAsync();
+            CourtModel[] courts = await _context.Courts.Include(p => p.PrimaryPhoto).ToArrayAsync();
+            List<CourtDetailsViewModel> viewModels = new List<CourtDetailsViewModel>();
 
-            foreach (var court in allCourts)
+            foreach (var court in courts)
             {
-                await PopulateOwner(court);
+                CourtDetailsViewModel vm = new CourtDetailsViewModel(court);
+                await PopulateOwner(vm);
+                viewModels.Add(vm);
             }
 
-            return allCourts;
+            return viewModels;
         }
 
-        public async Task<CourtModel> GetCourtAsync(long id)
+        public async Task<CourtDetailsViewModel> GetCourtAsync(long id)
         {
-            CourtModel court = _context.Courts.Include(p => p.PrimaryPhoto).Include(p=>p.Contact).SingleOrDefault(p => p.Id == id);
-            await PopulateOwner(court);
-            return court;
+            CourtModel court = _context.Courts.Include(p => p.PrimaryPhoto).Include(p => p.Contact).SingleOrDefault(p => p.Id == id);
+            var result = new CourtDetailsViewModel(court);
+            string currentUserId = _securityUtility.GetUserId();
+            result.IsFollowed = _context.CourtFollowings.Any(f => f.CourtId == id && f.FollowedById == currentUserId);
+            await PopulateOwner(result);
+            result.FollowerCount = await getFollowerCount(court.Id);
+            return result;
         }
 
-        private async Task PopulateOwner(CourtModel court)
+        private async Task<long> getFollowerCount(long courtId)
+        {
+            return await _context.CourtFollowings.Where(f => f.CourtId == courtId).CountAsync();
+        }
+
+        private async Task PopulateOwner(CourtDetailsViewModel court)
         {
             court.Owner = await _accountRepo.GetAccountBasicInfo(court.OwnerId);
         }
@@ -68,6 +80,45 @@ namespace Dribbly.Service.Services
         public async Task<IEnumerable<CourtModel>> FindCourtsAsync(CourtSearchInputModel input)
         {
             return await _courtsRepo.FindCourtsAsync(input);
+        }
+
+        public async Task<FollowResultModel> FollowCourtAsync(long courtId, bool isFollowing)
+        {
+            string currentUserId = _securityUtility.GetUserId();
+            FollowResultModel result = new FollowResultModel();
+            CourtFollowingModel courtFollowing = await _context.CourtFollowings.SingleOrDefaultAsync(f => f.CourtId == courtId && f.FollowedById == currentUserId);
+            result.isAlreadyFollowing = courtFollowing != null;
+            result.IsNotCurrentlyFollowing = !result.isAlreadyFollowing;
+
+            if (isFollowing)
+            {
+
+                if (!result.isAlreadyFollowing)
+                {
+                    _context.CourtFollowings.Add(new CourtFollowingModel
+                    {
+                        CourtId = courtId,
+                        FollowedById = currentUserId
+                    });
+                    await _context.SaveChangesAsync();
+                    result.isSuccessful = true;
+                }
+
+            }
+            else
+            {
+                // if unfollowing court
+                if (result.isAlreadyFollowing)
+                {
+                    _context.CourtFollowings.Remove(courtFollowing);
+                    await _context.SaveChangesAsync();
+                    result.isSuccessful = true;
+                }
+
+            }
+
+            result.newFollowerCount = await getFollowerCount(courtId); ;
+            return result;
         }
 
         public long Register(CourtModel court)

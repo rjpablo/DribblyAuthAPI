@@ -287,6 +287,10 @@
     <Compile Include="Migrations\202007200441036_Modify_CourtModel_Change_MobileNumber_To_ContactId.Designer.cs">
       <DependentUpon>202007200441036_Modify_CourtModel_Change_MobileNumber_To_ContactId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007260244022_Add_CourtFollowings.cs" />
+    <Compile Include="Migrations\202007260244022_Add_CourtFollowings.Designer.cs">
+      <DependentUpon>202007260244022_Add_CourtFollowings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -397,6 +401,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007200441036_Modify_CourtModel_Change_MobileNumber_To_ContactId.resx">
       <DependentUpon>202007200441036_Modify_CourtModel_Change_MobileNumber_To_ContactId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007260244022_Add_CourtFollowings.resx">
+      <DependentUpon>202007260244022_Add_CourtFollowings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

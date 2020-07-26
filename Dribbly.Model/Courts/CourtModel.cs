@@ -44,8 +44,5 @@ namespace Dribbly.Model.Courts
 
         public virtual PhotoModel PrimaryPhoto { get; set; }
 
-        [NotMapped]
-        public virtual AccountBasicInfoModel Owner { get; set; }
-
     }
 }
