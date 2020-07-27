@@ -58,6 +58,13 @@ namespace DribblyAuthAPI.Controllers
             return await _accountService.GetAccountSettingsAsync(userId);
         }
 
+        [HttpPost, Authorize]
+        [Route("AddAccountPhotos/{accountId}")]
+        public async Task<IEnumerable<PhotoModel>> AddAccountPhotos(long accountId)
+        {
+            return await _accountService.AddAccountPhotosAsync(accountId);
+        }
+
         [HttpGet]
         [Route("GetAccountPhotos/{accountId}")]
         public async Task<IEnumerable<PhotoModel>> GetAccountPhotos(int accountId)

@@ -55,6 +55,35 @@ namespace Dribbly.Service.Services
             return await Task.FromResult(new AccountSettingsModel());
         }
 
+        #region Photos
+
+        public async Task<IEnumerable<PhotoModel>> AddAccountPhotosAsync(long accountId)
+        {
+            HttpFileCollection files = HttpContext.Current.Request.Files;
+            AccountModel account = GetById(accountId);
+            List<PhotoModel> photos = new List<PhotoModel>();
+
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        photos.Add(await AddPhoto(account, files[i]));
+                    }
+
+                    _context.SaveChanges();
+                    transaction.Commit();
+                    return photos;
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw e;
+                }
+            }
+        }
+
         public async Task<IEnumerable<PhotoModel>> GetAccountPhotosAsync(int accountId)
         {
             return await _context.AccountPhotos.Include(p => p.Photo)
@@ -89,7 +118,6 @@ namespace Dribbly.Service.Services
             }
         }
 
-
         public async Task<PhotoModel> UploadPrimaryPhotoAsync(long accountId)
         {
             AccountModel account = GetById(accountId);
@@ -107,20 +135,7 @@ namespace Dribbly.Service.Services
             {
                 try
                 {
-                    PhotoModel photo = new PhotoModel
-                    {
-                        Url = uploadPath,
-                        UploadedById = currentUserId,
-                        DateAdded = DateTime.Now
-                    };
-                    _context.Photos.Add(photo);
-                    await _context.SaveChangesAsync();
-
-                    _context.AccountPhotos.Add(new AccountPhotoModel
-                    {
-                        PhotoId = photo.Id,
-                        AccountId = account.Id
-                    });
+                    PhotoModel photo = await AddPhoto(account, files[0]);
                     account.ProfilePhotoId = photo.Id;
                     Update(account);
                     await _context.SaveChangesAsync();
@@ -135,6 +150,32 @@ namespace Dribbly.Service.Services
                 }
             }
         }
+
+        private async Task<PhotoModel> AddPhoto(AccountModel account, HttpPostedFile file)
+        {
+            string currentUserId = _securityUtility.GetUserId();
+            string uploadPath = _fileService.Upload(file, "accountPhotos/");
+
+            PhotoModel photo = new PhotoModel
+            {
+                Url = uploadPath,
+                UploadedById = currentUserId,
+                DateAdded = DateTime.UtcNow
+            };
+            _context.Photos.Add(photo);
+            await _context.SaveChangesAsync();
+
+            _context.AccountPhotos.Add(new AccountPhotoModel
+            {
+                PhotoId = photo.Id,
+                AccountId = account.Id
+            });
+            await _context.SaveChangesAsync();
+
+            return photo;
+        }
+
+        #endregion
 
         #region Account Videos
 
