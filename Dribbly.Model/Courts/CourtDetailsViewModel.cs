@@ -15,6 +15,8 @@ namespace Dribbly.Model.Courts
         public CourtDetailsViewModel(CourtModel c)
         {
             Id = c.Id;
+            DateAdded = c.DateAdded;
+            OwnerId = c.OwnerId;
             Name = c.Name;
             RatePerHour = c.RatePerHour;
             Rating = c.Rating;
