@@ -32,6 +32,7 @@ namespace Dribbly.Model
         DbSet<AccountVideoModel> AccountVideos { get; set; }
         DbSet<VideoModel> Videos { get; set; }
         DbSet<ContactModel> Contacts { get; set; }
+        IDbSet<ApplicationUser> Users { get; set; }
 
         Database Database { get; }
         Task<int> SaveChangesAsync();

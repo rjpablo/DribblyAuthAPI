@@ -1,6 +1,7 @@
 ﻿using Dribbly.Model.Games;
 using Dribbly.Service.Services;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace DribblyAuthAPI.Controllers
@@ -25,9 +26,9 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpGet]
         [Route("GetGame/{id}")]
-        public GameModel GetGame(long id)
+        public async Task<GameModel> GetGame(long id)
         {
-            return _service.GetGame(id);
+            return await _service.GetGame(id);
         }
 
         [HttpPost, Authorize]

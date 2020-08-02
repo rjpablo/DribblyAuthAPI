@@ -291,6 +291,14 @@
     <Compile Include="Migrations\202007260244022_Add_CourtFollowings.Designer.cs">
       <DependentUpon>202007260244022_Add_CourtFollowings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008011657355_Modify_Account_Add_FK_Constrant_To_AspNetUsers.cs" />
+    <Compile Include="Migrations\202008011657355_Modify_Account_Add_FK_Constrant_To_AspNetUsers.Designer.cs">
+      <DependentUpon>202008011657355_Modify_Account_Add_FK_Constrant_To_AspNetUsers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008021053443_Modify_Events_Add_BookedById.cs" />
+    <Compile Include="Migrations\202008021053443_Modify_Events_Add_BookedById.Designer.cs">
+      <DependentUpon>202008021053443_Modify_Events_Add_BookedById.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -404,6 +412,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007260244022_Add_CourtFollowings.resx">
       <DependentUpon>202007260244022_Add_CourtFollowings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008011657355_Modify_Account_Add_FK_Constrant_To_AspNetUsers.resx">
+      <DependentUpon>202008011657355_Modify_Account_Add_FK_Constrant_To_AspNetUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008021053443_Modify_Events_Add_BookedById.resx">
+      <DependentUpon>202008021053443_Modify_Events_Add_BookedById.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

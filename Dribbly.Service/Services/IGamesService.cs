@@ -1,5 +1,6 @@
 ﻿using Dribbly.Model.Games;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Dribbly.Service.Services
 {
@@ -7,7 +8,7 @@ namespace Dribbly.Service.Services
     {
         IEnumerable<GameModel> GetAll();
 
-        GameModel GetGame(long id);
+        Task<GameModel> GetGame(long id);
 
         GameModel BookGame(GameModel Game);
 

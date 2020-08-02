@@ -55,6 +55,12 @@ namespace Dribbly.Service.Services
             return await Task.FromResult(new AccountSettingsModel());
         }
 
+        public async Task<IEnumerable<AccountsChoicesItemModel>> GetAccountDropDownSuggestions(AccountSearchInputModel input)
+        {
+            List<AccountModel> accounts = await _accountRepo.SearchAccounts(input).ToListAsync();
+            return accounts.Select(a => new AccountsChoicesItemModel(a));
+        }
+
         #region Photos
 
         public async Task<IEnumerable<PhotoModel>> AddAccountPhotosAsync(long accountId)

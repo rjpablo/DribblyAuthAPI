@@ -16,7 +16,7 @@ namespace Dribbly.Model.Account
         public AccountBasicInfoModel(AccountModel account)
         {
             IdentityUserId = account.IdentityUserId;
-            Username = account.Username;
+            Username = account.User != null ? account.User.UserName : account.Username;
             Sex = account.Sex;
             ProfilePhoto = account.ProfilePhoto;
         }

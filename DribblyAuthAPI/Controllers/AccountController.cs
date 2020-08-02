@@ -51,6 +51,13 @@ namespace DribblyAuthAPI.Controllers
             return await _accountService.GetAccountByUsername(userName);
         }
 
+        [HttpPost]
+        [Route("GetAccountDropDownSuggestions")]
+        public async Task<IEnumerable<AccountsChoicesItemModel>> GetAccountDropDownSuggestions(AccountSearchInputModel input)
+        {
+            return await _accountService.GetAccountDropDownSuggestions(input);
+        }
+
         [HttpGet]
         [Route("GetAccountSettings/{userId}")]
         public async Task<AccountSettingsModel> GetAccountSettings(string userId)

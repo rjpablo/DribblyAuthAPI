@@ -1,17 +1,19 @@
 ﻿using Dribbly.Authentication.Models.Auth;
 using Dribbly.Model;
 using Dribbly.Model.Account;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Dribbly.Service.Repositories
 {
-    public class AccountRepository: BaseRepository<AccountModel>, IAccountRepository
+    public class AccountRepository : BaseRepository<AccountModel>, IAccountRepository
     {
         IAuthContext _context;
         IAuthRepository _authRepo;
 
-        public AccountRepository(IAuthContext context, IAuthRepository authRepo) :base(context.Accounts)
+        public AccountRepository(IAuthContext context, IAuthRepository authRepo) : base(context.Accounts)
         {
             _context = context;
             _authRepo = authRepo;
@@ -19,42 +21,28 @@ namespace Dribbly.Service.Repositories
 
         public async Task<AccountModel> GetAccountByUsername(string userName)
         {
-            ApplicationUser user = await _authRepo.FindUserByName(userName);
-
-            if(user == null)
-            {
-                //TODO: log IdentityUser not found
-                return null;
-            }
-
-            AccountModel account = await _context.Accounts.Include(a=>a.ProfilePhoto)
-                .SingleOrDefaultAsync(a => a.IdentityUserId == user.Id);
-
-            if(account == null)
-            {
-                //TODO: log identityUser exists but Account doesn't
-                return null;
-            }
-
-            account.Merge(user);
+            AccountModel account = await _context.Accounts.Include(a => a.ProfilePhoto).Include(a => a.User)
+                .SingleOrDefaultAsync(a => a.User.UserName.Equals(userName, System.StringComparison.OrdinalIgnoreCase));
             return account;
         }
 
         public async Task<AccountModel> GetAccountById(string userId)
         {
-            return await _context.Accounts.SingleOrDefaultAsync(a => a.IdentityUserId == userId);
+            return await _context.Accounts.Include(a => a.ProfilePhoto).Include(a => a.User)
+                .SingleOrDefaultAsync(a => a.IdentityUserId == userId);
         }
 
         public async Task<AccountBasicInfoModel> GetAccountBasicInfo(string userId)
-        {            
-            AccountModel account = await _dbSet.Include(a => a.ProfilePhoto).SingleOrDefaultAsync(a => a.IdentityUserId == userId);
-            if (account == null) return null;
-
-            ApplicationUser user = await _authRepo.FindUserByIdAsync(userId);
-            if (user == null) return null;
-            
-            account.Merge(user);
+        {
+            AccountModel account = await _dbSet.Include(a => a.ProfilePhoto).Include(a => a.User)
+                .SingleOrDefaultAsync(a => a.IdentityUserId == userId);
             return account.ToBasicInfo();
+        }
+
+        public IQueryable<AccountModel> SearchAccounts(AccountSearchInputModel input)
+        {
+            return _dbSet.Include(a => a.ProfilePhoto).Include(a => a.User)
+                .Where(a => a.User.UserName.Contains(input.NameSegment) && !input.ExcludeIds.Contains(a.IdentityUserId));
         }
 
         #region IDisposable Support

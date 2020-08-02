@@ -20,25 +20,28 @@ namespace Dribbly.Model.Account
         /// Serves as a foreign key to the AspNetUsers table.
         /// This field is used as foreign key in other models instead of the inherited Id field.
         /// </summary>
+        [ForeignKey("User")]
         public string IdentityUserId { get; set; }
 
         [NotMapped]
-        public string Username { get; set; }
+        public string Username { get { return User.UserName; } }
 
         [NotMapped]
-        public virtual string Email { get; set; }
+        public virtual string Email { get { return User.Email; } }
 
         public double? HeightInches { get; set; }
 
         public SexEnum? Sex { get; set; }
 
         [NotMapped]
-        public int? Age {
-            get{
+        public int? Age
+        {
+            get
+            {
                 if (BirthDate == null) return null;
                 DateTime now = DateTime.UtcNow;
                 int age = now.Year - BirthDate.Value.Year;
-                if(BirthDate?.Date > now.AddYears(-age))
+                if (BirthDate?.Date > now.AddYears(-age))
                 {
                     age--;
                 }
@@ -52,21 +55,14 @@ namespace Dribbly.Model.Account
 
         [ForeignKey("ProfilePhoto")]
         public long? ProfilePhotoId { get; set; }
-               
+
         public virtual ICollection<AccountPhotoModel> Photos { get; set; }
 
         public virtual PhotoModel ProfilePhoto { get; set; }
 
         public virtual ICollection<AccountVideoModel> Videos { get; set; }
 
-        public void Merge(ApplicationUser user)
-        {
-            if (user != null)
-            {
-                Username = user.UserName;
-                Email = user.Email;
-            }
-        }
+        public virtual ApplicationUser User { get; set; }
 
         public AccountBasicInfoModel ToBasicInfo()
         {

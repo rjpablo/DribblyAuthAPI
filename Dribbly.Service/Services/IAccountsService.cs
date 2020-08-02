@@ -26,5 +26,7 @@ namespace Dribbly.Service.Services
         Task<IEnumerable<VideoModel>> GetAccountVideosAsync(long accountId);
 
         Task<VideoModel> AddVideoAsync(long accountId, VideoModel video, HttpPostedFile file);
+
+        Task<IEnumerable<AccountsChoicesItemModel>> GetAccountDropDownSuggestions(AccountSearchInputModel input);
     }
 }

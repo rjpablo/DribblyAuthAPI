@@ -1,7 +1,10 @@
 ﻿using Dribbly.Core.Utilities;
 using Dribbly.Model;
+using Dribbly.Model.Account;
 using Dribbly.Model.Games;
+using Dribbly.Service.Repositories;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace Dribbly.Service.Services
@@ -12,15 +15,18 @@ namespace Dribbly.Service.Services
         HttpContextBase _httpContext;
         ISecurityUtility _securityUtility;
         IFileService _fileService;
+        IAccountRepository _accountRepo;
 
         public GamesService(IAuthContext context,
             HttpContextBase httpContext,
             ISecurityUtility securityUtility,
+            IAccountRepository accountRepo,
             IFileService fileService) : base(context.Games)
         {
             _context = context;
             _httpContext = httpContext;
             _securityUtility = securityUtility;
+            _accountRepo = accountRepo;
             _fileService = fileService;
         }
 
@@ -29,9 +35,14 @@ namespace Dribbly.Service.Services
             return All();
         }
 
-        public GameModel GetGame(long id)
+        public async Task<GameModel> GetGame(long id)
         {
-            return GetById(id);
+            var game = GetById(id);
+            if (!string.IsNullOrWhiteSpace(game.BookedById))
+            {
+                game.BookedBy = new AccountsChoicesItemModel(await _accountRepo.GetAccountById(game.BookedById));
+            }
+            return game;
         }
 
         public GameModel BookGame(GameModel Game)
