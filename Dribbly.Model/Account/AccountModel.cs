@@ -31,7 +31,7 @@ namespace Dribbly.Model.Account
 
         public double? HeightInches { get; set; }
 
-        public SexEnum? Sex { get; set; }
+        public GenderEnum? Gender { get; set; }
 
         [NotMapped]
         public int? Age

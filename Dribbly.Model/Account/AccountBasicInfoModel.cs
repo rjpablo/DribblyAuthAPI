@@ -9,7 +9,7 @@ namespace Dribbly.Model.Account
 
         public string Username { get; set; }
 
-        public SexEnum? Sex { get; set; }
+        public GenderEnum? Gender { get; set; }
 
         public virtual PhotoModel ProfilePhoto { get; set; }
 
@@ -17,7 +17,7 @@ namespace Dribbly.Model.Account
         {
             IdentityUserId = account.IdentityUserId;
             Username = account.User != null ? account.User.UserName : account.Username;
-            Sex = account.Sex;
+            Gender = account.Gender;
             ProfilePhoto = account.ProfilePhoto;
         }
     }

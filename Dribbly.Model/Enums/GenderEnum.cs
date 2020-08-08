@@ -1,6 +1,6 @@
 ﻿namespace Dribbly.Service.Enums
 {
-    public enum SexEnum
+    public enum GenderEnum
     {
         Male,
         Female,

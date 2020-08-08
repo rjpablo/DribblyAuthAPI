@@ -64,7 +64,7 @@
     <Compile Include="Courts\CourtDetailsViewModel.cs" />
     <Compile Include="Courts\CourtModel.cs" />
     <Compile Include="Courts\CourtSearchInputModel.cs" />
-    <Compile Include="Enums\SexEnum.cs" />
+    <Compile Include="Enums\GenderEnum.cs" />
     <Compile Include="Games\GameModel.cs" />
     <Compile Include="Logs\ErrorLogModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
