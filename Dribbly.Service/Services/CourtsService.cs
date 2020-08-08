@@ -49,6 +49,7 @@ namespace Dribbly.Service.Services
             foreach (var court in courts)
             {
                 CourtDetailsViewModel vm = new CourtDetailsViewModel(court);
+                vm.FollowerCount = await getFollowerCount(court.Id);
                 await PopulateOwner(vm);
                 viewModels.Add(vm);
             }
