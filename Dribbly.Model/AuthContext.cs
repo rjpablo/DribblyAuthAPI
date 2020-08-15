@@ -9,6 +9,7 @@ using Dribbly.Model.Shared;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
 
 namespace Dribbly.Model
@@ -33,6 +34,7 @@ namespace Dribbly.Model
         DbSet<VideoModel> Videos { get; set; }
         DbSet<ContactModel> Contacts { get; set; }
         IDbSet<ApplicationUser> Users { get; set; }
+        DbEntityEntry Entry(object entity);
 
         Database Database { get; }
         Task<int> SaveChangesAsync();

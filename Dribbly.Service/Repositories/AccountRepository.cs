@@ -1,6 +1,7 @@
 ﻿using Dribbly.Authentication.Models.Auth;
 using Dribbly.Model;
 using Dribbly.Model.Account;
+using Dribbly.Service.Enums;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -37,6 +38,15 @@ namespace Dribbly.Service.Repositories
             AccountModel account = await _dbSet.Include(a => a.ProfilePhoto).Include(a => a.User)
                 .SingleOrDefaultAsync(a => a.IdentityUserId == userId);
             return account.ToBasicInfo();
+        }
+
+        public void ActivateByUserId(string userid)
+        {
+            AccountModel account = _dbSet.SingleOrDefault(a => a.IdentityUserId == userid);
+            if(account != null && account.Status != AccountStatusEnum.Active)
+            {
+                account.Status = AccountStatusEnum.Active;
+            }
         }
 
         public IQueryable<AccountModel> SearchAccounts(AccountSearchInputModel input)

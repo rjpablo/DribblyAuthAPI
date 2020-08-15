@@ -1,6 +1,7 @@
 ﻿using Dribbly.Model.Account;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Shared;
+using Dribbly.Service.Enums;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
@@ -28,5 +29,7 @@ namespace Dribbly.Service.Services
         Task<VideoModel> AddVideoAsync(long accountId, VideoModel video, HttpPostedFile file);
 
         Task<IEnumerable<AccountsChoicesItemModel>> GetAccountDropDownSuggestions(AccountSearchInputModel input);
+
+        Task SetStatus(long accountId, AccountStatusEnum status);
     }
 }

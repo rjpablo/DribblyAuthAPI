@@ -3,6 +3,7 @@ using Dribbly.Authentication.Models;
 using Dribbly.Authentication.Models.Auth;
 using Dribbly.Core.Helpers;
 using Dribbly.Model;
+using Dribbly.Model.Account;
 using Dribbly.Service.Repositories;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Dribbly.Authentication.Attributes;
 
 namespace Dribbly.Service.Providers
 {
@@ -110,6 +112,22 @@ namespace Dribbly.Service.Providers
                         return;
                     }
 
+                    using (AccountRepository _accountRepo = new AccountRepository(authContext, _repo))
+                    {
+                        AccountModel account = await _accountRepo.GetAccountById(user.Id);
+                        if (account.IsDeleted)
+                        {
+                            // return the same error for security
+                            context.SetError("invalid_grant", "The user name or password is incorrect.");
+                            return;
+                        }
+                        else if (account.IsInactive)
+                        {
+                            _accountRepo.ActivateByUserId(user.Id);
+                            await authContext.SaveChangesAsync();
+                        }
+                    }
+
                     userPermissions = (await PermissionsRepository.GetUserPermissionsAsync(authContext, user.Id)).ToList();
                 }
 
@@ -122,7 +140,7 @@ namespace Dribbly.Service.Providers
             identity.AddClaim(new Claim("role", "user"));
 
             // Add user claims for authorization
-            // These claims are checked by DribblyAuthorizeAttribute
+            /// These claims are checked by <see cref="DribblyAuthorize"/>
             foreach (var userPermission in userPermissions)
             {
                 identity.AddClaim(new Claim("Permission", userPermission.Value.ToString()));

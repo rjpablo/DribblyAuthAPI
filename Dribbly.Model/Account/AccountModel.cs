@@ -22,17 +22,13 @@ namespace Dribbly.Model.Account
         /// </summary>
         [ForeignKey("User")]
         public string IdentityUserId { get; set; }
-
         [NotMapped]
         public string Username { get { return User.UserName; } }
-
         [NotMapped]
         public virtual string Email { get { return User.Email; } }
-
         public double? HeightInches { get; set; }
-
         public GenderEnum? Gender { get; set; }
-
+        public AccountStatusEnum Status { get; set; } = AccountStatusEnum.Active;
         [NotMapped]
         public int? Age
         {
@@ -48,20 +44,29 @@ namespace Dribbly.Model.Account
                 return age;
             }
         }
-
         public string ContactNo { get; set; }
-
         public DateTime? BirthDate { get; set; }
-
         [ForeignKey("ProfilePhoto")]
         public long? ProfilePhotoId { get; set; }
+        [NotMapped]
+        public bool IsActive
+        {
+            get { return Status == AccountStatusEnum.Active; }
+        }
+        [NotMapped]
+        public bool IsInactive
+        {
+            get { return Status == AccountStatusEnum.Inactive; }
+        }
+        [NotMapped]
+        public bool IsDeleted
+        {
+            get { return Status == AccountStatusEnum.Deleted ; }
+        }
 
         public virtual ICollection<AccountPhotoModel> Photos { get; set; }
-
         public virtual PhotoModel ProfilePhoto { get; set; }
-
         public virtual ICollection<AccountVideoModel> Videos { get; set; }
-
         public virtual ApplicationUser User { get; set; }
 
         public AccountBasicInfoModel ToBasicInfo()

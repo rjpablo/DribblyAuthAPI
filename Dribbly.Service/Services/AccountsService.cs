@@ -6,6 +6,7 @@ using Dribbly.Model.Account;
 using Dribbly.Model.Accounts;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Shared;
+using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
 using System;
 using System.Collections.Generic;
@@ -44,12 +45,6 @@ namespace Dribbly.Service.Services
             return _accountRepo.GetAccountByUsername(userName);
         }
 
-        public async Task AddAsync(AccountModel account)
-        {
-            Add(account);
-            await _context.SaveChangesAsync();
-        }
-
         public async Task<AccountSettingsModel> GetAccountSettingsAsync(string userId)
         {
             return await Task.FromResult(new AccountSettingsModel());
@@ -60,6 +55,40 @@ namespace Dribbly.Service.Services
             List<AccountModel> accounts = await _accountRepo.SearchAccounts(input).ToListAsync();
             return accounts.Select(a => new AccountsChoicesItemModel(a));
         }
+
+        #region Account Updates
+
+        public async Task SetStatus(long accountId, AccountStatusEnum status)
+        {
+            AccountModel account = _dbSet.SingleOrDefault(a => a.Id == accountId);
+            if (account == null)
+            {
+                throw new ObjectNotFoundException
+                    (string.Format("Did not find an account with Account ID {0}", accountId));
+            }
+            else
+            {
+                if (_securityUtility.IsCurrentUser(account.IdentityUserId) ||
+                    AuthenticationService.HasPermission(AccountPermission.UpdateNotOwned))
+                {
+                    // TODO: Remove personal info when deleting an account
+                    account.Status = status;
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new UnauthorizedAccessException("Authorization failed when attempting to set account status.");
+                }
+            }
+        }
+
+        public async Task AddAsync(AccountModel account)
+        {
+            Add(account);
+            await _context.SaveChangesAsync();
+        }
+
+        #endregion
 
         #region Photos
 

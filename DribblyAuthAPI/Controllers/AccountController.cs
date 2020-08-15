@@ -23,6 +23,7 @@ using Dribbly.Model.Shared;
 using System.Web;
 using System.IdentityModel;
 using Newtonsoft.Json;
+using Dribbly.Service.Enums;
 
 namespace DribblyAuthAPI.Controllers
 {
@@ -91,6 +92,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task DeletePhoto(int photoId, int accountId)
         {
             await _accountService.DeletePhoto(photoId, accountId);
+        }
+
+        [HttpPost, Authorize]
+        [Route("SetStatus/{accountId}/{status}")]
+        public async Task SetStatus(long accountId, AccountStatusEnum status)
+        {
+            await _accountService.SetStatus(accountId, status);
         }
 
         #region Account Videos
