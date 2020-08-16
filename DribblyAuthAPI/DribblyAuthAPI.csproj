@@ -307,6 +307,10 @@
     <Compile Include="Migrations\202008081254053_Modify_Accounts_Add_Status_Column.Designer.cs">
       <DependentUpon>202008081254053_Modify_Accounts_Add_Status_Column.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008151610128_Modify_Accounts_Add_IsPublic.cs" />
+    <Compile Include="Migrations\202008151610128_Modify_Accounts_Add_IsPublic.Designer.cs">
+      <DependentUpon>202008151610128_Modify_Accounts_Add_IsPublic.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -432,6 +436,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008081254053_Modify_Accounts_Add_Status_Column.resx">
       <DependentUpon>202008081254053_Modify_Accounts_Add_Status_Column.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008151610128_Modify_Accounts_Add_IsPublic.resx">
+      <DependentUpon>202008151610128_Modify_Accounts_Add_IsPublic.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -59,7 +59,7 @@ namespace DribblyAuthAPI.Controllers
             return await _accountService.GetAccountDropDownSuggestions(input);
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         [Route("GetAccountSettings/{userId}")]
         public async Task<AccountSettingsModel> GetAccountSettings(string userId)
         {
@@ -99,6 +99,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task SetStatus(long accountId, AccountStatusEnum status)
         {
             await _accountService.SetStatus(accountId, status);
+        }
+
+        [HttpPost, Authorize]
+        [Route("SetIsPublic/{userId}/{isPublic}")]
+        public async Task SetIsPublic(string userId, bool IsPublic)
+        {
+            await _accountService.SetIsPublic(userId, IsPublic);
         }
 
         #region Account Videos

@@ -14,6 +14,7 @@ using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -47,7 +48,28 @@ namespace Dribbly.Service.Services
 
         public async Task<AccountSettingsModel> GetAccountSettingsAsync(string userId)
         {
-            return await Task.FromResult(new AccountSettingsModel());
+            AccountSettingsModel settings = new AccountSettingsModel();
+
+            AccountModel account = await _accountRepo.GetAccountById(userId);
+            if (account == null)
+            {
+                throw new ObjectNotFoundException
+                    (string.Format("Did not find an account with User ID {0}", userId));
+            }
+            else
+            {
+                if (_securityUtility.IsCurrentUser(account.IdentityUserId) ||
+                    AuthenticationService.HasPermission(AccountPermission.UpdateNotOwned))
+                {
+                    settings.IsPublic = account.IsPublic;
+                }
+                else
+                {
+                    throw new UnauthorizedAccessException("Authorization failed when attempting to retrieve account settings.");
+                }
+            }
+
+            return await Task.FromResult(settings);
         }
 
         public async Task<IEnumerable<AccountsChoicesItemModel>> GetAccountDropDownSuggestions(AccountSearchInputModel input)
@@ -86,6 +108,30 @@ namespace Dribbly.Service.Services
         {
             Add(account);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task SetIsPublic(string userId, bool IsPublic)
+        {
+            AccountModel account = await _context.Accounts.SingleOrDefaultAsync(a=>a.IdentityUserId == userId);
+            if (account == null)
+            {
+                throw new ObjectNotFoundException
+                    (string.Format("Did not find an account with User ID {0}", userId));
+            }
+            else
+            {
+                if (_securityUtility.IsCurrentUser(account.IdentityUserId) ||
+                    AuthenticationService.HasPermission(AccountPermission.UpdateNotOwned))
+                {
+                    // TODO: Remove personal info when deleting an account
+                    account.IsPublic = IsPublic;
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new UnauthorizedAccessException("Authorization failed when attempting to set IsPublic property.");
+                }
+            }
         }
 
         #endregion
