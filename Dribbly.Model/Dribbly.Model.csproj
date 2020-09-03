@@ -68,6 +68,9 @@
     <Compile Include="Enums\GenderEnum.cs" />
     <Compile Include="Games\GameModel.cs" />
     <Compile Include="Logs\ErrorLogModel.cs" />
+    <Compile Include="Notifications\GameBookedNotificationModel.cs" />
+    <Compile Include="Notifications\GetNewNotificationsResultModel.cs" />
+    <Compile Include="Notifications\UnviewedCountModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\SettingModel.cs" />
     <Compile Include="Shared\AccountPhotoModel.cs" />
@@ -77,8 +80,10 @@
     <Compile Include="Shared\AccountVideoModel.cs" />
     <Compile Include="Shared\CourtVideoModel.cs" />
     <Compile Include="Courts\CourtFollowingModel.cs" />
+    <Compile Include="Notifications\NotificationModel.cs" />
     <Compile Include="Shared\EventModel.cs" />
     <Compile Include="Shared\FollowResultModel.cs" />
+    <Compile Include="Notifications\NotificationTypeEnum.cs" />
     <Compile Include="Shared\PhoneVerificationResultModel.cs" />
     <Compile Include="Shared\PhotoModel.cs" />
     <Compile Include="Shared\VideoModel.cs" />
@@ -97,5 +102,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

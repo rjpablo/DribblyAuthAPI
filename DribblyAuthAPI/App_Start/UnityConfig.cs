@@ -38,6 +38,8 @@ namespace DribblyAuthAPI
             container.RegisterType<ILogsService, LogsService>();
             container.RegisterType<IPermissionsService, PermissionsService>();
             container.RegisterType<IPermissionsRepository, PermissionsRepository>();
+            container.RegisterType<INotificationsRepository, NotificationsRepository>();
+            container.RegisterType<INotificationsService, NotificationsService>();
 
             config.DependencyResolver = new UnityDependencyResolver(container);
         }

@@ -158,6 +158,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ContactsController.cs" />
+    <Compile Include="Controllers\NotificationsController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
     <Compile Include="Controllers\LogsController.cs" />
     <Compile Include="Controllers\GamesController.cs" />
@@ -311,6 +312,14 @@
     <Compile Include="Migrations\202008151610128_Modify_Accounts_Add_IsPublic.Designer.cs">
       <DependentUpon>202008151610128_Modify_Accounts_Add_IsPublic.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008300955046_Add_Tables_BookedGameNotifications_and_Notications.cs" />
+    <Compile Include="Migrations\202008300955046_Add_Tables_BookedGameNotifications_and_Notications.Designer.cs">
+      <DependentUpon>202008300955046_Add_Tables_BookedGameNotifications_and_Notications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009010358307_Modify_GameBookedNofications_Add_FK_Constraint_To_AspNetUsers.cs" />
+    <Compile Include="Migrations\202009010358307_Modify_GameBookedNofications_Add_FK_Constraint_To_AspNetUsers.Designer.cs">
+      <DependentUpon>202009010358307_Modify_GameBookedNofications_Add_FK_Constraint_To_AspNetUsers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -439,6 +448,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008151610128_Modify_Accounts_Add_IsPublic.resx">
       <DependentUpon>202008151610128_Modify_Accounts_Add_IsPublic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008300955046_Add_Tables_BookedGameNotifications_and_Notications.resx">
+      <DependentUpon>202008300955046_Add_Tables_BookedGameNotifications_and_Notications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009010358307_Modify_GameBookedNofications_Add_FK_Constraint_To_AspNetUsers.resx">
+      <DependentUpon>202009010358307_Modify_GameBookedNofications_Add_FK_Constraint_To_AspNetUsers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

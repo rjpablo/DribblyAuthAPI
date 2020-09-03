@@ -104,12 +104,14 @@
     <Compile Include="Repositories\ICourtsRepository.cs" />
     <Compile Include="Repositories\IPermissionsRepository.cs" />
     <Compile Include="Repositories\PermissionsRepository.cs" />
+    <Compile Include="Repositories\NotificationsRepository.cs" />
     <Compile Include="Repositories\SettingsRepository.cs" />
     <Compile Include="Services\AccountsService.cs" />
     <Compile Include="Services\ApplicationUserManager.cs" />
     <Compile Include="Services\BaseEntityService.cs" />
     <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\ContactsService.cs" />
+    <Compile Include="Services\NotificationsService.cs" />
     <Compile Include="Services\IContactsService.cs" />
     <Compile Include="Services\PermissionService.cs" />
     <Compile Include="Services\CourtsService.cs" />

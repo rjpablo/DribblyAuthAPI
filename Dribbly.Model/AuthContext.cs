@@ -5,6 +5,7 @@ using Dribbly.Model.Accounts;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Games;
 using Dribbly.Model.Logs;
+using Dribbly.Model.Notifications;
 using Dribbly.Model.Shared;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -36,8 +37,13 @@ namespace Dribbly.Model
         IDbSet<ApplicationUser> Users { get; set; }
         DbEntityEntry Entry(object entity);
 
+        #region Notifications
+        DbSet<NotificationModel> Notifications { get; set; }
+        #endregion
+
         Database Database { get; }
         Task<int> SaveChangesAsync();
+        DbSet<GameBookedNotificationModel> GameBookedNotifications { get; set; }
         int SaveChanges();
     }
 
@@ -70,6 +76,11 @@ namespace Dribbly.Model
         public DbSet<AccountVideoModel> AccountVideos { get; set; }
         public DbSet<VideoModel> Videos { get; set; }
         public DbSet<ContactModel> Contacts { get; set; }
+
+        #region Notifications
+        public DbSet<NotificationModel> Notifications { get; set; }
+        public DbSet<GameBookedNotificationModel> GameBookedNotifications { get; set; }
+        #endregion
 
         public static AuthContext Create()
         {
