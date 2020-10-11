@@ -35,6 +35,8 @@ namespace Dribbly.Model.Shared
         // navigation properties
         public virtual CourtModel Court { get; set; }
 
-        public virtual AccountsChoicesItemModel BookedBy { get; set; }
+        public virtual AccountBasicInfoModel BookedBy { get; set; }
+
+        public virtual AccountsChoicesItemModel BookedByChoice { get; set; }
     }
 }

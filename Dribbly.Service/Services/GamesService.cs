@@ -6,6 +6,7 @@ using Dribbly.Model.Notifications;
 using Dribbly.Service.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -45,10 +46,15 @@ namespace Dribbly.Service.Services
 
         public async Task<GameModel> GetGame(long id)
         {
-            var game = GetById(id);
+            var game = await _dbSet.Include(g => g.Court).SingleOrDefaultAsync(g => g.Id == id);
             if (!string.IsNullOrWhiteSpace(game.BookedById))
             {
-                game.BookedBy = new AccountsChoicesItemModel(await _accountRepo.GetAccountById(game.BookedById));
+                game.BookedBy = await _accountRepo.GetAccountBasicInfo(game.BookedById);
+                var account = await _accountRepo.GetAccountById(game.BookedById);
+                if (account != null)
+                {
+                    game.BookedByChoice = new AccountsChoicesItemModel(account);
+                }
             }
             return game;
         }

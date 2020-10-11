@@ -37,6 +37,10 @@ namespace Dribbly.Service.Repositories
         {
             AccountModel account = await _dbSet.Include(a => a.ProfilePhoto).Include(a => a.User)
                 .SingleOrDefaultAsync(a => a.IdentityUserId == userId);
+            if(account == null)
+            {
+                return null;
+            }
             return account.ToBasicInfo();
         }
 
