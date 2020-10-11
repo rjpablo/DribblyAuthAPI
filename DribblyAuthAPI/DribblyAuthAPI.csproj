@@ -320,6 +320,10 @@
     <Compile Include="Migrations\202009010358307_Modify_GameBookedNofications_Add_FK_Constraint_To_AspNetUsers.Designer.cs">
       <DependentUpon>202009010358307_Modify_GameBookedNofications_Add_FK_Constraint_To_AspNetUsers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010111823073_Add_CourtReviews_Table.cs" />
+    <Compile Include="Migrations\202010111823073_Add_CourtReviews_Table.Designer.cs">
+      <DependentUpon>202010111823073_Add_CourtReviews_Table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -454,6 +458,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202009010358307_Modify_GameBookedNofications_Add_FK_Constraint_To_AspNetUsers.resx">
       <DependentUpon>202009010358307_Modify_GameBookedNofications_Add_FK_Constraint_To_AspNetUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010111823073_Add_CourtReviews_Table.resx">
+      <DependentUpon>202010111823073_Add_CourtReviews_Table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

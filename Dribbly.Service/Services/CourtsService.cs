@@ -180,6 +180,22 @@ namespace Dribbly.Service.Services
 
         #endregion
 
+        #region Reviews
+
+        public async Task<IEnumerable<CourtReviewModel>> GetReviewsAsync(long courtId)
+        {
+            var reviews = await _context.CourtReivews.Where(r => r.CourtId == courtId)
+                .OrderByDescending(r => r.DateAdded).ToListAsync();
+            foreach (CourtReviewModel review in reviews)
+            {
+                review.ReviewedBy = await _accountRepo.GetAccountBasicInfo(review.ReviewedById);
+            }
+
+            return reviews;
+        }
+
+        #endregion
+
         #region Court Games
 
         public IEnumerable<GameModel> GetCourtGames(long courtId)

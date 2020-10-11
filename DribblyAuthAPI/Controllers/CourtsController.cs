@@ -60,6 +60,13 @@ namespace DribblyAuthAPI.Controllers
             return _service.GetCourtGames(courtId);
         }
 
+        [HttpGet]
+        [Route("GetReviews/{courtId}")]
+        public async Task<IEnumerable<CourtReviewModel>> GetReviews(long courtId)
+        {
+            return await _service.GetReviewsAsync(courtId);
+        }
+
         [HttpPost]
         [Route("FindCourts")]
         public async Task<IEnumerable<CourtModel>> FindCourts

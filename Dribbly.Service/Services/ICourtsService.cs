@@ -37,5 +37,11 @@ namespace Dribbly.Service.Services
 
         Task<FollowResultModel> FollowCourtAsync(long courtId, bool isFollowing);
 
+        #region Reviews
+
+        Task<IEnumerable<CourtReviewModel>> GetReviewsAsync(long courtId);
+
+        #endregion
+
     }
 }

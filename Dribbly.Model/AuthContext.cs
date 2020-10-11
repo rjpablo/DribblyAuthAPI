@@ -34,6 +34,7 @@ namespace Dribbly.Model
         DbSet<AccountVideoModel> AccountVideos { get; set; }
         DbSet<VideoModel> Videos { get; set; }
         DbSet<ContactModel> Contacts { get; set; }
+        DbSet<CourtReviewModel> CourtReivews { get; set; }
         IDbSet<ApplicationUser> Users { get; set; }
         DbEntityEntry Entry(object entity);
 
@@ -76,6 +77,7 @@ namespace Dribbly.Model
         public DbSet<AccountVideoModel> AccountVideos { get; set; }
         public DbSet<VideoModel> Videos { get; set; }
         public DbSet<ContactModel> Contacts { get; set; }
+        public DbSet<CourtReviewModel> CourtReivews { get; set; }
 
         #region Notifications
         public DbSet<NotificationModel> Notifications { get; set; }
