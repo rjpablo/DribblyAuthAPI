@@ -96,7 +96,7 @@
                     Id = 1,
                     DateAdded = new DateTime(2020, 1, 2),
                     RatePerHour = 2500,
-                    Rating = 0.6M
+                    Rating = 0.6
                 },
                 new CourtModel
                 {
@@ -104,7 +104,7 @@
                     Id = 2,
                     DateAdded = new DateTime(2020, 1, 5),
                     RatePerHour = 250,
-                    Rating = 0.8M
+                    Rating = 0.8
                 },
                 new CourtModel
                 {
@@ -112,7 +112,7 @@
                     Id = 3,
                     DateAdded = new DateTime(2020, 1, 5),
                     RatePerHour = 450,
-                    Rating = 0.3M
+                    Rating = 0.3
                 },
                 new CourtModel
                 {
@@ -120,7 +120,7 @@
                     Id = 4,
                     DateAdded = new DateTime(2020, 1, 5),
                     RatePerHour = 300,
-                    Rating = 0.5M
+                    Rating = 0.5
                 },
                 new CourtModel
                 {
@@ -128,7 +128,7 @@
                     Id = 5,
                     DateAdded = new DateTime(2020, 1, 5),
                     RatePerHour = 250,
-                    Rating = 0.6M
+                    Rating = 0.6
                 });
         }
 

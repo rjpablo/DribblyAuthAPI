@@ -36,5 +36,10 @@ namespace Dribbly.Core.Utilities
             return userId.Equals(GetUserId()) && !string.IsNullOrEmpty(userId);
         }
 
+        public bool IsAuthenticated()
+        {
+            return _httpContext.User.Identity.IsAuthenticated;
+        }
+
     }
 }

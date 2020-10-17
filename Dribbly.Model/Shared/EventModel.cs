@@ -1,6 +1,7 @@
 ﻿using Dribbly.Core.Models;
 using Dribbly.Model.Account;
 using Dribbly.Model.Courts;
+using Dribbly.Service.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -29,6 +30,13 @@ namespace Dribbly.Model.Shared
         public long CourtId { get; set; }
 
         public string BookedById { get; set; }
+
+        /// <summary>
+        /// Whether or not the user who booked this event has reviewed the court based on this event.
+        /// </summary>
+        public bool HasReviewed { get; set; }
+
+        public EventStatusEnum Status { get; set; }
 
         //public string BookedFor { get; set; }
 

@@ -12,6 +12,13 @@ namespace Dribbly.Model.Courts
 
         public bool IsFollowed { get; set; }
 
+        public long ReviewCount { get; set; }
+
+        /// <summary>
+        /// Whether or not the current user can review the court
+        /// </summary>
+        public bool CanReview { get; set; }
+
         public CourtDetailsViewModel(CourtModel c)
         {
             Id = c.Id;

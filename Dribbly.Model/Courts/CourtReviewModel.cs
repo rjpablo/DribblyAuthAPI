@@ -1,7 +1,4 @@
-﻿using Dribbly.Authentication.Models.Auth;
-using Dribbly.Core.Models;
-using Dribbly.Model.Account;
-using Dribbly.Model.Shared;
+﻿using Dribbly.Model.Shared;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,6 +12,11 @@ namespace Dribbly.Model.Courts
 
         // navigation properties
         public virtual CourtModel Court { get; set; }
+
+        [ForeignKey("Event")]
+        public long EventId { get; set; }
+
+        public EventModel Event { get; set; }
 
     }
 }

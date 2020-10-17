@@ -38,6 +38,13 @@ namespace DribblyAuthAPI.Controllers
         {
             return await _service.GetCourtAsync(id);
         }
+        
+        [HttpGet]
+        [Route("GetCodeReviewModal/{courtId}")]
+        public async Task<CourtReviewModalModel> GetCodeReviewModal(long courtId)
+        {
+            return await _service.GetCodeReviewModalAsync(courtId);
+        }
 
         [HttpGet]
         [Route("GetCourtPhotos/{courtId}")]
@@ -88,6 +95,13 @@ namespace DribblyAuthAPI.Controllers
         public IEnumerable<PhotoModel> AddCourtPhotos(long courtId)
         {
             return _service.AddPhotos(courtId);
+        }
+
+        [HttpPost, Authorize]
+        [Route("SubmitReview")]
+        public async Task SubmitReview([FromBody] CourtReviewModel review)
+        {
+            await _service.SubmitReviewAsync(review);
         }
 
         [HttpPost, Authorize]

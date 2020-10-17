@@ -19,6 +19,8 @@ namespace Dribbly.Service.Services
 
         Task<IEnumerable<VideoModel>> GetCourtVideosAsync(long courtId);
 
+        Task<CourtReviewModalModel> GetCodeReviewModalAsync(long courtId);
+
         long Register(CourtModel court);
 
         IEnumerable<PhotoModel> AddPhotos(long courtId);
@@ -40,6 +42,8 @@ namespace Dribbly.Service.Services
         #region Reviews
 
         Task<IEnumerable<CourtReviewModel>> GetReviewsAsync(long courtId);
+
+        Task SubmitReviewAsync(CourtReviewModel review);
 
         #endregion
 

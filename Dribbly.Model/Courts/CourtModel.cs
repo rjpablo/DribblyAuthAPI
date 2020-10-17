@@ -20,7 +20,7 @@ namespace Dribbly.Model.Courts
 
         public decimal RatePerHour { get; set; }
 
-        public decimal? Rating { get; set; }
+        public double Rating { get; set; }
 
         [ForeignKey("PrimaryPhoto")]
         public long? PrimaryPhotoId { get; set; }

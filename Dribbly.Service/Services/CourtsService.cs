@@ -49,7 +49,7 @@ namespace Dribbly.Service.Services
             foreach (var court in courts)
             {
                 CourtDetailsViewModel vm = new CourtDetailsViewModel(court);
-                vm.FollowerCount = await getFollowerCount(court.Id);
+                vm.FollowerCount = await getFollowerCountAsync(court.Id);
                 await PopulateOwner(vm);
                 viewModels.Add(vm);
             }
@@ -63,14 +63,55 @@ namespace Dribbly.Service.Services
             var result = new CourtDetailsViewModel(court);
             string currentUserId = _securityUtility.GetUserId();
             result.IsFollowed = _context.CourtFollowings.Any(f => f.CourtId == id && f.FollowedById == currentUserId);
-            await PopulateOwner(result);
-            result.FollowerCount = await getFollowerCount(court.Id);
+
+            Task populateOwnerTask = PopulateOwner(result);
+            Task<long> followerCountTask = getFollowerCountAsync(court.Id);
+            Task<EventModel> mostRecentEventTask = GetCurrentUserMostRecentEvent(court.Id);
+            await Task.WhenAll(populateOwnerTask, followerCountTask, mostRecentEventTask);
+
+            result.FollowerCount = followerCountTask.Result;
+            result.ReviewCount = await _context.CourtReivews.Where(r => r.CourtId == id).CountAsync();
+            result.CanReview = mostRecentEventTask.Result == null ? false : true;
             return result;
         }
 
-        private async Task<long> getFollowerCount(long courtId)
+        private async Task<EventModel> GetCurrentUserMostRecentEvent(long courtId)
         {
-            return await _context.CourtFollowings.Where(f => f.CourtId == courtId).CountAsync();
+            using (AuthContext context = new AuthContext())
+            {
+                if (_securityUtility.IsAuthenticated())
+                {
+                    string userId = _securityUtility.GetUserId();
+                    EventModel mostRecentEvent = await context.Events.Where(e => e.CourtId == courtId && e.BookedById == userId &&
+                    e.Start < DateTime.UtcNow && e.End < DateTime.UtcNow && e.Status == Enums.EventStatusEnum.Approved && !e.HasReviewed)
+                        .OrderByDescending(e => e.End).FirstOrDefaultAsync();
+                    return mostRecentEvent;
+                }
+                return null;
+            }
+        }
+
+        public async Task<CourtReviewModalModel> GetCodeReviewModalAsync(long courtId)
+        {
+            EventModel mostRecentEvent = await GetCurrentUserMostRecentEvent(courtId);
+            if(mostRecentEvent == null)
+            {
+                return null;
+            }
+
+            return new CourtReviewModalModel
+            {
+                Event = mostRecentEvent,
+                Court = await GetByIdAsync(courtId)
+            };
+        }
+
+        private async Task<long> getFollowerCountAsync(long courtId)
+        {
+            using (AuthContext context = new AuthContext())
+            {
+                return await context.CourtFollowings.Where(f => f.CourtId == courtId).CountAsync();
+            }
         }
 
         private async Task PopulateOwner(CourtDetailsViewModel court)
@@ -118,7 +159,7 @@ namespace Dribbly.Service.Services
 
             }
 
-            result.newFollowerCount = await getFollowerCount(courtId); ;
+            result.newFollowerCount = await getFollowerCountAsync(courtId); ;
             return result;
         }
 
@@ -192,6 +233,29 @@ namespace Dribbly.Service.Services
             }
 
             return reviews;
+        }
+
+
+
+        public async Task SubmitReviewAsync(CourtReviewModel review)
+        {
+            review.ReviewedById = _securityUtility.GetUserId();
+            CourtModel court = GetById(review.CourtId);
+            if (court.OwnerId == review.ReviewedById)
+            {
+                throw new InvalidOperationException("app.Error_CantRateOwnCourt");
+            }
+            EventModel reviewEvent = _context.Events.SingleOrDefault(e => e.Id == review.EventId);
+            if(reviewEvent == null)
+            {
+                throw new InvalidOperationException("app.Error_EventNotFound");
+            }
+            reviewEvent.HasReviewed = true;
+            review.DateAdded = DateTime.UtcNow;
+            _context.CourtReivews.AddOrUpdate(review);
+            await _context.SaveChangesAsync();
+            court.Rating = await _context.CourtReivews.Where(r => r.CourtId == review.CourtId).AverageAsync(r => r.Rating);
+            await _context.SaveChangesAsync();
         }
 
         #endregion
