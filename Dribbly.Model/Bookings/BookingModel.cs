@@ -6,13 +6,13 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Dribbly.Model.Shared
+namespace Dribbly.Model.Bookings
 {
     /// <summary>
     /// All games (any sport) should extend this model
     /// </summary>
-    [Table("Events")]
-    public abstract class EventModel: BaseEntityModel
+    [Table("Bookings")]
+    public abstract class BookingModel : BaseEntityModel
     {
         [Required]
         public DateTime Start { get; set; }
@@ -32,11 +32,11 @@ namespace Dribbly.Model.Shared
         public string BookedById { get; set; }
 
         /// <summary>
-        /// Whether or not the user who booked this event has reviewed the court based on this event.
+        /// Whether or not the user who booked this booking has reviewed the court based on this booking.
         /// </summary>
         public bool HasReviewed { get; set; }
 
-        public EventStatusEnum Status { get; set; }
+        public BookingStatusEnum Status { get; set; }
 
         //public string BookedFor { get; set; }
 

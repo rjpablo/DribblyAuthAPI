@@ -340,6 +340,10 @@
     <Compile Include="Migrations\202010190154432_Rename_Table_GameBookedNotifications_To_NewBookingNotifications.Designer.cs">
       <DependentUpon>202010190154432_Rename_Table_GameBookedNotifications_To_NewBookingNotifications.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010190310179_Rename_Table_Events_To_Bookings.cs" />
+    <Compile Include="Migrations\202010190310179_Rename_Table_Events_To_Bookings.Designer.cs">
+      <DependentUpon>202010190310179_Rename_Table_Events_To_Bookings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -489,6 +493,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010190154432_Rename_Table_GameBookedNotifications_To_NewBookingNotifications.resx">
       <DependentUpon>202010190154432_Rename_Table_GameBookedNotifications_To_NewBookingNotifications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010190310179_Rename_Table_Events_To_Bookings.resx">
+      <DependentUpon>202010190310179_Rename_Table_Events_To_Bookings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

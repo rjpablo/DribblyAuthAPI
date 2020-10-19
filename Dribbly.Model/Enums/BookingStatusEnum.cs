@@ -1,6 +1,6 @@
 ﻿namespace Dribbly.Service.Enums
 {
-    public enum EventStatusEnum
+    public enum BookingStatusEnum
     {
         WaitingForApproval,
         Approved,

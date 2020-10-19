@@ -63,7 +63,7 @@ namespace Dribbly.Service.Services
         {
             var currentUserId = _securityUtility.GetUserId();
             Game.AddedBy = currentUserId;
-            Game.Status = Enums.EventStatusEnum.Approved;
+            Game.Status = Enums.BookingStatusEnum.Approved;
             Add(Game);
             _context.SaveChanges();
             NotificationTypeEnum Type = Game.BookedById == currentUserId ?

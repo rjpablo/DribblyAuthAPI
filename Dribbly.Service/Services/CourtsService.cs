@@ -2,6 +2,7 @@
 using Dribbly.Core.Enums.Permissions;
 using Dribbly.Core.Utilities;
 using Dribbly.Model;
+using Dribbly.Model.Bookings;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Games;
 using Dribbly.Model.Shared;
@@ -66,26 +67,26 @@ namespace Dribbly.Service.Services
 
             Task populateOwnerTask = PopulateOwner(result);
             Task<long> followerCountTask = getFollowerCountAsync(court.Id);
-            Task<EventModel> mostRecentEventTask = GetCurrentUserMostRecentEvent(court.Id);
-            await Task.WhenAll(populateOwnerTask, followerCountTask, mostRecentEventTask);
+            Task<BookingModel> mostRecentBookingTask = GetCurrentUserMostRecentBooking(court.Id);
+            await Task.WhenAll(populateOwnerTask, followerCountTask, mostRecentBookingTask);
 
             result.FollowerCount = followerCountTask.Result;
             result.ReviewCount = await _context.CourtReivews.Where(r => r.CourtId == id).CountAsync();
-            result.CanReview = mostRecentEventTask.Result == null ? false : true;
+            result.CanReview = mostRecentBookingTask.Result == null ? false : true;
             return result;
         }
 
-        private async Task<EventModel> GetCurrentUserMostRecentEvent(long courtId)
+        private async Task<BookingModel> GetCurrentUserMostRecentBooking(long courtId)
         {
             using (AuthContext context = new AuthContext())
             {
                 if (_securityUtility.IsAuthenticated())
                 {
                     string userId = _securityUtility.GetUserId();
-                    EventModel mostRecentEvent = await context.Events.Where(e => e.CourtId == courtId && e.BookedById == userId &&
-                    e.Start < DateTime.UtcNow && e.End < DateTime.UtcNow && e.Status == Enums.EventStatusEnum.Approved && !e.HasReviewed)
+                    BookingModel mostRecentBooking = await context.Bookings.Where(e => e.CourtId == courtId && e.BookedById == userId &&
+                    e.Start < DateTime.UtcNow && e.End < DateTime.UtcNow && e.Status == Enums.BookingStatusEnum.Approved && !e.HasReviewed)
                         .OrderByDescending(e => e.End).FirstOrDefaultAsync();
-                    return mostRecentEvent;
+                    return mostRecentBooking;
                 }
                 return null;
             }
@@ -93,15 +94,15 @@ namespace Dribbly.Service.Services
 
         public async Task<CourtReviewModalModel> GetCodeReviewModalAsync(long courtId)
         {
-            EventModel mostRecentEvent = await GetCurrentUserMostRecentEvent(courtId);
-            if(mostRecentEvent == null)
+            BookingModel mostRecentBooking = await GetCurrentUserMostRecentBooking(courtId);
+            if(mostRecentBooking == null)
             {
                 return null;
             }
 
             return new CourtReviewModalModel
             {
-                Event = mostRecentEvent,
+                Booking = mostRecentBooking,
                 Court = await GetByIdAsync(courtId)
             };
         }
@@ -245,12 +246,12 @@ namespace Dribbly.Service.Services
             {
                 throw new InvalidOperationException("app.Error_CantRateOwnCourt");
             }
-            EventModel reviewEvent = _context.Events.SingleOrDefault(e => e.Id == review.EventId);
-            if(reviewEvent == null)
+            BookingModel reviewBooking = _context.Bookings.SingleOrDefault(e => e.Id == review.EventId);
+            if(reviewBooking == null)
             {
-                throw new InvalidOperationException("app.Error_EventNotFound");
+                throw new InvalidOperationException("app.Error_BookingNotFound");
             }
-            reviewEvent.HasReviewed = true;
+            reviewBooking.HasReviewed = true;
             review.DateAdded = DateTime.UtcNow;
             _context.CourtReivews.AddOrUpdate(review);
             await _context.SaveChangesAsync();

@@ -67,7 +67,7 @@
     <Compile Include="Courts\CourtModel.cs" />
     <Compile Include="Courts\CourtSearchInputModel.cs" />
     <Compile Include="Enums\AccountStatusEnum.cs" />
-    <Compile Include="Enums\EventStatusEnum.cs" />
+    <Compile Include="Enums\BookingStatusEnum.cs" />
     <Compile Include="Enums\GenderEnum.cs" />
     <Compile Include="Games\GameModel.cs" />
     <Compile Include="Logs\ErrorLogModel.cs" />
@@ -84,7 +84,7 @@
     <Compile Include="Shared\CourtVideoModel.cs" />
     <Compile Include="Courts\CourtFollowingModel.cs" />
     <Compile Include="Notifications\NotificationModel.cs" />
-    <Compile Include="Shared\EventModel.cs" />
+    <Compile Include="Bookings\BookingModel.cs" />
     <Compile Include="Shared\FollowResultModel.cs" />
     <Compile Include="Notifications\NotificationTypeEnum.cs" />
     <Compile Include="Shared\PhoneVerificationResultModel.cs" />

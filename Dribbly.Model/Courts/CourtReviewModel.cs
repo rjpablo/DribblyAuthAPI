@@ -1,4 +1,5 @@
-﻿using Dribbly.Model.Shared;
+﻿using Dribbly.Model.Bookings;
+using Dribbly.Model.Shared;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -13,10 +14,10 @@ namespace Dribbly.Model.Courts
         // navigation properties
         public virtual CourtModel Court { get; set; }
 
-        [ForeignKey("Event")]
+        [ForeignKey(nameof(Booking))]
         public long EventId { get; set; }
 
-        public EventModel Event { get; set; }
+        public BookingModel Booking { get; set; }
 
     }
 }
