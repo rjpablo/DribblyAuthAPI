@@ -246,7 +246,7 @@ namespace Dribbly.Service.Services
             {
                 throw new InvalidOperationException("app.Error_CantRateOwnCourt");
             }
-            BookingModel reviewBooking = _context.Bookings.SingleOrDefault(e => e.Id == review.EventId);
+            BookingModel reviewBooking = _context.Bookings.SingleOrDefault(e => e.Id == review.BookingId);
             if(reviewBooking == null)
             {
                 throw new InvalidOperationException("app.Error_BookingNotFound");

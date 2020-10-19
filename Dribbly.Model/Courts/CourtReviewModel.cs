@@ -15,7 +15,7 @@ namespace Dribbly.Model.Courts
         public virtual CourtModel Court { get; set; }
 
         [ForeignKey(nameof(Booking))]
-        public long EventId { get; set; }
+        public long BookingId { get; set; }
 
         public BookingModel Booking { get; set; }
 
