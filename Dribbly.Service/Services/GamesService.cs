@@ -69,7 +69,7 @@ namespace Dribbly.Service.Services
             NotificationTypeEnum Type = Game.BookedById == currentUserId ?
                 NotificationTypeEnum.GameBookedForOwner :
                 NotificationTypeEnum.GameBookedForBooker;
-            await _notificationsRepo.TryAddAsync(new GameBookedNotificationModel
+            await _notificationsRepo.TryAddAsync(new NewBookingNotificationModel
             {
                 GameId = Game.Id,
                 BookedById = Game.BookedById,
@@ -89,7 +89,7 @@ namespace Dribbly.Service.Services
             NotificationTypeEnum Type = Game.BookedById == currentUserId ?
                 NotificationTypeEnum.GameBookedForOwner :
                 NotificationTypeEnum.GameBookedForBooker;
-            await _notificationsRepo.TryAddAsync(new GameBookedNotificationModel
+            await _notificationsRepo.TryAddAsync(new NewBookingNotificationModel
             {
                 GameId = Game.Id,
                 BookedById = Game.BookedById,

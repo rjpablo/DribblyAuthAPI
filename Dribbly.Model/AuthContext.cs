@@ -44,7 +44,7 @@ namespace Dribbly.Model
 
         Database Database { get; }
         Task<int> SaveChangesAsync();
-        DbSet<GameBookedNotificationModel> GameBookedNotifications { get; set; }
+        DbSet<NewBookingNotificationModel> GameBookedNotifications { get; set; }
         int SaveChanges();
     }
 
@@ -81,7 +81,7 @@ namespace Dribbly.Model
 
         #region Notifications
         public DbSet<NotificationModel> Notifications { get; set; }
-        public DbSet<GameBookedNotificationModel> GameBookedNotifications { get; set; }
+        public DbSet<NewBookingNotificationModel> GameBookedNotifications { get; set; }
         #endregion
 
         public static AuthContext Create()

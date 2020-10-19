@@ -26,7 +26,7 @@ namespace Dribbly.Service.Repositories
                 {
                     case NotificationTypeEnum.GameBookedForOwner:
                     case NotificationTypeEnum.GameBookedForBooker:
-                        _context.GameBookedNotifications.Add((GameBookedNotificationModel)notification);
+                        _context.GameBookedNotifications.Add((NewBookingNotificationModel)notification);
                         break;
                 }
                 await _context.SaveChangesAsync();

@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dribbly.Model.Notifications
 {
-    [Table("GameBookedNotifications")]
-    public class GameBookedNotificationModel : NotificationModel
+    [Table("NewBookingNotifications")]
+    public class NewBookingNotificationModel : NotificationModel
     {
         [ForeignKey(nameof(Game))]
         public long GameId { get; set; }
@@ -28,7 +28,7 @@ namespace Dribbly.Model.Notifications
     }
 
     [NotMapped]
-    public class GameBookedNotificationViewModel : NotificationModel
+    public class NewBookingNotificationViewModel : NotificationModel
     {
         public long GameId { get; set; }
         public string BookedById { get; set; }

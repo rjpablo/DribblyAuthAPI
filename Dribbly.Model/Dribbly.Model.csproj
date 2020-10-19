@@ -71,7 +71,7 @@
     <Compile Include="Enums\GenderEnum.cs" />
     <Compile Include="Games\GameModel.cs" />
     <Compile Include="Logs\ErrorLogModel.cs" />
-    <Compile Include="Notifications\GameBookedNotificationModel.cs" />
+    <Compile Include="Notifications\NewBookingNotificationModel.cs" />
     <Compile Include="Notifications\GetNewNotificationsResultModel.cs" />
     <Compile Include="Notifications\UnviewedCountModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

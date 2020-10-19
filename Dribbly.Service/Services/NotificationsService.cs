@@ -96,7 +96,7 @@ namespace Dribbly.Service.Services
             List<object> resultWithDetails = new List<object>();
 
             // Game Booked - For Court owner
-            IEnumerable<GameBookedNotificationViewModel> bookedGameForOwner = await GameBookedNotificationsAsync
+            IEnumerable<NewBookingNotificationModel> bookedGameForOwner = await GameBookedNotificationsAsync
                 (notifications.Where(n => n.Type == NotificationTypeEnum.GameBookedForBooker || n.Type == NotificationTypeEnum.GameBookedForOwner)
                 .Select(n => n.Id).ToArray());
 
@@ -105,15 +105,15 @@ namespace Dribbly.Service.Services
             return resultWithDetails;
         }
 
-        private async Task<IEnumerable<GameBookedNotificationViewModel>> GameBookedNotificationsAsync(long[] NotificationIds)
+        private async Task<IEnumerable<NewBookingNotificationModel>> GameBookedNotificationsAsync(long[] NotificationIds)
         {
-            if (NotificationIds.Length == 0) return await Task.FromResult<IEnumerable<GameBookedNotificationViewModel>>
-                    (new List<GameBookedNotificationViewModel>());
+            if (NotificationIds.Length == 0) return await Task.FromResult<IEnumerable<NewBookingNotificationModel>>
+                    (new List<NewBookingNotificationModel>());
 
             return await _context.GameBookedNotifications
                 .Where(n => NotificationIds.Contains(n.Id))
                 .Include(n => n.Game).Include(n => n.Game.Court).Include(n => n.BookedBy)
-                .Select(n => new GameBookedNotificationViewModel
+                .Select(n => new NewBookingNotificationModel
                 {
                     Id = n.Id,
                     DateAdded = n.DateAdded,

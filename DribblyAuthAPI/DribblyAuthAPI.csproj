@@ -336,6 +336,10 @@
     <Compile Include="Migrations\202010120647408_Modify_CourtReviews_Table_Add_EventId.Designer.cs">
       <DependentUpon>202010120647408_Modify_CourtReviews_Table_Add_EventId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010190154432_Rename_Table_GameBookedNotifications_To_NewBookingNotifications.cs" />
+    <Compile Include="Migrations\202010190154432_Rename_Table_GameBookedNotifications_To_NewBookingNotifications.Designer.cs">
+      <DependentUpon>202010190154432_Rename_Table_GameBookedNotifications_To_NewBookingNotifications.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -482,6 +486,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010120647408_Modify_CourtReviews_Table_Add_EventId.resx">
       <DependentUpon>202010120647408_Modify_CourtReviews_Table_Add_EventId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010190154432_Rename_Table_GameBookedNotifications_To_NewBookingNotifications.resx">
+      <DependentUpon>202010190154432_Rename_Table_GameBookedNotifications_To_NewBookingNotifications.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
