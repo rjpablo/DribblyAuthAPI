@@ -6,10 +6,9 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Dribbly.Model.Bookings
+namespace Dribbly.Model.Shared
 {
-    [Table("Bookings")]
-    public class BookingModel : BaseEntityModel
+    public class EventModel : BaseEntityModel
     {
         [Required]
         public DateTime Start { get; set; }

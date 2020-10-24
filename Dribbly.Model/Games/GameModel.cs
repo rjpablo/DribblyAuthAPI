@@ -1,4 +1,5 @@
 ﻿using Dribbly.Model.Bookings;
+using Dribbly.Model.Shared;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dribbly.Model.Games

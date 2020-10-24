@@ -1,5 +1,5 @@
 ﻿using Dribbly.Authentication.Models.Auth;
-using Dribbly.Model.Games;
+using Dribbly.Model.Bookings;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,8 +8,8 @@ namespace Dribbly.Model.Notifications
     [Table("NewBookingNotifications")]
     public class NewBookingNotificationModel : NotificationModel
     {
-        [ForeignKey(nameof(Game))]
-        public long GameId { get; set; }
+        [ForeignKey(nameof(Booking))]
+        public long BookingId { get; set; }
         /// <summary>
         /// The Id of the user who made the booking. <see cref="ApplicationIdentity.Id"/>
         /// </summary>
@@ -23,14 +23,14 @@ namespace Dribbly.Model.Notifications
         [NotMapped]
         public string CourtName { get; set; }
 
-        public GameModel Game { get; set; }
+        public BookingModel Booking { get; set; }
         public ApplicationUser BookedBy { get; set; }
     }
 
     [NotMapped]
     public class NewBookingNotificationViewModel : NotificationModel
     {
-        public long GameId { get; set; }
+        public long BookingId { get; set; }
         public string BookedById { get; set; }
         public string BookedByName { get; set; }
         public string CourtName { get; set; }

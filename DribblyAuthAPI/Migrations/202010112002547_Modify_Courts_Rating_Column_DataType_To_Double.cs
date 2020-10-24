@@ -7,7 +7,7 @@ namespace DribblyAuthAPI.Migrations
     {
         public override void Up()
         {
-            AlterColumn("dbo.Courts", "Rating", c => c.Double(nullable: false));
+            AlterColumn("dbo.Courts", "Rating", c => c.Double(nullable: true));
         }
         
         public override void Down()

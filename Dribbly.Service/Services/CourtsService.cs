@@ -4,7 +4,6 @@ using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Bookings;
 using Dribbly.Model.Courts;
-using Dribbly.Model.Games;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Repositories;
 using System;
@@ -12,7 +11,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Data.Entity.Migrations;
-using System.IdentityModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -67,7 +65,7 @@ namespace Dribbly.Service.Services
 
             Task populateOwnerTask = PopulateOwner(result);
             Task<long> followerCountTask = getFollowerCountAsync(court.Id);
-            Task<BookingModel> mostRecentBookingTask = GetCurrentUserMostRecentBooking(court.Id);
+            Task<Model.Bookings.BookingModel> mostRecentBookingTask = GetCurrentUserMostRecentBooking(court.Id);
             await Task.WhenAll(populateOwnerTask, followerCountTask, mostRecentBookingTask);
 
             result.FollowerCount = followerCountTask.Result;
@@ -76,14 +74,14 @@ namespace Dribbly.Service.Services
             return result;
         }
 
-        private async Task<BookingModel> GetCurrentUserMostRecentBooking(long courtId)
+        private async Task<Model.Bookings.BookingModel> GetCurrentUserMostRecentBooking(long courtId)
         {
             using (AuthContext context = new AuthContext())
             {
                 if (_securityUtility.IsAuthenticated())
                 {
                     string userId = _securityUtility.GetUserId();
-                    BookingModel mostRecentBooking = await context.Bookings.Where(e => e.CourtId == courtId && e.BookedById == userId &&
+                    Model.Bookings.BookingModel mostRecentBooking = await context.Bookings.Where(e => e.CourtId == courtId && e.BookedById == userId &&
                     e.Start < DateTime.UtcNow && e.End < DateTime.UtcNow && e.Status == Enums.BookingStatusEnum.Approved && !e.HasReviewed)
                         .OrderByDescending(e => e.End).FirstOrDefaultAsync();
                     return mostRecentBooking;
@@ -94,7 +92,7 @@ namespace Dribbly.Service.Services
 
         public async Task<CourtReviewModalModel> GetCodeReviewModalAsync(long courtId)
         {
-            BookingModel mostRecentBooking = await GetCurrentUserMostRecentBooking(courtId);
+            Model.Bookings.BookingModel mostRecentBooking = await GetCurrentUserMostRecentBooking(courtId);
             if(mostRecentBooking == null)
             {
                 return null;
@@ -236,8 +234,6 @@ namespace Dribbly.Service.Services
             return reviews;
         }
 
-
-
         public async Task SubmitReviewAsync(CourtReviewModel review)
         {
             review.ReviewedById = _securityUtility.GetUserId();
@@ -246,7 +242,7 @@ namespace Dribbly.Service.Services
             {
                 throw new InvalidOperationException("app.Error_CantRateOwnCourt");
             }
-            BookingModel reviewBooking = _context.Bookings.SingleOrDefault(e => e.Id == review.BookingId);
+            Model.Bookings.BookingModel reviewBooking = _context.Bookings.SingleOrDefault(e => e.Id == review.BookingId);
             if(reviewBooking == null)
             {
                 throw new InvalidOperationException("app.Error_BookingNotFound");
@@ -261,12 +257,12 @@ namespace Dribbly.Service.Services
 
         #endregion
 
-        #region Court Games
+        #region Court Bookings
 
-        public IEnumerable<GameModel> GetCourtGames(long courtId)
+        public IEnumerable<BookingModel> GetCourtBookings(long courtId)
         {
-            var games = _context.Games.Where(g => g.CourtId == courtId).ToList();
-            return games;
+            var bookings = _context.Bookings.Where(g => g.CourtId == courtId).ToList();
+            return bookings;
         }
 
         #endregion

@@ -95,24 +95,24 @@ namespace Dribbly.Service.Services
         {
             List<object> resultWithDetails = new List<object>();
 
-            // Game Booked - For Court owner
-            IEnumerable<NewBookingNotificationModel> bookedGameForOwner = await GameBookedNotificationsAsync
-                (notifications.Where(n => n.Type == NotificationTypeEnum.GameBookedForBooker || n.Type == NotificationTypeEnum.GameBookedForOwner)
+            // Booking Booked - For Court owner
+            IEnumerable<NewBookingNotificationModel> newBookingNotifications = await GetNewBookingNotificationsAsync
+                (notifications.Where(n => n.Type == NotificationTypeEnum.NewBookingForBooker || n.Type == NotificationTypeEnum.NewBookingForOwner)
                 .Select(n => n.Id).ToArray());
 
-            resultWithDetails.AddRange(bookedGameForOwner);
+            resultWithDetails.AddRange(newBookingNotifications);
 
             return resultWithDetails;
         }
 
-        private async Task<IEnumerable<NewBookingNotificationModel>> GameBookedNotificationsAsync(long[] NotificationIds)
+        private async Task<IEnumerable<NewBookingNotificationModel>> GetNewBookingNotificationsAsync(long[] NotificationIds)
         {
             if (NotificationIds.Length == 0) return await Task.FromResult<IEnumerable<NewBookingNotificationModel>>
                     (new List<NewBookingNotificationModel>());
 
-            return await _context.GameBookedNotifications
+            return await _context.NewBookingNotifications
                 .Where(n => NotificationIds.Contains(n.Id))
-                .Include(n => n.Game).Include(n => n.Game.Court).Include(n => n.BookedBy)
+                .Include(n => n.Booking).Include(n => n.Booking.Court).Include(n => n.BookedBy)
                 .Select(n => new NewBookingNotificationModel
                 {
                     Id = n.Id,
@@ -120,10 +120,10 @@ namespace Dribbly.Service.Services
                     ForUserId = n.ForUserId,
                     IsViewed = n.IsViewed,
                     Type = n.Type,
-                    GameId = n.GameId,
+                    Booking = n.Booking,
                     BookedById = n.BookedById,
                     BookedByName = n.BookedBy.UserName,
-                    CourtName = n.Game.Court.Name
+                    CourtName = n.Booking.Court.Name
                 })
                 .ToListAsync();
         }

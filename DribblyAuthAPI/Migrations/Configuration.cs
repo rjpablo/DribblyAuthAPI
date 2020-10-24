@@ -7,7 +7,7 @@
     using Dribbly.Core.Helpers;
     using Dribbly.Model;
     using Dribbly.Model.Courts;
-    using Dribbly.Model.Games;
+    using Dribbly.Model.Bookings;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
@@ -28,7 +28,7 @@
             SeedClients();
             SeedPermissions();
             SeedSettings();
-            //SeedGames();
+            //SeedBookings();
             //AddCourts();
 
             _context.SaveChanges();
@@ -42,7 +42,7 @@
             {
                 List<UserPermissionModel> allPermissions =
                     EnumFunctions.GenerateUserPermissions<CourtPermission>(adminUser.Id)
-                    .Union(EnumFunctions.GenerateUserPermissions<GamePermission>(adminUser.Id))
+                    .Union(EnumFunctions.GenerateUserPermissions<BookingPermission>(adminUser.Id))
                     .Union(EnumFunctions.GenerateUserPermissions<AccountPermission>(adminUser.Id))
                     .ToList();
                 _context.UserPermissions.AddOrUpdate(allPermissions.ToArray());
@@ -73,17 +73,17 @@
             }
         }
 
-        public void SeedGames()
+        public void SeedBookings()
         {
-            _context.Games.AddOrUpdate(
-                new GameModel
+            _context.Bookings.AddOrUpdate(
+                new BookingModel
                 {
                     Id = 1,
                     Start = DateTime.Now,
                     End = DateTime.Now.AddHours(3),
                     DateAdded = DateTime.Now,
                     CourtId = 4,
-                    Title = "Cardinals Tune Up Game"
+                    Title = "Cardinals Tune Up Booking"
                 });
         }
 

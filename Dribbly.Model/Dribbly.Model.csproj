@@ -85,6 +85,7 @@
     <Compile Include="Courts\CourtFollowingModel.cs" />
     <Compile Include="Notifications\NotificationModel.cs" />
     <Compile Include="Bookings\BookingModel.cs" />
+    <Compile Include="Shared\EventModel.cs" />
     <Compile Include="Shared\FollowResultModel.cs" />
     <Compile Include="Notifications\NotificationTypeEnum.cs" />
     <Compile Include="Shared\PhoneVerificationResultModel.cs" />

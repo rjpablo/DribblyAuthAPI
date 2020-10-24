@@ -19,7 +19,7 @@ namespace Dribbly.Authentication.Enums
         public static IEnumerable<EnumAttribute> GetAllPermissions()
         {
             return GetPermissionByType<CourtPermission>()
-                .Union(GetPermissionByType<GamePermission>())
+                .Union(GetPermissionByType<BookingPermission>())
                 .Union(GetPermissionByType<AccountPermission>());
         }
 

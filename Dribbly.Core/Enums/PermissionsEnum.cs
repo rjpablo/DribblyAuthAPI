@@ -18,9 +18,9 @@ namespace Dribbly.Core.Enums.Permissions
         DeleteVideoNotOwned = 4,
     }
 
-    public enum GamePermission
+    public enum BookingPermission
     {
-        [EnumAttribute(Subject = "Game", Action = "Approve")]
+        [EnumAttribute(Subject = "Booking", Action = "Approve")]
         Approve = 11,
     }
 

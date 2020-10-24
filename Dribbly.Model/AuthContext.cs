@@ -4,7 +4,6 @@ using Dribbly.Model.Account;
 using Dribbly.Model.Accounts;
 using Dribbly.Model.Bookings;
 using Dribbly.Model.Courts;
-using Dribbly.Model.Games;
 using Dribbly.Model.Logs;
 using Dribbly.Model.Notifications;
 using Dribbly.Model.Shared;
@@ -13,6 +12,7 @@ using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
+using Dribbly.Model.Games;
 
 namespace Dribbly.Model
 {
@@ -45,7 +45,7 @@ namespace Dribbly.Model
 
         Database Database { get; }
         Task<int> SaveChangesAsync();
-        DbSet<NewBookingNotificationModel> GameBookedNotifications { get; set; }
+        DbSet<NewBookingNotificationModel> NewBookingNotifications { get; set; }
         int SaveChanges();
     }
 
@@ -82,7 +82,7 @@ namespace Dribbly.Model
 
         #region Notifications
         public DbSet<NotificationModel> Notifications { get; set; }
-        public DbSet<NewBookingNotificationModel> GameBookedNotifications { get; set; }
+        public DbSet<NewBookingNotificationModel> NewBookingNotifications { get; set; }
         #endregion
 
         public static AuthContext Create()

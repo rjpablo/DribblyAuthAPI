@@ -1,6 +1,6 @@
 ﻿using Dribbly.Core.Enums.Permissions;
 using Dribbly.Model.Courts;
-using Dribbly.Model.Games;
+using Dribbly.Model.Bookings;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Services;
 using Newtonsoft.Json;
@@ -39,7 +39,7 @@ namespace DribblyAuthAPI.Controllers
             return await _service.GetCourtAsync(id);
         }
         
-        [HttpGet]
+        [HttpGet, Authorize]
         [Route("GetCodeReviewModal/{courtId}")]
         public async Task<CourtReviewModalModel> GetCodeReviewModal(long courtId)
         {
@@ -61,10 +61,10 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpGet]
-        [Route("GetCourtGames/{courtId}")]
-        public IEnumerable<GameModel> GetCourtGames(long courtId)
+        [Route("GetCourtBookings/{courtId}")]
+        public IEnumerable<BookingModel> GetCourtBookings(long courtId)
         {
-            return _service.GetCourtGames(courtId);
+            return _service.GetCourtBookings(courtId);
         }
 
         [HttpGet]

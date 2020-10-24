@@ -1,7 +1,7 @@
 ﻿using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Account;
-using Dribbly.Model.Games;
+using Dribbly.Model.Bookings;
 using Dribbly.Model.Notifications;
 using Dribbly.Service.Repositories;
 using System;
@@ -12,7 +12,7 @@ using System.Web;
 
 namespace Dribbly.Service.Services
 {
-    public class GamesService : BaseEntityService<GameModel>, IGamesService
+    public class BookingsService : BaseEntityService<BookingModel>, IBookingsService
     {
         IAuthContext _context;
         HttpContextBase _httpContext;
@@ -22,13 +22,13 @@ namespace Dribbly.Service.Services
         INotificationsRepository _notificationsRepo;
         ICourtsRepository _courtsRepo;
 
-        public GamesService(IAuthContext context,
+        public BookingsService(IAuthContext context,
             HttpContextBase httpContext,
             ISecurityUtility securityUtility,
             IAccountRepository accountRepo,
             IFileService fileService,
             INotificationsRepository notificationsRepo,
-            ICourtsRepository courtsRepo) : base(context.Games)
+            ICourtsRepository courtsRepo) : base(context.Bookings)
         {
             _context = context;
             _httpContext = httpContext;
@@ -39,62 +39,62 @@ namespace Dribbly.Service.Services
             _courtsRepo = courtsRepo;
         }
 
-        public IEnumerable<GameModel> GetAll()
+        public IEnumerable<BookingModel> GetAll()
         {
             return All();
         }
 
-        public async Task<GameModel> GetGame(long id)
+        public async Task<BookingModel> GetBooking(long id)
         {
-            var game = await _dbSet.Include(g => g.Court).SingleOrDefaultAsync(g => g.Id == id);
-            if (!string.IsNullOrWhiteSpace(game.BookedById))
+            var booking = await _dbSet.Include(g => g.Court).SingleOrDefaultAsync(g => g.Id == id);
+            if (!string.IsNullOrWhiteSpace(booking.BookedById))
             {
-                game.BookedBy = await _accountRepo.GetAccountBasicInfo(game.BookedById);
-                var account = await _accountRepo.GetAccountById(game.BookedById);
+                booking.BookedBy = await _accountRepo.GetAccountBasicInfo(booking.BookedById);
+                var account = await _accountRepo.GetAccountById(booking.BookedById);
                 if (account != null)
                 {
-                    game.BookedByChoice = new AccountsChoicesItemModel(account);
+                    booking.BookedByChoice = new AccountsChoicesItemModel(account);
                 }
             }
-            return game;
+            return booking;
         }
 
-        public async Task<GameModel> BookGameAsync(GameModel Game)
+        public async Task<BookingModel> AddBookingAsync(BookingModel booking)
         {
             var currentUserId = _securityUtility.GetUserId();
-            Game.AddedBy = currentUserId;
-            Game.Status = Enums.BookingStatusEnum.Approved;
-            Add(Game);
+            booking.AddedBy = currentUserId;
+            booking.Status = Enums.BookingStatusEnum.Approved;
+            Add(booking);
             _context.SaveChanges();
-            NotificationTypeEnum Type = Game.BookedById == currentUserId ?
+            NotificationTypeEnum Type = booking.BookedById == currentUserId ?
                 NotificationTypeEnum.NewBookingForOwner :
                 NotificationTypeEnum.NewBookingForBooker;
             await _notificationsRepo.TryAddAsync(new NewBookingNotificationModel
             {
-                BookingId = Game.Id,
-                BookedById = Game.BookedById,
-                ForUserId = Type == NotificationTypeEnum.NewBookingForBooker ? Game.BookedById :
-                (await _courtsRepo.GetOwnerId(Game.CourtId)),
+                BookingId = booking.Id,
+                BookedById = booking.BookedById,
+                ForUserId = Type == NotificationTypeEnum.NewBookingForBooker ? booking.BookedById :
+                (await _courtsRepo.GetOwnerId(booking.CourtId)),
                 DateAdded = DateTime.UtcNow,
                 Type = Type
             });
 
-            return Game;
+            return booking;
         }
 
-        public async Task UpdateGameAsync(GameModel Game)
+        public async Task UpdateBookingAsync(BookingModel booking)
         {
-            Update(Game);
+            Update(booking);
             var currentUserId = _securityUtility.GetUserId();
-            NotificationTypeEnum Type = Game.BookedById == currentUserId ?
+            NotificationTypeEnum Type = booking.BookedById == currentUserId ?
                 NotificationTypeEnum.NewBookingForOwner :
                 NotificationTypeEnum.NewBookingForBooker;
             await _notificationsRepo.TryAddAsync(new NewBookingNotificationModel
             {
-                BookingId = Game.Id,
-                BookedById = Game.BookedById,
-                ForUserId = Type == NotificationTypeEnum.NewBookingForBooker ? Game.BookedById :
-                (await _courtsRepo.GetOwnerId(Game.CourtId)),
+                BookingId = booking.Id,
+                BookedById = booking.BookedById,
+                ForUserId = Type == NotificationTypeEnum.NewBookingForBooker ? booking.BookedById :
+                (await _courtsRepo.GetOwnerId(booking.CourtId)),
                 DateAdded = DateTime.UtcNow,
                 Type = Type
             });

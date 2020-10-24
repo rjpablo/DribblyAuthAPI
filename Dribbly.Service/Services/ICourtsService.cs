@@ -1,5 +1,5 @@
 ﻿using Dribbly.Model.Courts;
-using Dribbly.Model.Games;
+using Dribbly.Model.Bookings;
 using Dribbly.Model.Shared;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,7 +13,7 @@ namespace Dribbly.Service.Services
 
         Task<CourtDetailsViewModel> GetCourtAsync(long id);
 
-        IEnumerable<GameModel> GetCourtGames(long courtId);
+        IEnumerable<BookingModel> GetCourtBookings(long courtId);
 
         IEnumerable<PhotoModel> GetCourtPhotos(long courtId);
 
