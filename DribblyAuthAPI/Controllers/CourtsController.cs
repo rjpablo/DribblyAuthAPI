@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using Dribbly.Model.Games;
 
 namespace DribblyAuthAPI.Controllers
 {
@@ -65,6 +66,13 @@ namespace DribblyAuthAPI.Controllers
         public IEnumerable<BookingModel> GetCourtBookings(long courtId)
         {
             return _service.GetCourtBookings(courtId);
+        }
+
+        [HttpGet]
+        [Route("GetCourtGames/{courtId}")]
+        public async Task<IEnumerable<GameModel>> GetCourtGames(long courtId)
+        {
+            return await _service.GetCourtGamesAsync(courtId);
         }
 
         [HttpGet]

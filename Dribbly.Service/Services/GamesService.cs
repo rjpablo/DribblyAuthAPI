@@ -46,55 +46,51 @@ namespace Dribbly.Service.Services
 
         public async Task<GameModel> GetGame(long id)
         {
-            var game = await _dbSet.Include(g => g.Court).SingleOrDefaultAsync(g => g.Id == id);
-            if (!string.IsNullOrWhiteSpace(game.BookedById))
+            GameModel game = await _dbSet.Include(g => g.Court).SingleOrDefaultAsync(g => g.Id == id);
+            if (!string.IsNullOrWhiteSpace(game.AddedById))
             {
-                game.BookedBy = await _accountRepo.GetAccountBasicInfo(game.BookedById);
-                var account = await _accountRepo.GetAccountById(game.BookedById);
-                if (account != null)
-                {
-                    game.BookedByChoice = new AccountsChoicesItemModel(account);
-                }
+                game.AddedBy = await _accountRepo.GetAccountBasicInfo(game.AddedById);
             }
             return game;
         }
 
-        public async Task<GameModel> BookGameAsync(GameModel Game)
+        public async Task<GameModel> AddGameAsync(AddGameInputModel input)
         {
+            GameModel game = input.ToGameModel();
             var currentUserId = _securityUtility.GetUserId();
-            Game.AddedBy = currentUserId;
-            Game.Status = Enums.BookingStatusEnum.Approved;
-            Add(Game);
+            game.AddedById = currentUserId;
+            game.Status = Enums.GameStatusEnum.WaitingToStart;
+            Add(game);
             _context.SaveChanges();
-            NotificationTypeEnum Type = Game.BookedById == currentUserId ?
+            NotificationTypeEnum Type = game.AddedById == currentUserId ?
                 NotificationTypeEnum.NewBookingForOwner :
                 NotificationTypeEnum.NewBookingForBooker;
             await _notificationsRepo.TryAddAsync(new NewBookingNotificationModel
             {
-                BookingId = Game.Id,
-                BookedById = Game.BookedById,
-                ForUserId = Type == NotificationTypeEnum.NewBookingForBooker ? Game.BookedById :
-                (await _courtsRepo.GetOwnerId(Game.CourtId)),
+                BookingId = game.Id,
+                BookedById = game.AddedById,
+                ForUserId = Type == NotificationTypeEnum.NewBookingForBooker ? game.AddedById :
+                (await _courtsRepo.GetOwnerId(game.CourtId)),
                 DateAdded = DateTime.UtcNow,
                 Type = Type
             });
 
-            return Game;
+            return game;
         }
 
-        public async Task UpdateGameAsync(GameModel Game)
+        public async Task UpdateGameAsync(GameModel game)
         {
-            Update(Game);
+            Update(game);
             var currentUserId = _securityUtility.GetUserId();
-            NotificationTypeEnum Type = Game.BookedById == currentUserId ?
+            NotificationTypeEnum Type = game.AddedById == currentUserId ?
                 NotificationTypeEnum.NewBookingForOwner :
                 NotificationTypeEnum.NewBookingForBooker;
             await _notificationsRepo.TryAddAsync(new NewBookingNotificationModel
             {
-                BookingId = Game.Id,
-                BookedById = Game.BookedById,
-                ForUserId = Type == NotificationTypeEnum.NewBookingForBooker ? Game.BookedById :
-                (await _courtsRepo.GetOwnerId(Game.CourtId)),
+                BookingId = game.Id,
+                BookedById = game.AddedById,
+                ForUserId = Type == NotificationTypeEnum.NewBookingForBooker ? game.AddedById :
+                (await _courtsRepo.GetOwnerId(game.CourtId)),
                 DateAdded = DateTime.UtcNow,
                 Type = Type
             });

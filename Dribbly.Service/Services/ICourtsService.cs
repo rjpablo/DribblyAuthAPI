@@ -4,6 +4,7 @@ using Dribbly.Model.Shared;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
+using Dribbly.Model.Games;
 
 namespace Dribbly.Service.Services
 {
@@ -14,6 +15,8 @@ namespace Dribbly.Service.Services
         Task<CourtDetailsViewModel> GetCourtAsync(long id);
 
         IEnumerable<BookingModel> GetCourtBookings(long courtId);
+
+        Task<IEnumerable<GameModel>> GetCourtGamesAsync(long courtId);
 
         IEnumerable<PhotoModel> GetCourtPhotos(long courtId);
 

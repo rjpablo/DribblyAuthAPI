@@ -10,7 +10,7 @@ namespace Dribbly.Service.Services
 
         Task<GameModel> GetGame(long id);
 
-        Task<GameModel> BookGameAsync(GameModel Game);
+        Task<GameModel> AddGameAsync(AddGameInputModel input);
 
         Task UpdateGameAsync(GameModel Game);
     }

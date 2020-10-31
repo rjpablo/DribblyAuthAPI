@@ -353,6 +353,18 @@
     <Compile Include="Migrations\202010190732151_Modify_NewBookingNotifications_Rename_Game_To_Booking.Designer.cs">
       <DependentUpon>202010190732151_Modify_NewBookingNotifications_Rename_Game_To_Booking.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010242128221_Delete_Table_Games.cs" />
+    <Compile Include="Migrations\202010242128221_Delete_Table_Games.Designer.cs">
+      <DependentUpon>202010242128221_Delete_Table_Games.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010242149197_Add_Table_Games.cs" />
+    <Compile Include="Migrations\202010242149197_Add_Table_Games.Designer.cs">
+      <DependentUpon>202010242149197_Add_Table_Games.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010310125596_Modify_Table_Games_Make_Column_End_Nullable.cs" />
+    <Compile Include="Migrations\202010310125596_Modify_Table_Games_Make_Column_End_Nullable.Designer.cs">
+      <DependentUpon>202010310125596_Modify_Table_Games_Make_Column_End_Nullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -511,6 +523,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010190732151_Modify_NewBookingNotifications_Rename_Game_To_Booking.resx">
       <DependentUpon>202010190732151_Modify_NewBookingNotifications_Rename_Game_To_Booking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010242128221_Delete_Table_Games.resx">
+      <DependentUpon>202010242128221_Delete_Table_Games.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010242149197_Add_Table_Games.resx">
+      <DependentUpon>202010242149197_Add_Table_Games.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010310125596_Modify_Table_Games_Make_Column_End_Nullable.resx">
+      <DependentUpon>202010310125596_Modify_Table_Games_Make_Column_End_Nullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

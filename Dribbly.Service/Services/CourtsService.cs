@@ -4,6 +4,7 @@ using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Bookings;
 using Dribbly.Model.Courts;
+using Dribbly.Model.Games;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Repositories;
 using System;
@@ -253,6 +254,16 @@ namespace Dribbly.Service.Services
             await _context.SaveChangesAsync();
             court.Rating = await _context.CourtReivews.Where(r => r.CourtId == review.CourtId).AverageAsync(r => r.Rating);
             await _context.SaveChangesAsync();
+        }
+
+        #endregion
+
+        #region Court Games
+
+        public async Task<IEnumerable<GameModel>> GetCourtGamesAsync(long courtId)
+        {
+            var games = await _context.Games.Where(g => g.CourtId == courtId).ToListAsync();
+            return games;
         }
 
         #endregion

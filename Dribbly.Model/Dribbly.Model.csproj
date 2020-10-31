@@ -67,8 +67,10 @@
     <Compile Include="Courts\CourtModel.cs" />
     <Compile Include="Courts\CourtSearchInputModel.cs" />
     <Compile Include="Enums\AccountStatusEnum.cs" />
+    <Compile Include="Enums\GameStatusEnum.cs" />
     <Compile Include="Enums\BookingStatusEnum.cs" />
     <Compile Include="Enums\GenderEnum.cs" />
+    <Compile Include="Games\AddGameInputModel.cs" />
     <Compile Include="Games\GameModel.cs" />
     <Compile Include="Logs\ErrorLogModel.cs" />
     <Compile Include="Notifications\NewBookingNotificationModel.cs" />
