@@ -28,6 +28,12 @@ namespace Dribbly.Model.Notifications
     }
 
     [NotMapped]
+    public class NewBookingNotificationDto : NewBookingNotificationModel
+    {
+        
+    }
+
+    [NotMapped]
     public class NewBookingNotificationViewModel : NotificationModel
     {
         public long BookingId { get; set; }

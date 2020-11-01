@@ -113,7 +113,7 @@ namespace Dribbly.Service.Services
             return await _context.NewBookingNotifications
                 .Where(n => NotificationIds.Contains(n.Id))
                 .Include(n => n.Booking).Include(n => n.Booking.Court).Include(n => n.BookedBy)
-                .Select(n => new NewBookingNotificationModel
+                .Select(n => new NewBookingNotificationDto
                 {
                     Id = n.Id,
                     DateAdded = n.DateAdded,
