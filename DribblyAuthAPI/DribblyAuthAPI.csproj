@@ -158,6 +158,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ContactsController.cs" />
+    <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\GamesController.cs" />
     <Compile Include="Controllers\NotificationsController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
@@ -365,6 +366,10 @@
     <Compile Include="Migrations\202010310125596_Modify_Table_Games_Make_Column_End_Nullable.Designer.cs">
       <DependentUpon>202010310125596_Modify_Table_Games_Make_Column_End_Nullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011012324413_Add_Table_Posts.cs" />
+    <Compile Include="Migrations\202011012324413_Add_Table_Posts.Designer.cs">
+      <DependentUpon>202011012324413_Add_Table_Posts.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -532,6 +537,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010310125596_Modify_Table_Games_Make_Column_End_Nullable.resx">
       <DependentUpon>202010310125596_Modify_Table_Games_Make_Column_End_Nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011012324413_Add_Table_Posts.resx">
+      <DependentUpon>202011012324413_Add_Table_Posts.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

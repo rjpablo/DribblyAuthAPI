@@ -96,7 +96,7 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpPost, Authorize]
         [Route("SetStatus/{accountId}/{status}")]
-        public async Task SetStatus(long accountId, AccountStatusEnum status)
+        public async Task SetStatus(long accountId, EntityStatusEnum status)
         {
             await _accountService.SetStatus(accountId, status);
         }

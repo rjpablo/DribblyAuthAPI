@@ -80,7 +80,7 @@ namespace Dribbly.Service.Services
 
         #region Account Updates
 
-        public async Task SetStatus(long accountId, AccountStatusEnum status)
+        public async Task SetStatus(long accountId, EntityStatusEnum status)
         {
             AccountModel account = _dbSet.SingleOrDefault(a => a.Id == accountId);
             if (account == null)

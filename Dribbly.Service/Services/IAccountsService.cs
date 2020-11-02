@@ -30,7 +30,7 @@ namespace Dribbly.Service.Services
 
         Task<IEnumerable<AccountsChoicesItemModel>> GetAccountDropDownSuggestions(AccountSearchInputModel input);
 
-        Task SetStatus(long accountId, AccountStatusEnum status);
+        Task SetStatus(long accountId, EntityStatusEnum status);
 
         Task SetIsPublic(string userId, bool IsPublic);
     }

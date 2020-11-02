@@ -1,17 +1,14 @@
-﻿using Dribbly.Service.Enums;
-using Dribbly.Model.Courts;
+﻿using Dribbly.Model.Shared;
+using Dribbly.Service.Enums;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dribbly.Model.Account
 {
     [NotMapped]
-    public class AccountBasicInfoModel
+    public class AccountBasicInfoModel: EntityBasicInfoModel
     {
         public string IdentityUserId { get; set; }
-        public string Username { get; set; }
         public GenderEnum? Gender { get; set; }
-        public virtual PhotoModel ProfilePhoto { get; set; }
-        public AccountStatusEnum Status { get; set; }
         public bool IsPublic { get; set; }
 
         public AccountBasicInfoModel()
@@ -22,9 +19,10 @@ namespace Dribbly.Model.Account
         public AccountBasicInfoModel(AccountModel account)
         {
             IdentityUserId = account.IdentityUserId;
-            Username = account.User != null ? account.User.UserName : account.Username;
+            Id = account.Id;
+            Name = account.User != null ? account.User.UserName : account.Username;
             Gender = account.Gender;
-            ProfilePhoto = account.ProfilePhoto;
+            Photo = account.ProfilePhoto;
             Status = account.Status;
             IsPublic = account.IsPublic;
         }

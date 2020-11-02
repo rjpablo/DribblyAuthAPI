@@ -111,6 +111,8 @@
     <Compile Include="Services\BaseEntityService.cs" />
     <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\ContactsService.cs" />
+    <Compile Include="Services\IPostsService.cs" />
+    <Compile Include="Services\PostsService.cs" />
     <Compile Include="Services\GamesService.cs" />
     <Compile Include="Services\IGamesService.cs" />
     <Compile Include="Services\NotificationsService.cs" />
@@ -155,5 +157,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

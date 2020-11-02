@@ -66,10 +66,14 @@
     <Compile Include="Courts\CourtReviewModel.cs" />
     <Compile Include="Courts\CourtModel.cs" />
     <Compile Include="Courts\CourtSearchInputModel.cs" />
+    <Compile Include="Enums\EntityTypeEnum.cs" />
     <Compile Include="Enums\AccountStatusEnum.cs" />
     <Compile Include="Enums\GameStatusEnum.cs" />
     <Compile Include="Enums\BookingStatusEnum.cs" />
     <Compile Include="Enums\GenderEnum.cs" />
+    <Compile Include="Posts\GetPostsInputModel.cs" />
+    <Compile Include="Posts\AddEditPostInputModel.cs" />
+    <Compile Include="Posts\PostModel.cs" />
     <Compile Include="Games\AddGameInputModel.cs" />
     <Compile Include="Games\GameModel.cs" />
     <Compile Include="Logs\ErrorLogModel.cs" />
@@ -78,6 +82,7 @@
     <Compile Include="Notifications\UnviewedCountModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\SettingModel.cs" />
+    <Compile Include="Shared\EntityBasicInfoModel.cs" />
     <Compile Include="Shared\AccountPhotoModel.cs" />
     <Compile Include="Shared\ChoiceItemModel.cs" />
     <Compile Include="Shared\ContactModel.cs" />

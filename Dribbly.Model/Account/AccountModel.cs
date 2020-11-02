@@ -28,7 +28,7 @@ namespace Dribbly.Model.Account
         public virtual string Email { get { return User.Email; } }
         public double? HeightInches { get; set; }
         public GenderEnum? Gender { get; set; }
-        public AccountStatusEnum Status { get; set; } = AccountStatusEnum.Active;
+        public EntityStatusEnum Status { get; set; } = EntityStatusEnum.Active;
         [NotMapped]
         public int? Age
         {
@@ -51,17 +51,17 @@ namespace Dribbly.Model.Account
         [NotMapped]
         public bool IsActive
         {
-            get { return Status == AccountStatusEnum.Active; }
+            get { return Status == EntityStatusEnum.Active; }
         }
         [NotMapped]
         public bool IsInactive
         {
-            get { return Status == AccountStatusEnum.Inactive; }
+            get { return Status == EntityStatusEnum.Inactive; }
         }
         [NotMapped]
         public bool IsDeleted
         {
-            get { return Status == AccountStatusEnum.Deleted ; }
+            get { return Status == EntityStatusEnum.Deleted ; }
         }
         public bool IsPublic { get; set; }
 

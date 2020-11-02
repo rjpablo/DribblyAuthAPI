@@ -13,6 +13,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
 using Dribbly.Model.Games;
+using Dribbly.Model.Posts;
 
 namespace Dribbly.Model
 {
@@ -36,6 +37,7 @@ namespace Dribbly.Model
         DbSet<VideoModel> Videos { get; set; }
         DbSet<ContactModel> Contacts { get; set; }
         DbSet<CourtReviewModel> CourtReivews { get; set; }
+        DbSet<PostModel> Posts { get; set; }
         IDbSet<ApplicationUser> Users { get; set; }
         DbEntityEntry Entry(object entity);
 
@@ -79,6 +81,7 @@ namespace Dribbly.Model
         public DbSet<VideoModel> Videos { get; set; }
         public DbSet<ContactModel> Contacts { get; set; }
         public DbSet<CourtReviewModel> CourtReivews { get; set; }
+        public DbSet<PostModel> Posts { get; set; }
 
         #region Notifications
         public DbSet<NotificationModel> Notifications { get; set; }

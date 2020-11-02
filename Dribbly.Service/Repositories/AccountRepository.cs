@@ -27,10 +27,31 @@ namespace Dribbly.Service.Repositories
             return account;
         }
 
-        public async Task<AccountModel> GetAccountById(string userId)
+        /// <summary>
+        /// Get account via identityUserId
+        /// </summary>
+        /// <param name="identityUserId"></param>
+        /// <returns></returns>
+        public async Task<AccountModel> GetAccountById(string identityUserId)
         {
             return await _context.Accounts.Include(a => a.ProfilePhoto).Include(a => a.User)
-                .SingleOrDefaultAsync(a => a.IdentityUserId == userId);
+                .SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId);
+        }
+
+        /// <summary>
+        /// Get account via Id
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public async Task<AccountModel> GetAccountById(long Id)
+        {
+            return await _context.Accounts.Include(a => a.ProfilePhoto).Include(a => a.User)
+                .SingleOrDefaultAsync(a => a.Id == Id);
+        }
+
+        public async Task<long?> GetIdentityUserAccountId(string identityUserId)
+        {
+            return (await _context.Accounts.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId))?.Id;
         }
 
         public async Task<AccountBasicInfoModel> GetAccountBasicInfo(string userId)
@@ -47,9 +68,9 @@ namespace Dribbly.Service.Repositories
         public void ActivateByUserId(string userid)
         {
             AccountModel account = _dbSet.SingleOrDefault(a => a.IdentityUserId == userid);
-            if(account != null && account.Status != AccountStatusEnum.Active)
+            if(account != null && account.Status != EntityStatusEnum.Active)
             {
-                account.Status = AccountStatusEnum.Active;
+                account.Status = EntityStatusEnum.Active;
             }
         }
 

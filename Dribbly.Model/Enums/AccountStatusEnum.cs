@@ -1,6 +1,6 @@
 ﻿namespace Dribbly.Service.Enums
 {
-    public enum AccountStatusEnum
+    public enum EntityStatusEnum
     {
         Active,
         Inactive,
