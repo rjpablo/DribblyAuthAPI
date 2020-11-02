@@ -5,6 +5,8 @@ namespace Dribbly.Model.Posts
 {
     public class AddEditPostInputModel
     {
+        public long Id { get; set; }
+
         [Required]
         public EntityTypeEnum AddedByType { get; set; }
 

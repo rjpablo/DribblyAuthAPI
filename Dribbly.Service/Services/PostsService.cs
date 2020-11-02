@@ -108,5 +108,13 @@ namespace Dribbly.Service.Services
             post.AddedBy = await GetAddedBy(post);
             return post;
         }
+
+        public async Task<PostModel> UpdatePost(AddEditPostInputModel input)
+        {
+            PostModel post = _context.Posts.SingleOrDefault(p => p.Id == input.Id);
+            post.Content = input.Content;
+            await _context.SaveChangesAsync();
+            return post;
+        }
     }
 }

@@ -32,5 +32,12 @@ namespace DribblyAuthAPI.Controllers
         {
             return await _service.AddPost(input);
         }
+
+        [HttpPost]
+        [Route("UpdatePost")]
+        public async Task<PostModel> UpdatePost([FromBody]AddEditPostInputModel input)
+        {
+            return await _service.UpdatePost(input);
+        }
     }
 }

@@ -11,5 +11,8 @@ namespace Dribbly.Service.Services
         Task<IEnumerable<PostModel>> GetPosts(GetPostsInputModel input);
 
         Task<PostModel> AddPost(AddEditPostInputModel input);
+
+        Task<PostModel> UpdatePost(AddEditPostInputModel input);
+
     }
 }
