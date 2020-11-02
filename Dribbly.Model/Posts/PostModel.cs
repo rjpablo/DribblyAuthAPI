@@ -37,6 +37,8 @@ namespace Dribbly.Model.Posts
         /// </summary>
         public long PostedOnId { get; set; }
 
+        public EntityStatusEnum Status { get; set; }
+
         #endregion
 
         #region Other Properties

@@ -370,6 +370,10 @@
     <Compile Include="Migrations\202011012324413_Add_Table_Posts.Designer.cs">
       <DependentUpon>202011012324413_Add_Table_Posts.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011021302436_Update_Table_Posts_Add_Column_Status.cs" />
+    <Compile Include="Migrations\202011021302436_Update_Table_Posts_Add_Column_Status.Designer.cs">
+      <DependentUpon>202011021302436_Update_Table_Posts_Add_Column_Status.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -540,6 +544,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011012324413_Add_Table_Posts.resx">
       <DependentUpon>202011012324413_Add_Table_Posts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011021302436_Update_Table_Posts_Add_Column_Status.resx">
+      <DependentUpon>202011021302436_Update_Table_Posts_Add_Column_Status.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

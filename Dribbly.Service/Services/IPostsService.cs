@@ -14,5 +14,7 @@ namespace Dribbly.Service.Services
 
         Task<PostModel> UpdatePost(AddEditPostInputModel input);
 
+        Task<bool> DeletePost(long Id);
+
     }
 }

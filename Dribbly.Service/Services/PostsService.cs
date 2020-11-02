@@ -10,6 +10,7 @@ using Dribbly.Service.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -63,12 +64,13 @@ namespace Dribbly.Service.Services
                 postOnIdLong = long.Parse(input.PostedOnId);
             }
             var posts = await _context.Posts
-                .Where(p => p.PostedOnType == input.PostedOnType && p.PostedOnId == postOnIdLong && (!input.CeilingPostId.HasValue || p.Id < input.CeilingPostId))
+                .Where(p => p.PostedOnType == input.PostedOnType && p.PostedOnId == postOnIdLong &&
+                p.Status == EntityStatusEnum.Active && (!input.CeilingPostId.HasValue || p.Id < input.CeilingPostId))
                 .Take(input.GetCount).OrderByDescending(p => p.Id).ToListAsync();
 
             foreach (PostModel post in posts)
             {
-                if(post.AddedByType == EntityTypeEnum.Account)
+                if (post.AddedByType == EntityTypeEnum.Account)
                 {
                     post.AddedBy = await GetAddedBy(post);
                 }
@@ -99,7 +101,8 @@ namespace Dribbly.Service.Services
                 AddedByType = input.AddedByType,
                 PostedOnType = input.PostedOnType,
                 PostedOnId = postOnIdLong,
-                Content = input.Content
+                Content = input.Content,
+                Status = EntityStatusEnum.Active
             };
             var currentUserId = _securityUtility.GetUserId();
             post.AddedById = currentUserId;
@@ -115,6 +118,31 @@ namespace Dribbly.Service.Services
             post.Content = input.Content;
             await _context.SaveChangesAsync();
             return post;
+        }
+
+        public async Task<bool> DeletePost(long Id)
+        {
+            var currentUserId = _securityUtility.GetUserId();
+            PostModel post = _context.Posts.SingleOrDefault(p => p.Id == Id);
+            if (post != null) {
+
+                if(post.Status == EntityStatusEnum.Deleted)
+                {
+                    throw new InvalidOperationException("app.ThisPostHasAlreadyBeenDeleted");
+                }
+
+                if (currentUserId == post.AddedById)
+                {
+                    post.Status = EntityStatusEnum.Deleted;
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+            }
+            else
+            {
+                throw new ObjectNotFoundException("app.ThisPostHasAlreadyBeenDeleted");
+            }
+            return false;
         }
     }
 }

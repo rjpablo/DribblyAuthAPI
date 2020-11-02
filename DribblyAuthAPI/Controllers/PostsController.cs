@@ -39,5 +39,12 @@ namespace DribblyAuthAPI.Controllers
         {
             return await _service.UpdatePost(input);
         }
+
+        [HttpPost]
+        [Route("DeletePost/{id}")]
+        public async Task<bool> DeletePost(long Id)
+        {
+            return await _service.DeletePost(Id);
+        }
     }
 }
