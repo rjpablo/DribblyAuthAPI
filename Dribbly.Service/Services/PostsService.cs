@@ -1,16 +1,14 @@
-﻿using Dribbly.Core.Utilities;
+﻿using Dribbly.Authentication.Services;
+using Dribbly.Core.Enums.Permissions;
+using Dribbly.Core.Exceptions;
+using Dribbly.Core.Utilities;
 using Dribbly.Model;
-using Dribbly.Model.Account;
-using Dribbly.Model.Games;
-using Dribbly.Model.Notifications;
 using Dribbly.Model.Posts;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Core;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -114,35 +112,50 @@ namespace Dribbly.Service.Services
 
         public async Task<PostModel> UpdatePost(AddEditPostInputModel input)
         {
+            var currentUserId = _securityUtility.GetUserId();
             PostModel post = _context.Posts.SingleOrDefault(p => p.Id == input.Id);
-            post.Content = input.Content;
-            await _context.SaveChangesAsync();
-            return post;
+            if (_securityUtility.IsCurrentUser(post.AddedById))
+            {
+                post.Content = input.Content;
+                await _context.SaveChangesAsync();
+                return post;
+            }
+            else
+            {
+                throw new DribblyForbiddenException(string.Format("Authorization failed when attempting to update post with ID {0}", post.Id),
+                    friendlyMessageKey: "app.Error_EditPostNotAllowed");
+            }
         }
 
         public async Task<bool> DeletePost(long Id)
         {
             var currentUserId = _securityUtility.GetUserId();
             PostModel post = _context.Posts.SingleOrDefault(p => p.Id == Id);
-            if (post != null) {
-
-                if(post.Status == EntityStatusEnum.Deleted)
+            if (post != null)
+            {
+                if (post.Status == EntityStatusEnum.Deleted)
                 {
-                    throw new InvalidOperationException("app.ThisPostHasAlreadyBeenDeleted");
+                    throw new DribblyInvalidOperationException(string.Format("Tried to delete a posts that has already been deleted. Post ID: {0}", post.Id),
+                        friendlyMessageKey: "app.ThisPostHasAlreadyBeenDeleted");
                 }
 
-                if (currentUserId == post.AddedById)
+                if (_securityUtility.IsCurrentUser(post.AddedById) || AuthenticationService.HasPermission(PostPermission.DeleteNotOwned))
                 {
                     post.Status = EntityStatusEnum.Deleted;
                     await _context.SaveChangesAsync();
                     return true;
                 }
+                else
+                {
+                    throw new DribblyForbiddenException(string.Format("Authorization failed when attempting to delete post with ID {0}", post.Id),
+                        friendlyMessageKey: "app.Error_NotAllowedToDeletePost");
+                }
             }
             else
             {
-                throw new ObjectNotFoundException("app.ThisPostHasAlreadyBeenDeleted");
+                throw new DribblyInvalidOperationException(string.Format("Tried to delete a posts that does not exist. Post ID: {0}", post.Id),
+                           friendlyMessageKey: "app.ThisPostHasAlreadyBeenDeleted");
             }
-            return false;
         }
     }
 }

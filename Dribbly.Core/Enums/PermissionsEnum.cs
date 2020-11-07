@@ -35,4 +35,10 @@ namespace Dribbly.Core.Enums.Permissions
         [EnumAttribute(Subject = "Account", Action = "UpdateNotOwned")]
         UpdateNotOwned = 24
     }
+
+    public enum PostPermission
+    {
+        [EnumAttribute(Subject = "Post", Action = "DeleteNotOwned")]
+        DeleteNotOwned = 31,
+    }
 }

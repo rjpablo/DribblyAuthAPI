@@ -44,6 +44,7 @@
                     EnumFunctions.GenerateUserPermissions<CourtPermission>(adminUser.Id)
                     .Union(EnumFunctions.GenerateUserPermissions<BookingPermission>(adminUser.Id))
                     .Union(EnumFunctions.GenerateUserPermissions<AccountPermission>(adminUser.Id))
+                    .Union(EnumFunctions.GenerateUserPermissions<PostPermission>(adminUser.Id))
                     .ToList();
                 _context.UserPermissions.AddOrUpdate(allPermissions.ToArray());
             }

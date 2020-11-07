@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace DribblyAuthAPI.Controllers
-{
+{    
     [RoutePrefix("api/Posts")]
+    [Authorize]
     public class PostsController : BaseController
     {
         private IPostsService _service = null;
@@ -18,7 +19,7 @@ namespace DribblyAuthAPI.Controllers
         }
 
         //GETs
-        [HttpPost]
+        [HttpPost, AllowAnonymous]
         [Route("GetPosts")]
         public async Task<IEnumerable<PostModel>> GetPosts([FromBody]GetPostsInputModel input)
         {
