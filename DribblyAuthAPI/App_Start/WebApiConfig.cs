@@ -1,4 +1,5 @@
-﻿using DribblyAuthAPI.Filters;
+﻿using Dribbly.Service.Services;
+using DribblyAuthAPI.Filters;
 using Newtonsoft.Json.Serialization;
 using System.Linq;
 using System.Net.Http.Formatting;
@@ -19,7 +20,7 @@ namespace DribblyAuthAPI
             config.MapHttpAttributeRoutes();
 
             // Global Filters
-            config.Filters.Add(new DribblyExceptionsFilter());
+            config.Filters.Add(new DribblyExceptionsFilter((ILogsService)config.DependencyResolver.GetService(typeof(ILogsService))));
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

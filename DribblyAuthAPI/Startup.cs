@@ -66,7 +66,7 @@ namespace DribblyAuthAPI.API
             {
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/token"), //http://localhost:[port]/token
-                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30), //set token validatity to 30 minutes
+                AccessTokenExpireTimeSpan = TimeSpan.FromDays(15), //set token validatity to 30 minutes
                 Provider = new SimpleAuthorizationServerProvider(), //specifies implementation on how to validate the credentials for users asking for tokens
                 RefreshTokenProvider = new SimpleRefreshTokenProvider()
             };

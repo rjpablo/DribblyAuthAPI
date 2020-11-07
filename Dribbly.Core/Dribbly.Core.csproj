@@ -54,6 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\PermissionsEnum.cs" />
+    <Compile Include="Exceptions\DribblyException.cs" />
+    <Compile Include="Exceptions\ExceptionResponseContent.cs" />
     <Compile Include="Extensions\ClaimsExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Helpers\Hash.cs" />

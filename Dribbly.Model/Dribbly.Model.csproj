@@ -71,6 +71,7 @@
     <Compile Include="Enums\GameStatusEnum.cs" />
     <Compile Include="Enums\BookingStatusEnum.cs" />
     <Compile Include="Enums\GenderEnum.cs" />
+    <Compile Include="Logs\ExceptionLog.cs" />
     <Compile Include="Posts\GetPostsInputModel.cs" />
     <Compile Include="Posts\AddEditPostInputModel.cs" />
     <Compile Include="Posts\PostModel.cs" />

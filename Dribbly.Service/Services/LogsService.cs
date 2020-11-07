@@ -1,7 +1,12 @@
 ﻿using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Logs;
+using System;
+using System.IO;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Dribbly.Service.Services
 {
@@ -20,6 +25,46 @@ namespace Dribbly.Service.Services
         {
             Add(log);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<long> LogExceptionAsync(Exception ex)
+        {
+            var req = HttpContext.Current.Request;
+            var log = new ExceptionLog
+            {
+                Message = ex.Message,
+                StackTrace = ex.StackTrace,
+                RequestUrl = req.RawUrl,
+                RequestData = TryGetRequestData(req),
+                LoggedBy = GetUserId(), //_securityUtility.GetUserId(),
+                DateAdded = DateTime.UtcNow
+            };
+            
+            _context.ExceptionLogs.Add(log);
+            await _context.SaveChangesAsync();
+            return log.Id;
+        }
+
+        private string GetUserId()
+        {
+            var userId = ClaimsPrincipal.Current.Claims.ToList()
+                .SingleOrDefault(c => c.Type == "userId")?.Value;
+            return userId;
+        }
+
+        private string TryGetRequestData(HttpRequest request)
+        {
+            try
+            {
+                using (StreamReader stream = new StreamReader(request.InputStream))
+                {
+                    return stream.ReadToEnd();
+                }
+            }
+            catch (Exception)
+            {
+                return "(failed to read)";
+            }
         }
     }
 }

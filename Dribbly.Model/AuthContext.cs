@@ -29,7 +29,6 @@ namespace Dribbly.Model
         DbSet<PhotoModel> Photos { get; set; }
         DbSet<BookingModel> Bookings { get; set; }
         DbSet<GameModel> Games { get; set; }
-        DbSet<ClientLogModel> ErrorLogs { get; set; }
         DbSet<UserPermissionModel> UserPermissions { get; set; }
         DbSet<AccountPhotoModel> AccountPhotos { get; set; }
         DbSet<CourtVideoModel> CourtVideos { get; set; }
@@ -41,6 +40,10 @@ namespace Dribbly.Model
         IDbSet<ApplicationUser> Users { get; set; }
         DbEntityEntry Entry(object entity);
 
+        #region Logs
+        DbSet<ClientLogModel> ErrorLogs { get; set; }
+        DbSet<ExceptionLog> ExceptionLogs { get; set; }
+        #endregion
         #region Notifications
         DbSet<NotificationModel> Notifications { get; set; }
         #endregion
@@ -73,7 +76,6 @@ namespace Dribbly.Model
         public DbSet<CourtPhotoModel> CourtPhotos { get; set; }
         public DbSet<BookingModel> Bookings { get; set; }
         public DbSet<GameModel> Games { get; set; }
-        public DbSet<ClientLogModel> ErrorLogs { get; set; }
         public DbSet<UserPermissionModel> UserPermissions { get; set; }
         public DbSet<AccountPhotoModel> AccountPhotos { get; set; }
         public DbSet<CourtVideoModel> CourtVideos { get; set; }
@@ -83,6 +85,10 @@ namespace Dribbly.Model
         public DbSet<CourtReviewModel> CourtReivews { get; set; }
         public DbSet<PostModel> Posts { get; set; }
 
+        #region Logs
+        public DbSet<ClientLogModel> ErrorLogs { get; set; }
+        public DbSet<ExceptionLog> ExceptionLogs { get; set; }
+        #endregion
         #region Notifications
         public DbSet<NotificationModel> Notifications { get; set; }
         public DbSet<NewBookingNotificationModel> NewBookingNotifications { get; set; }
