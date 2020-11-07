@@ -1,5 +1,6 @@
 ﻿using Dribbly.Authentication.Services;
 using Dribbly.Core.Enums.Permissions;
+using Dribbly.Core.Exceptions;
 using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Bookings;
@@ -94,7 +95,7 @@ namespace Dribbly.Service.Services
         public async Task<CourtReviewModalModel> GetCodeReviewModalAsync(long courtId)
         {
             Model.Bookings.BookingModel mostRecentBooking = await GetCurrentUserMostRecentBooking(courtId);
-            if(mostRecentBooking == null)
+            if (mostRecentBooking == null)
             {
                 return null;
             }
@@ -215,7 +216,7 @@ namespace Dribbly.Service.Services
             }
             else
             {
-                throw new UnauthorizedAccessException("Authorization failed when attempting to update court details.");
+                throw new DribblyForbiddenException("Authorization failed when attempting to update court details.");
             }
         }
 
@@ -241,12 +242,16 @@ namespace Dribbly.Service.Services
             CourtModel court = GetById(review.CourtId);
             if (court.OwnerId == review.ReviewedById)
             {
-                throw new InvalidOperationException("app.Error_CantRateOwnCourt");
+                throw new DribblyInvalidOperationException
+                    (string.Format("Tried to rate own court. Court ID: {0}, User ID: {1}", court.Id, court.OwnerId),
+                    friendlyMessageKey: "app.Error_CantRateOwnCourt");
             }
             Model.Bookings.BookingModel reviewBooking = _context.Bookings.SingleOrDefault(e => e.Id == review.BookingId);
-            if(reviewBooking == null)
+            if (reviewBooking == null)
             {
-                throw new InvalidOperationException("app.Error_BookingNotFound");
+                throw new DribblyInvalidOperationException
+                    (string.Format("Tried to rate non-existing court. Court ID: {0}", court.Id, court.OwnerId),
+                    friendlyMessageKey: "app.Error_CourtNotFound");
             }
             reviewBooking.HasReviewed = true;
             review.DateAdded = DateTime.UtcNow;
@@ -299,12 +304,13 @@ namespace Dribbly.Service.Services
                 .SingleOrDefaultAsync(p => p.CourtId == courtId && p.PhotoId == photoId);
             if (courtPhoto == null || courtPhoto.Photo == null)
             {
-                throw new InvalidOperationException("Photo not found.");
+                throw new DribblyInvalidOperationException("Tried to delete non-existing photo. Photo ID: " + photoId,
+                    friendlyMessageKey: "app.Error_DeletePhotoNotFound");
             }
             else if (courtPhoto.Court == null)
             {
-                throw new ObjectNotFoundException
-                    ("The court associated with the photo being deleted was not found.");
+                throw new DribblyInvalidOperationException
+                    ("Tried to delete a photo associated to nonexistent court. Photo ID: " + photoId);
             }
             else
             {
@@ -316,7 +322,9 @@ namespace Dribbly.Service.Services
                 }
                 else
                 {
-                    throw new UnauthorizedAccessException("Authorization failed when trying to delete court photo.");
+                    throw new DribblyForbiddenException
+                        ("Authorization failed when trying to delete court photo. Photo ID: " + photoId,
+                        friendlyMessageKey: "app.Error_NotAllowedToDeletePhoto");
                 }
             }
         }
@@ -357,7 +365,9 @@ namespace Dribbly.Service.Services
 
             if (court == null)
             {
-                throw new ObjectNotFoundException("No court was found with id " + courtId.ToString());
+                throw new DribblyInvalidOperationException
+                    ("Tried to retrieve video for nonexistent court " + courtId.ToString(),
+                    friendlyMessageKey: "app.Error_CouldNotRetrieveVideosCourtNotFound");
             }
 
             return _context.CourtVideos.Include(v => v.Court).Where(v => v.CourtId == courtId && v.Video.DateDeleted == null)
@@ -370,7 +380,9 @@ namespace Dribbly.Service.Services
 
             if (court == null)
             {
-                throw new ObjectNotFoundException("No court was found with id " + courtId.ToString());
+                throw new DribblyInvalidOperationException
+                    ("Tried to upload a video for nonexistent court " + courtId.ToString(),
+                    friendlyMessageKey: "app.Error_CouldNotUploadVideoCourtNotFound");
             }
 
             if (_securityUtility.IsCurrentUser(court.OwnerId) || AuthenticationService.HasPermission(CourtPermission.AddVideoNotOwned))
@@ -393,8 +405,9 @@ namespace Dribbly.Service.Services
             }
             else
             {
-                throw new UnauthorizedAccessException
-                    (string.Format("Authorization failed when trying to upload a video to court with ID {0}", court.Id));
+                throw new DribblyForbiddenException
+                    (string.Format("Authorization failed when trying to upload a video to court with ID {0}", court.Id),
+                   friendlyMessageKey: "app.Error_UploadCourtVideoNotAuthorized");
             }
         }
 
@@ -404,12 +417,15 @@ namespace Dribbly.Service.Services
                 .SingleOrDefaultAsync(p => p.CourtId == courtId && p.VideoId == videoId);
             if (courtVideo == null || courtVideo.Video == null)
             {
-                throw new InvalidOperationException("Video not found.");
+                throw new DribblyInvalidOperationException
+                    ("Tried to delete nonexistent court video. Video ID: " + videoId.ToString(),
+                    friendlyMessageKey: "app.Error_DeleteCourtVideoVideoNotFound");
             }
             else if (courtVideo.Court == null)
             {
-                throw new ObjectNotFoundException
-                    ("The court associated with the video being deleted was not found.");
+                throw new DribblyInvalidOperationException
+                    ("Tried to delete video associated to nonexistent court " + courtId.ToString(),
+                    friendlyMessageKey: "app.Error_DeleteCourtVideoCourtNotFound");
             }
             else
             {
@@ -422,7 +438,8 @@ namespace Dribbly.Service.Services
                 }
                 else
                 {
-                    throw new UnauthorizedAccessException("Authorization failed when trying to delete court video.");
+                    throw new DribblyForbiddenException("Authorization failed when trying to delete court video. Video ID: " + videoId.ToString(),
+                        friendlyMessageKey: "app.Error_DeleteCourtVideoUnauthorized");
                 }
             }
         }

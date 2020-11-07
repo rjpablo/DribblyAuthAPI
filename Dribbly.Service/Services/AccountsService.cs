@@ -1,5 +1,6 @@
 ﻿using Dribbly.Authentication.Services;
 using Dribbly.Core.Enums.Permissions;
+using Dribbly.Core.Exceptions;
 using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Account;
@@ -14,7 +15,6 @@ using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -53,8 +53,8 @@ namespace Dribbly.Service.Services
             AccountModel account = await _accountRepo.GetAccountById(userId);
             if (account == null)
             {
-                throw new ObjectNotFoundException
-                    (string.Format("Did not find an account with User ID {0}", userId));
+                throw new DribblyForbiddenException(string.Format("Did not find an account with User ID {0}", userId),
+                        friendlyMessageKey: "app.Error_CouldNotRetrieveAccountSettingsAccountNotFound");
             }
             else
             {
@@ -65,7 +65,7 @@ namespace Dribbly.Service.Services
                 }
                 else
                 {
-                    throw new UnauthorizedAccessException("Authorization failed when attempting to retrieve account settings.");
+                    throw new DribblyForbiddenException("Authorization failed when attempting to retrieve account settings.");
                 }
             }
 
@@ -85,7 +85,7 @@ namespace Dribbly.Service.Services
             AccountModel account = _dbSet.SingleOrDefault(a => a.Id == accountId);
             if (account == null)
             {
-                throw new ObjectNotFoundException
+                throw new DribblyObjectNotFoundException
                     (string.Format("Did not find an account with Account ID {0}", accountId));
             }
             else
@@ -99,7 +99,7 @@ namespace Dribbly.Service.Services
                 }
                 else
                 {
-                    throw new UnauthorizedAccessException("Authorization failed when attempting to set account status.");
+                    throw new DribblyForbiddenException("Authorization failed when attempting to set account status.");
                 }
             }
         }
@@ -115,7 +115,7 @@ namespace Dribbly.Service.Services
             AccountModel account = await _context.Accounts.SingleOrDefaultAsync(a=>a.IdentityUserId == userId);
             if (account == null)
             {
-                throw new ObjectNotFoundException
+                throw new DribblyObjectNotFoundException
                     (string.Format("Did not find an account with User ID {0}", userId));
             }
             else
@@ -129,7 +129,7 @@ namespace Dribbly.Service.Services
                 }
                 else
                 {
-                    throw new UnauthorizedAccessException("Authorization failed when attempting to set IsPublic property.");
+                    throw new DribblyForbiddenException("Authorization failed when attempting to set IsPublic property.");
                 }
             }
         }

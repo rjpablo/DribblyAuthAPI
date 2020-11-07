@@ -1,4 +1,5 @@
-﻿using Dribbly.Core.Utilities;
+﻿using Dribbly.Core.Exceptions;
+using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Shared;
 using Dribbly.SMS;
@@ -52,7 +53,7 @@ namespace Dribbly.Service.Services
             }
             else
             {
-                throw new BadRequestException("Mobile number verification failed. Verification Status: " + status);
+                throw new DribblyInvalidOperationException("Mobile number verification failed. Verification Status: " + status);
             }
 
             return result;
