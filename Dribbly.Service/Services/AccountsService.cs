@@ -9,6 +9,7 @@ using Dribbly.Model.Courts;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
+using Dribbly.Service.Services.Shared;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -26,18 +27,21 @@ namespace Dribbly.Service.Services
         IAuthContext _context;
         IAuthRepository _authRepo;
         IFileService _fileService;
+        private readonly ICommonService _commonService;
         ISecurityUtility _securityUtility;
 
         public AccountsService(IAuthContext context,
             IAccountRepository accountRepo,
             IAuthRepository authRepo,
             ISecurityUtility securityUtility,
-            IFileService fileService) : base(context.Accounts)
+            IFileService fileService,
+            ICommonService commonService) : base(context.Accounts)
         {
             _accountRepo = accountRepo;
             _context = context;
             _authRepo = authRepo;
             _fileService = fileService;
+            _commonService = commonService;
             _securityUtility = securityUtility;
         }
 
@@ -96,6 +100,22 @@ namespace Dribbly.Service.Services
                     // TODO: Remove personal info when deleting an account
                     account.Status = status;
                     await _context.SaveChangesAsync();
+                    if(status == EntityStatusEnum.Active)
+                    {
+                        await _commonService.AddUserAccountActivity(UserActivityTypeEnum.ReactivateAccount, account.Id);   
+                    }
+                    else if (status == EntityStatusEnum.Inactive)
+                    {
+                        await _commonService.AddUserAccountActivity(UserActivityTypeEnum.DeactivateAccount, account.Id);
+                    }
+                    else if (status == EntityStatusEnum.Deleted)
+                    {
+                        await _commonService.AddUserAccountActivity(UserActivityTypeEnum.DeleteAccount, account.Id);
+                    }
+                    else
+                    {
+                        // TODO: Log warning: Account status activity not recorded
+                    }
                 }
                 else
                 {
@@ -108,6 +128,7 @@ namespace Dribbly.Service.Services
         {
             Add(account);
             await _context.SaveChangesAsync();
+            await _commonService.AddUserAccountActivity(UserActivityTypeEnum.CreateAccount, account.Id);
         }
 
         public async Task SetIsPublic(string userId, bool IsPublic)
@@ -126,6 +147,14 @@ namespace Dribbly.Service.Services
                     // TODO: Remove personal info when deleting an account
                     account.IsPublic = IsPublic;
                     await _context.SaveChangesAsync();
+                    if (IsPublic)
+                    {
+                        await _commonService.AddUserAccountActivity(UserActivityTypeEnum.MakeAccountPublic, account.Id);
+                    }
+                    else
+                    {
+                        await _commonService.AddUserAccountActivity(UserActivityTypeEnum.MakeAccountPrivate, account.Id);
+                    }
                 }
                 else
                 {
@@ -152,9 +181,9 @@ namespace Dribbly.Service.Services
                     {
                         photos.Add(await AddPhoto(account, files[i]));
                     }
-
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     transaction.Commit();
+                    await _commonService.AddAccountPhotoActivitiesAsync(UserActivityTypeEnum.AddAccountPhoto, account.Id, photos.ToArray());
                     return photos;
                 }
                 catch (Exception e)
@@ -190,6 +219,7 @@ namespace Dribbly.Service.Services
                     accountPhoto.Photo.DateDeleted = DateTime.UtcNow;
                     _context.AccountPhotos.AddOrUpdate(accountPhoto);
                     _context.SaveChanges();
+                    await _commonService.AddAccountPhotoActivitiesAsync(UserActivityTypeEnum.DeleteAccountPhoto, accountId, accountPhoto.Photo);
                     // TODO: delete file from server
                 }
                 else
@@ -221,7 +251,8 @@ namespace Dribbly.Service.Services
                     Update(account);
                     await _context.SaveChangesAsync();
                     transaction.Commit();
-
+                    await _commonService.AddAccountPhotoActivitiesAsync(UserActivityTypeEnum.AddAccountPhoto, account.Id, photo);
+                    await _commonService.AddAccountPhotoActivitiesAsync(UserActivityTypeEnum.SetAccountPrimaryPhoto, account.Id, photo);
                     return photo;
                 }
                 catch (Exception e)
@@ -252,6 +283,7 @@ namespace Dribbly.Service.Services
                 AccountId = account.Id
             });
             await _context.SaveChangesAsync();
+            await _commonService.AddAccountPhotoActivitiesAsync(UserActivityTypeEnum.AddAccountPhoto, account.Id, photo);
 
             return photo;
         }
@@ -291,6 +323,7 @@ namespace Dribbly.Service.Services
                         AddAccountVideo(accountId, video, file);
                         _context.SaveChanges();
                         transaction.Commit();
+                        await _commonService.AddAccountVideoActivitiesAsync(UserActivityTypeEnum.AddAccountVideo, account.Id, video);
                         return video;
                     }
                     catch (Exception e)

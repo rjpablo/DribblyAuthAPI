@@ -14,6 +14,7 @@ using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
 using Dribbly.Model.Games;
 using Dribbly.Model.Posts;
+using Dribbly.Model.UserActivities;
 
 namespace Dribbly.Model
 {
@@ -39,6 +40,14 @@ namespace Dribbly.Model
         DbSet<PostModel> Posts { get; set; }
         IDbSet<ApplicationUser> Users { get; set; }
         DbEntityEntry Entry(object entity);
+
+        #region User Activites
+        DbSet<UserActivityModel> UserActivities { get; set; }
+        DbSet<UserPostActivityModel> UserPostActivities { get; set; }
+        DbSet<UserAccountActivityModel> UserAccountActivities { get; set; }
+        DbSet<AccountPhotoActivityModel> AccountPhotoActivities { get; set; }
+        DbSet<AccountVideoActivityModel> AccountVideoActivities { get; set; }
+        #endregion
 
         #region Logs
         DbSet<ClientLogModel> ErrorLogs { get; set; }
@@ -84,6 +93,14 @@ namespace Dribbly.Model
         public DbSet<ContactModel> Contacts { get; set; }
         public DbSet<CourtReviewModel> CourtReivews { get; set; }
         public DbSet<PostModel> Posts { get; set; }
+
+        #region User Activites
+        public DbSet<UserActivityModel> UserActivities { get; set; }
+        public DbSet<UserPostActivityModel> UserPostActivities { get; set; }
+        public DbSet<UserAccountActivityModel> UserAccountActivities { get; set; }
+        public DbSet<AccountPhotoActivityModel> AccountPhotoActivities { get; set; }
+        public DbSet<AccountVideoActivityModel> AccountVideoActivities { get; set; }
+        #endregion
 
         #region Logs
         public DbSet<ClientLogModel> ErrorLogs { get; set; }

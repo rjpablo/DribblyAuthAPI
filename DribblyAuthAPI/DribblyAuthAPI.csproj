@@ -378,6 +378,18 @@
     <Compile Include="Migrations\202011070131403_Add_Table_ExceptionLogs.Designer.cs">
       <DependentUpon>202011070131403_Add_Table_ExceptionLogs.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011080050560_Add_Tables_UserActivities_And_UserPostActivities.cs" />
+    <Compile Include="Migrations\202011080050560_Add_Tables_UserActivities_And_UserPostActivities.Designer.cs">
+      <DependentUpon>202011080050560_Add_Tables_UserActivities_And_UserPostActivities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011090119008_Add_Tables_UserAccountActivities_And_AccountPhotoActivities.cs" />
+    <Compile Include="Migrations\202011090119008_Add_Tables_UserAccountActivities_And_AccountPhotoActivities.Designer.cs">
+      <DependentUpon>202011090119008_Add_Tables_UserAccountActivities_And_AccountPhotoActivities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011090159081_Add_Table_AccountVideoActivities.cs" />
+    <Compile Include="Migrations\202011090159081_Add_Table_AccountVideoActivities.Designer.cs">
+      <DependentUpon>202011090159081_Add_Table_AccountVideoActivities.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -554,6 +566,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011070131403_Add_Table_ExceptionLogs.resx">
       <DependentUpon>202011070131403_Add_Table_ExceptionLogs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011080050560_Add_Tables_UserActivities_And_UserPostActivities.resx">
+      <DependentUpon>202011080050560_Add_Tables_UserActivities_And_UserPostActivities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011090119008_Add_Tables_UserAccountActivities_And_AccountPhotoActivities.resx">
+      <DependentUpon>202011090119008_Add_Tables_UserAccountActivities_And_AccountPhotoActivities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011090159081_Add_Table_AccountVideoActivities.resx">
+      <DependentUpon>202011090159081_Add_Table_AccountVideoActivities.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

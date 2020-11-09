@@ -130,6 +130,8 @@
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\LogsService.cs" />
     <Compile Include="Services\SettingsService.cs" />
+    <Compile Include="Services\Shared\ICommonService.cs" />
+    <Compile Include="Services\Shared\CommonService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dribbly.Authentication\Dribbly.Authentication.csproj">

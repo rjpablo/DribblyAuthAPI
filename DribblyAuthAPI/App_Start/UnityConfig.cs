@@ -4,6 +4,7 @@ using Dribbly.Email.Services;
 using Dribbly.Model;
 using Dribbly.Service.Repositories;
 using Dribbly.Service.Services;
+using Dribbly.Service.Services.Shared;
 using System.Web.Http;
 using Unity;
 using Unity.WebApi;
@@ -42,6 +43,7 @@ namespace DribblyAuthAPI
             container.RegisterType<INotificationsRepository, NotificationsRepository>();
             container.RegisterType<INotificationsService, NotificationsService>();
             container.RegisterType<IPostsService, PostsService>();
+            container.RegisterType<ICommonService, CommonService>();
 
             config.DependencyResolver = new UnityDependencyResolver(container);
         }
