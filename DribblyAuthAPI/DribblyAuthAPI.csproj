@@ -169,6 +169,7 @@
     <Compile Include="Controllers\RefreshTokensController.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Filters\DribblyExceptionsFilter.cs" />
     <Compile Include="Migrations\201907141720333_InitialCreate.cs" />
     <Compile Include="Migrations\201907141720333_InitialCreate.Designer.cs">
@@ -615,6 +616,10 @@
     <ProjectReference Include="..\Dribbly.SMS\Dribbly.SMS.csproj">
       <Project>{E15C5BC6-174C-4D8E-B323-6D756BF8E69C}</Project>
       <Name>Dribbly.SMS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dribbly.Test\Dribbly.Test.csproj">
+      <Project>{5BC8F0F6-4D32-4B00-96CE-680AEB068622}</Project>
+      <Name>Dribbly.Test</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
