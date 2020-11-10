@@ -117,7 +117,7 @@ namespace Dribbly.Service.Services.Shared
 
         public async Task AddUserContactActivity(UserActivityTypeEnum activityType, long? contactId, string contactNo)
         {
-            var activity = new UserContactActivity
+            var activity = new UserContactActivityModel
             {
                 Type = activityType,
                 ContactId = contactId,
@@ -170,9 +170,9 @@ namespace Dribbly.Service.Services.Shared
             {
                 _context.AccountVideoActivities.Add((AccountVideoActivityModel)activity);
             }
-            else if(activity is UserContactActivity)
+            else if(activity is UserContactActivityModel)
             {
-                _context.UserContactActivities.Add((UserContactActivity)activity);
+                _context.UserContactActivities.Add((UserContactActivityModel)activity);
             }
             else
             {

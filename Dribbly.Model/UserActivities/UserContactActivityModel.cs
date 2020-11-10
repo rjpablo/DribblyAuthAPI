@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dribbly.Model.UserActivities
 {
     [Table("UserContactActivities")]
-    public class UserContactActivity : UserActivityModel
+    public class UserContactActivityModel : UserActivityModel
     {
         [ForeignKey(nameof(Contact))]
         public long? ContactId { get; set; }
