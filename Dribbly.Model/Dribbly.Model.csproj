@@ -75,6 +75,7 @@
     <Compile Include="Logs\ExceptionLog.cs" />
     <Compile Include="UserActivities\CourtVideoActivityModel.cs" />
     <Compile Include="UserActivities\CourtPhotoActivityModel.cs" />
+    <Compile Include="UserActivities\UserGameActivityModel.cs" />
     <Compile Include="UserActivities\UserContactActivityModel.cs" />
     <Compile Include="UserActivities\AccountVideoActivity.cs" />
     <Compile Include="UserActivities\AccountPhotoActivityModel.cs" />

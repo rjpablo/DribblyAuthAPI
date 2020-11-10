@@ -27,6 +27,8 @@ namespace Dribbly.Service.Services.Shared
         Task AddUserCourtActivity(UserActivityTypeEnum activityType, long courtId);
         Task AddCourtVideosActivity(UserActivityTypeEnum activityType, long courtId, params VideoModel[] videos);
         Task AddCourtPhotosActivity(UserActivityTypeEnum activityType, long courtId, params PhotoModel[] photos);
+        // GAMES
+        Task AddUserGameActivity(UserActivityTypeEnum activityType, long gameId);
         #endregion
 
         string GetUserId();
@@ -110,6 +112,21 @@ namespace Dribbly.Service.Services.Shared
             {
                 Type = activityType,
                 PostId = postId
+            };
+
+            await AddActivityAsync(activity);
+        }
+
+        #endregion
+
+        #region User Activities - Games
+
+        public async Task AddUserGameActivity(UserActivityTypeEnum activityType, long gameId)
+        {
+            var activity = new UserGameActivityModel
+            {
+                Type = activityType,
+                GameId = gameId
             };
 
             await AddActivityAsync(activity);
@@ -226,6 +243,11 @@ namespace Dribbly.Service.Services.Shared
             {
                 _context.UserContactActivities.Add((UserContactActivityModel)activity);
             }
+            // COURTS
+            else if(activity is UserCourtActivityModel)
+            {
+                _context.UserCourtActivities.Add((UserCourtActivityModel)activity);
+            }
             else if(activity is CourtPhotoActivityModel)
             {
                 _context.CourtPhotoActivities.Add((CourtPhotoActivityModel)activity);
@@ -233,6 +255,11 @@ namespace Dribbly.Service.Services.Shared
             else if(activity is CourtVideoActivityModel)
             {
                 _context.CourtVideoActivities.Add((CourtVideoActivityModel)activity);
+            }
+            // GAMES
+            else if (activity is UserGameActivityModel)
+            {
+                _context.UserGameActivities.Add((UserGameActivityModel)activity);
             }
             else
             {

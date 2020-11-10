@@ -1,42 +1,42 @@
 ﻿using Dribbly.Core.Utilities;
 using Dribbly.Model;
-using Dribbly.Model.Account;
 using Dribbly.Model.Games;
 using Dribbly.Model.Notifications;
+using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
+using Dribbly.Service.Services.Shared;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace Dribbly.Service.Services
 {
     public class GamesService : BaseEntityService<GameModel>, IGamesService
     {
-        IAuthContext _context;
-        HttpContextBase _httpContext;
-        ISecurityUtility _securityUtility;
-        IFileService _fileService;
-        IAccountRepository _accountRepo;
-        INotificationsRepository _notificationsRepo;
-        ICourtsRepository _courtsRepo;
+        private readonly IAuthContext _context;
+        private readonly ISecurityUtility _securityUtility;
+        private readonly IFileService _fileService;
+        private readonly IAccountRepository _accountRepo;
+        private readonly INotificationsRepository _notificationsRepo;
+        private readonly ICourtsRepository _courtsRepo;
+        private readonly ICommonService _commonService;
 
         public GamesService(IAuthContext context,
-            HttpContextBase httpContext,
             ISecurityUtility securityUtility,
             IAccountRepository accountRepo,
             IFileService fileService,
             INotificationsRepository notificationsRepo,
-            ICourtsRepository courtsRepo) : base(context.Games)
+            ICourtsRepository courtsRepo,
+            ICommonService commonService) : base(context.Games)
         {
             _context = context;
-            _httpContext = httpContext;
             _securityUtility = securityUtility;
             _accountRepo = accountRepo;
             _fileService = fileService;
             _notificationsRepo = notificationsRepo;
             _courtsRepo = courtsRepo;
+            _commonService = commonService;
         }
 
         public IEnumerable<GameModel> GetAll()
@@ -62,6 +62,7 @@ namespace Dribbly.Service.Services
             game.Status = Enums.GameStatusEnum.WaitingToStart;
             Add(game);
             _context.SaveChanges();
+            await _commonService.AddUserGameActivity(UserActivityTypeEnum.AddGame, game.Id);
             NotificationTypeEnum Type = game.AddedById == currentUserId ?
                 NotificationTypeEnum.NewBookingForOwner :
                 NotificationTypeEnum.NewBookingForBooker;
@@ -95,6 +96,7 @@ namespace Dribbly.Service.Services
                 Type = Type
             });
             _context.SaveChanges();
+            await _commonService.AddUserGameActivity(UserActivityTypeEnum.UpdateGame, game.Id);
         }
     }
 }
