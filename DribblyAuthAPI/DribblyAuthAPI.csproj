@@ -394,6 +394,10 @@
     <Compile Include="Migrations\202011100104365_Add_Table_UserContactActivities.Designer.cs">
       <DependentUpon>202011100104365_Add_Table_UserContactActivities.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011100300060_Add_Tables_For_Court_And_GameRelated_User_Activities.cs" />
+    <Compile Include="Migrations\202011100300060_Add_Tables_For_Court_And_GameRelated_User_Activities.Designer.cs">
+      <DependentUpon>202011100300060_Add_Tables_For_Court_And_GameRelated_User_Activities.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -582,6 +586,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011100104365_Add_Table_UserContactActivities.resx">
       <DependentUpon>202011100104365_Add_Table_UserContactActivities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011100300060_Add_Tables_For_Court_And_GameRelated_User_Activities.resx">
+      <DependentUpon>202011100300060_Add_Tables_For_Court_And_GameRelated_User_Activities.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
