@@ -24,11 +24,11 @@ namespace Dribbly.Service.Services
 
         Task<CourtReviewModalModel> GetCodeReviewModalAsync(long courtId);
 
-        long Register(CourtModel court);
+        Task<long> RegisterAsync(CourtModel court);
 
-        IEnumerable<PhotoModel> AddPhotos(long courtId);
+        Task<IEnumerable<PhotoModel>> AddPhotosAsync(long courtId);
 
-        void UpdateCourt(CourtModel court);
+        Task UpdateCourtAsync(CourtModel court);
 
         Task UpdateCourtPhoto(long courtId);
 

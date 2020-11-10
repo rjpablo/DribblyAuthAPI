@@ -100,9 +100,9 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpPost, Authorize]
         [Route("AddCourtPhotos/{courtId}")]
-        public IEnumerable<PhotoModel> AddCourtPhotos(long courtId)
+        public async Task<IEnumerable<PhotoModel>> AddCourtPhotos(long courtId)
         {
-            return _service.AddPhotos(courtId);
+            return await _service.AddPhotosAsync(courtId);
         }
 
         [HttpPost, Authorize]
@@ -151,16 +151,16 @@ namespace DribblyAuthAPI.Controllers
         [HttpPost]
         [Authorize]
         [Route("UpdateCourt")]
-        public void UpdateCourt([FromBody] CourtModel model)
+        public async Task UpdateCourt([FromBody] CourtModel model)
         {
-            _service.UpdateCourt(model);
+            await _service.UpdateCourtAsync(model);
         }
 
         [HttpPost, Authorize]
         [Route("Register")]
-        public long Register([FromBody] CourtModel model)
+        public async Task<long> Register([FromBody] CourtModel model)
         {
-            return _service.Register(model);
+            return await _service.RegisterAsync(model);
         }
 
         [HttpPost, Authorize]

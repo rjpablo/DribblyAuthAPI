@@ -7,7 +7,9 @@ using Dribbly.Model.Bookings;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Games;
 using Dribbly.Model.Shared;
+using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
+using Dribbly.Service.Services.Shared;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -26,18 +28,21 @@ namespace Dribbly.Service.Services
         IFileService _fileService;
         ICourtsRepository _courtsRepo;
         IAccountRepository _accountRepo;
+        private readonly ICommonService _commonService;
 
         public CourtsService(IAuthContext context,
             ISecurityUtility securityUtility,
             IFileService fileService,
             ICourtsRepository courtsRepo,
-            IAccountRepository accountRepo) : base(context.Courts)
+            IAccountRepository accountRepo,
+            ICommonService commonService) : base(context.Courts)
         {
             _context = context;
             _securityUtility = securityUtility;
             _fileService = fileService;
             _courtsRepo = courtsRepo;
             _accountRepo = accountRepo;
+            _commonService = commonService;
         }
 
         #region Generic Court methods
@@ -144,6 +149,7 @@ namespace Dribbly.Service.Services
                         FollowedById = currentUserId
                     });
                     await _context.SaveChangesAsync();
+                    await _commonService.AddUserCourtActivity(UserActivityTypeEnum.FollowCourt, courtId);
                     result.isSuccessful = true;
                 }
 
@@ -164,11 +170,12 @@ namespace Dribbly.Service.Services
             return result;
         }
 
-        public long Register(CourtModel court)
+        public async Task<long> RegisterAsync(CourtModel court)
         {
             court.OwnerId = _securityUtility.GetUserId();
             Add(court);
             _context.SaveChanges();
+            await _commonService.AddUserCourtActivity(UserActivityTypeEnum.AddCourt, court.Id);
             return court.Id;
         }
 
@@ -197,7 +204,9 @@ namespace Dribbly.Service.Services
                     });
                     court.PrimaryPhotoId = photo.Id;
                     UpdateCourt(court);
+                    await _context.SaveChangesAsync();
                     transaction.Commit();
+                    await _commonService.AddCourtPhotosActivity(UserActivityTypeEnum.SetCourtPrimaryPhoto, court.Id, photo);
                 }
                 catch (Exception e)
                 {
@@ -207,12 +216,17 @@ namespace Dribbly.Service.Services
             }
         }
 
-        public void UpdateCourt(CourtModel court)
+        public async Task UpdateCourtAsync(CourtModel court)
+        {
+            await _context.SaveChangesAsync();
+            await _commonService.AddUserCourtActivity(UserActivityTypeEnum.UpdatCourt, court.Id);
+        }
+
+        private void UpdateCourt(CourtModel court)
         {
             if (court.OwnerId == _securityUtility.GetUserId() || AuthenticationService.HasPermission(CourtPermission.UpdateNotOwned))
             {
                 Update(court);
-                _context.SaveChanges();
             }
             else
             {
@@ -285,7 +299,7 @@ namespace Dribbly.Service.Services
 
         #region Court Photos
 
-        public IEnumerable<PhotoModel> AddPhotos(long courtId)
+        public async Task<IEnumerable<PhotoModel>> AddPhotosAsync(long courtId)
         {
             HttpFileCollection files = HttpContext.Current.Request.Files;
             List<PhotoModel> photos = new List<PhotoModel>();
@@ -294,7 +308,7 @@ namespace Dribbly.Service.Services
                 photos.Add(AddCourtPhoto(courtId, files[i]));
                 _context.SaveChanges();
             }
-
+            await _commonService.AddCourtPhotosActivity(UserActivityTypeEnum.AddCourtPhotos, courtId, photos.ToArray());
             return photos;
         }
 
@@ -319,6 +333,7 @@ namespace Dribbly.Service.Services
                     courtPhoto.Photo.DateDeleted = DateTime.UtcNow;
                     _context.CourtPhotos.AddOrUpdate(courtPhoto);
                     _context.SaveChanges();
+                    await _commonService.AddCourtPhotosActivity(UserActivityTypeEnum.DeleteCourtPhotos, courtId, courtPhoto.Photo);
                 }
                 else
                 {
@@ -394,6 +409,7 @@ namespace Dribbly.Service.Services
                         AddCourtVideo(courtId, video, file);
                         _context.SaveChanges();
                         transaction.Commit();
+                        await _commonService.AddCourtVideosActivity(UserActivityTypeEnum.AddCourtVideos, courtId, video);
                         return video;
                     }
                     catch (Exception e)
@@ -435,6 +451,7 @@ namespace Dribbly.Service.Services
                     courtVideo.Video.DateDeleted = DateTime.UtcNow;
                     _context.CourtVideos.AddOrUpdate(courtVideo);
                     _context.SaveChanges();
+                    await _commonService.AddCourtVideosActivity(UserActivityTypeEnum.DeleteCourtVideos, courtId, courtVideo.Video);
                 }
                 else
                 {

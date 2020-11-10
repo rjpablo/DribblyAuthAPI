@@ -23,6 +23,10 @@ namespace Dribbly.Service.Services.Shared
         Task AddAccountPhotoActivitiesAsync(UserActivityTypeEnum activityType, long accountId, params PhotoModel[] photos);
         Task AddAccountVideoActivitiesAsync(UserActivityTypeEnum activityType, long accountId, params VideoModel[] photos);
         Task AddUserContactActivity(UserActivityTypeEnum activityType, long? contactId, string contactNo);
+        // COURTS
+        Task AddUserCourtActivity(UserActivityTypeEnum activityType, long courtId);
+        Task AddCourtVideosActivity(UserActivityTypeEnum activityType, long courtId, params VideoModel[] videos);
+        Task AddCourtPhotosActivity(UserActivityTypeEnum activityType, long courtId, params PhotoModel[] photos);
         #endregion
 
         string GetUserId();
@@ -113,6 +117,54 @@ namespace Dribbly.Service.Services.Shared
 
         #endregion
 
+        #region User Activities - Courts
+        public async Task AddUserCourtActivity(UserActivityTypeEnum activityType, long courtId)
+        {
+            var activity = new UserCourtActivityModel
+            {
+                Type = activityType,
+                CourtId = courtId
+            };
+
+            await AddActivityAsync(activity);
+        }
+
+        public async Task AddCourtPhotosActivity(UserActivityTypeEnum activityType, long courtId, params PhotoModel[] photos)
+        {
+            List<UserActivityModel> activities = new List<UserActivityModel>();
+            foreach (var photo in photos)
+            {
+                var activity = new CourtPhotoActivityModel
+                {
+                    Type = activityType,
+                    CourtId = courtId,
+                    PhotoId = photo.Id
+                };
+
+                activities.Add(activity);
+            }
+            await AddActivitiesAsync(activities);
+        }
+
+        public async Task AddCourtVideosActivity(UserActivityTypeEnum activityType, long courtId, params VideoModel[] videos)
+        {
+            List<UserActivityModel> activities = new List<UserActivityModel>();
+            foreach (var video in videos)
+            {
+                var activity = new CourtVideoActivityModel
+                {
+                    Type = activityType,
+                    CourtId = courtId,
+                    VideoId = video.Id
+                };
+
+                activities.Add(activity);
+            }
+            await AddActivitiesAsync(activities);
+        }
+
+        #endregion
+
         #region User Activities - Contacts
 
         public async Task AddUserContactActivity(UserActivityTypeEnum activityType, long? contactId, string contactNo)
@@ -173,6 +225,14 @@ namespace Dribbly.Service.Services.Shared
             else if(activity is UserContactActivityModel)
             {
                 _context.UserContactActivities.Add((UserContactActivityModel)activity);
+            }
+            else if(activity is CourtPhotoActivityModel)
+            {
+                _context.CourtPhotoActivities.Add((CourtPhotoActivityModel)activity);
+            }
+            else if(activity is CourtVideoActivityModel)
+            {
+                _context.CourtVideoActivities.Add((CourtVideoActivityModel)activity);
             }
             else
             {

@@ -48,6 +48,9 @@ namespace Dribbly.Model
         DbSet<AccountPhotoActivityModel> AccountPhotoActivities { get; set; }
         DbSet<AccountVideoActivityModel> AccountVideoActivities { get; set; }
         DbSet<UserContactActivityModel> UserContactActivities { get; set; }
+        DbSet<UserCourtActivityModel> UserCourtActivities { get; set; }
+        DbSet<CourtVideoActivityModel> CourtVideoActivities { get; set; }
+        DbSet<CourtPhotoActivityModel> CourtPhotoActivities { get; set; }
         #endregion
 
         #region Logs
@@ -102,6 +105,9 @@ namespace Dribbly.Model
         public DbSet<AccountPhotoActivityModel> AccountPhotoActivities { get; set; }
         public DbSet<AccountVideoActivityModel> AccountVideoActivities { get; set; }
         public DbSet<UserContactActivityModel> UserContactActivities { get; set; }
+        public DbSet<UserCourtActivityModel> UserCourtActivities { get; set; }
+        public DbSet<CourtVideoActivityModel> CourtVideoActivities { get; set; }
+        public DbSet<CourtPhotoActivityModel> CourtPhotoActivities { get; set; }
         #endregion
 
         #region Logs

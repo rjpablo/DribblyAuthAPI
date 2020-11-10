@@ -26,6 +26,11 @@
         DeleteCourt = 43,
         FollowCourt = 44,
         UnfollowCourt = 45,
+        AddCourtPhotos = 46,
+        DeleteCourtPhotos = 47,
+        AddCourtVideos = 48,
+        DeleteCourtVideos = 49,
+        SetCourtPrimaryPhoto = 50,
 
         #endregion
 
