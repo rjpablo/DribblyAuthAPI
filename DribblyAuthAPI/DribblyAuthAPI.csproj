@@ -390,6 +390,10 @@
     <Compile Include="Migrations\202011090159081_Add_Table_AccountVideoActivities.Designer.cs">
       <DependentUpon>202011090159081_Add_Table_AccountVideoActivities.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011100104365_Add_Table_UserContactActivities.cs" />
+    <Compile Include="Migrations\202011100104365_Add_Table_UserContactActivities.Designer.cs">
+      <DependentUpon>202011100104365_Add_Table_UserContactActivities.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -575,6 +579,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011090159081_Add_Table_AccountVideoActivities.resx">
       <DependentUpon>202011090159081_Add_Table_AccountVideoActivities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011100104365_Add_Table_UserContactActivities.resx">
+      <DependentUpon>202011100104365_Add_Table_UserContactActivities.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

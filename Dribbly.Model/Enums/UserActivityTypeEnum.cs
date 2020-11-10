@@ -51,5 +51,10 @@
         RatePlayer = 103,
 
         #endregion
+
+        #region Contacts
+        RequestVerificationCode = 121,
+        VerifyContact = 122,
+        #endregion
     }
 }

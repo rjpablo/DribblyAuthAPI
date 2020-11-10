@@ -1,6 +1,7 @@
 ﻿using Dribbly.Model.Shared;
 using Dribbly.Service.Services;
 using Dribbly.SMS.Models;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace DribblyAuthAPI.Controllers
@@ -17,16 +18,16 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpPost]
         [Route("SendVerificationCode")]
-        public void SendVerificationCode(ContactVerificationModel contact)
+        public async Task SendVerificationCodeAsync(ContactVerificationModel input)
         {
-            _service.SendVerificationCode(contact);
+            await _service.SendVerificationCodeAsync(input);
         }
 
         [HttpPost]
         [Route("VerifyMobileNumber")]
-        public PhoneVerificationResultModel VerifyMobileNumber(ContactVerificationModel contact)
+        public async Task<PhoneVerificationResultModel> VerifyMobileNumber(ContactVerificationModel contact)
         {
-            return _service.VerifyMobileNumber(contact);
+            return await _service.VerifyMobileNumberAsync(contact);
         }
     }
 }

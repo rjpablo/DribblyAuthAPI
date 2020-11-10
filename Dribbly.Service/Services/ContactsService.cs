@@ -2,34 +2,42 @@
 using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Shared;
+using Dribbly.Service.Enums;
+using Dribbly.Service.Services.Shared;
 using Dribbly.SMS;
 using Dribbly.SMS.Models;
 using Dribbly.SMS.Services;
 using System;
 using System.IdentityModel;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace Dribbly.Service.Services
 {
     public class ContactsService: BaseEntityService<ContactModel>, IContactsService
     {
-        IAuthContext _context;
-        ISecurityUtility _securityUtility;
-        ISmsService _smsService;
+        private readonly IAuthContext _context;
+        private readonly ISecurityUtility _securityUtility;
+        private readonly ICommonService _commonService;
+        private readonly ISmsService _smsService;
 
         public ContactsService(IAuthContext context,
-            ISecurityUtility securityUtility) : base(context.Contacts)
+            ISecurityUtility securityUtility,
+            ICommonService commonService) : base(context.Contacts)
         {
             _context = context;
             _securityUtility = securityUtility;
+            _commonService = commonService;
             _smsService = new SMSService();
         }
 
-        public void SendVerificationCode(ContactVerificationModel input)
+        public async Task SendVerificationCodeAsync(ContactVerificationModel input)
         {
+            await _commonService.AddUserContactActivity(UserActivityTypeEnum.RequestVerificationCode, null, input.ContactNumber);
             _smsService.SendVerificationCode(input.ContactNumber);
         }
 
-        public PhoneVerificationResultModel VerifyMobileNumber(ContactVerificationModel input)
+        public async Task<PhoneVerificationResultModel> VerifyMobileNumberAsync(ContactVerificationModel input)
         {
             PhoneVerificationResultModel result = new PhoneVerificationResultModel();
             string status = _smsService.VerifyMobileNumber(input.ContactNumber, input.Code);
@@ -46,6 +54,7 @@ namespace Dribbly.Service.Services
                 _context.SaveChanges();
                 result.Successful = true;
                 result.GeneratedContactId = contact.Id;
+                await _commonService.AddUserContactActivity(UserActivityTypeEnum.VerifyContact, null, input.ContactNumber);
             }
             else if (status == "pending")
             {

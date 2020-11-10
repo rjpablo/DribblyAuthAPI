@@ -1,12 +1,13 @@
 ﻿using Dribbly.Model.Shared;
 using Dribbly.SMS.Models;
+using System.Threading.Tasks;
 
 namespace Dribbly.Service.Services
 {
     public interface IContactsService
     {
-        void SendVerificationCode(ContactVerificationModel contact);
+        Task SendVerificationCodeAsync(ContactVerificationModel input);
 
-        PhoneVerificationResultModel VerifyMobileNumber(ContactVerificationModel contact);
+        Task<PhoneVerificationResultModel> VerifyMobileNumberAsync(ContactVerificationModel contact);
     }
 }

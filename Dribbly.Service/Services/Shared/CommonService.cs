@@ -14,6 +14,22 @@ using System.Web;
 
 namespace Dribbly.Service.Services.Shared
 {
+    #region Interface
+    public interface ICommonService
+    {
+        #region User Activities
+        Task AddUserPostActivity(UserActivityTypeEnum activityType, long postId);
+        Task AddUserAccountActivity(UserActivityTypeEnum activityType, long accountId);
+        Task AddAccountPhotoActivitiesAsync(UserActivityTypeEnum activityType, long accountId, params PhotoModel[] photos);
+        Task AddAccountVideoActivitiesAsync(UserActivityTypeEnum activityType, long accountId, params VideoModel[] photos);
+        Task AddUserContactActivity(UserActivityTypeEnum activityType, long? contactId, string contactNo);
+        #endregion
+
+        string GetUserId();
+        string TryGetRequestData(HttpRequest request);
+    }
+    #endregion
+
     public class CommonService : ICommonService
     {
         IAuthContext _context;
@@ -97,6 +113,21 @@ namespace Dribbly.Service.Services.Shared
 
         #endregion
 
+        #region User Activities - Contacts
+
+        public async Task AddUserContactActivity(UserActivityTypeEnum activityType, long? contactId, string contactNo)
+        {
+            var activity = new UserContactActivity
+            {
+                Type = activityType,
+                ContactId = contactId,
+                ContactNo = contactNo
+            };
+            await AddActivityAsync(activity);
+        }
+
+        #endregion
+
         #region User Activities - Common
 
 
@@ -139,6 +170,10 @@ namespace Dribbly.Service.Services.Shared
             {
                 _context.AccountVideoActivities.Add((AccountVideoActivityModel)activity);
             }
+            else if(activity is UserContactActivity)
+            {
+                _context.UserContactActivities.Add((UserContactActivity)activity);
+            }
             else
             {
                 //TODO: Log warning - activity not recorded
@@ -171,5 +206,6 @@ namespace Dribbly.Service.Services.Shared
         }
 
         #endregion
+                
     }
 }
