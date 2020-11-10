@@ -10,12 +10,11 @@
         DeleteAccount = 4,
         MakeAccountPublic = 5,
         MakeAccountPrivate = 6,
-        SetPrimaryPhoto = 7,
+        SetAccountPrimaryPhoto = 7,
         AddAccountPhoto = 8,
         DeleteAccountPhoto = 9,
-        SetAccountPrimaryPhoto = 10,
-        AddAccountVideo = 11,
-        DeleteAccountVideo = 12,
+        AddAccountVideo = 10,
+        DeleteAccountVideo = 11,
 
         #endregion
 
