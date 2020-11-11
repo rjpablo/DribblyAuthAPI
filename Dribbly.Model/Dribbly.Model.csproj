@@ -121,6 +121,10 @@
       <Project>{8A887A9E-E256-4A63-ABE3-F8657B04E011}</Project>
       <Name>Dribbly.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dribbly.Identity\Dribbly.Identity.csproj">
+      <Project>{06719069-2DB1-4144-B39D-A0FE7F5431F9}</Project>
+      <Name>Dribbly.Identity</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

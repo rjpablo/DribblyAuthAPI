@@ -145,6 +145,10 @@
       <Project>{29f4a3cf-4259-46a5-b53b-d4e43eab6f76}</Project>
       <Name>Dribbly.Email</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dribbly.Identity\Dribbly.Identity.csproj">
+      <Project>{06719069-2DB1-4144-B39D-A0FE7F5431F9}</Project>
+      <Name>Dribbly.Identity</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dribbly.Model\Dribbly.Model.csproj">
       <Project>{5FE646E5-BAB0-4635-9161-671F0D73CBCC}</Project>
       <Name>Dribbly.Model</Name>

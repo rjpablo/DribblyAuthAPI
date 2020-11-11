@@ -1,5 +1,6 @@
 ﻿using Dribbly.Authentication.Models.Auth;
 using Dribbly.Core.Helpers;
+using Dribbly.Identity.Models;
 using Dribbly.Model;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Dribbly.Service.Services
 {
-    public class ApplicationUserManager : UserManager<ApplicationUser>
+    public class ApplicationUserManager : UserManager<ApplicationUser,long>
     {
-        public ApplicationUserManager(IUserStore<ApplicationUser> store) : base(store)
+        public ApplicationUserManager(CustomUserStore store) : base(store)
         {
         }
 
@@ -24,9 +25,9 @@ namespace Dribbly.Service.Services
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<AuthContext>()));
+            var manager = new ApplicationUserManager(new CustomUserStore(context.Get<AuthContext>()));
             // Configure validation logic for usernames
-            manager.UserValidator = new UserValidator<ApplicationUser>(manager)
+            manager.UserValidator = new UserValidator<ApplicationUser, long>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
@@ -44,7 +45,7 @@ namespace Dribbly.Service.Services
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
-                manager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("Dribbly API"));
+                manager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser, long>(dataProtectionProvider.Create("Dribbly API"));
             }
             return manager;
         }

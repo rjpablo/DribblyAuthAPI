@@ -399,6 +399,34 @@
     <Compile Include="Migrations\202011100300060_Add_Tables_For_Court_And_GameRelated_User_Activities.Designer.cs">
       <DependentUpon>202011100300060_Add_Tables_For_Court_And_GameRelated_User_Activities.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011110253530_Remove_Dependency_Between_AspNetUsers_And_NewBookingNotifications.cs" />
+    <Compile Include="Migrations\202011110253530_Remove_Dependency_Between_AspNetUsers_And_NewBookingNotifications.Designer.cs">
+      <DependentUpon>202011110253530_Remove_Dependency_Between_AspNetUsers_And_NewBookingNotifications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011110300171_Remove_FK_And_Indeces_From_Identity_Tables.cs" />
+    <Compile Include="Migrations\202011110300171_Remove_FK_And_Indeces_From_Identity_Tables.Designer.cs">
+      <DependentUpon>202011110300171_Remove_FK_And_Indeces_From_Identity_Tables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011110302039_Remove_PKs_From_Identity_Tables.cs" />
+    <Compile Include="Migrations\202011110302039_Remove_PKs_From_Identity_Tables.Designer.cs">
+      <DependentUpon>202011110302039_Remove_PKs_From_Identity_Tables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011110313504_Alter_Columns.cs" />
+    <Compile Include="Migrations\202011110313504_Alter_Columns.Designer.cs">
+      <DependentUpon>202011110313504_Alter_Columns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011110316090_Readd_PKs_For_Identity_Tables.cs" />
+    <Compile Include="Migrations\202011110316090_Readd_PKs_For_Identity_Tables.Designer.cs">
+      <DependentUpon>202011110316090_Readd_PKs_For_Identity_Tables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011110318239_Readd_FKs_And_Indeces_To_Identity_Tables.cs" />
+    <Compile Include="Migrations\202011110318239_Readd_FKs_And_Indeces_To_Identity_Tables.Designer.cs">
+      <DependentUpon>202011110318239_Readd_FKs_And_Indeces_To_Identity_Tables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011110325558_Readd_Dependency_Of_Tables_Accounts_And_NewBookingNotifications_To_AspNetUsers.cs" />
+    <Compile Include="Migrations\202011110325558_Readd_Dependency_Of_Tables_Accounts_And_NewBookingNotifications_To_AspNetUsers.Designer.cs">
+      <DependentUpon>202011110325558_Readd_Dependency_Of_Tables_Accounts_And_NewBookingNotifications_To_AspNetUsers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -591,6 +619,27 @@
     <EmbeddedResource Include="Migrations\202011100300060_Add_Tables_For_Court_And_GameRelated_User_Activities.resx">
       <DependentUpon>202011100300060_Add_Tables_For_Court_And_GameRelated_User_Activities.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011110253530_Remove_Dependency_Between_AspNetUsers_And_NewBookingNotifications.resx">
+      <DependentUpon>202011110253530_Remove_Dependency_Between_AspNetUsers_And_NewBookingNotifications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011110300171_Remove_FK_And_Indeces_From_Identity_Tables.resx">
+      <DependentUpon>202011110300171_Remove_FK_And_Indeces_From_Identity_Tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011110302039_Remove_PKs_From_Identity_Tables.resx">
+      <DependentUpon>202011110302039_Remove_PKs_From_Identity_Tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011110313504_Alter_Columns.resx">
+      <DependentUpon>202011110313504_Alter_Columns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011110316090_Readd_PKs_For_Identity_Tables.resx">
+      <DependentUpon>202011110316090_Readd_PKs_For_Identity_Tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011110318239_Readd_FKs_And_Indeces_To_Identity_Tables.resx">
+      <DependentUpon>202011110318239_Readd_FKs_And_Indeces_To_Identity_Tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011110325558_Readd_Dependency_Of_Tables_Accounts_And_NewBookingNotifications_To_AspNetUsers.resx">
+      <DependentUpon>202011110325558_Readd_Dependency_Of_Tables_Accounts_And_NewBookingNotifications_To_AspNetUsers.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dribbly.Authentication\Dribbly.Authentication.csproj">
@@ -604,6 +653,10 @@
     <ProjectReference Include="..\Dribbly.Email\Dribbly.Email.csproj">
       <Project>{29f4a3cf-4259-46a5-b53b-d4e43eab6f76}</Project>
       <Name>Dribbly.Email</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dribbly.Identity\Dribbly.Identity.csproj">
+      <Project>{06719069-2DB1-4144-B39D-A0FE7F5431F9}</Project>
+      <Name>Dribbly.Identity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dribbly.Model\Dribbly.Model.csproj">
       <Project>{5FE646E5-BAB0-4635-9161-671F0D73CBCC}</Project>
