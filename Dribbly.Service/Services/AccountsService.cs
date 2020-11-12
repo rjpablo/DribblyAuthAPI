@@ -283,7 +283,6 @@ namespace Dribbly.Service.Services
                 AccountId = account.Id
             });
             await _context.SaveChangesAsync();
-            await _commonService.AddAccountPhotoActivitiesAsync(UserActivityTypeEnum.AddAccountPhoto, account.Id, photo);
 
             return photo;
         }

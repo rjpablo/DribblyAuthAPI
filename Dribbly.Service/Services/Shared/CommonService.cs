@@ -230,22 +230,28 @@ namespace Dribbly.Service.Services.Shared
 
         private void AddActivity(UserActivityModel activity)
         {
+            // POSTS
             if (activity is UserPostActivityModel)
             {
                 _context.UserPostActivities.Add((UserPostActivityModel)activity);
             }
+            // ACCOUNTS
             else if (activity is UserAccountActivityModel)
             {
-                _context.UserAccountActivities.Add((UserAccountActivityModel)activity);
+                if (activity is AccountPhotoActivityModel)
+                {
+                    _context.AccountPhotoActivities.Add((AccountPhotoActivityModel)activity);
+                }
+                else if (activity is AccountVideoActivityModel)
+                {
+                    _context.AccountVideoActivities.Add((AccountVideoActivityModel)activity);
+                }
+                else
+                {
+                    _context.UserAccountActivities.Add((UserAccountActivityModel)activity);
+                }
             }
-            else if (activity is AccountPhotoActivityModel)
-            {
-                _context.AccountPhotoActivities.Add((AccountPhotoActivityModel)activity);
-            }
-            else if (activity is AccountVideoActivityModel)
-            {
-                _context.AccountVideoActivities.Add((AccountVideoActivityModel)activity);
-            }
+            // CONTACTS
             else if(activity is UserContactActivityModel)
             {
                 _context.UserContactActivities.Add((UserContactActivityModel)activity);
