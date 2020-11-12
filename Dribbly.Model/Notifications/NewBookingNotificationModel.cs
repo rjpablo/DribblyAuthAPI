@@ -1,4 +1,5 @@
 ﻿using Dribbly.Authentication.Models.Auth;
+using Dribbly.Identity.Models;
 using Dribbly.Model.Bookings;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,7 +15,7 @@ namespace Dribbly.Model.Notifications
         /// The Id of the user who made the booking. <see cref="ApplicationIdentity.Id"/>
         /// </summary>
         [ForeignKey(nameof(BookedBy))]
-        public string BookedById { get; set; }
+        public long BookedById { get; set; }
         /// <summary>
         /// The name of the user who made the booking
         /// </summary>

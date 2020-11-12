@@ -44,15 +44,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.0.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.0.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.3\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.0.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
@@ -427,6 +429,10 @@
     <Compile Include="Migrations\202011110325558_Readd_Dependency_Of_Tables_Accounts_And_NewBookingNotifications_To_AspNetUsers.Designer.cs">
       <DependentUpon>202011110325558_Readd_Dependency_Of_Tables_Accounts_And_NewBookingNotifications_To_AspNetUsers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011120241495_Update_App_Tables_To_Match_Changes_In_Identity_Tables.cs" />
+    <Compile Include="Migrations\202011120241495_Update_App_Tables_To_Match_Changes_In_Identity_Tables.Designer.cs">
+      <DependentUpon>202011120241495_Update_App_Tables_To_Match_Changes_In_Identity_Tables.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -639,6 +645,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011110325558_Readd_Dependency_Of_Tables_Accounts_And_NewBookingNotifications_To_AspNetUsers.resx">
       <DependentUpon>202011110325558_Readd_Dependency_Of_Tables_Accounts_And_NewBookingNotifications_To_AspNetUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011120241495_Update_App_Tables_To_Match_Changes_In_Identity_Tables.resx">
+      <DependentUpon>202011120241495_Update_App_Tables_To_Match_Changes_In_Identity_Tables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

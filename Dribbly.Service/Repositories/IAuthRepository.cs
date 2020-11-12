@@ -1,5 +1,6 @@
 ﻿using Dribbly.Authentication.Models;
 using Dribbly.Authentication.Models.Auth;
+using Dribbly.Identity.Models;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace Dribbly.Service.Repositories
 
         Task<IdentityResult> CreateAsync(ApplicationUser user);
 
-        Task<IdentityResult> AddLoginAsync(string userId, UserLoginInfo login);
+        Task<IdentityResult> AddLoginAsync(long userId, UserLoginInfo login);
 
         Client FindClient(string clientId);
 
@@ -31,7 +32,7 @@ namespace Dribbly.Service.Repositories
 
         Task<RefreshToken> FindRefreshToken(string refreshTokenId);
 
-        Task<ApplicationUser> FindUserByIdAsync(string userId);
+        Task<ApplicationUser> FindUserByIdAsync(long userId);
 
         List<RefreshToken> GetAllRefreshTokens();
 

@@ -32,7 +32,7 @@ namespace Dribbly.Service.Repositories
         /// </summary>
         /// <param name="identityUserId"></param>
         /// <returns></returns>
-        public async Task<AccountModel> GetAccountById(string identityUserId)
+        public async Task<AccountModel> GetAccountByIdentityId(long identityUserId)
         {
             return await _context.Accounts.Include(a => a.ProfilePhoto).Include(a => a.User)
                 .SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId);
@@ -51,10 +51,10 @@ namespace Dribbly.Service.Repositories
 
         public async Task<long?> GetIdentityUserAccountId(string identityUserId)
         {
-            return (await _context.Accounts.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId))?.Id;
+            return (await _context.Accounts.SingleOrDefaultAsync(a => a.IdentityUserId.ToString() == identityUserId))?.Id;
         }
 
-        public async Task<AccountBasicInfoModel> GetAccountBasicInfo(string userId)
+        public async Task<AccountBasicInfoModel> GetAccountBasicInfo(long userId)
         {
             AccountModel account = await _dbSet.Include(a => a.ProfilePhoto).Include(a => a.User)
                 .SingleOrDefaultAsync(a => a.IdentityUserId == userId);
@@ -67,7 +67,7 @@ namespace Dribbly.Service.Repositories
 
         public void ActivateByUserId(string userid)
         {
-            AccountModel account = _dbSet.SingleOrDefault(a => a.IdentityUserId == userid);
+            AccountModel account = _dbSet.SingleOrDefault(a => a.IdentityUserId.ToString() == userid);
             if(account != null && account.Status != EntityStatusEnum.Active)
             {
                 account.Status = EntityStatusEnum.Active;
@@ -77,7 +77,7 @@ namespace Dribbly.Service.Repositories
         public IQueryable<AccountModel> SearchAccounts(AccountSearchInputModel input)
         {
             return _dbSet.Include(a => a.ProfilePhoto).Include(a => a.User)
-                .Where(a => a.User.UserName.Contains(input.NameSegment) && !input.ExcludeIds.Contains(a.IdentityUserId));
+                .Where(a => a.User.UserName.Contains(input.NameSegment) && !input.ExcludeIds.Contains(a.IdentityUserId.ToString()));
         }
 
         #region IDisposable Support

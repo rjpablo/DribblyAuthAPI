@@ -21,12 +21,12 @@ namespace Dribbly.Model.Bookings
         public string Title { get; set; }
 
         [Required]
-        public string AddedBy { get; set; }
+        public long AddedBy { get; set; }
 
         [ForeignKey("Court"), Required]
         public long CourtId { get; set; }
 
-        public string BookedById { get; set; }
+        public long BookedById { get; set; }
 
         /// <summary>
         /// Whether or not the user who booked this booking has reviewed the court based on this booking.

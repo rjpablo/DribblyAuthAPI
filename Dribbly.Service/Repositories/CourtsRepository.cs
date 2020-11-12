@@ -21,9 +21,9 @@ namespace Dribbly.Service.Repositories
             return await _dbSet.Where(c => c.Name.Contains(input.Name)).ToListAsync();
         }
 
-        public async Task<string> GetOwnerId(long courtId)
+        public async Task<long> GetOwnerId(long courtId)
         {
-            return (await _dbSet.SingleOrDefaultAsync(c => c.Id == courtId))?.OwnerId;
+            return (await _dbSet.SingleOrDefaultAsync(c => c.Id == courtId)).OwnerId;
         }
 
     }

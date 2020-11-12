@@ -85,7 +85,7 @@ namespace Dribbly.Service.Services
         {
             if (post.AddedByType == EntityTypeEnum.Account)
             {
-                var account = await _accountRepo.GetAccountById(post.AddedById);
+                var account = await _accountRepo.GetAccountByIdentityId(post.AddedById);
                 return new EntityBasicInfoModel(account);
             }
 
@@ -106,8 +106,7 @@ namespace Dribbly.Service.Services
                 Content = input.Content,
                 Status = EntityStatusEnum.Active
             };
-            var currentUserId = _securityUtility.GetUserId();
-            post.AddedById = currentUserId;
+            post.AddedById = _securityUtility.GetUserId().Value;
             Add(post);
             await _context.SaveChangesAsync();
             await _commonService.AddUserPostActivity(UserActivityTypeEnum.AddPost, post.Id);

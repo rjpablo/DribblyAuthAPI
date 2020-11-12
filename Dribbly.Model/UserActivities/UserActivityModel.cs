@@ -8,6 +8,6 @@ namespace Dribbly.Model.UserActivities
     public class UserActivityModel : BaseEntityModel
     {
         public UserActivityTypeEnum Type { get; set; }
-        public string UserId { get; set; }
+        public long UserId { get; set; }
     }
 }

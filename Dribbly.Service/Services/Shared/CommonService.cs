@@ -31,7 +31,7 @@ namespace Dribbly.Service.Services.Shared
         Task AddUserGameActivity(UserActivityTypeEnum activityType, long gameId);
         #endregion
 
-        string GetUserId();
+        long? GetUserId();
         string TryGetRequestData(HttpRequest request);
     }
     #endregion
@@ -51,7 +51,7 @@ namespace Dribbly.Service.Services.Shared
 
         public async Task LogUserActivity(UserActivityModel log)
         {
-            log.UserId = GetUserId();
+            log.UserId = GetUserId().Value;
             log.DateAdded = DateTime.UtcNow;
             _context.UserActivities.Add(log);
             await _context.SaveChangesAsync();
@@ -202,23 +202,30 @@ namespace Dribbly.Service.Services.Shared
 
         private async Task AddActivityAsync(UserActivityModel activity)
         {
-            activity.UserId = GetUserId();
-            activity.DateAdded = DateTime.UtcNow;
-            AddActivity(activity);
-            await _context.SaveChangesAsync();
+            var userId = GetUserId();
+            if (userId.HasValue)
+            {
+                activity.UserId = userId.Value;
+                activity.DateAdded = DateTime.UtcNow;
+                AddActivity(activity);
+                await _context.SaveChangesAsync();
+            }
         }
 
         private async Task AddActivitiesAsync(List<UserActivityModel> activities)
         {
             var userId = GetUserId();
-            var now = DateTime.UtcNow;
-            foreach (var activity in activities)
+            if (userId.HasValue)
             {
-                activity.UserId = userId;
-                activity.DateAdded = now;
-                AddActivity(activity);
+                var now = DateTime.UtcNow;
+                foreach (var activity in activities)
+                {
+                    activity.UserId = userId.Value;
+                    activity.DateAdded = now;
+                    AddActivity(activity);
+                }
+                await _context.SaveChangesAsync();
             }
-            await _context.SaveChangesAsync();
         }
 
         private void AddActivity(UserActivityModel activity)
@@ -270,11 +277,16 @@ namespace Dribbly.Service.Services.Shared
 
         #region Helpers
 
-        public string GetUserId()
+        public long? GetUserId()
         {
-            var userId = ClaimsPrincipal.Current.Claims.ToList()
+            var stringUserId = ClaimsPrincipal.Current.Claims.ToList()
                 .SingleOrDefault(c => c.Type == "userId")?.Value;
-            return userId;
+            if (string.IsNullOrEmpty(stringUserId))
+            {
+                return null;
+            }
+
+            return long.Parse(stringUserId);
         }
 
         public string TryGetRequestData(HttpRequest request)

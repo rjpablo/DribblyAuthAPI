@@ -67,8 +67,8 @@ namespace Dribbly.Service.Services
         {
             CourtModel court = _context.Courts.Include(p => p.PrimaryPhoto).Include(p => p.Contact).SingleOrDefault(p => p.Id == id);
             var result = new CourtDetailsViewModel(court);
-            string currentUserId = _securityUtility.GetUserId();
-            result.IsFollowed = _context.CourtFollowings.Any(f => f.CourtId == id && f.FollowedById == currentUserId);
+            long? currentUserId = _securityUtility.GetUserId();
+            result.IsFollowed = _context.CourtFollowings.Any(f => currentUserId.HasValue && f.CourtId == id && f.FollowedById == currentUserId);
 
             Task populateOwnerTask = PopulateOwner(result);
             Task<long> followerCountTask = getFollowerCountAsync(court.Id);
@@ -87,10 +87,11 @@ namespace Dribbly.Service.Services
             {
                 if (_securityUtility.IsAuthenticated())
                 {
-                    string userId = _securityUtility.GetUserId();
-                    Model.Bookings.BookingModel mostRecentBooking = await context.Bookings.Where(e => e.CourtId == courtId && e.BookedById == userId &&
-                    e.Start < DateTime.UtcNow && e.End < DateTime.UtcNow && e.Status == Enums.BookingStatusEnum.Approved && !e.HasReviewed)
-                        .OrderByDescending(e => e.End).FirstOrDefaultAsync();
+                    long? userId = _securityUtility.GetUserId();
+                    BookingModel mostRecentBooking = await context.Bookings
+                        .Where(e => userId.HasValue && e.CourtId == courtId && e.BookedById == userId &&
+                        e.Start < DateTime.UtcNow && e.End < DateTime.UtcNow && e.Status == Enums.BookingStatusEnum.Approved &&
+                        !e.HasReviewed).OrderByDescending(e => e.End).FirstOrDefaultAsync();
                     return mostRecentBooking;
                 }
                 return null;
@@ -132,21 +133,21 @@ namespace Dribbly.Service.Services
 
         public async Task<FollowResultModel> FollowCourtAsync(long courtId, bool isFollowing)
         {
-            string currentUserId = _securityUtility.GetUserId();
+            long? currentUserId = _securityUtility.GetUserId();
             FollowResultModel result = new FollowResultModel();
-            CourtFollowingModel courtFollowing = await _context.CourtFollowings.SingleOrDefaultAsync(f => f.CourtId == courtId && f.FollowedById == currentUserId);
+            CourtFollowingModel courtFollowing = await _context.CourtFollowings
+                .SingleOrDefaultAsync(f => currentUserId.HasValue && f.CourtId == courtId && f.FollowedById == currentUserId);
             result.isAlreadyFollowing = courtFollowing != null;
             result.IsNotCurrentlyFollowing = !result.isAlreadyFollowing;
 
             if (isFollowing)
             {
-
                 if (!result.isAlreadyFollowing)
                 {
                     _context.CourtFollowings.Add(new CourtFollowingModel
                     {
                         CourtId = courtId,
-                        FollowedById = currentUserId
+                        FollowedById = currentUserId.Value
                     });
                     await _context.SaveChangesAsync();
                     await _commonService.AddUserCourtActivity(UserActivityTypeEnum.FollowCourt, courtId);
@@ -172,7 +173,7 @@ namespace Dribbly.Service.Services
 
         public async Task<long> RegisterAsync(CourtModel court)
         {
-            court.OwnerId = _securityUtility.GetUserId();
+            court.OwnerId = _securityUtility.GetUserId().Value;
             Add(court);
             _context.SaveChanges();
             await _commonService.AddUserCourtActivity(UserActivityTypeEnum.AddCourt, court.Id);
@@ -192,7 +193,7 @@ namespace Dribbly.Service.Services
                     PhotoModel photo = new PhotoModel
                     {
                         Url = uploadPath,
-                        UploadedById = _securityUtility.GetUserId(),
+                        UploadedById = _securityUtility.GetUserId().Value,
                         DateAdded = DateTime.Now
                     };
                     _context.Photos.Add(photo);
@@ -252,7 +253,7 @@ namespace Dribbly.Service.Services
 
         public async Task SubmitReviewAsync(CourtReviewModel review)
         {
-            review.ReviewedById = _securityUtility.GetUserId();
+            review.ReviewedById = _securityUtility.GetUserId().Value;
             CourtModel court = GetById(review.CourtId);
             if (court.OwnerId == review.ReviewedById)
             {
@@ -357,7 +358,7 @@ namespace Dribbly.Service.Services
             PhotoModel photo = new PhotoModel
             {
                 Url = uploadPath,
-                UploadedById = _securityUtility.GetUserId(),
+                UploadedById = _securityUtility.GetUserId().Value,
                 DateAdded = DateTime.Now
             };
             _context.Photos.Add(photo);
@@ -465,7 +466,7 @@ namespace Dribbly.Service.Services
         {
             string uploadPath = _fileService.Upload(file, "video/");
             video.Src = uploadPath;
-            video.AddedBy = _securityUtility.GetUserId();
+            video.AddedBy = _securityUtility.GetUserId().Value;
             video.DateAdded = DateTime.UtcNow;
             video.Size = file.ContentLength;
             video.Type = file.ContentType;

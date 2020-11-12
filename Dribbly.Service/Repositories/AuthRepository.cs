@@ -2,6 +2,7 @@
 using Dribbly.Authentication.Models.Auth;
 using Dribbly.Email.Models;
 using Dribbly.Email.Services;
+using Dribbly.Identity.Models;
 using Dribbly.Model;
 using Dribbly.Service.Services;
 using Microsoft.AspNet.Identity;
@@ -80,7 +81,7 @@ namespace Dribbly.Service.Repositories
             return user;
         }
 
-        public async Task<ApplicationUser> FindUserByIdAsync(string userId)
+        public async Task<ApplicationUser> FindUserByIdAsync(long userId)
         {
             return await _userManager.FindByIdAsync(userId);
         }
@@ -106,7 +107,7 @@ namespace Dribbly.Service.Repositories
             return result;
         }
 
-        public async Task<IdentityResult> AddLoginAsync(string userId, UserLoginInfo login)
+        public async Task<IdentityResult> AddLoginAsync(long userId, UserLoginInfo login)
         {
             var result = await _userManager.AddLoginAsync(userId, login);
 

@@ -13,6 +13,6 @@ namespace Dribbly.Authentication.Models.Auth
         public string NewPassword { get; set; }
 
         [Required]
-        public string Userid { get; set; }
+        public long Userid { get; set; }
     }
 }

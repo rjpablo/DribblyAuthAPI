@@ -2,12 +2,12 @@
 {
     using Dribbly.Authentication.Enums;
     using Dribbly.Authentication.Models;
-    using Dribbly.Authentication.Models.Auth;
     using Dribbly.Core.Enums.Permissions;
     using Dribbly.Core.Helpers;
+    using Dribbly.Identity.Models;
     using Dribbly.Model;
-    using Dribbly.Model.Courts;
     using Dribbly.Model.Bookings;
+    using Dribbly.Model.Courts;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;

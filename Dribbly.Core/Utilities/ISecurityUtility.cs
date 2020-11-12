@@ -7,8 +7,8 @@ namespace Dribbly.Core.Utilities
     public interface ISecurityUtility
     {
         string GetUserName();
-        string GetUserId();
+        long? GetUserId();
         bool IsAuthenticated();
-        bool IsCurrentUser(string userId);
+        bool IsCurrentUser(long userId);
     }
 }

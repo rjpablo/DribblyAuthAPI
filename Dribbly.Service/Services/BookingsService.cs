@@ -1,4 +1,5 @@
-﻿using Dribbly.Core.Utilities;
+﻿using Dribbly.Core.Exceptions;
+using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Account;
 using Dribbly.Model.Bookings;
@@ -47,13 +48,18 @@ namespace Dribbly.Service.Services
         public async Task<BookingModel> GetBooking(long id)
         {
             var booking = await _dbSet.Include(g => g.Court).SingleOrDefaultAsync(g => g.Id == id);
-            if (!string.IsNullOrWhiteSpace(booking.BookedById))
+            if (booking != null)
             {
                 booking.BookedBy = await _accountRepo.GetAccountBasicInfo(booking.BookedById);
-                var account = await _accountRepo.GetAccountById(booking.BookedById);
+                var account = await _accountRepo.GetAccountByIdentityId(booking.BookedById);
                 if (account != null)
                 {
                     booking.BookedByChoice = new AccountsChoicesItemModel(account);
+                }
+                else
+                {
+                    throw new DribblyObjectNotFoundException
+                        ($"Unable to find account with {nameof(account.IdentityUserId)} {booking.BookedById}");
                 }
             }
             return booking;
@@ -62,7 +68,7 @@ namespace Dribbly.Service.Services
         public async Task<BookingModel> AddBookingAsync(BookingModel booking)
         {
             var currentUserId = _securityUtility.GetUserId();
-            booking.AddedBy = currentUserId;
+            booking.AddedBy = currentUserId.Value;
             booking.Status = Enums.BookingStatusEnum.Approved;
             Add(booking);
             _context.SaveChanges();

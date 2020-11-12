@@ -29,13 +29,12 @@ namespace Dribbly.Service.Services
 
         public async Task<IEnumerable<NotificationModel>> GetUnviewedAsync(DateTime? afterDate)
         {
-            string currentUserId = _securityUtility.GetUserId();
-            return await _notificationsRepo.GetUnviewed(currentUserId, afterDate)
+            return await _notificationsRepo.GetUnviewed(_securityUtility.GetUserId(), afterDate)
                 .OrderByDescending(n => n.DateAdded).ToListAsync();
         }
 
         #region Get Unviewed Count
-        public async Task<UnviewedCountModel> GetUnviewedCountAsync(string userId)
+        public async Task<UnviewedCountModel> GetUnviewedCountAsync(long? userId)
         {
             return new UnviewedCountModel
             {
@@ -61,9 +60,9 @@ namespace Dribbly.Service.Services
 
         public async Task<IEnumerable<object>> GetNoficationDetailsAsync(DateTime? beforeDate, int getCount = 10)
         {
-            string currentUserId = _securityUtility.GetUserId();
+            long? currentUserId = _securityUtility.GetUserId();
             IEnumerable<NotificationModel> notifications = _context.Notifications
-                .Where(n => n.ForUserId == currentUserId && (n.DateAdded < beforeDate || beforeDate == null))
+                .Where(n => currentUserId.HasValue && n.ForUserId == currentUserId && (n.DateAdded < beforeDate || beforeDate == null))
                 .OrderByDescending(n => n.DateAdded).Take(getCount);
 
             return await GetDetailedNotificationsAsync(notifications);
@@ -71,9 +70,9 @@ namespace Dribbly.Service.Services
 
         public async Task<GetNewNotificationsResultModel> GetNewNoficationsAsync(DateTime afterDate)
         {
-            string currentUserId = _securityUtility.GetUserId();
+            long? currentUserId = _securityUtility.GetUserId();
             IEnumerable<NotificationModel> notifications = _context.Notifications
-                .Where(n => n.ForUserId == currentUserId && (n.DateAdded > afterDate));
+                .Where(n => currentUserId.HasValue && n.ForUserId == currentUserId && (n.DateAdded > afterDate));
 
             var defaultNotifications = await GetDetailedNotificationsAsync(notifications);
 

@@ -11,7 +11,7 @@ namespace Dribbly.Model.Account
         public AccountsChoicesItemModel(AccountModel account)
         {
             Text = account.Username;
-            Value = account.IdentityUserId;
+            Value = account.IdentityUserId.ToString();
             IconUrl = account.ProfilePhoto.Url;
         }
     }

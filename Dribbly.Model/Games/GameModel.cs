@@ -22,7 +22,7 @@ namespace Dribbly.Model.Games
         public string Title { get; set; }
 
         [Required]
-        public string AddedById { get; set; }
+        public long AddedById { get; set; }
 
         [ForeignKey("Court"), Required]
         public long CourtId { get; set; }

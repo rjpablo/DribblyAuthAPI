@@ -1,5 +1,6 @@
 ﻿using Dribbly.Authentication.Models.Auth;
 using Dribbly.Core.Models;
+using Dribbly.Identity.Models;
 using Dribbly.Model.Accounts;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Shared;
@@ -21,7 +22,7 @@ namespace Dribbly.Model.Account
         /// This field is used as foreign key in other models instead of the inherited Id field.
         /// </summary>
         [ForeignKey("User")]
-        public string IdentityUserId { get; set; }
+        public long IdentityUserId { get; set; }
         [NotMapped]
         public string Username { get { return User.UserName; } }
         [NotMapped]

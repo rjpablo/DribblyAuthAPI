@@ -6,7 +6,7 @@ namespace Dribbly.Test.Model
 {
     public class TestUserActivityViewModel
     {
-        public string UserId { get; set; }
+        public long UserId { get; set; }
         public string ActivityTypeName { get; set; }
 
         public TestUserActivityViewModel()

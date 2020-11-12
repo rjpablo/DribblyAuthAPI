@@ -47,7 +47,7 @@ namespace Dribbly.Service.Services
                 ContactModel contact = new ContactModel
                 {
                     Number = input.ContactNumber,
-                    AddedBy = _securityUtility.GetUserId()
+                    AddedBy = _securityUtility.GetUserId().Value
                 };
 
                 Add(contact);

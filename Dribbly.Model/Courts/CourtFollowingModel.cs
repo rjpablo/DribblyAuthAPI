@@ -12,7 +12,7 @@ namespace Dribbly.Model.Shared
 
         [Key]
         [Column(Order = 2)]
-        public string FollowedById { get; set; }
+        public long FollowedById { get; set; }
 
     }
 }

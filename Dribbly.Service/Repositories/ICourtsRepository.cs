@@ -10,6 +10,6 @@ namespace Dribbly.Service.Repositories
 
         Task<IEnumerable<CourtModel>> FindCourtsAsync(CourtSearchInputModel input);
 
-        Task<string> GetOwnerId(long courtId);
+        Task<long> GetOwnerId(long courtId);
     }
 }

@@ -26,14 +26,19 @@ namespace Dribbly.Core.Utilities
             return (_httpContext.User as ClaimsPrincipal)?.Claims.ToList();
         }
 
-        public string GetUserId()
+        public long? GetUserId()
         {
-            return GetClaims()?.SingleOrDefault(c => c.Type == "userId")?.Value;
+            string stringUserId = GetClaims()?.SingleOrDefault(c => c.Type == "userId")?.Value;
+            if (string.IsNullOrEmpty(stringUserId))
+            {
+                return null;
+            }
+            return long.Parse(stringUserId);
         }
 
-        public bool IsCurrentUser(string userId)
+        public bool IsCurrentUser(long userId)
         {
-            return userId.Equals(GetUserId()) && !string.IsNullOrEmpty(userId);
+            return userId.Equals(GetUserId());
         }
 
         public bool IsAuthenticated()

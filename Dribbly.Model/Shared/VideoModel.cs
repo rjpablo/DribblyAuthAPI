@@ -17,7 +17,7 @@ namespace Dribbly.Model.Shared
         [MaxLength(2000)]
         public string Description { get; set; }
 
-        public string AddedBy { get; set; }
+        public long AddedBy { get; set; }
 
         public long Size { get; set; }
 

@@ -7,7 +7,7 @@ namespace Dribbly.Model.Account
     [NotMapped]
     public class AccountBasicInfoModel: EntityBasicInfoModel
     {
-        public string IdentityUserId { get; set; }
+        public long IdentityUserId { get; set; }
         public GenderEnum? Gender { get; set; }
         public bool IsPublic { get; set; }
 

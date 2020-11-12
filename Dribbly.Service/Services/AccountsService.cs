@@ -50,11 +50,11 @@ namespace Dribbly.Service.Services
             return _accountRepo.GetAccountByUsername(userName);
         }
 
-        public async Task<AccountSettingsModel> GetAccountSettingsAsync(string userId)
+        public async Task<AccountSettingsModel> GetAccountSettingsAsync(long userId)
         {
             AccountSettingsModel settings = new AccountSettingsModel();
 
-            AccountModel account = await _accountRepo.GetAccountById(userId);
+            AccountModel account = await _accountRepo.GetAccountByIdentityId(userId);
             if (account == null)
             {
                 throw new DribblyForbiddenException(string.Format("Did not find an account with User ID {0}", userId),
@@ -133,7 +133,7 @@ namespace Dribbly.Service.Services
 
         public async Task SetIsPublic(string userId, bool IsPublic)
         {
-            AccountModel account = await _context.Accounts.SingleOrDefaultAsync(a=>a.IdentityUserId == userId);
+            AccountModel account = await _context.Accounts.SingleOrDefaultAsync(a=>a.IdentityUserId.ToString() == userId);
             if (account == null)
             {
                 throw new DribblyObjectNotFoundException
@@ -232,9 +232,9 @@ namespace Dribbly.Service.Services
         public async Task<PhotoModel> UploadPrimaryPhotoAsync(long accountId)
         {
             AccountModel account = GetById(accountId);
-            string currentUserId = _securityUtility.GetUserId();
+            long? currentUserId = _securityUtility.GetUserId();
 
-            if (currentUserId != account.IdentityUserId && !AuthenticationService.HasPermission(AccountPermission.UpdatePhotoNotOwned))
+            if ((currentUserId != account.IdentityUserId) && !AuthenticationService.HasPermission(AccountPermission.UpdatePhotoNotOwned))
             {
                 throw new UnauthorizedAccessException("Authorization failed when attempting to update account primary photo.");
             }
@@ -265,13 +265,13 @@ namespace Dribbly.Service.Services
 
         private async Task<PhotoModel> AddPhoto(AccountModel account, HttpPostedFile file)
         {
-            string currentUserId = _securityUtility.GetUserId();
+            long? currentUserId = _securityUtility.GetUserId();
             string uploadPath = _fileService.Upload(file, "accountPhotos/");
 
             PhotoModel photo = new PhotoModel
             {
                 Url = uploadPath,
-                UploadedById = currentUserId,
+                UploadedById = currentUserId.Value,
                 DateAdded = DateTime.UtcNow
             };
             _context.Photos.Add(photo);
@@ -344,7 +344,7 @@ namespace Dribbly.Service.Services
         {
             string uploadPath = _fileService.Upload(file, "video/");
             video.Src = uploadPath;
-            video.AddedBy = _securityUtility.GetUserId();
+            video.AddedBy = _securityUtility.GetUserId().Value;
             video.DateAdded = DateTime.UtcNow;
             video.Size = file.ContentLength;
             video.Type = file.ContentType;

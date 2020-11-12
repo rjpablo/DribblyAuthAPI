@@ -9,11 +9,11 @@ namespace Dribbly.Authentication.Enums
 {
     public static class EnumFunctions
     {
-        public static IEnumerable<UserPermissionModel> GenerateUserPermissions<TEnumType>(string userId)
+        public static IEnumerable<UserPermissionModel> GenerateUserPermissions<TEnumType>(long userId)
         {
             return Enum.GetValues(typeof(TEnumType)).Cast<Enum>()
                             .Select(e => e.GetEnumAttribute<EnumAttribute>())
-                            .Select(a => new UserPermissionModel { PermissionId = a.Value, UserId = userId });
+                            .Select(a => new UserPermissionModel { PermissionId = a.Value, UserId = userId.ToString() });
         }
 
         public static IEnumerable<EnumAttribute> GetAllPermissions()

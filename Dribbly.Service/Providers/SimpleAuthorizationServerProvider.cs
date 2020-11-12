@@ -2,6 +2,7 @@
 using Dribbly.Authentication.Models;
 using Dribbly.Authentication.Models.Auth;
 using Dribbly.Core.Helpers;
+using Dribbly.Identity.Models;
 using Dribbly.Model;
 using Dribbly.Model.Account;
 using Dribbly.Service.Repositories;
@@ -123,19 +124,19 @@ namespace Dribbly.Service.Providers
                         }
                         else if (account.IsInactive)
                         {
-                            _accountRepo.ActivateByUserId(user.Id);
+                            _accountRepo.ActivateByUserId(user.Id.ToString());
                             await authContext.SaveChangesAsync();
                         }
                     }
 
-                    userPermissions = (await PermissionsRepository.GetUserPermissionsAsync(authContext, user.Id)).ToList();
+                    userPermissions = (await PermissionsRepository.GetUserPermissionsAsync(authContext, user.Id.ToString())).ToList();
                 }
 
             }
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
-            identity.AddClaim(new Claim("userId", user.Id));
+            identity.AddClaim(new Claim("userId", user.Id.ToString()));
             identity.AddClaim(new Claim("sub", context.UserName));
             identity.AddClaim(new Claim("role", "user"));
 
@@ -155,7 +156,7 @@ namespace Dribbly.Service.Providers
                         "userName", context.UserName
                     },
                     {
-                        "userId", user.Id
+                        "userId", user.Id.ToString()
                     }
                 });
 

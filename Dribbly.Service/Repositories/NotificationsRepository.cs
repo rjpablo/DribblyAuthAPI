@@ -37,9 +37,10 @@ namespace Dribbly.Service.Repositories
             }
         }
 
-        public IQueryable<NotificationModel> GetUnviewed(string userId, DateTime? afterDate)
+        public IQueryable<NotificationModel> GetUnviewed(long? userId, DateTime? afterDate)
         {
-            return _dbSet.Where(n => n.ForUserId == userId && !n.IsViewed && (afterDate == null || n.DateAdded > afterDate));
+            return _dbSet.Where(n => userId.HasValue && n.ForUserId == userId && !n.IsViewed &&
+            (afterDate == null || n.DateAdded > afterDate));
         }
 
     }
@@ -47,6 +48,6 @@ namespace Dribbly.Service.Repositories
     public interface INotificationsRepository
     {
         Task TryAddAsync(object notification);
-        IQueryable<NotificationModel> GetUnviewed(string userId, DateTime? afterDate);
+        IQueryable<NotificationModel> GetUnviewed(long? userId, DateTime? afterDate);
     }
 }

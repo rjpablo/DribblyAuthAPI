@@ -1,5 +1,6 @@
 ﻿using Dribbly.Email.Services;
 using DribblyAuthAPI.API;
+using Dribbly.Identity.Models;
 using Dribbly.Service.Repositories;
 using Dribbly.Service.Services;
 using Microsoft.AspNet.Identity;
@@ -61,7 +62,7 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpGet, Authorize]
         [Route("GetAccountSettings/{userId}")]
-        public async Task<AccountSettingsModel> GetAccountSettings(string userId)
+        public async Task<AccountSettingsModel> GetAccountSettings(long userId)
         {
             return await _accountService.GetAccountSettingsAsync(userId);
         }
@@ -161,18 +162,18 @@ namespace DribblyAuthAPI.Controllers
 
             (IdentityResult result, ApplicationUser user) result = await _repo.RegisterUser(userModel);
 
-            await _accountService.AddAsync(new AccountModel
-            {
-                IdentityUserId = result.user.Id,
-                DateAdded = DateTime.UtcNow
-            });
-
             IHttpActionResult errorResult = GetErrorResult(result.result);
 
             if (errorResult != null)
             {
                 return errorResult;
             }
+
+            await _accountService.AddAsync(new AccountModel
+            {
+                IdentityUserId = result.user.Id,
+                DateAdded = DateTime.UtcNow
+            });
 
             return Ok();
         }
@@ -221,7 +222,7 @@ namespace DribblyAuthAPI.Controllers
                 return new ChallengeResult(provider, this);
             }
 
-            IdentityUser user = await _repo.FindAsync(new UserLoginInfo(externalLogin.LoginProvider, externalLogin.ProviderKey));
+            ApplicationUser user = await _repo.FindAsync(new UserLoginInfo(externalLogin.LoginProvider, externalLogin.ProviderKey));
 
             bool hasRegistered = user != null;
 
@@ -318,7 +319,7 @@ namespace DribblyAuthAPI.Controllers
                 return BadRequest("Invalid Provider or External Access Token");
             }
 
-            IdentityUser user = await _repo.FindAsync(new UserLoginInfo(provider, verifiedAccessToken.user_id));
+            ApplicationUser user = await _repo.FindAsync(new UserLoginInfo(provider, verifiedAccessToken.user_id));
 
             bool hasRegistered = user != null;
 

@@ -12,7 +12,7 @@ namespace Dribbly.Model.Shared
         /// <summary>
         /// Maps to <see cref="ApplicationUser"/>
         /// </summary>
-        public string ReviewedById { get; set; }
+        public long ReviewedById { get; set; }
 
         public virtual AccountBasicInfoModel ReviewedBy { get; set; }
     }

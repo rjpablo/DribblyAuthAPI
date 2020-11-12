@@ -18,7 +18,7 @@ namespace Dribbly.Model.Posts
         /// The ID of the entity that created this post
         /// </summary>
         [Required]
-        public string AddedById { get; set; }
+        public long AddedById { get; set; }
 
         /// <summary>
         /// The type of the entity that created this post

@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Dribbly.Model.Games;
 using Dribbly.Model.Posts;
 using Dribbly.Model.UserActivities;
+using Dribbly.Identity.Models;
 
 namespace Dribbly.Model
 {
@@ -74,7 +75,7 @@ namespace Dribbly.Model
     //All Identity tranactions will run on this context
     //You can think about IdentityDbContext class as special version of the traditional “DbContext” Class
     //responsible for handling Identity transactions
-    public class AuthContext : IdentityDbContext<ApplicationUser>, IAuthContext
+    public class AuthContext : ApplicationDbContext, IAuthContext
     {
         public AuthContext()
             : base("AuthContext")

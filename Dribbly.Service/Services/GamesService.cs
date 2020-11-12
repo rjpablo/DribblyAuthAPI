@@ -1,4 +1,5 @@
-﻿using Dribbly.Core.Utilities;
+﻿using Dribbly.Core.Exceptions;
+using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Games;
 using Dribbly.Model.Notifications;
@@ -47,9 +48,13 @@ namespace Dribbly.Service.Services
         public async Task<GameModel> GetGame(long id)
         {
             GameModel game = await _dbSet.Include(g => g.Court).SingleOrDefaultAsync(g => g.Id == id);
-            if (!string.IsNullOrWhiteSpace(game.AddedById))
+            if (game != null)
             {
                 game.AddedBy = await _accountRepo.GetAccountBasicInfo(game.AddedById);
+                if (game.AddedBy == null)
+                {
+                    throw new DribblyObjectNotFoundException($"Unable to find account with ID {game.AddedById}.");
+                }
             }
             return game;
         }
@@ -58,7 +63,7 @@ namespace Dribbly.Service.Services
         {
             GameModel game = input.ToGameModel();
             var currentUserId = _securityUtility.GetUserId();
-            game.AddedById = currentUserId;
+            game.AddedById = currentUserId.Value;
             game.Status = Enums.GameStatusEnum.WaitingToStart;
             Add(game);
             _context.SaveChanges();

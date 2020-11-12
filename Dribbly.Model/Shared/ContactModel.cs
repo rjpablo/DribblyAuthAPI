@@ -7,6 +7,6 @@ namespace Dribbly.Model.Shared
     public class ContactModel : BaseEntityModel
     {
         public string Number { get; set; }
-        public string AddedBy { get; set; }
+        public long AddedBy { get; set; }
     }
 }

@@ -45,11 +45,16 @@ namespace Dribbly.Service.Services
             return log.Id;
         }
 
-        private string GetUserId()
+        private long? GetUserId()
         {
-            var userId = ClaimsPrincipal.Current.Claims.ToList()
+            var stringUserId = ClaimsPrincipal.Current.Claims.ToList()
                 .SingleOrDefault(c => c.Type == "userId")?.Value;
-            return userId;
+            if (string.IsNullOrEmpty(stringUserId))
+            {
+                return null;
+            }
+
+            return long.Parse(stringUserId);
         }
 
         private string TryGetRequestData(HttpRequest request)

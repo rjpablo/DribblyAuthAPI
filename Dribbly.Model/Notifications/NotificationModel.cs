@@ -10,7 +10,7 @@ namespace Dribbly.Model.Notifications
         /// <summary>
         /// The ID of the user that this notification is intended for
         /// </summary>
-        public string ForUserId { get; set; }
+        public long ForUserId { get; set; }
         public NotificationTypeEnum Type { get; set; }
         public bool IsViewed { get; set; }
     }
@@ -18,7 +18,7 @@ namespace Dribbly.Model.Notifications
     public interface INotificationModel
     {
         bool IsViewed { get; set; }
-        string ForUserId { get; set; }
+        long ForUserId { get; set; }
         NotificationTypeEnum Type { get; set; }
     }
 }
