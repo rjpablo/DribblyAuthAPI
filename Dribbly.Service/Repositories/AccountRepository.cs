@@ -77,7 +77,7 @@ namespace Dribbly.Service.Repositories
         public IQueryable<AccountModel> SearchAccounts(AccountSearchInputModel input)
         {
             return _dbSet.Include(a => a.ProfilePhoto).Include(a => a.User)
-                .Where(a => a.User.UserName.Contains(input.NameSegment) && !input.ExcludeIds.Contains(a.IdentityUserId.ToString()));
+                .Where(a => a.User.UserName.Contains(input.NameSegment) && !input.ExcludeIds.Contains(a.IdentityUserId));
         }
 
         #region IDisposable Support
