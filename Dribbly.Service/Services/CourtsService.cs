@@ -47,9 +47,10 @@ namespace Dribbly.Service.Services
 
         #region Generic Court methods
 
-        public async Task<IEnumerable<CourtDetailsViewModel>> GetAllAsync()
+        public async Task<IEnumerable<CourtDetailsViewModel>> GetAllActiveAsync()
         {
-            CourtModel[] courts = await _context.Courts.Include(p => p.PrimaryPhoto).ToArrayAsync();
+            CourtModel[] courts = await _context.Courts.Where(c=>c.status == EntityStatusEnum.Active)
+                .Include(p => p.PrimaryPhoto).ToArrayAsync();
             List<CourtDetailsViewModel> viewModels = new List<CourtDetailsViewModel>();
 
             foreach (var court in courts)
@@ -67,6 +68,11 @@ namespace Dribbly.Service.Services
         {
             CourtModel court = _context.Courts.Include(p => p.PrimaryPhoto).Include(p => p.Contact).SingleOrDefault(p => p.Id == id);
             var result = new CourtDetailsViewModel(court);
+            if(result.status == EntityStatusEnum.Deleted)
+            {
+                // Do not populate other properties if court has been deleted to save some resources
+                return result;
+            }
             long? currentUserId = _securityUtility.GetUserId();
             result.IsFollowed = _context.CourtFollowings.Any(f => currentUserId.HasValue && f.CourtId == id && f.FollowedById == currentUserId);
 
@@ -126,9 +132,9 @@ namespace Dribbly.Service.Services
             court.Owner = await _accountRepo.GetAccountBasicInfo(court.OwnerId);
         }
 
-        public async Task<IEnumerable<CourtModel>> FindCourtsAsync(CourtSearchInputModel input)
+        public async Task<IEnumerable<CourtModel>> FindActiveCourtsAsync(CourtSearchInputModel input)
         {
-            return await _courtsRepo.FindCourtsAsync(input);
+            return await _courtsRepo.FindActiveCourtsAsync(input);
         }
 
         public async Task<FollowResultModel> FollowCourtAsync(long courtId, bool isFollowing)
@@ -174,6 +180,7 @@ namespace Dribbly.Service.Services
         public async Task<long> RegisterAsync(CourtModel court)
         {
             court.OwnerId = _securityUtility.GetUserId().Value;
+            court.status = EntityStatusEnum.Active;
             Add(court);
             _context.SaveChanges();
             await _commonService.AddUserCourtActivity(UserActivityTypeEnum.AddCourt, court.Id);
@@ -232,6 +239,26 @@ namespace Dribbly.Service.Services
             else
             {
                 throw new DribblyForbiddenException("Authorization failed when attempting to update court details.");
+            }
+        }
+
+        public async Task DeleteCourtAsync(long courtId)
+        {
+            var court = await _dbSet.FirstOrDefaultAsync(c => c.Id == courtId);
+
+            if(court == null)
+            {
+                throw new DribblyObjectNotFoundException($"Attempted to delete non-existent court. Court ID: {courtId}");
+            }
+
+            if (court.OwnerId == _securityUtility.GetUserId() || AuthenticationService.HasPermission(CourtPermission.DeleteNotOwned))
+            {
+                court.status = EntityStatusEnum.Deleted;
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new DribblyForbiddenException("Authorization failed when attempting to delete court.", friendlyMessageKey: "app.Error_DeleteCourtForbidden");
             }
         }
 

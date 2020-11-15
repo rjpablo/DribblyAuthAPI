@@ -8,7 +8,7 @@ namespace Dribbly.Service.Repositories
     {
         IEnumerable<CourtModel> GetAll();
 
-        Task<IEnumerable<CourtModel>> FindCourtsAsync(CourtSearchInputModel input);
+        Task<IEnumerable<CourtModel>> FindActiveCourtsAsync(CourtSearchInputModel input);
 
         Task<long> GetOwnerId(long courtId);
     }

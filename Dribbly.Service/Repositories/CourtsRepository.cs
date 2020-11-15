@@ -21,6 +21,13 @@ namespace Dribbly.Service.Repositories
             return await _dbSet.Where(c => c.Name.Contains(input.Name)).ToListAsync();
         }
 
+        public async Task<IEnumerable<CourtModel>> FindActiveCourtsAsync(CourtSearchInputModel input)
+        {
+            return await _dbSet.Where(c => c.Name.Contains(input.Name) &&
+            c.status == Enums.EntityStatusEnum.Active) //return only active courts
+                .ToListAsync();
+        }
+
         public async Task<long> GetOwnerId(long courtId)
         {
             return (await _dbSet.SingleOrDefaultAsync(c => c.Id == courtId)).OwnerId;

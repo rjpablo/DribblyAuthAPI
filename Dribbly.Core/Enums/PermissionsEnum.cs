@@ -16,6 +16,8 @@ namespace Dribbly.Core.Enums.Permissions
         AddVideoNotOwned = 3,
         [EnumAttribute(Subject = "Court", Action = "DeleteVideoNotOwned")]
         DeleteVideoNotOwned = 4,
+        [EnumAttribute(Subject = "Court", Action = "DeleteNotOwned")]
+        DeleteNotOwned = 5,
     }
 
     public enum BookingPermission

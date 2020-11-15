@@ -433,6 +433,10 @@
     <Compile Include="Migrations\202011120241495_Update_App_Tables_To_Match_Changes_In_Identity_Tables.Designer.cs">
       <DependentUpon>202011120241495_Update_App_Tables_To_Match_Changes_In_Identity_Tables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011140240370_Update_Table_Games_Add_Column_Status.cs" />
+    <Compile Include="Migrations\202011140240370_Update_Table_Games_Add_Column_Status.Designer.cs">
+      <DependentUpon>202011140240370_Update_Table_Games_Add_Column_Status.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -648,6 +652,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011120241495_Update_App_Tables_To_Match_Changes_In_Identity_Tables.resx">
       <DependentUpon>202011120241495_Update_App_Tables_To_Match_Changes_In_Identity_Tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011140240370_Update_Table_Games_Add_Column_Status.resx">
+      <DependentUpon>202011140240370_Update_Table_Games_Add_Column_Status.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

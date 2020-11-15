@@ -29,7 +29,7 @@ namespace DribblyAuthAPI.Controllers
         [Route("GetAllCourts")]
         public async Task<IEnumerable<CourtDetailsViewModel>> GetAllAsync()
         {
-            return await _service.GetAllAsync();
+            return await _service.GetAllActiveAsync();
         }
 
 
@@ -87,7 +87,7 @@ namespace DribblyAuthAPI.Controllers
         public async Task<IEnumerable<CourtModel>> FindCourts
             ([FromBody]CourtSearchInputModel input)
         {
-            return await _service.FindCourtsAsync(input);
+            return await _service.FindActiveCourtsAsync(input);
         }
 
         // POSTs
@@ -96,6 +96,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task UpdateCourtPhoto(long courtId)
         {
             await _service.UpdateCourtPhoto(courtId);
+        }
+                
+        [HttpPost, Authorize]
+        [Route("DeleteCourt/{courtId}")]
+        public async Task DeleteCourt(long courtId)
+        {
+            await _service.DeleteCourtAsync(courtId);
         }
 
         [HttpPost, Authorize]

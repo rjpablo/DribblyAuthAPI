@@ -36,6 +36,7 @@ namespace Dribbly.Model.Courts
             Photos = c.Photos;
             Videos = c.Videos;
             Contact = c.Contact;
+            status = c.status;
             PrimaryPhoto = c.PrimaryPhoto;
         }
     }

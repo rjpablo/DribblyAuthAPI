@@ -1,6 +1,7 @@
 ﻿using Dribbly.Core.Models;
 using Dribbly.Model.Account;
 using Dribbly.Model.Shared;
+using Dribbly.Service.Enums;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -33,6 +34,17 @@ namespace Dribbly.Model.Courts
 
         [ForeignKey("Contact")]
         public long? ContactId { get; set; }
+
+        public EntityStatusEnum status { get; set; }
+
+        [NotMapped]
+        public bool IsDeleted { get { return status == EntityStatusEnum.Deleted; }}
+
+        [NotMapped]
+        public bool IsActive { get { return status == EntityStatusEnum.Active; }}
+
+        [NotMapped]
+        public bool IsInactive { get { return status == EntityStatusEnum.Inactive; }}
 
         public string AdditionalInfo { get; set; }
 
