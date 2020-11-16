@@ -73,6 +73,7 @@
     <Compile Include="Enums\BookingStatusEnum.cs" />
     <Compile Include="Enums\GenderEnum.cs" />
     <Compile Include="Logs\ExceptionLog.cs" />
+    <Compile Include="Shared\GenericEntityUpdateInputModel.cs" />
     <Compile Include="UserActivities\CourtVideoActivityModel.cs" />
     <Compile Include="UserActivities\CourtPhotoActivityModel.cs" />
     <Compile Include="UserActivities\UserGameActivityModel.cs" />

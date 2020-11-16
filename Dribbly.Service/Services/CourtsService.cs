@@ -16,6 +16,7 @@ using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -226,8 +227,34 @@ namespace Dribbly.Service.Services
 
         public async Task UpdateCourtAsync(CourtModel court)
         {
-            await _context.SaveChangesAsync();
-            await _commonService.AddUserCourtActivity(UserActivityTypeEnum.UpdatCourt, court.Id);
+            if (court.OwnerId == _securityUtility.GetUserId() || AuthenticationService.HasPermission(CourtPermission.UpdateNotOwned))
+            {
+                Update(court);
+                await _context.SaveChangesAsync();
+                await _commonService.AddUserCourtActivity(UserActivityTypeEnum.UpdatCourt, court.Id);
+            }
+            else
+            {
+                throw new DribblyForbiddenException("Authorization failed when attempting to update court details.");
+            }
+        }
+
+        public async Task UpdateCourtPropertiesAsync(GenericEntityUpdateInputModel input)
+        {
+            CourtModel court = await _dbSet.SingleOrDefaultAsync(c => c.Id == input.Id);
+            if (court.OwnerId == _securityUtility.GetUserId() || AuthenticationService.HasPermission(CourtPermission.UpdateNotOwned))
+            {
+                foreach(KeyValuePair<string, object> item in input.Properties)
+                {
+                    court[item.Key] = item.Value;
+                }
+                await _context.SaveChangesAsync();
+                await _commonService.AddUserCourtActivity(UserActivityTypeEnum.UpdatCourt, court.Id);
+            }
+            else
+            {
+                throw new DribblyForbiddenException("Authorization failed when attempting to update court details.");
+            }
         }
 
         private void UpdateCourt(CourtModel court)

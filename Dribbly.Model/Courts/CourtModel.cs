@@ -2,6 +2,7 @@
 using Dribbly.Model.Account;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -56,5 +57,13 @@ namespace Dribbly.Model.Courts
 
         public virtual PhotoModel PrimaryPhoto { get; set; }
 
+        [NotMapped]
+        public object this[string propertyName]
+        {
+            set
+            {
+                typeof(CourtModel).GetProperty(propertyName).SetValue(this, value, null);
+            }
+        }
     }
 }

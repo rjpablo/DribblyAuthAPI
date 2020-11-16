@@ -163,6 +163,14 @@ namespace DribblyAuthAPI.Controllers
             await _service.UpdateCourtAsync(model);
         }
 
+        [HttpPost]
+        [Authorize]
+        [Route("UpdateCourtProperties")]
+        public async Task UpdateCourtProperties([FromBody] GenericEntityUpdateInputModel input)
+        {
+            await _service.UpdateCourtPropertiesAsync(input);
+        }
+
         [HttpPost, Authorize]
         [Route("Register")]
         public async Task<long> Register([FromBody] CourtModel model)

@@ -32,6 +32,8 @@ namespace Dribbly.Service.Services
 
         Task UpdateCourtAsync(CourtModel court);
 
+        Task UpdateCourtPropertiesAsync(GenericEntityUpdateInputModel input);
+
         Task UpdateCourtPhoto(long courtId);
 
         Task DeletePhotoAsync(long courtId, long photoId);
