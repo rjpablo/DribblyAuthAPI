@@ -9,6 +9,7 @@ using Dribbly.Service.Services.Shared;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Dribbly.Service.Services
@@ -47,7 +48,8 @@ namespace Dribbly.Service.Services
 
         public async Task<GameModel> GetGame(long id)
         {
-            GameModel game = await _dbSet.Include(g => g.Court).SingleOrDefaultAsync(g => g.Id == id);
+            GameModel game = await _dbSet.Where(g => g.Id == id).Include(g => g.Court).Include(g => g.Court.PrimaryPhoto)
+                .SingleOrDefaultAsync();
             if (game != null)
             {
                 game.AddedBy = await _accountRepo.GetAccountBasicInfo(game.AddedById);
