@@ -48,6 +48,19 @@ namespace Dribbly.Service.Services
             _securityUtility = securityUtility;
         }
 
+        public async Task<AccountViewerModel> GetAccountViewerDataAsync(string userName)
+        {
+            var account = await GetAccountByUsername(userName);
+            if(account == null)
+            {
+                throw new DribblyObjectNotFoundException($"Account with the username '{userName}' does not exist.");
+            }
+            return new AccountViewerModel
+            {
+                Account = account
+            };
+        }
+
         public Task<AccountModel> GetAccountByUsername(string userName)
         {
             return _accountRepo.GetAccountByUsername(userName);

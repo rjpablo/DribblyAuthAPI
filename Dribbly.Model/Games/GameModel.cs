@@ -35,6 +35,9 @@ namespace Dribbly.Model.Games
 
         public long? WinningTeamId { get; set; }
 
+        [NotMapped]
+        public EntityTypeEnum EntityType { get; } = EntityTypeEnum.Game;
+
         #endregion
 
         // navigation properties

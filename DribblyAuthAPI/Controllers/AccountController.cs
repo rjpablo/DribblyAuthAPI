@@ -53,6 +53,14 @@ namespace DribblyAuthAPI.Controllers
             return await _accountService.GetAccountByUsername(userName);
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("GetAccountViewerData/{userName}")]
+        public async Task<AccountViewerModel> GetAccountViewerData(string userName)
+        {
+            return await _accountService.GetAccountViewerDataAsync(userName);
+        }
+
         [HttpGet, Authorize]
         [Route("GetAccountDetailsModal/{accountId}")]
         public async Task<AccountDetailsModalModel> GetAccountDetailsModal(long accountId)

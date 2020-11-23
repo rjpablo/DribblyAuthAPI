@@ -39,6 +39,9 @@ namespace Dribbly.Model.Posts
 
         public EntityStatusEnum Status { get; set; }
 
+        [NotMapped]
+        public EntityTypeEnum EntityType { get; } = EntityTypeEnum.Post;
+
         #endregion
 
         #region Other Properties

@@ -74,6 +74,10 @@ namespace Dribbly.Model.Account
         public virtual ICollection<AccountVideoModel> Videos { get; set; }
         public virtual ApplicationUser User { get; set; }
         public CourtModel HomeCourt { get; set; }
+        [NotMapped]
+        public string IconUrl { get { return ProfilePhoto?.Url; } }
+        [NotMapped]
+        public EntityTypeEnum EntityType { get; } = EntityTypeEnum.Account;
 
         public AccountBasicInfoModel ToBasicInfo()
         {

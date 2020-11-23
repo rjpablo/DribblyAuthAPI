@@ -23,7 +23,8 @@ namespace Dribbly.Service.Repositories
         public async Task<AccountModel> GetAccountByUsername(string userName)
         {
             AccountModel account = await _context.Accounts.Include(a => a.ProfilePhoto).Include(a => a.User)
-                .SingleOrDefaultAsync(a => a.User.UserName.Equals(userName, System.StringComparison.OrdinalIgnoreCase));
+                .Include(a => a.HomeCourt).Include(a => a.HomeCourt.PrimaryPhoto).SingleOrDefaultAsync
+                (a => a.User.UserName.Equals(userName, System.StringComparison.OrdinalIgnoreCase));
             return account;
         }
 
@@ -45,7 +46,7 @@ namespace Dribbly.Service.Repositories
         /// <returns></returns>
         public async Task<AccountModel> GetAccountById(long Id)
         {
-            return await _context.Accounts.Include(a => a.ProfilePhoto).Include(a => a.User).Include(a=>a.HomeCourt)
+            return await _context.Accounts.Include(a => a.ProfilePhoto).Include(a => a.User).Include(a => a.HomeCourt)
                 .SingleOrDefaultAsync(a => a.Id == Id);
         }
 
@@ -58,7 +59,7 @@ namespace Dribbly.Service.Repositories
         {
             AccountModel account = await _dbSet.Include(a => a.ProfilePhoto).Include(a => a.User)
                 .SingleOrDefaultAsync(a => a.IdentityUserId == userId);
-            if(account == null)
+            if (account == null)
             {
                 return null;
             }
@@ -68,7 +69,7 @@ namespace Dribbly.Service.Repositories
         public void ActivateByUserId(string userid)
         {
             AccountModel account = _dbSet.SingleOrDefault(a => a.IdentityUserId.ToString() == userid);
-            if(account != null && account.Status != EntityStatusEnum.Active)
+            if (account != null && account.Status != EntityStatusEnum.Active)
             {
                 account.Status = EntityStatusEnum.Active;
             }

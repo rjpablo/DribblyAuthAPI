@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\AccountViewerModel.cs" />
     <Compile Include="Account\AccountBasicInfoModel.cs" />
     <Compile Include="Account\AccountDetailsModalModel.cs" />
     <Compile Include="Account\AccountModel.cs" />

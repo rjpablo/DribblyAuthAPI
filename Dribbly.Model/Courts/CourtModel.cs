@@ -58,6 +58,12 @@ namespace Dribbly.Model.Courts
         public virtual PhotoModel PrimaryPhoto { get; set; }
 
         [NotMapped]
+        public string IconUrl { get { return PrimaryPhoto?.Url; } }
+
+        [NotMapped]
+        public EntityTypeEnum EntityType { get; } = EntityTypeEnum.Court;
+
+        [NotMapped]
         public object this[string propertyName]
         {
             set

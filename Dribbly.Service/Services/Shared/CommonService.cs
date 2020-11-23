@@ -39,6 +39,8 @@ namespace Dribbly.Service.Services.Shared
             (long? id, EntityTypeEnum entityType);
         #endregion
 
+        Task<IndexedEntityModel> GetIndexedEntity
+            (long? id, EntityTypeEnum entityType);
         long? GetUserId();
         string TryGetRequestData(HttpRequest request);
     }
@@ -302,9 +304,14 @@ namespace Dribbly.Service.Services.Shared
         public async Task<ChoiceItemModel<long>> GetChoiceItemModelAsync
             (long? id, EntityTypeEnum entityType)
         {
-            return (await _context.IndexedEntities
-                .SingleOrDefaultAsync(i => id != null && i.Id == id && i.Type == entityType))?
-                .ToChoiceItemModel();
+            return (await GetIndexedEntity(id, entityType))?.ToChoiceItemModel();
+        }
+
+        public async Task<IndexedEntityModel> GetIndexedEntity
+            (long? id, EntityTypeEnum entityType)
+        {
+            return await _context.IndexedEntities.SingleOrDefaultAsync
+                (i => id != null && i.Id == id && i.Type == entityType);
         }
 
         #endregion
