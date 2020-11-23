@@ -40,6 +40,7 @@ namespace Dribbly.Model
         DbSet<CourtReviewModel> CourtReivews { get; set; }
         DbSet<PostModel> Posts { get; set; }
         IDbSet<ApplicationUser> Users { get; set; }
+        DbSet<IndexedEntityModel> IndexedEntities { get; set; }
         DbEntityEntry Entry(object entity);
 
         #region User Activites
@@ -101,6 +102,7 @@ namespace Dribbly.Model
         public DbSet<ContactModel> Contacts { get; set; }
         public DbSet<CourtReviewModel> CourtReivews { get; set; }
         public DbSet<PostModel> Posts { get; set; }
+        public DbSet<IndexedEntityModel> IndexedEntities { get; set; }
 
         #region User Activites
         public DbSet<UserActivityModel> UserActivities { get; set; }

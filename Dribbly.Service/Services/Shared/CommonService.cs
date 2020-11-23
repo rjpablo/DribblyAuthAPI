@@ -6,6 +6,7 @@ using Dribbly.Model.UserActivities;
 using Dribbly.Service.Enums;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
@@ -29,6 +30,13 @@ namespace Dribbly.Service.Services.Shared
         Task AddCourtPhotosActivity(UserActivityTypeEnum activityType, long courtId, params PhotoModel[] photos);
         // GAMES
         Task AddUserGameActivity(UserActivityTypeEnum activityType, long gameId);
+        #endregion
+
+        #region Search Suggestions
+        Task<IEnumerable<ChoiceItemModel<long>>> GetTypeAheadSuggestionsAsync
+            (GetTypeAheadSuggestionsInputModel input);
+        Task<ChoiceItemModel<long>> GetChoiceItemModelAsync
+            (long? id, EntityTypeEnum entityType);
         #endregion
 
         long? GetUserId();
@@ -252,20 +260,20 @@ namespace Dribbly.Service.Services.Shared
                 }
             }
             // CONTACTS
-            else if(activity is UserContactActivityModel)
+            else if (activity is UserContactActivityModel)
             {
                 _context.UserContactActivities.Add((UserContactActivityModel)activity);
             }
             // COURTS
-            else if(activity is UserCourtActivityModel)
+            else if (activity is UserCourtActivityModel)
             {
                 _context.UserCourtActivities.Add((UserCourtActivityModel)activity);
             }
-            else if(activity is CourtPhotoActivityModel)
+            else if (activity is CourtPhotoActivityModel)
             {
                 _context.CourtPhotoActivities.Add((CourtPhotoActivityModel)activity);
             }
-            else if(activity is CourtVideoActivityModel)
+            else if (activity is CourtVideoActivityModel)
             {
                 _context.CourtVideoActivities.Add((CourtVideoActivityModel)activity);
             }
@@ -279,6 +287,26 @@ namespace Dribbly.Service.Services.Shared
                 //TODO: Log warning - activity not recorded
             }
         }
+        #endregion
+
+        #region Search Suggestions
+
+        public async Task<IEnumerable<ChoiceItemModel<long>>> GetTypeAheadSuggestionsAsync
+            (GetTypeAheadSuggestionsInputModel input)
+        {
+            var result = await _context.IndexedEntities.Where(i => input.EntityTypes.Contains(i.Type) &&
+            i.Name.Contains(input.Keyword)).ToListAsync();
+            return result.Select(i => i.ToChoiceItemModel());
+        }
+
+        public async Task<ChoiceItemModel<long>> GetChoiceItemModelAsync
+            (long? id, EntityTypeEnum entityType)
+        {
+            return (await _context.IndexedEntities
+                .SingleOrDefaultAsync(i => id != null && i.Id == id && i.Type == entityType))?
+                .ToChoiceItemModel();
+        }
+
         #endregion
 
         #region Helpers
@@ -311,6 +339,6 @@ namespace Dribbly.Service.Services.Shared
         }
 
         #endregion
-                
+
     }
 }

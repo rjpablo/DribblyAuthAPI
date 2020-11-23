@@ -45,7 +45,7 @@ namespace Dribbly.Service.Repositories
         /// <returns></returns>
         public async Task<AccountModel> GetAccountById(long Id)
         {
-            return await _context.Accounts.Include(a => a.ProfilePhoto).Include(a => a.User)
+            return await _context.Accounts.Include(a => a.ProfilePhoto).Include(a => a.User).Include(a=>a.HomeCourt)
                 .SingleOrDefaultAsync(a => a.Id == Id);
         }
 

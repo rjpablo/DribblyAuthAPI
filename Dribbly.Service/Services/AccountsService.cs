@@ -24,6 +24,7 @@ namespace Dribbly.Service.Services
     public class AccountsService : BaseEntityService<AccountModel>, IAccountsService
     {
         IAccountRepository _accountRepo;
+        private readonly ICourtsRepository _courtsRepo;
         IAuthContext _context;
         IAuthRepository _authRepo;
         IFileService _fileService;
@@ -32,12 +33,14 @@ namespace Dribbly.Service.Services
 
         public AccountsService(IAuthContext context,
             IAccountRepository accountRepo,
+            ICourtsRepository courtsRepo,
             IAuthRepository authRepo,
             ISecurityUtility securityUtility,
             IFileService fileService,
             ICommonService commonService) : base(context.Accounts)
         {
             _accountRepo = accountRepo;
+            _courtsRepo = courtsRepo;
             _context = context;
             _authRepo = authRepo;
             _fileService = fileService;
@@ -86,9 +89,13 @@ namespace Dribbly.Service.Services
 
         public async Task<AccountDetailsModalModel> GetAccountDetailsModalAsync(long accountId)
         {
+            var account = await _accountRepo.GetAccountById(accountId);
+            ChoiceItemModel<long> homeCourtChoice = await _commonService.GetChoiceItemModelAsync
+                (account.HomeCourtId, EntityTypeEnum.Court);
             return new AccountDetailsModalModel
             {
-                Account = await _accountRepo.GetAccountById(accountId)
+                Account = account,
+                HomeCourtChoice = homeCourtChoice
             };
         }
 
@@ -114,9 +121,9 @@ namespace Dribbly.Service.Services
                     // TODO: Remove personal info when deleting an account
                     account.Status = status;
                     await _context.SaveChangesAsync();
-                    if(status == EntityStatusEnum.Active)
+                    if (status == EntityStatusEnum.Active)
                     {
-                        await _commonService.AddUserAccountActivity(UserActivityTypeEnum.ReactivateAccount, account.Id);   
+                        await _commonService.AddUserAccountActivity(UserActivityTypeEnum.ReactivateAccount, account.Id);
                     }
                     else if (status == EntityStatusEnum.Inactive)
                     {
@@ -147,7 +154,7 @@ namespace Dribbly.Service.Services
 
         public async Task SetIsPublic(string userId, bool IsPublic)
         {
-            AccountModel account = await _context.Accounts.SingleOrDefaultAsync(a=>a.IdentityUserId.ToString() == userId);
+            AccountModel account = await _context.Accounts.SingleOrDefaultAsync(a => a.IdentityUserId.ToString() == userId);
             if (account == null)
             {
                 throw new DribblyObjectNotFoundException
