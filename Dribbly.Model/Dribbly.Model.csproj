@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account\AccountBasicInfoModel.cs" />
+    <Compile Include="Account\AccountDetailsModalModel.cs" />
     <Compile Include="Account\AccountModel.cs" />
     <Compile Include="Account\AccountsChoicesItemModel.cs" />
     <Compile Include="Account\AccountSearchInputModel.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Courts\CourtReviewModel.cs" />
     <Compile Include="Courts\CourtModel.cs" />
     <Compile Include="Courts\CourtSearchInputModel.cs" />
+    <Compile Include="Enums\PlayerPositionEnum.cs" />
     <Compile Include="Enums\EntityTypeEnum.cs" />
     <Compile Include="Enums\AccountStatusEnum.cs" />
     <Compile Include="Enums\UserActivityTypeEnum.cs" />

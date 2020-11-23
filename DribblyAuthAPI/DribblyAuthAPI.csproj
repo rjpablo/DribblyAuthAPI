@@ -437,6 +437,10 @@
     <Compile Include="Migrations\202011140240370_Update_Table_Games_Add_Column_Status.Designer.cs">
       <DependentUpon>202011140240370_Update_Table_Games_Add_Column_Status.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011230427551_Modify_Table_Accounts_Add_Columns_Position_And_HomeCourtId.cs" />
+    <Compile Include="Migrations\202011230427551_Modify_Table_Accounts_Add_Columns_Position_And_HomeCourtId.Designer.cs">
+      <DependentUpon>202011230427551_Modify_Table_Accounts_Add_Columns_Position_And_HomeCourtId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -655,6 +659,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011140240370_Update_Table_Games_Add_Column_Status.resx">
       <DependentUpon>202011140240370_Update_Table_Games_Add_Column_Status.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011230427551_Modify_Table_Accounts_Add_Columns_Position_And_HomeCourtId.resx">
+      <DependentUpon>202011230427551_Modify_Table_Accounts_Add_Columns_Position_And_HomeCourtId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

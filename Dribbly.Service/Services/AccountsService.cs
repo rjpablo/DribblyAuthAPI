@@ -84,6 +84,20 @@ namespace Dribbly.Service.Services
 
         #region Account Updates
 
+        public async Task<AccountDetailsModalModel> GetAccountDetailsModalAsync(long accountId)
+        {
+            return new AccountDetailsModalModel
+            {
+                Account = await _accountRepo.GetAccountById(accountId)
+            };
+        }
+
+        public async Task UpdateAccountAsync(AccountModel account)
+        {
+            _dbSet.AddOrUpdate(account);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task SetStatus(long accountId, EntityStatusEnum status)
         {
             AccountModel account = _dbSet.SingleOrDefault(a => a.Id == accountId);

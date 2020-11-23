@@ -27,6 +27,9 @@ namespace Dribbly.Model.Account
         public string Username { get { return User.UserName; } }
         [NotMapped]
         public virtual string Email { get { return User.Email; } }
+        public PlayerPositionEnum? Position { get; set; }
+        [ForeignKey(nameof(HomeCourt))]
+        public long? HomeCourtId { get; set; }
         public double? HeightInches { get; set; }
         public GenderEnum? Gender { get; set; }
         public EntityStatusEnum Status { get; set; } = EntityStatusEnum.Active;
@@ -70,6 +73,7 @@ namespace Dribbly.Model.Account
         public virtual PhotoModel ProfilePhoto { get; set; }
         public virtual ICollection<AccountVideoModel> Videos { get; set; }
         public virtual ApplicationUser User { get; set; }
+        public CourtModel HomeCourt { get; set; }
 
         public AccountBasicInfoModel ToBasicInfo()
         {

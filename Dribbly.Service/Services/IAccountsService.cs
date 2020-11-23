@@ -12,6 +12,8 @@ namespace Dribbly.Service.Services
     {
         Task<AccountModel> GetAccountByUsername(string userName);
 
+        Task<AccountDetailsModalModel> GetAccountDetailsModalAsync(long accountId);
+
         Task AddAsync(AccountModel account);
 
         Task<IEnumerable<PhotoModel>> AddAccountPhotosAsync(long accountId);
@@ -19,6 +21,8 @@ namespace Dribbly.Service.Services
         Task<AccountSettingsModel> GetAccountSettingsAsync(long userId);
 
         Task<PhotoModel> UploadPrimaryPhotoAsync(long accountId);
+
+        Task UpdateAccountAsync(AccountModel account);
 
         Task<IEnumerable<PhotoModel>> GetAccountPhotosAsync(int accountId);
 

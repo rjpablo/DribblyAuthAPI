@@ -53,6 +53,13 @@ namespace DribblyAuthAPI.Controllers
             return await _accountService.GetAccountByUsername(userName);
         }
 
+        [HttpGet, Authorize]
+        [Route("GetAccountDetailsModal/{accountId}")]
+        public async Task<AccountDetailsModalModel> GetAccountDetailsModal(long accountId)
+        {
+            return await _accountService.GetAccountDetailsModalAsync(accountId);
+        }
+
         [HttpPost]
         [Route("GetAccountDropDownSuggestions")]
         public async Task<IEnumerable<AccountsChoicesItemModel>> GetAccountDropDownSuggestions(AccountSearchInputModel input)
@@ -79,6 +86,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task<IEnumerable<PhotoModel>> GetAccountPhotos(int accountId)
         {
             return await _accountService.GetAccountPhotosAsync(accountId);
+        }
+
+        [HttpPost, Authorize]
+        [Route("UpdateAccount")]
+        public async Task UpdateAccount([FromBody]AccountModel account)
+        {
+            await _accountService.UpdateAccountAsync(account);
         }
 
         [HttpPost, Authorize]
