@@ -296,7 +296,7 @@ namespace Dribbly.Service.Services.Shared
         public async Task<IEnumerable<ChoiceItemModel<long>>> GetTypeAheadSuggestionsAsync
             (GetTypeAheadSuggestionsInputModel input)
         {
-            var result = await _context.IndexedEntities.Where(i => input.EntityTypes.Contains(i.Type) &&
+            var result = await _context.IndexedEntities.Where(i => input.EntityTypes.Contains(i.EntityType) &&
             i.Name.Contains(input.Keyword)).ToListAsync();
             return result.Select(i => i.ToChoiceItemModel());
         }
@@ -311,7 +311,7 @@ namespace Dribbly.Service.Services.Shared
             (long? id, EntityTypeEnum entityType)
         {
             return await _context.IndexedEntities.SingleOrDefaultAsync
-                (i => id != null && i.Id == id && i.Type == entityType);
+                (i => id != null && i.Id == id && i.EntityType == entityType);
         }
 
         #endregion

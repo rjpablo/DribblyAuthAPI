@@ -115,7 +115,7 @@ namespace Dribbly.Service.Providers
 
                     using (AccountRepository _accountRepo = new AccountRepository(authContext, _repo))
                     {
-                        AccountModel account = await _accountRepo.GetAccountById(user.Id);
+                        AccountModel account = await _accountRepo.GetAccountByIdentityId(user.Id);
                         if (account.IsDeleted)
                         {
                             // return the same error for security
@@ -125,6 +125,8 @@ namespace Dribbly.Service.Providers
                         else if (account.IsInactive)
                         {
                             _accountRepo.ActivateByUserId(user.Id.ToString());
+                            var indexedAccount = authContext.IndexedEntities.Find(account.Id, account.EntityType);
+                            indexedAccount.Status = Enums.EntityStatusEnum.Active;
                             await authContext.SaveChangesAsync();
                         }
                     }

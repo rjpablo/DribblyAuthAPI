@@ -10,7 +10,7 @@ namespace Dribbly.Model.Posts
 {
     // Games table has an additional ID column which is a Foreign Key to the bookings table
     [Table("Posts")]
-    public class PostModel : BaseEntityModel
+    public class PostModel : BaseEntityModel, IIndexedEntity
     {
         #region MappedColumns
         
@@ -45,6 +45,14 @@ namespace Dribbly.Model.Posts
         #endregion
 
         #region Other Properties
+        [NotMapped]
+        public string Name { get; set; } = "";
+
+        [NotMapped]
+        public string IconUrl { get; set; } = "";
+
+        [NotMapped]
+        public string Description { get { return Content; } }
 
         public EntityBasicInfoModel AddedBy { get; set; }
 

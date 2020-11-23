@@ -15,7 +15,7 @@ namespace Dribbly.Model.Account
     /// A clone of ApplicationUser class without the sensitive data.
     /// </summary>
     [Table("Accounts")]
-    public class AccountModel : BaseEntityModel
+    public class AccountModel : BaseEntityModel, IIndexedEntity
     {
         /// <summary>
         /// Serves as a foreign key to the AspNetUsers table.
@@ -74,10 +74,17 @@ namespace Dribbly.Model.Account
         public virtual ICollection<AccountVideoModel> Videos { get; set; }
         public virtual ApplicationUser User { get; set; }
         public CourtModel HomeCourt { get; set; }
+
+        #region For IndexedEntity
         [NotMapped]
         public string IconUrl { get { return ProfilePhoto?.Url; } }
         [NotMapped]
         public EntityTypeEnum EntityType { get; } = EntityTypeEnum.Account;
+        [NotMapped]
+        public string Name { get { return User.UserName; } }
+        [NotMapped]
+        public string Description { get; }
+        #endregion
 
         public AccountBasicInfoModel ToBasicInfo()
         {

@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dribbly.Model.Courts
 {
     [Table("Courts")]
-    public class CourtModel : BaseEntityModel
+    public class CourtModel : BaseEntityModel, IIndexedEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key]
         public new long Id { get; set; }
@@ -36,16 +36,16 @@ namespace Dribbly.Model.Courts
         [ForeignKey("Contact")]
         public long? ContactId { get; set; }
 
-        public EntityStatusEnum status { get; set; }
+        public EntityStatusEnum Status { get; set; }
 
         [NotMapped]
-        public bool IsDeleted { get { return status == EntityStatusEnum.Deleted; }}
+        public bool IsDeleted { get { return Status == EntityStatusEnum.Deleted; } }
 
         [NotMapped]
-        public bool IsActive { get { return status == EntityStatusEnum.Active; }}
+        public bool IsActive { get { return Status == EntityStatusEnum.Active; } }
 
         [NotMapped]
-        public bool IsInactive { get { return status == EntityStatusEnum.Inactive; }}
+        public bool IsInactive { get { return Status == EntityStatusEnum.Inactive; } }
 
         public string AdditionalInfo { get; set; }
 
@@ -62,6 +62,9 @@ namespace Dribbly.Model.Courts
 
         [NotMapped]
         public EntityTypeEnum EntityType { get; } = EntityTypeEnum.Court;
+
+        [NotMapped]
+        public string Description { get { return AdditionalInfo; } }
 
         [NotMapped]
         public object this[string propertyName]

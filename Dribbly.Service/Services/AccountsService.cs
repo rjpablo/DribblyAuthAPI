@@ -29,6 +29,7 @@ namespace Dribbly.Service.Services
         IAuthRepository _authRepo;
         IFileService _fileService;
         private readonly ICommonService _commonService;
+        private readonly IIndexedEntitysRepository _indexedEntitysRepo;
         ISecurityUtility _securityUtility;
 
         public AccountsService(IAuthContext context,
@@ -37,7 +38,8 @@ namespace Dribbly.Service.Services
             IAuthRepository authRepo,
             ISecurityUtility securityUtility,
             IFileService fileService,
-            ICommonService commonService) : base(context.Accounts)
+            ICommonService commonService,
+            IIndexedEntitysRepository indexedEntitysRepo) : base(context.Accounts)
         {
             _accountRepo = accountRepo;
             _courtsRepo = courtsRepo;
@@ -45,6 +47,7 @@ namespace Dribbly.Service.Services
             _authRepo = authRepo;
             _fileService = fileService;
             _commonService = commonService;
+            _indexedEntitysRepo = indexedEntitysRepo;
             _securityUtility = securityUtility;
         }
 
@@ -115,12 +118,13 @@ namespace Dribbly.Service.Services
         public async Task UpdateAccountAsync(AccountModel account)
         {
             _dbSet.AddOrUpdate(account);
+            await _indexedEntitysRepo.Update(_context, account);
             await _context.SaveChangesAsync();
         }
 
         public async Task SetStatus(long accountId, EntityStatusEnum status)
         {
-            AccountModel account = _dbSet.SingleOrDefault(a => a.Id == accountId);
+            AccountModel account = _dbSet.Include(u=>u.User).SingleOrDefault(a => a.Id == accountId);
             if (account == null)
             {
                 throw new DribblyObjectNotFoundException
@@ -133,6 +137,7 @@ namespace Dribbly.Service.Services
                 {
                     // TODO: Remove personal info when deleting an account
                     account.Status = status;
+                    await _indexedEntitysRepo.Update(_context, account);
                     await _context.SaveChangesAsync();
                     if (status == EntityStatusEnum.Active)
                     {
@@ -161,6 +166,7 @@ namespace Dribbly.Service.Services
         public async Task AddAsync(AccountModel account)
         {
             Add(account);
+            _context.IndexedEntities.Add(new IndexedEntityModel(account));
             await _context.SaveChangesAsync();
             await _commonService.AddUserAccountActivity(UserActivityTypeEnum.CreateAccount, account.Id);
         }
@@ -285,6 +291,7 @@ namespace Dribbly.Service.Services
                     Update(account);
                     await _context.SaveChangesAsync();
                     transaction.Commit();
+                    await _indexedEntitysRepo.SetIconUrl(_context, account, photo.Url);
                     await _commonService.AddAccountPhotoActivitiesAsync(UserActivityTypeEnum.AddAccountPhoto, account.Id, photo);
                     await _commonService.AddAccountPhotoActivitiesAsync(UserActivityTypeEnum.SetAccountPrimaryPhoto, account.Id, photo);
                     return photo;

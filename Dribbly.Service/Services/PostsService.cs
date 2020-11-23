@@ -25,6 +25,8 @@ namespace Dribbly.Service.Services
         IAccountRepository _accountRepo;
         INotificationsRepository _notificationsRepo;
         ICourtsRepository _courtsRepo;
+        private readonly IIndexedEntitysRepository _indexedEntitysRepository;
+
         ICommonService _commonService { get; }
 
         public PostsService(IAuthContext context,
@@ -34,7 +36,8 @@ namespace Dribbly.Service.Services
             IFileService fileService,
             INotificationsRepository notificationsRepo,
             ICourtsRepository courtsRepo,
-            ICommonService commonService) : base(context.Posts)
+            ICommonService commonService,
+            IIndexedEntitysRepository indexedEntitysRepository) : base(context.Posts)
         {
             _context = context;
             _httpContext = httpContext;
@@ -44,6 +47,7 @@ namespace Dribbly.Service.Services
             _notificationsRepo = notificationsRepo;
             _courtsRepo = courtsRepo;
             _commonService = commonService;
+            _indexedEntitysRepository = indexedEntitysRepository;
         }
 
         /// <summary>
@@ -109,6 +113,7 @@ namespace Dribbly.Service.Services
             post.AddedById = _securityUtility.GetUserId().Value;
             Add(post);
             await _context.SaveChangesAsync();
+            await _indexedEntitysRepository.Add(_context, post);
             await _commonService.AddUserPostActivity(UserActivityTypeEnum.AddPost, post.Id);
             post.AddedBy = await GetAddedBy(post);
             return post;
@@ -122,6 +127,7 @@ namespace Dribbly.Service.Services
             {
                 post.Content = input.Content;
                 await _context.SaveChangesAsync();
+                await _indexedEntitysRepository.Update(_context, post);
                 await _commonService.AddUserPostActivity(UserActivityTypeEnum.UpdatePost, post.Id);
                 return post;
             }
@@ -148,6 +154,7 @@ namespace Dribbly.Service.Services
                 {
                     post.Status = EntityStatusEnum.Deleted;
                     await _context.SaveChangesAsync();
+                    await _indexedEntitysRepository.Update(_context, post);
                     await _commonService.AddUserPostActivity(UserActivityTypeEnum.DeletePost, Id);
                     return true;
                 }

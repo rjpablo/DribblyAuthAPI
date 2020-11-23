@@ -30,13 +30,15 @@ namespace Dribbly.Service.Services
         ICourtsRepository _courtsRepo;
         IAccountRepository _accountRepo;
         private readonly ICommonService _commonService;
+        private readonly IIndexedEntitysRepository _indexedEntitysRepository;
 
         public CourtsService(IAuthContext context,
             ISecurityUtility securityUtility,
             IFileService fileService,
             ICourtsRepository courtsRepo,
             IAccountRepository accountRepo,
-            ICommonService commonService) : base(context.Courts)
+            ICommonService commonService,
+            IIndexedEntitysRepository indexedEntitysRepository) : base(context.Courts)
         {
             _context = context;
             _securityUtility = securityUtility;
@@ -44,13 +46,14 @@ namespace Dribbly.Service.Services
             _courtsRepo = courtsRepo;
             _accountRepo = accountRepo;
             _commonService = commonService;
+            _indexedEntitysRepository = indexedEntitysRepository;
         }
 
         #region Generic Court methods
 
         public async Task<IEnumerable<CourtDetailsViewModel>> GetAllActiveAsync()
         {
-            CourtModel[] courts = await _context.Courts.Where(c=>c.status == EntityStatusEnum.Active)
+            CourtModel[] courts = await _context.Courts.Where(c=>c.Status == EntityStatusEnum.Active)
                 .Include(p => p.PrimaryPhoto).ToArrayAsync();
             List<CourtDetailsViewModel> viewModels = new List<CourtDetailsViewModel>();
 
@@ -69,7 +72,7 @@ namespace Dribbly.Service.Services
         {
             CourtModel court = _context.Courts.Include(p => p.PrimaryPhoto).Include(p => p.Contact).SingleOrDefault(p => p.Id == id);
             var result = new CourtDetailsViewModel(court);
-            if(result.status == EntityStatusEnum.Deleted)
+            if(result.Status == EntityStatusEnum.Deleted)
             {
                 // Do not populate other properties if court has been deleted to save some resources
                 return result;
@@ -181,9 +184,10 @@ namespace Dribbly.Service.Services
         public async Task<long> RegisterAsync(CourtModel court)
         {
             court.OwnerId = _securityUtility.GetUserId().Value;
-            court.status = EntityStatusEnum.Active;
+            court.Status = EntityStatusEnum.Active;
             Add(court);
             _context.SaveChanges();
+            _context.IndexedEntities.Add(new IndexedEntityModel(court));
             await _commonService.AddUserCourtActivity(UserActivityTypeEnum.AddCourt, court.Id);
             return court.Id;
         }
@@ -213,6 +217,7 @@ namespace Dribbly.Service.Services
                     });
                     court.PrimaryPhotoId = photo.Id;
                     UpdateCourt(court);
+                    await _indexedEntitysRepository.SetIconUrl(_context, court, photo.Url);
                     await _context.SaveChangesAsync();
                     transaction.Commit();
                     await _commonService.AddCourtPhotosActivity(UserActivityTypeEnum.SetCourtPrimaryPhoto, court.Id, photo);
@@ -231,6 +236,7 @@ namespace Dribbly.Service.Services
             {
                 Update(court);
                 await _context.SaveChangesAsync();
+                await _indexedEntitysRepository.Update(_context, court);
                 await _commonService.AddUserCourtActivity(UserActivityTypeEnum.UpdatCourt, court.Id);
             }
             else
@@ -249,6 +255,7 @@ namespace Dribbly.Service.Services
                     court[item.Key] = item.Value;
                 }
                 await _context.SaveChangesAsync();
+                await _indexedEntitysRepository.Update(_context, court);
                 await _commonService.AddUserCourtActivity(UserActivityTypeEnum.UpdatCourt, court.Id);
             }
             else
@@ -280,8 +287,9 @@ namespace Dribbly.Service.Services
 
             if (court.OwnerId == _securityUtility.GetUserId() || AuthenticationService.HasPermission(CourtPermission.DeleteNotOwned))
             {
-                court.status = EntityStatusEnum.Deleted;
+                court.Status = EntityStatusEnum.Deleted;
                 await _context.SaveChangesAsync();
+                await _indexedEntitysRepository.Update(_context, court);
             }
             else
             {

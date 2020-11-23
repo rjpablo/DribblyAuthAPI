@@ -29,7 +29,7 @@ namespace DribblyAuthAPI.Migrations
                                  description, 
                                  dateadded) 
                     -- Accounts  
-                    SELECT c.id, 
+                    SELECT a.id, 
                            0     [type], 
                            c.username, 
                            p.url AS iconUrl, 
