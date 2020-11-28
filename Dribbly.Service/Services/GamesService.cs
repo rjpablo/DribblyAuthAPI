@@ -66,7 +66,8 @@ namespace Dribbly.Service.Services
             GameModel game = input.ToGameModel();
             var currentUserId = _securityUtility.GetUserId();
             game.AddedById = currentUserId.Value;
-            game.Status = Enums.GameStatusEnum.WaitingToStart;
+            game.Status = GameStatusEnum.WaitingToStart;
+            game.EntityStatus = EntityStatusEnum.Active;
             Add(game);
             _context.SaveChanges();
             await _commonService.AddUserGameActivity(UserActivityTypeEnum.AddGame, game.Id);

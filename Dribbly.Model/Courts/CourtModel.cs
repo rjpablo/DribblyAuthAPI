@@ -36,16 +36,16 @@ namespace Dribbly.Model.Courts
         [ForeignKey("Contact")]
         public long? ContactId { get; set; }
 
-        public EntityStatusEnum Status { get; set; }
+        public EntityStatusEnum EntityStatus { get; set; }
 
         [NotMapped]
-        public bool IsDeleted { get { return Status == EntityStatusEnum.Deleted; } }
+        public bool IsDeleted { get { return EntityStatus == EntityStatusEnum.Deleted; } }
 
         [NotMapped]
-        public bool IsActive { get { return Status == EntityStatusEnum.Active; } }
+        public bool IsActive { get { return EntityStatus == EntityStatusEnum.Active; } }
 
         [NotMapped]
-        public bool IsInactive { get { return Status == EntityStatusEnum.Inactive; } }
+        public bool IsInactive { get { return EntityStatus == EntityStatusEnum.Inactive; } }
 
         public string AdditionalInfo { get; set; }
 

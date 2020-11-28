@@ -84,7 +84,7 @@ namespace Dribbly.Service.Services
         {
             var currentUserId = _securityUtility.GetUserId();
             team.AddedById = currentUserId.Value;
-            team.Status = EntityStatusEnum.Active;
+            team.EntityStatus = EntityStatusEnum.Active;
             Add(team);
             _context.SaveChanges();
             await _indexedEntitysRepository.Add(_context, team);

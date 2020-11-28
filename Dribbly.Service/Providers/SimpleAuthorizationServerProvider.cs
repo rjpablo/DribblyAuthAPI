@@ -126,7 +126,7 @@ namespace Dribbly.Service.Providers
                         {
                             _accountRepo.ActivateByUserId(user.Id.ToString());
                             var indexedAccount = authContext.IndexedEntities.Find(account.Id, account.EntityType);
-                            indexedAccount.Status = Enums.EntityStatusEnum.Active;
+                            indexedAccount.EntityStatus = Enums.EntityStatusEnum.Active;
                             await authContext.SaveChangesAsync();
                         }
                     }

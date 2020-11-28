@@ -10,9 +10,9 @@ namespace Dribbly.Model.Shared
     {
         public long Id { get; set; }
         public string Name { get; set; }
+        public EntityStatusEnum EntityStatus { get; set; }
         public virtual PhotoModel Photo { get; set; }
         public EntityTypeEnum Type { get; set; }
-        public EntityStatusEnum Status { get; set; }
 
         public EntityBasicInfoModel()
         {
@@ -25,7 +25,7 @@ namespace Dribbly.Model.Shared
             Name = account.User != null ? account.User.UserName : account.Username;
             Photo = account.ProfilePhoto;
             Type = EntityTypeEnum.Account;
-            Status = account.Status;
+            EntityStatus = account.EntityStatus;
         }
     }
 }

@@ -136,7 +136,7 @@ namespace Dribbly.Service.Services
                     AuthenticationService.HasPermission(AccountPermission.UpdateNotOwned))
                 {
                     // TODO: Remove personal info when deleting an account
-                    account.Status = status;
+                    account.EntityStatus = status;
                     await _indexedEntitysRepo.Update(_context, account);
                     await _context.SaveChangesAsync();
                     if (status == EntityStatusEnum.Active)

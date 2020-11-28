@@ -53,7 +53,7 @@ namespace Dribbly.Service.Services
 
         public async Task<IEnumerable<CourtDetailsViewModel>> GetAllActiveAsync()
         {
-            CourtModel[] courts = await _context.Courts.Where(c=>c.Status == EntityStatusEnum.Active)
+            CourtModel[] courts = await _context.Courts.Where(c=>c.EntityStatus == EntityStatusEnum.Active)
                 .Include(p => p.PrimaryPhoto).ToArrayAsync();
             List<CourtDetailsViewModel> viewModels = new List<CourtDetailsViewModel>();
 
@@ -72,7 +72,7 @@ namespace Dribbly.Service.Services
         {
             CourtModel court = _context.Courts.Include(p => p.PrimaryPhoto).Include(p => p.Contact).SingleOrDefault(p => p.Id == id);
             var result = new CourtDetailsViewModel(court);
-            if(result.Status == EntityStatusEnum.Deleted)
+            if(result.EntityStatus == EntityStatusEnum.Deleted)
             {
                 // Do not populate other properties if court has been deleted to save some resources
                 return result;
@@ -184,7 +184,7 @@ namespace Dribbly.Service.Services
         public async Task<long> RegisterAsync(CourtModel court)
         {
             court.OwnerId = _securityUtility.GetUserId().Value;
-            court.Status = EntityStatusEnum.Active;
+            court.EntityStatus = EntityStatusEnum.Active;
             Add(court);
             _context.SaveChanges();
             _context.IndexedEntities.Add(new IndexedEntityModel(court));
@@ -287,7 +287,7 @@ namespace Dribbly.Service.Services
 
             if (court.OwnerId == _securityUtility.GetUserId() || AuthenticationService.HasPermission(CourtPermission.DeleteNotOwned))
             {
-                court.Status = EntityStatusEnum.Deleted;
+                court.EntityStatus = EntityStatusEnum.Deleted;
                 await _context.SaveChangesAsync();
                 await _indexedEntitysRepository.Update(_context, court);
             }

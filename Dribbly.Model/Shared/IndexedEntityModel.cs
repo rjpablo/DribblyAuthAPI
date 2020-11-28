@@ -6,13 +6,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dribbly.Model.Shared
 {
+    /// <summary>
+    /// Entities that can be searched globally and classes that are used for the entitystub component
+    /// should implement this interface
+    /// </summary>
     public interface IIndexedEntity
     {
         long Id { get; set; }
         EntityTypeEnum EntityType { get; }
         string Name { get; }
         string IconUrl { get; }
-        EntityStatusEnum Status { get; set; }
+        EntityStatusEnum EntityStatus { get; set; }
         string Description { get; }
         DateTime DateAdded { get; set; }
     }
@@ -29,7 +33,7 @@ namespace Dribbly.Model.Shared
 
         public string IconUrl { get; set; }
 
-        public EntityStatusEnum Status { get; set; }
+        public EntityStatusEnum EntityStatus { get; set; }
 
         public string Description { get; set; }
 
@@ -43,7 +47,7 @@ namespace Dribbly.Model.Shared
             Name = account.Username;
             EntityType = EntityTypeEnum.Account;
             DateAdded = account.DateAdded;
-            Status = EntityStatusEnum.Active;
+            EntityStatus = EntityStatusEnum.Active;
             IconUrl = account.ProfilePhoto?.Url;
         }
 
@@ -54,7 +58,7 @@ namespace Dribbly.Model.Shared
             EntityType = entity.EntityType;
             Description = entity.Description;
             DateAdded = entity.DateAdded;
-            Status = EntityStatusEnum.Active;
+            EntityStatus = EntityStatusEnum.Active;
             IconUrl = entity.IconUrl;
         }
 

@@ -17,7 +17,7 @@ namespace Dribbly.Model.Teams
         public long? LogoId { get; set; }
         public string IconUrl { get { return Logo?.Url; } }
         public long AddedById { get; set; }
-        public EntityStatusEnum Status { get; set; }
+        public EntityStatusEnum EntityStatus { get; set; }
         [ForeignKey(nameof(HomeCourt))]
         public long? HomeCourtId { get; set; }
         [NotMapped]

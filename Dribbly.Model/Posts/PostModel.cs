@@ -37,7 +37,7 @@ namespace Dribbly.Model.Posts
         /// </summary>
         public long PostedOnId { get; set; }
 
-        public EntityStatusEnum Status { get; set; }
+        public EntityStatusEnum EntityStatus { get; set; }
 
         [NotMapped]
         public EntityTypeEnum EntityType { get; } = EntityTypeEnum.Post;

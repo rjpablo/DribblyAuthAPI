@@ -1,6 +1,7 @@
 ﻿using Dribbly.Core.Models;
 using Dribbly.Model.Account;
 using Dribbly.Model.Courts;
+using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -10,7 +11,7 @@ namespace Dribbly.Model.Games
 {
     // Games table has an additional ID column which is a Foreign Key to the bookings table
     [Table("Games")]
-    public class GameModel : BaseEntityModel
+    public class GameModel : BaseEntityModel, IIndexedEntity
     {
         #region MappedColumns
         [Required]
@@ -39,6 +40,14 @@ namespace Dribbly.Model.Games
         public EntityTypeEnum EntityType { get; } = EntityTypeEnum.Game;
 
         #endregion
+
+        [NotMapped]
+        public string Name { get { return Title; } }
+        public EntityStatusEnum EntityStatus { get; set; }
+        [NotMapped]
+        public string IconUrl { get { return ""; } }
+        [NotMapped]
+        public string Description { get { return ""; } }
 
         // navigation properties
         public virtual CourtModel Court { get; set; }

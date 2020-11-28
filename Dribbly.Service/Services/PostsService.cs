@@ -71,7 +71,7 @@ namespace Dribbly.Service.Services
             }
             var posts = await _context.Posts
                 .Where(p => p.PostedOnType == input.PostedOnType && p.PostedOnId == postOnIdLong &&
-                p.Status == EntityStatusEnum.Active && (!input.CeilingPostId.HasValue || p.Id < input.CeilingPostId))
+                p.EntityStatus == EntityStatusEnum.Active && (!input.CeilingPostId.HasValue || p.Id < input.CeilingPostId))
                 .Take(input.GetCount).OrderByDescending(p => p.Id).ToListAsync();
 
             foreach (PostModel post in posts)
@@ -108,7 +108,7 @@ namespace Dribbly.Service.Services
                 PostedOnType = input.PostedOnType,
                 PostedOnId = postOnIdLong,
                 Content = input.Content,
-                Status = EntityStatusEnum.Active
+                EntityStatus = EntityStatusEnum.Active
             };
             post.AddedById = _securityUtility.GetUserId().Value;
             Add(post);
@@ -144,7 +144,7 @@ namespace Dribbly.Service.Services
             PostModel post = _context.Posts.SingleOrDefault(p => p.Id == Id);
             if (post != null)
             {
-                if (post.Status == EntityStatusEnum.Deleted)
+                if (post.EntityStatus == EntityStatusEnum.Deleted)
                 {
                     throw new DribblyInvalidOperationException(string.Format("Tried to delete a posts that has already been deleted. Post ID: {0}", post.Id),
                         friendlyMessageKey: "app.ThisPostHasAlreadyBeenDeleted");
@@ -152,7 +152,7 @@ namespace Dribbly.Service.Services
 
                 if (_securityUtility.IsCurrentUser(post.AddedById) || AuthenticationService.HasPermission(PostPermission.DeleteNotOwned))
                 {
-                    post.Status = EntityStatusEnum.Deleted;
+                    post.EntityStatus = EntityStatusEnum.Deleted;
                     await _context.SaveChangesAsync();
                     await _indexedEntitysRepository.Update(_context, post);
                     await _commonService.AddUserPostActivity(UserActivityTypeEnum.DeletePost, Id);

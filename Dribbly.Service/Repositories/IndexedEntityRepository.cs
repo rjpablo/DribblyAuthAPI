@@ -32,7 +32,7 @@ namespace Dribbly.Service.Repositories
         {
             var u = db.IndexedEntities.Find(entity.Id, entity.EntityType);
             u.Name = entity.Name;
-            u.Status = entity.Status;
+            u.EntityStatus = entity.EntityStatus;
             u.Description = entity.Description;
             // We do not want to update IconUrl here because sometime the photo is not loading, giving us a null value
             // u.IconUrl = entity.IconUrl;

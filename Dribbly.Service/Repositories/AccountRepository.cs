@@ -69,9 +69,9 @@ namespace Dribbly.Service.Repositories
         public void ActivateByUserId(string userid)
         {
             AccountModel account = _dbSet.SingleOrDefault(a => a.IdentityUserId.ToString() == userid);
-            if (account != null && account.Status != EntityStatusEnum.Active)
+            if (account != null && account.EntityStatus != EntityStatusEnum.Active)
             {
-                account.Status = EntityStatusEnum.Active;
+                account.EntityStatus = EntityStatusEnum.Active;
             }
         }
 

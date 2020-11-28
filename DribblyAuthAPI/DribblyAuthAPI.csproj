@@ -451,6 +451,10 @@
     <Compile Include="Migrations\202011241620522_Add_Tables_Teams_And_UserTeamActivities.Designer.cs">
       <DependentUpon>202011241620522_Add_Tables_Teams_And_UserTeamActivities.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011281624186_Modify_Table_IndexexEntities_Rename_Column_Status_To_EntityStatus.cs" />
+    <Compile Include="Migrations\202011281624186_Modify_Table_IndexexEntities_Rename_Column_Status_To_EntityStatus.Designer.cs">
+      <DependentUpon>202011281624186_Modify_Table_IndexexEntities_Rename_Column_Status_To_EntityStatus.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -678,6 +682,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011241620522_Add_Tables_Teams_And_UserTeamActivities.resx">
       <DependentUpon>202011241620522_Add_Tables_Teams_And_UserTeamActivities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011281624186_Modify_Table_IndexexEntities_Rename_Column_Status_To_EntityStatus.resx">
+      <DependentUpon>202011281624186_Modify_Table_IndexexEntities_Rename_Column_Status_To_EntityStatus.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
