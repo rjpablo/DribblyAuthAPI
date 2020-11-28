@@ -30,6 +30,8 @@ namespace Dribbly.Service.Services.Shared
         Task AddCourtPhotosActivity(UserActivityTypeEnum activityType, long courtId, params PhotoModel[] photos);
         // GAMES
         Task AddUserGameActivity(UserActivityTypeEnum activityType, long gameId);
+        //TEAMS
+        Task AddUserTeamActivity(UserActivityTypeEnum activityType, long teamId);
         #endregion
 
         #region Search Suggestions
@@ -137,6 +139,21 @@ namespace Dribbly.Service.Services.Shared
             {
                 Type = activityType,
                 GameId = gameId
+            };
+
+            await AddActivityAsync(activity);
+        }
+
+        #endregion
+
+        #region User Activities - Teams
+
+        public async Task AddUserTeamActivity(UserActivityTypeEnum activityType, long teamId)
+        {
+            var activity = new UserTeamActivityModel
+            {
+                Type = activityType,
+                TeamId = teamId
             };
 
             await AddActivityAsync(activity);
@@ -283,6 +300,11 @@ namespace Dribbly.Service.Services.Shared
             else if (activity is UserGameActivityModel)
             {
                 _context.UserGameActivities.Add((UserGameActivityModel)activity);
+            }
+            // TEAMS
+            else if (activity is UserTeamActivityModel)
+            {
+                _context.UserTeamActivities.Add((UserTeamActivityModel)activity);
             }
             else
             {

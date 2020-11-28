@@ -79,8 +79,12 @@
     <Compile Include="Shared\IndexedEntityModel.cs" />
     <Compile Include="Shared\GenericEntityUpdateInputModel.cs" />
     <Compile Include="Shared\GetTypeAheadSuggestionsInputModel.cs" />
+    <Compile Include="Teams\TeamFollowingModel.cs" />
+    <Compile Include="Teams\TeamViewerDataModel.cs" />
+    <Compile Include="Teams\TeamModel.cs" />
     <Compile Include="UserActivities\CourtVideoActivityModel.cs" />
     <Compile Include="UserActivities\CourtPhotoActivityModel.cs" />
+    <Compile Include="UserActivities\UserTeamActivityModel.cs" />
     <Compile Include="UserActivities\UserGameActivityModel.cs" />
     <Compile Include="UserActivities\UserContactActivityModel.cs" />
     <Compile Include="UserActivities\AccountVideoActivity.cs" />

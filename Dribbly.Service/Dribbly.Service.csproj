@@ -98,6 +98,7 @@
     <Compile Include="Repositories\AccountRepository.cs" />
     <Compile Include="Repositories\AuthRepository.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\TeamsRepository.cs" />
     <Compile Include="Repositories\IndexedEntityRepository.cs" />
     <Compile Include="Repositories\CourtsRepository.cs" />
     <Compile Include="Repositories\IAccountRepository.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Services\BaseEntityService.cs" />
     <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\ContactsService.cs" />
+    <Compile Include="Services\TeamsService.cs" />
     <Compile Include="Services\IPostsService.cs" />
     <Compile Include="Services\PostsService.cs" />
     <Compile Include="Services\GamesService.cs" />

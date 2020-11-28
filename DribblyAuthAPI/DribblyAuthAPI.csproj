@@ -160,6 +160,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ContactsController.cs" />
+    <Compile Include="Controllers\TeamsController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\GamesController.cs" />
     <Compile Include="Controllers\NotificationsController.cs" />
@@ -446,6 +447,10 @@
     <Compile Include="Migrations\202011231350366_Add_Table_IndexEntities.Designer.cs">
       <DependentUpon>202011231350366_Add_Table_IndexEntities.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011241620522_Add_Tables_Teams_And_UserTeamActivities.cs" />
+    <Compile Include="Migrations\202011241620522_Add_Tables_Teams_And_UserTeamActivities.Designer.cs">
+      <DependentUpon>202011241620522_Add_Tables_Teams_And_UserTeamActivities.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -670,6 +675,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011231350366_Add_Table_IndexEntities.resx">
       <DependentUpon>202011231350366_Add_Table_IndexEntities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011241620522_Add_Tables_Teams_And_UserTeamActivities.resx">
+      <DependentUpon>202011241620522_Add_Tables_Teams_And_UserTeamActivities.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

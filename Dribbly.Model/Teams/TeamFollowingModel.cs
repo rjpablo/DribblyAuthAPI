@@ -1,18 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Dribbly.Model.Shared
+namespace Dribbly.Model.Teams
 {
-    //[Table("CourtFollowings")]
-    public class CourtFollowingModel
+    public class TeamFollowingModel
     {
         [Key]
         [Column(Order = 1)]
-        public long CourtId { get; set; }
+        public long TeamId { get; set; }
 
         [Key]
         [Column(Order = 2)]
         public long FollowedById { get; set; }
-
     }
 }

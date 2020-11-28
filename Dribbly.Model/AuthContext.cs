@@ -16,6 +16,7 @@ using Dribbly.Model.Games;
 using Dribbly.Model.Posts;
 using Dribbly.Model.UserActivities;
 using Dribbly.Identity.Models;
+using Dribbly.Model.Teams;
 
 namespace Dribbly.Model
 {
@@ -31,6 +32,7 @@ namespace Dribbly.Model
         DbSet<PhotoModel> Photos { get; set; }
         DbSet<BookingModel> Bookings { get; set; }
         DbSet<GameModel> Games { get; set; }
+        DbSet<TeamModel> Teams { get; set; }
         DbSet<UserPermissionModel> UserPermissions { get; set; }
         DbSet<AccountPhotoModel> AccountPhotos { get; set; }
         DbSet<CourtVideoModel> CourtVideos { get; set; }
@@ -56,6 +58,8 @@ namespace Dribbly.Model
         DbSet<CourtPhotoActivityModel> CourtPhotoActivities { get; set; }
         //GAMES
         DbSet<UserGameActivityModel> UserGameActivities { get; set; }
+        //TEAMS
+        DbSet<UserTeamActivityModel> UserTeamActivities { get; set; }
         #endregion
 
         #region Logs
@@ -94,6 +98,7 @@ namespace Dribbly.Model
         public DbSet<CourtPhotoModel> CourtPhotos { get; set; }
         public DbSet<BookingModel> Bookings { get; set; }
         public DbSet<GameModel> Games { get; set; }
+        public DbSet<TeamModel> Teams { get; set; }
         public DbSet<UserPermissionModel> UserPermissions { get; set; }
         public DbSet<AccountPhotoModel> AccountPhotos { get; set; }
         public DbSet<CourtVideoModel> CourtVideos { get; set; }
@@ -117,6 +122,8 @@ namespace Dribbly.Model
         public DbSet<CourtPhotoActivityModel> CourtPhotoActivities { get; set; }
         // GAMES
         public DbSet<UserGameActivityModel> UserGameActivities { get; set; }
+        // TEAMS
+        public DbSet<UserTeamActivityModel> UserTeamActivities { get; set; }
         #endregion
 
         #region Logs

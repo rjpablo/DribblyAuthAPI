@@ -56,9 +56,14 @@
 
         #endregion
 
-        #region Contacts
+        #region Contacts (121-140)
         RequestVerificationCode = 121,
         VerifyContact = 122,
+        #endregion
+
+        #region Team-Related (141-160)
+        AddTeam = 121,
+        UpdateTeam = 122
         #endregion
     }
 }
