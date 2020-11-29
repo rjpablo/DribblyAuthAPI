@@ -6,6 +6,7 @@
         ShootingGuard = 2,
         SmallForward = 3,
         PowerForward = 4,
-        Center = 5
+        Center = 5,
+        Coach = 6
     }
 }

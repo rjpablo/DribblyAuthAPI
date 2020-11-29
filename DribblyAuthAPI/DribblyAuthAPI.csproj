@@ -455,6 +455,10 @@
     <Compile Include="Migrations\202011281624186_Modify_Table_IndexexEntities_Rename_Column_Status_To_EntityStatus.Designer.cs">
       <DependentUpon>202011281624186_Modify_Table_IndexexEntities_Rename_Column_Status_To_EntityStatus.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011282111022_Add_Tables_TeamMembers_And_JoinTeamRequests.cs" />
+    <Compile Include="Migrations\202011282111022_Add_Tables_TeamMembers_And_JoinTeamRequests.Designer.cs">
+      <DependentUpon>202011282111022_Add_Tables_TeamMembers_And_JoinTeamRequests.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -685,6 +689,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011281624186_Modify_Table_IndexexEntities_Rename_Column_Status_To_EntityStatus.resx">
       <DependentUpon>202011281624186_Modify_Table_IndexexEntities_Rename_Column_Status_To_EntityStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011282111022_Add_Tables_TeamMembers_And_JoinTeamRequests.resx">
+      <DependentUpon>202011282111022_Add_Tables_TeamMembers_And_JoinTeamRequests.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

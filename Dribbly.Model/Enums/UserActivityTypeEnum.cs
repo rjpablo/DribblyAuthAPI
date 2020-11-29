@@ -63,7 +63,8 @@
 
         #region Team-Related (141-160)
         AddTeam = 121,
-        UpdateTeam = 122
+        UpdateTeam = 122,
+        JoinTeam = 123
         #endregion
     }
 }

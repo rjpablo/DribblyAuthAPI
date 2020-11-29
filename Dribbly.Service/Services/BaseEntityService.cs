@@ -21,6 +21,11 @@ namespace Dribbly.Service.Services
             _dbSet.Add(entity);
         }
 
+        protected bool Exists(long id)
+        {
+            return _dbSet.Any(e => e.Id == id);
+        }
+
         protected T GetById(long id)
         {
             return _dbSet.SingleOrDefault(e => e.Id == id);

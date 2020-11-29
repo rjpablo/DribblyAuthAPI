@@ -15,7 +15,9 @@ namespace Dribbly.Service.Repositories
 
         Task<AccountBasicInfoModel> GetAccountBasicInfo(long userId);
 
-        Task<long?> GetIdentityUserAccountId(string identityUserId);
+        Task<long?> GetIdentityUserAccountId(long identityUserId);
+
+        Task<long> GetIdentityUserAccountIdNotNullAsync(long identityUserId);
 
         IQueryable<AccountModel> SearchAccounts(AccountSearchInputModel input);
     }

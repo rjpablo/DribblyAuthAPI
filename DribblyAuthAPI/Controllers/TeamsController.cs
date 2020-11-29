@@ -28,7 +28,7 @@ namespace DribblyAuthAPI.Controllers
         [Route("GetTeam/{id}")]
         public async Task<TeamModel> GetTeam(long id)
         {
-            return await _service.GetTeam(id);
+            return await _service.GetTeamAsync(id);
         }
 
         [AllowAnonymous]
@@ -37,6 +37,22 @@ namespace DribblyAuthAPI.Controllers
         public async Task<TeamViewerDataModel> GetTeamViewerData(long teamId)
         {
             return await _service.GetTeamViewerDataAsync(teamId);
+        }
+
+        [HttpGet]
+        [Route("GetUserTeamRelation/{teamId}")]
+        public async Task<UserTeamRelationModel> GetUserTeamRelation(long teamId)
+        {
+            return await _service.GetUserTeamRelationAsync(teamId);
+        }
+
+        //POSTs
+
+        [HttpPost, Authorize]
+        [Route("CancelJoinRequest/{teamId}")]
+        public async Task CancelJoinRequest(long teamId)
+        {
+            await _service.CancelJoinRequestAsync(teamId);
         }
 
         [HttpPost, Authorize]
@@ -51,6 +67,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task<TeamModel> AddTeam([FromBody] TeamModel model)
         {
             return await _service.AddTeamAsync(model);
+        }
+
+        [HttpPost, Authorize]
+        [Route("JoinTeam")]
+        public async Task JoinTeam(JoinTeamRequestModel request)
+        {
+            await _service.JoinTeamAsync(request);
         }
     }
 }

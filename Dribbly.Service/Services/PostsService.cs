@@ -67,7 +67,7 @@ namespace Dribbly.Service.Services
             }
             else
             {
-                postOnIdLong = long.Parse(input.PostedOnId);
+                postOnIdLong = input.PostedOnId;
             }
             var posts = await _context.Posts
                 .Where(p => p.PostedOnType == input.PostedOnType && p.PostedOnId == postOnIdLong &&
@@ -100,7 +100,7 @@ namespace Dribbly.Service.Services
         {
             long postOnIdLong = input.PostedOnType == EntityTypeEnum.Account ?
                 (await _accountRepo.GetIdentityUserAccountId(input.PostedOnId)).Value :
-                postOnIdLong = long.Parse(input.PostedOnId);
+                postOnIdLong = input.PostedOnId;
 
             PostModel post = new PostModel
             {

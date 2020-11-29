@@ -1,9 +1,9 @@
-﻿using Dribbly.Authentication.Models.Auth;
-using Dribbly.Core.Models;
+﻿using Dribbly.Core.Models;
 using Dribbly.Identity.Models;
 using Dribbly.Model.Accounts;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Shared;
+using Dribbly.Model.Teams;
 using Dribbly.Service.Enums;
 using System;
 using System.Collections.Generic;

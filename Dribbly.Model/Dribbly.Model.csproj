@@ -68,6 +68,7 @@
     <Compile Include="Courts\CourtReviewModel.cs" />
     <Compile Include="Courts\CourtModel.cs" />
     <Compile Include="Courts\CourtSearchInputModel.cs" />
+    <Compile Include="Enums\JoinTeamRequestStatus.cs" />
     <Compile Include="Enums\PlayerPositionEnum.cs" />
     <Compile Include="Enums\EntityTypeEnum.cs" />
     <Compile Include="Enums\AccountStatusEnum.cs" />
@@ -79,9 +80,13 @@
     <Compile Include="Shared\IndexedEntityModel.cs" />
     <Compile Include="Shared\GenericEntityUpdateInputModel.cs" />
     <Compile Include="Shared\GetTypeAheadSuggestionsInputModel.cs" />
+    <Compile Include="Teams\JoinTeamRequestModel.cs" />
+    <Compile Include="Teams\JoinTeamRequestResultModel.cs" />
     <Compile Include="Teams\TeamFollowingModel.cs" />
+    <Compile Include="Teams\TeamMember.cs" />
     <Compile Include="Teams\TeamViewerDataModel.cs" />
     <Compile Include="Teams\TeamModel.cs" />
+    <Compile Include="Teams\UserTeamRelationModel.cs" />
     <Compile Include="UserActivities\CourtVideoActivityModel.cs" />
     <Compile Include="UserActivities\CourtPhotoActivityModel.cs" />
     <Compile Include="UserActivities\UserTeamActivityModel.cs" />

@@ -1,4 +1,5 @@
 ﻿using Dribbly.Authentication.Models.Auth;
+using Dribbly.Core.Exceptions;
 using Dribbly.Model;
 using Dribbly.Model.Account;
 using Dribbly.Service.Enums;
@@ -50,9 +51,20 @@ namespace Dribbly.Service.Repositories
                 .SingleOrDefaultAsync(a => a.Id == Id);
         }
 
-        public async Task<long?> GetIdentityUserAccountId(string identityUserId)
+        public async Task<long?> GetIdentityUserAccountId(long identityUserId)
         {
-            return (await _context.Accounts.SingleOrDefaultAsync(a => a.IdentityUserId.ToString() == identityUserId))?.Id;
+            return (await _context.Accounts.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId))?.Id;
+        }
+
+        public async Task<long> GetIdentityUserAccountIdNotNullAsync(long identityUserId)
+        {
+            var id = (await _context.Accounts.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId))?.Id;
+            if (!id.HasValue)
+            {
+                throw new DribblyObjectNotFoundException($"An account with identityUserId of {identityUserId} does not exist.");
+            }
+
+            return id.Value;
         }
 
         public async Task<AccountBasicInfoModel> GetAccountBasicInfo(long userId)
