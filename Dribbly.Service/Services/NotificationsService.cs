@@ -92,16 +92,21 @@ namespace Dribbly.Service.Services
 
         private async Task<IEnumerable<object>> GetDetailedNotificationsAsync(IEnumerable<NotificationModel> notifications)
         {
-            List<object> resultWithDetails = new List<object>();
+            List<NotificationModel> resultWithDetails = new List<NotificationModel>();
 
             // Booking Booked - For Court owner
             IEnumerable<NewBookingNotificationModel> newBookingNotifications = await GetNewBookingNotificationsAsync
                 (notifications.Where(n => n.Type == NotificationTypeEnum.NewBookingForBooker || n.Type == NotificationTypeEnum.NewBookingForOwner)
                 .Select(n => n.Id).ToArray());
 
+            var joinTeamRequestNotifications = await GetJoinTeamRequestNotificationsAsync
+                (notifications.Where(n => n.Type == NotificationTypeEnum.JoinTeamRequest)
+                .Select(n => n.Id).ToArray());
+
+            resultWithDetails.AddRange(joinTeamRequestNotifications);
             resultWithDetails.AddRange(newBookingNotifications);
 
-            return resultWithDetails;
+            return resultWithDetails.OrderByDescending(n=>n.DateAdded);
         }
 
         private async Task<IEnumerable<NewBookingNotificationModel>> GetNewBookingNotificationsAsync(long[] NotificationIds)
@@ -123,6 +128,29 @@ namespace Dribbly.Service.Services
                     BookedById = n.BookedById,
                     BookedByName = n.BookedBy.UserName,
                     CourtName = n.Booking.Court.Name
+                })
+                .ToListAsync();
+        }
+
+        private async Task<IEnumerable<JoinTeamRequestNotificationViewModel>> GetJoinTeamRequestNotificationsAsync(long[] NotificationIds)
+        {
+            if (NotificationIds.Length == 0) return await Task.FromResult<IEnumerable<JoinTeamRequestNotificationViewModel>>
+                    (new List<JoinTeamRequestNotificationViewModel>());
+
+            return await _context.JoinTeamRequestNotifications
+                .Where(n => NotificationIds.Contains(n.Id)).Include(n => n.Request)
+                .Include(n => n.Request.Team).Include(n => n.Request.Member).Include(n => n.Request.Member.User)
+                .Select(n => new JoinTeamRequestNotificationViewModel
+                {
+                    Id = n.Id,
+                    DateAdded = n.DateAdded,
+                    ForUserId = n.ForUserId,
+                    IsViewed = n.IsViewed,
+                    Type = n.Type,
+                    TeamId = n.Request.TeamId, 
+                    TeamName = n.Request.Team.Name,
+                    RequestorId = n.Request.MemberAccountId,
+                    RequestorName = n.Request.Member.User.UserName
                 })
                 .ToListAsync();
         }

@@ -28,6 +28,9 @@ namespace Dribbly.Service.Repositories
                     case NotificationTypeEnum.NewBookingForBooker:
                         _context.NewBookingNotifications.Add((NewBookingNotificationModel)notification);
                         break;
+                    case NotificationTypeEnum.JoinTeamRequest:
+                        _context.JoinTeamRequestNotifications.Add((JoinTeamRequestNotificationModel)notification);
+                        break;
                 }
                 await _context.SaveChangesAsync();
             }

@@ -459,6 +459,10 @@
     <Compile Include="Migrations\202011282111022_Add_Tables_TeamMembers_And_JoinTeamRequests.Designer.cs">
       <DependentUpon>202011282111022_Add_Tables_TeamMembers_And_JoinTeamRequests.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011291215416_Add_Table_JoinTeamRequestNotifications_And_Modify_Table_Team_Add_Column_ManagedById.cs" />
+    <Compile Include="Migrations\202011291215416_Add_Table_JoinTeamRequestNotifications_And_Modify_Table_Team_Add_Column_ManagedById.Designer.cs">
+      <DependentUpon>202011291215416_Add_Table_JoinTeamRequestNotifications_And_Modify_Table_Team_Add_Column_ManagedById.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -692,6 +696,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011282111022_Add_Tables_TeamMembers_And_JoinTeamRequests.resx">
       <DependentUpon>202011282111022_Add_Tables_TeamMembers_And_JoinTeamRequests.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011291215416_Add_Table_JoinTeamRequestNotifications_And_Modify_Table_Team_Add_Column_ManagedById.resx">
+      <DependentUpon>202011291215416_Add_Table_JoinTeamRequestNotifications_And_Modify_Table_Team_Add_Column_ManagedById.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

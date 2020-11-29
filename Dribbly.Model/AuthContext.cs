@@ -70,6 +70,7 @@ namespace Dribbly.Model
         #endregion
         #region Notifications
         DbSet<NotificationModel> Notifications { get; set; }
+        DbSet<JoinTeamRequestNotificationModel> JoinTeamRequestNotifications { get; set; }
         #endregion
 
         Database Database { get; }
@@ -137,6 +138,7 @@ namespace Dribbly.Model
         #region Notifications
         public DbSet<NotificationModel> Notifications { get; set; }
         public DbSet<NewBookingNotificationModel> NewBookingNotifications { get; set; }
+        public DbSet<JoinTeamRequestNotificationModel> JoinTeamRequestNotifications { get; set; }
         #endregion
 
         public static AuthContext Create()

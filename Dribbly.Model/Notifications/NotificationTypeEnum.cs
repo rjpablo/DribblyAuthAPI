@@ -11,6 +11,10 @@ namespace Dribbly.Model.Notifications
         // Notification for court owner when a new booking is made by booker
         NewBookingForOwner,
         // Notification for booker when a new booking is added by court owner
-        NewBookingForBooker
+        NewBookingForBooker,
+        /// <summary>
+        /// Notificaion for team owner/manage when a player creates a request to join the team
+        /// </summary>
+        JoinTeamRequest,
     }
 }

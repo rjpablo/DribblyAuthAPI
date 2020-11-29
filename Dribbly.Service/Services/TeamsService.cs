@@ -73,7 +73,7 @@ namespace Dribbly.Service.Services
         public async Task<UserTeamRelationModel> GetUserTeamRelationAsync(long teamId)
         {
             var currentUserId = _securityUtility.GetUserId();
-            long? accountId = await _accountRepo.GetIdentityUserAccountId(currentUserId.Value);
+            long? accountId = currentUserId.HasValue ? await _accountRepo.GetIdentityUserAccountId(currentUserId.Value) : null;
             UserTeamRelationModel relation = new UserTeamRelationModel();
             relation.HasPendingJoinRequest = accountId.HasValue ?
                 await GetHasPendingJoinRequestAsync(teamId, accountId.Value) : false;
@@ -89,7 +89,12 @@ namespace Dribbly.Service.Services
                 team.AddedBy = await _accountRepo.GetAccountBasicInfo(team.AddedById);
                 if (team.AddedBy == null)
                 {
-                    throw new DribblyObjectNotFoundException($"Unable to find team with ID {team.Id}.");
+                    throw new DribblyObjectNotFoundException($"Unable to find user with ID {team.AddedById}.");
+                }
+                team.ManagedBy = await _accountRepo.GetAccountBasicInfo(team.ManagedById);
+                if (team.ManagedBy == null)
+                {
+                    throw new DribblyObjectNotFoundException($"Unable to find user with ID {team.ManagedById}.");
                 }
             }
             return team;
@@ -132,6 +137,7 @@ namespace Dribbly.Service.Services
         {
             var currentUserId = _securityUtility.GetUserId();
             team.AddedById = currentUserId.Value;
+            team.ManagedById = currentUserId.Value;
             team.EntityStatus = EntityStatusEnum.Active;
             Add(team);
             _context.SaveChanges();
@@ -179,6 +185,13 @@ namespace Dribbly.Service.Services
             _context.JoinTeamRequests.Add(request);
             await _context.SaveChangesAsync();
             await _commonService.AddUserTeamActivity(UserActivityTypeEnum.JoinTeam, team.Id);
+            await _notificationsRepo.TryAddAsync(new JoinTeamRequestNotificationModel
+            {
+                RequestId = request.Id,
+                ForUserId = team.ManagedById,
+                DateAdded = DateTime.UtcNow,
+                Type = NotificationTypeEnum.JoinTeamRequest
+            });
         }
 
         public IQueryable<TeamMembershipModel> GetCurrentTeamMemberships(long teamId, long memberAccountId)
