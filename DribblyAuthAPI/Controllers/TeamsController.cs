@@ -56,6 +56,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost, Authorize]
+        [Route("LeaveTeam/{teamId}")]
+        public async Task<UserTeamRelationModel> LeaveTeam(long teamId)
+        {
+            return await _service.LeaveTeamAsync(teamId);
+        }
+
+        [HttpPost, Authorize]
         [Route("UpdateTeam")]
         public async Task UpdateTeam([FromBody] TeamModel model)
         {
@@ -71,9 +78,9 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpPost, Authorize]
         [Route("JoinTeam")]
-        public async Task JoinTeam(JoinTeamRequestModel request)
+        public async Task<UserTeamRelationModel> JoinTeam(JoinTeamRequestModel request)
         {
-            await _service.JoinTeamAsync(request);
+            return await _service.JoinTeamAsync(request);
         }
     }
 }

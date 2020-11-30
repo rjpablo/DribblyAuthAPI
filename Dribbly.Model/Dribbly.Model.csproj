@@ -88,6 +88,7 @@
     <Compile Include="Teams\JoinTeamRequestResultModel.cs" />
     <Compile Include="Teams\TeamFollowingModel.cs" />
     <Compile Include="Teams\TeamMember.cs" />
+    <Compile Include="Teams\TeamMembershipViewModel.cs" />
     <Compile Include="Teams\TeamViewerDataModel.cs" />
     <Compile Include="Teams\TeamModel.cs" />
     <Compile Include="Teams\UserTeamRelationModel.cs" />
