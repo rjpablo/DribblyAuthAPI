@@ -16,7 +16,7 @@ namespace Dribbly.Model.Shared
         EntityTypeEnum EntityType { get; }
         string Name { get; }
         string IconUrl { get; }
-        EntityStatusEnum EntityStatus { get; set; }
+        EntityStatusEnum EntityStatus { get; }
         string Description { get; }
         DateTime DateAdded { get; set; }
     }

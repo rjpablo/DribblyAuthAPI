@@ -1,14 +1,14 @@
 ﻿using Dribbly.Core.Models;
 using Dribbly.Model.Account;
+using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dribbly.Model.Teams
 {
     [Table("TeamMemberships")]
-    public class TeamMembershipModel : BaseEntityModel
+    public class TeamMembershipModel : BaseEntityModel, IIndexedEntity
     {
         [ForeignKey(nameof(Team))]
         public long TeamId { get; set; }
@@ -21,5 +21,15 @@ namespace Dribbly.Model.Teams
         public PlayerPositionEnum Position { get; set; }
         public AccountModel Member { get; set; }
         public TeamModel Team { get; set; }
+
+        public EntityTypeEnum EntityType => Member.EntityType;
+
+        public string Name => Member.Name;
+
+        public string IconUrl => Member.IconUrl;
+
+        public EntityStatusEnum EntityStatus { get => Member.EntityStatus; }
+
+        public string Description => Member.Description;
     }
 }

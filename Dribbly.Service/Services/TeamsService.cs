@@ -13,6 +13,7 @@ using System.Data.Entity.Core.Common.CommandTrees;
 using System.Linq;
 using System.Data.Entity.Migrations;
 using System.Threading.Tasks;
+using System.Data.Entity.Infrastructure;
 
 namespace Dribbly.Service.Services
 {
@@ -21,6 +22,7 @@ namespace Dribbly.Service.Services
         Task<TeamModel> AddTeamAsync(TeamModel team);
         Task CancelJoinRequestAsync(long teamId);
         IEnumerable<TeamModel> GetAll();
+        Task<IEnumerable<TeamMembershipModel>> GetCurrentMembersAsync(long teamId);
         Task<TeamModel> GetTeamAsync(long id);
         Task<UserTeamRelationModel> GetUserTeamRelationAsync(long teamId);
         Task<TeamViewerDataModel> GetTeamViewerDataAsync(long teamId);
@@ -102,7 +104,18 @@ namespace Dribbly.Service.Services
         {
             var currentUserId = _securityUtility.GetUserId();
             long? accountId = currentUserId.HasValue ? await _accountRepo.GetIdentityUserAccountId(currentUserId.Value) : null;
-            return await GetUserTeamRelationAsync(teamId, accountId.Value);
+            return accountId.HasValue ? await GetUserTeamRelationAsync(teamId, accountId.Value) : new UserTeamRelationModel();
+        }
+
+        public async Task<IEnumerable<TeamMembershipModel>> GetCurrentMembersAsync(long teamId)
+        {
+            return await GetAllMembers(teamId).Where(m => m.DateLeft == null).ToListAsync();
+        }
+
+        public IQueryable<TeamMembershipModel> GetAllMembers(long teamId)
+        {
+            return _context.TeamMembers.Include(m => m.Member).Include(m => m.Member.User)
+                .Include(m => m.Member.ProfilePhoto).Where(m => m.TeamId == teamId);
         }
 
         public async Task<UserTeamRelationModel> GetUserTeamRelationAsync(long teamId, long accountId)
@@ -126,7 +139,7 @@ namespace Dribbly.Service.Services
             long accountId = await _accountRepo.GetIdentityUserAccountIdNotNullAsync(currentUserId.Value);
             var activeMembership = _context.TeamMembers.SingleOrDefault(m => m.TeamId == teamId && m.MemberAccountId == accountId &&
             m.DateLeft == null);
-            if(activeMembership == null)
+            if (activeMembership == null)
             {
                 throw new DribblyForbiddenException("Attempted to leave team but not currently a member.",
                     friendlyMessageKey: "app.LeaveTeamNotCurrentMember");

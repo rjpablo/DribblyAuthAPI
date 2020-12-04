@@ -31,6 +31,13 @@ namespace DribblyAuthAPI.Controllers
             return await _service.GetTeamAsync(id);
         }
 
+        [HttpGet]
+        [Route("GetCurrentMembers/{teamId}")]
+        public async Task<IEnumerable<TeamMembershipModel>> GetCurrentMembers(long teamId)
+        {
+            return await _service.GetCurrentMembersAsync(teamId);
+        }
+
         [AllowAnonymous]
         [HttpGet]
         [Route("GetTeamViewerData/{teamId}")]
