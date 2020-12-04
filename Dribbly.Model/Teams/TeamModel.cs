@@ -17,6 +17,9 @@ namespace Dribbly.Model.Teams
         public long? LogoId { get; set; }
         public string IconUrl { get { return Logo?.Url; } }
         public long AddedById { get; set; }
+        /// <summary>
+        /// References AspNetUsers.Id
+        /// </summary>
         public long ManagedById { get; set; }
         public EntityStatusEnum EntityStatus { get; set; }
         [ForeignKey(nameof(HomeCourt))]

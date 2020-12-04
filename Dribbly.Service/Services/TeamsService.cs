@@ -23,6 +23,7 @@ namespace Dribbly.Service.Services
         Task CancelJoinRequestAsync(long teamId);
         IEnumerable<TeamModel> GetAll();
         Task<IEnumerable<TeamMembershipModel>> GetCurrentMembersAsync(long teamId);
+        Task<IEnumerable<JoinTeamRequestModel>> GetJoinRequestsAsync(long teamId);
         Task<TeamModel> GetTeamAsync(long id);
         Task<UserTeamRelationModel> GetUserTeamRelationAsync(long teamId);
         Task<TeamViewerDataModel> GetTeamViewerDataAsync(long teamId);
@@ -110,6 +111,24 @@ namespace Dribbly.Service.Services
         public async Task<IEnumerable<TeamMembershipModel>> GetCurrentMembersAsync(long teamId)
         {
             return await GetAllMembers(teamId).Where(m => m.DateLeft == null).ToListAsync();
+        }
+
+        public async Task<IEnumerable<JoinTeamRequestModel>> GetJoinRequestsAsync(long teamId)
+        {
+            var team = _context.Teams.Find(teamId);
+            if (team == null)
+            {
+                throw new DribblyObjectNotFoundException($"Unable to find team with ID {teamId}.");
+            }
+            var currentUserId = _securityUtility.GetUserId();
+            if (team.ManagedById != currentUserId)
+            {
+                throw new DribblyForbiddenException("Non-manager of team attempted to access team's join requests.");
+            }
+
+            return await _context.JoinTeamRequests.Include(m => m.Member).Include(m => m.Member.User)
+               .Include(m => m.Member.ProfilePhoto).Where(m => m.TeamId == teamId && m.Status == Model.Enums.JoinTeamRequestStatus.Pending)
+               .ToListAsync();
         }
 
         public IQueryable<TeamMembershipModel> GetAllMembers(long teamId)
