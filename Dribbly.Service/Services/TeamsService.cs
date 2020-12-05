@@ -29,6 +29,7 @@ namespace Dribbly.Service.Services
         Task<TeamViewerDataModel> GetTeamViewerDataAsync(long teamId);
         Task<UserTeamRelationModel> JoinTeamAsync(JoinTeamRequestModel request);
         Task<UserTeamRelationModel> LeaveTeamAsync(long teamId);
+        Task ProcessJoinRequestAsync(ProcessJoinTeamRequestInputModel input);
         Task UpdateTeamAsync(TeamModel team);
     }
     public class TeamsService : BaseEntityService<TeamModel>, ITeamsService
@@ -111,6 +112,36 @@ namespace Dribbly.Service.Services
         public async Task<IEnumerable<TeamMembershipModel>> GetCurrentMembersAsync(long teamId)
         {
             return await GetAllMembers(teamId).Where(m => m.DateLeft == null).ToListAsync();
+        }
+
+        public async Task ProcessJoinRequestAsync(ProcessJoinTeamRequestInputModel input)
+        {
+            var currentUserId = _securityUtility.GetUserId();
+            var team = await GetTeamNotNullAsync(input.Request.TeamId);
+            if (currentUserId != team.ManagedById)
+            {
+                throw new DribblyForbiddenException("Non-manager of team attempted to process a join team request.");
+            }
+
+            var isRequestPending = (await _context.JoinTeamRequests.FindAsync(input.Request.Id))?.Status == Model.Enums.JoinTeamRequestStatus.Pending;
+            if (!isRequestPending)
+            {
+                throw new DribblyForbiddenException("Attempted to process a member request multiple times.",
+                    friendlyMessageKey: "app.Eror_ProcessJoinTeamRequestAlreadyProcessed");
+            }
+
+            if (input.ShouldApprove)
+            {
+                AddMember(input.Request);
+                input.Request.Status = Model.Enums.JoinTeamRequestStatus.Approved;
+            }
+            else
+            {
+                input.Request.Status = Model.Enums.JoinTeamRequestStatus.Denied;
+            }
+
+            _context.JoinTeamRequests.AddOrUpdate(input.Request);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<JoinTeamRequestModel>> GetJoinRequestsAsync(long teamId)
@@ -241,7 +272,7 @@ namespace Dribbly.Service.Services
             return (await GetPendingJoinRequestAsync(teamId, accountId)) != null;
         }
 
-        public async Task<TeamMembershipModel> AddMemberAsync(JoinTeamRequestModel request)
+        public TeamMembershipModel AddMember(JoinTeamRequestModel request)
         {
             var membership = new TeamMembershipModel
             {
@@ -252,7 +283,6 @@ namespace Dribbly.Service.Services
             };
 
             _context.TeamMembers.Add(membership);
-            await _context.SaveChangesAsync();
             return membership;
         }
 
@@ -290,7 +320,8 @@ namespace Dribbly.Service.Services
 
             if (isManager) // immediately add as member if manager
             {
-                await AddMemberAsync(request);
+                AddMember(request);
+                await _context.SaveChangesAsync();
                 await _commonService.AddUserTeamActivity(UserActivityTypeEnum.JoinTeam, team.Id);
             }
             else

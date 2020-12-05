@@ -84,8 +84,10 @@
     <Compile Include="Shared\IndexedEntityModel.cs" />
     <Compile Include="Shared\GenericEntityUpdateInputModel.cs" />
     <Compile Include="Shared\GetTypeAheadSuggestionsInputModel.cs" />
+    <Compile Include="Teams\ITeamMemberListItem.cs" />
     <Compile Include="Teams\JoinTeamRequestModel.cs" />
     <Compile Include="Teams\JoinTeamRequestResultModel.cs" />
+    <Compile Include="Teams\ProcessJoinTeamRequestInputModel.cs" />
     <Compile Include="Teams\TeamFollowingModel.cs" />
     <Compile Include="Teams\TeamMember.cs" />
     <Compile Include="Teams\TeamMembershipViewModel.cs" />

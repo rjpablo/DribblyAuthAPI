@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dribbly.Model.Teams
 {
     [Table("JoinTeamRequests")]
-    public class JoinTeamRequestModel : BaseEntityModel, IIndexedEntity
+    public class JoinTeamRequestModel : BaseEntityModel, IIndexedEntity, ITeamMemberListItem
     {
         [ForeignKey(nameof(Team))]
         public long TeamId { get; set; }
@@ -28,5 +28,17 @@ namespace Dribbly.Model.Teams
         public EntityStatusEnum EntityStatus { get => Member.EntityStatus; }
 
         public string Description => Member.Description;
+
+        [NotMapped]
+        public bool IsCurrentMember => false;
+
+        [NotMapped]
+        public bool IsFormerMember => false;
+
+        [NotMapped]
+        public bool HasPendingJoinRequest => Status == JoinTeamRequestStatus.Pending;
+
+        [NotMapped]
+        public string PrimaryPhotoUrl => IconUrl;
     }
 }

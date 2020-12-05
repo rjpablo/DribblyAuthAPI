@@ -30,6 +30,11 @@ namespace Dribbly.Service.Repositories
 
         public async Task Update(IAuthContext db, IIndexedEntity entity)
         {
+            if(entity.EntityType == EntityTypeEnum.Account)
+            {
+                entity = await db.Accounts.Include(a => a.ProfilePhoto).Include(a => a.User).Include(a => a.HomeCourt)
+                .Include(a => a.HomeCourt.PrimaryPhoto).SingleOrDefaultAsync(a => a.Id == entity.Id);
+            }
             var u = db.IndexedEntities.Find(entity.Id, entity.EntityType);
             u.Name = entity.Name;
             u.EntityStatus = entity.EntityStatus;

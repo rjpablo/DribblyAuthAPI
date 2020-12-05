@@ -96,5 +96,12 @@ namespace DribblyAuthAPI.Controllers
         {
             return await _service.JoinTeamAsync(request);
         }
+
+        [HttpPost, Authorize]
+        [Route("ProcessJoinRequest")]
+        public async Task ProcessJoinRequest([FromBody] ProcessJoinTeamRequestInputModel input)
+        {
+            await _service.ProcessJoinRequestAsync(input);
+        }
     }
 }
