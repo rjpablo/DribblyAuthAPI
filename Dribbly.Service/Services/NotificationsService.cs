@@ -100,7 +100,7 @@ namespace Dribbly.Service.Services
                 .Select(n => n.Id).ToArray());
 
             var joinTeamRequestNotifications = await GetJoinTeamRequestNotificationsAsync
-                (notifications.Where(n => n.Type == NotificationTypeEnum.JoinTeamRequest)
+                (notifications.Where(n => n.Type == NotificationTypeEnum.JoinTeamRequest || n.Type == NotificationTypeEnum.JoinTeamRequestApproved)
                 .Select(n => n.Id).ToArray());
 
             resultWithDetails.AddRange(joinTeamRequestNotifications);

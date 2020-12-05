@@ -56,6 +56,11 @@ namespace Dribbly.Service.Repositories
             return (await _context.Accounts.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId))?.Id;
         }
 
+        public async Task<long> GetIdentityUserId(long accountId)
+        {
+            return (await _context.Accounts.SingleOrDefaultAsync(a => a.Id == accountId)).IdentityUserId;
+        }
+
         public async Task<long> GetIdentityUserAccountIdNotNullAsync(long identityUserId)
         {
             var id = (await _context.Accounts.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId))?.Id;

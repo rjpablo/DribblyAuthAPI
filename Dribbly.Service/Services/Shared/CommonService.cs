@@ -12,6 +12,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.WebSockets;
 
 namespace Dribbly.Service.Services.Shared
 {
@@ -32,6 +33,7 @@ namespace Dribbly.Service.Services.Shared
         Task AddUserGameActivity(UserActivityTypeEnum activityType, long gameId);
         //TEAMS
         Task AddUserTeamActivity(UserActivityTypeEnum activityType, long teamId);
+        Task AddUserJoinTeamRequestActivity(UserActivityTypeEnum activityType, long requestId);
         #endregion
 
         #region Search Suggestions
@@ -154,6 +156,17 @@ namespace Dribbly.Service.Services.Shared
             {
                 Type = activityType,
                 TeamId = teamId
+            };
+
+            await AddActivityAsync(activity);
+        }
+
+        public async Task AddUserJoinTeamRequestActivity(UserActivityTypeEnum activityType, long requestId)
+        {
+            var activity = new UserJoinTeamRequestActivityModel
+            {
+                Type = activityType,
+                RequestId = requestId
             };
 
             await AddActivityAsync(activity);
@@ -305,6 +318,10 @@ namespace Dribbly.Service.Services.Shared
             else if (activity is UserTeamActivityModel)
             {
                 _context.UserTeamActivities.Add((UserTeamActivityModel)activity);
+            }
+            else if (activity is UserJoinTeamRequestActivityModel)
+            {
+                _context.UserJoinTeamRequestActivities.Add((UserJoinTeamRequestActivityModel)activity);
             }
             else
             {

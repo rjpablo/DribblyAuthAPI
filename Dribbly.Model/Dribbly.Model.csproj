@@ -96,6 +96,7 @@
     <Compile Include="Teams\UserTeamRelationModel.cs" />
     <Compile Include="UserActivities\CourtVideoActivityModel.cs" />
     <Compile Include="UserActivities\CourtPhotoActivityModel.cs" />
+    <Compile Include="UserActivities\UserJoinTeamRequestActivityModel.cs" />
     <Compile Include="UserActivities\UserTeamActivityModel.cs" />
     <Compile Include="UserActivities\UserGameActivityModel.cs" />
     <Compile Include="UserActivities\UserContactActivityModel.cs" />

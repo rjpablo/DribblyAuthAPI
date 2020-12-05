@@ -16,5 +16,9 @@ namespace Dribbly.Model.Notifications
         /// Notificaion for team owner/manage when a player creates a request to join the team
         /// </summary>
         JoinTeamRequest,
+        /// <summary>
+        /// Notification for player when his/her request to join a team gets approved.
+        /// </summary>
+        JoinTeamRequestApproved,
     }
 }

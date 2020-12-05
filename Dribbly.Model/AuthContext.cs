@@ -1,22 +1,20 @@
 ﻿using Dribbly.Authentication.Models;
-using Dribbly.Authentication.Models.Auth;
+using Dribbly.Identity.Models;
 using Dribbly.Model.Account;
 using Dribbly.Model.Accounts;
 using Dribbly.Model.Bookings;
 using Dribbly.Model.Courts;
+using Dribbly.Model.Games;
 using Dribbly.Model.Logs;
 using Dribbly.Model.Notifications;
+using Dribbly.Model.Posts;
 using Dribbly.Model.Shared;
-using Microsoft.AspNet.Identity.EntityFramework;
+using Dribbly.Model.Teams;
+using Dribbly.Model.UserActivities;
 using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
-using Dribbly.Model.Games;
-using Dribbly.Model.Posts;
-using Dribbly.Model.UserActivities;
-using Dribbly.Identity.Models;
-using Dribbly.Model.Teams;
 
 namespace Dribbly.Model
 {
@@ -62,6 +60,7 @@ namespace Dribbly.Model
         DbSet<UserGameActivityModel> UserGameActivities { get; set; }
         //TEAMS
         DbSet<UserTeamActivityModel> UserTeamActivities { get; set; }
+        DbSet<UserJoinTeamRequestActivityModel> UserJoinTeamRequestActivities { get; set; }
         #endregion
 
         #region Logs
@@ -129,6 +128,7 @@ namespace Dribbly.Model
         public DbSet<UserGameActivityModel> UserGameActivities { get; set; }
         // TEAMS
         public DbSet<UserTeamActivityModel> UserTeamActivities { get; set; }
+        public DbSet<UserJoinTeamRequestActivityModel> UserJoinTeamRequestActivities { get; set; }
         #endregion
 
         #region Logs

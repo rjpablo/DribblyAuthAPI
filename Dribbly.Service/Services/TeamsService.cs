@@ -134,10 +134,19 @@ namespace Dribbly.Service.Services
             {
                 AddMember(input.Request);
                 input.Request.Status = Model.Enums.JoinTeamRequestStatus.Approved;
+                await _commonService.AddUserJoinTeamRequestActivity(UserActivityTypeEnum.ApprovMemberRequest, input.Request.Id);
+                await _notificationsRepo.TryAddAsync(new JoinTeamRequestNotificationModel
+                {
+                    RequestId = input.Request.Id,
+                    ForUserId = (await _accountRepo.GetIdentityUserId(input.Request.MemberAccountId)),
+                    DateAdded = DateTime.UtcNow,
+                    Type = NotificationTypeEnum.JoinTeamRequestApproved
+                });
             }
             else
             {
                 input.Request.Status = Model.Enums.JoinTeamRequestStatus.Denied;
+                await _commonService.AddUserJoinTeamRequestActivity(UserActivityTypeEnum.RejectMemberRequest, input.Request.Id);
             }
 
             _context.JoinTeamRequests.AddOrUpdate(input.Request);

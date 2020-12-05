@@ -29,12 +29,13 @@ namespace Dribbly.Service.Repositories
                         _context.NewBookingNotifications.Add((NewBookingNotificationModel)notification);
                         break;
                     case NotificationTypeEnum.JoinTeamRequest:
+                    case NotificationTypeEnum.JoinTeamRequestApproved:
                         _context.JoinTeamRequestNotifications.Add((JoinTeamRequestNotificationModel)notification);
                         break;
                 }
                 await _context.SaveChangesAsync();
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
             }

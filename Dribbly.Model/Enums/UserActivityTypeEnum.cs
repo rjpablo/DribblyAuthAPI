@@ -66,6 +66,8 @@
         UpdateTeam = 122,
         JoinTeam = 123,
         RequestToJoinTeam = 124,
+        ApprovMemberRequest = 125,
+        RejectMemberRequest = 126
         #endregion
     }
 }
