@@ -68,6 +68,7 @@ namespace Dribbly.Model.Account
             get { return EntityStatus == EntityStatusEnum.Deleted ; }
         }
         public bool IsPublic { get; set; }
+        public double? Rating { get; set; }
 
         public virtual ICollection<AccountPhotoModel> Photos { get; set; }
         public virtual PhotoModel ProfilePhoto { get; set; }

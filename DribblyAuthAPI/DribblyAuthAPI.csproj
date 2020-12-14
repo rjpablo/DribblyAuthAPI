@@ -467,6 +467,10 @@
     <Compile Include="Migrations\202012050241244_Add_Table_UserJoinTeamRequestActivities.Designer.cs">
       <DependentUpon>202012050241244_Add_Table_UserJoinTeamRequestActivities.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202012140602383_Modify_Table_Accounts_Add_Column_Rating.cs" />
+    <Compile Include="Migrations\202012140602383_Modify_Table_Accounts_Add_Column_Rating.Designer.cs">
+      <DependentUpon>202012140602383_Modify_Table_Accounts_Add_Column_Rating.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -706,6 +710,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012050241244_Add_Table_UserJoinTeamRequestActivities.resx">
       <DependentUpon>202012050241244_Add_Table_UserJoinTeamRequestActivities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012140602383_Modify_Table_Accounts_Add_Column_Rating.resx">
+      <DependentUpon>202012140602383_Modify_Table_Accounts_Add_Column_Rating.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
