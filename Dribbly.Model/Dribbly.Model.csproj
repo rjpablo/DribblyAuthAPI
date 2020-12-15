@@ -79,6 +79,7 @@
     <Compile Include="Enums\GameStatusEnum.cs" />
     <Compile Include="Enums\BookingStatusEnum.cs" />
     <Compile Include="Enums\GenderEnum.cs" />
+    <Compile Include="Games\AddGameModalModel.cs" />
     <Compile Include="Logs\ExceptionLog.cs" />
     <Compile Include="Notifications\JoinTeamRequestNotificationModel.cs" />
     <Compile Include="Shared\IndexedEntityModel.cs" />

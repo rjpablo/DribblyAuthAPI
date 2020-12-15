@@ -61,6 +61,15 @@ namespace Dribbly.Service.Services
             return game;
         }
 
+        public async Task<AddGameModalModel> GetAddGameModalAsync(long courtId)
+        {
+            return new AddGameModalModel
+            {
+                CourtChoice = await _commonService.GetChoiceItemModelAsync
+                (courtId, EntityTypeEnum.Court)
+            };
+        }
+
         public async Task<GameModel> AddGameAsync(AddGameInputModel input)
         {
             GameModel game = input.ToGameModel();

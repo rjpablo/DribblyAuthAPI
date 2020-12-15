@@ -31,6 +31,13 @@ namespace DribblyAuthAPI.Controllers
             return await _service.GetGame(id);
         }
 
+        [HttpGet]
+        [Route("GetAddGameModal/{courtId}")]
+        public async Task<AddGameModalModel> GetAddGameModal(long courtId)
+        {
+            return await _service.GetAddGameModalAsync(courtId);
+        }
+
         [HttpPost, Authorize]
         [Route("UpdateGame")]
         public async Task UpdateGame([FromBody] GameModel model)

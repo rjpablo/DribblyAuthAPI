@@ -10,6 +10,8 @@ namespace Dribbly.Service.Services
 
         Task<GameModel> GetGame(long id);
 
+        Task<AddGameModalModel> GetAddGameModalAsync(long courtId);
+
         Task<GameModel> AddGameAsync(AddGameInputModel input);
 
         Task UpdateGameAsync(GameModel Game);
