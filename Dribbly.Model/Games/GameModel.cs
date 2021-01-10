@@ -2,6 +2,7 @@
 using Dribbly.Model.Account;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Shared;
+using Dribbly.Model.Teams;
 using Dribbly.Service.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -25,13 +26,15 @@ namespace Dribbly.Model.Games
         [Required]
         public long AddedById { get; set; }
 
-        [ForeignKey("Court"), Required]
+        [ForeignKey(nameof(Court)), Required]
         public long CourtId { get; set; }
 
         public GameStatusEnum Status { get; set; }
 
+        [ForeignKey(nameof(Team1))]
         public long? Team1Id { get; set; }
 
+        [ForeignKey(nameof(Team2))]
         public long? Team2Id { get; set; }
 
         public long? WinningTeamId { get; set; }
@@ -53,5 +56,9 @@ namespace Dribbly.Model.Games
         public virtual CourtModel Court { get; set; }
 
         public virtual AccountBasicInfoModel AddedBy { get; set; }
+
+        public virtual TeamModel Team1 { get; set; }
+
+        public virtual TeamModel Team2 { get; set; }
     }
 }
