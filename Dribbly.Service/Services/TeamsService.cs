@@ -14,6 +14,10 @@ using System.Linq;
 using System.Data.Entity.Migrations;
 using System.Threading.Tasks;
 using System.Data.Entity.Infrastructure;
+using Dribbly.Model.Courts;
+using Dribbly.Authentication.Services;
+using System.Web;
+using Dribbly.Core.Enums.Permissions;
 
 namespace Dribbly.Service.Services
 {
@@ -31,6 +35,7 @@ namespace Dribbly.Service.Services
         Task<UserTeamRelationModel> LeaveTeamAsync(long teamId);
         Task ProcessJoinRequestAsync(ProcessJoinTeamRequestInputModel input);
         Task UpdateTeamAsync(TeamModel team);
+        Task<PhotoModel> UploadLogoAsync(long teamId);
     }
     public class TeamsService : BaseEntityService<TeamModel>, ITeamsService
     {
@@ -227,6 +232,65 @@ namespace Dribbly.Service.Services
                 }
             }
             return team;
+        }
+
+        public async Task<PhotoModel> UploadLogoAsync(long teamId)
+        {
+            TeamModel team = GetById(teamId);
+            long? currentUserId = _securityUtility.GetUserId();
+
+            if ((currentUserId != team.ManagedById) && !AuthenticationService.HasPermission(AccountPermission.UpdatePhotoNotOwned))
+            {
+                throw new UnauthorizedAccessException("Authorization failed when attempting to update account primary photo.");
+            }
+
+            HttpFileCollection files = HttpContext.Current.Request.Files;
+            string uploadPath = _fileService.Upload(files[0], "accountPhotos/");
+
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    PhotoModel photo = await AddPhoto(team, files[0]);
+                    team.LogoId = photo.Id;
+                    Update(team);
+                    await _context.SaveChangesAsync();
+                    transaction.Commit();
+                    await _indexedEntitysRepository.SetIconUrl(_context, team, photo.Url);
+                    await _commonService.AddTeamPhotoActivitiesAsync(UserActivityTypeEnum.AddTeamPhoto, team.Id, photo);
+                    await _commonService.AddTeamPhotoActivitiesAsync(UserActivityTypeEnum.SetTeamLogo, team.Id, photo);
+                    return photo;
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw e;
+                }
+            }
+        }
+
+        private async Task<PhotoModel> AddPhoto(TeamModel team, HttpPostedFile file)
+        {
+            long? currentUserId = _securityUtility.GetUserId();
+            string uploadPath = _fileService.Upload(file, "teamLogos/");
+
+            PhotoModel photo = new PhotoModel
+            {
+                Url = uploadPath,
+                UploadedById = currentUserId.Value,
+                DateAdded = DateTime.UtcNow
+            };
+            _context.Photos.Add(photo);
+            await _context.SaveChangesAsync();
+
+            _context.TeamPhotos.Add(new TeamPhotoModel
+            {
+                PhotoId = photo.Id,
+                TeamId = team.Id
+            });
+            await _context.SaveChangesAsync();
+
+            return photo;
         }
 
         public async Task<JoinTeamRequestModel> GetPendingJoinRequestAsync(long teamId, long accountId)

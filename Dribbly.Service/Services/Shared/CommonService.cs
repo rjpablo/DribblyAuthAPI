@@ -33,6 +33,7 @@ namespace Dribbly.Service.Services.Shared
         Task AddUserGameActivity(UserActivityTypeEnum activityType, long gameId);
         //TEAMS
         Task AddUserTeamActivity(UserActivityTypeEnum activityType, long teamId);
+        Task AddTeamPhotoActivitiesAsync(UserActivityTypeEnum activityType, long teamId, params PhotoModel[] photos);
         Task AddUserJoinTeamRequestActivity(UserActivityTypeEnum activityType, long requestId);
         #endregion
 
@@ -170,6 +171,23 @@ namespace Dribbly.Service.Services.Shared
             };
 
             await AddActivityAsync(activity);
+        }
+
+        public async Task AddTeamPhotoActivitiesAsync(UserActivityTypeEnum activityType, long teamId, params PhotoModel[] photos)
+        {
+            List<UserActivityModel> activities = new List<UserActivityModel>();
+            foreach (var photo in photos)
+            {
+                var activity = new TeamPhotoActivityModel
+                {
+                    Type = activityType,
+                    TeamId = teamId,
+                    PhotoId = photo.Id
+                };
+
+                activities.Add(activity);
+            }
+            await AddActivitiesAsync(activities);
         }
 
         #endregion
@@ -315,6 +333,10 @@ namespace Dribbly.Service.Services.Shared
                 _context.UserGameActivities.Add((UserGameActivityModel)activity);
             }
             // TEAMS
+            else if (activity is TeamPhotoActivityModel)
+            {
+                _context.TeamPhotoActivities.Add((TeamPhotoActivityModel)activity);
+            }
             else if (activity is UserTeamActivityModel)
             {
                 _context.UserTeamActivities.Add((UserTeamActivityModel)activity);

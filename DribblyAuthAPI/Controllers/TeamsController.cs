@@ -1,4 +1,5 @@
-﻿using Dribbly.Model.Teams;
+﻿using Dribbly.Model.Courts;
+using Dribbly.Model.Teams;
 using Dribbly.Service.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -88,6 +89,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task<TeamModel> AddTeam([FromBody] TeamModel model)
         {
             return await _service.AddTeamAsync(model);
+        }
+
+        [HttpPost, Authorize]
+        [Route("UploadLogo/{teamId}")]
+        public async Task<PhotoModel> UploadLogo(long teamId)
+        {
+            return await _service.UploadLogoAsync(teamId);
         }
 
         [HttpPost, Authorize]

@@ -35,6 +35,7 @@ namespace Dribbly.Model
         DbSet<JoinTeamRequestModel> JoinTeamRequests { get; set; }
         DbSet<UserPermissionModel> UserPermissions { get; set; }
         DbSet<AccountPhotoModel> AccountPhotos { get; set; }
+        DbSet<TeamPhotoModel> TeamPhotos { get; set; }
         DbSet<CourtVideoModel> CourtVideos { get; set; }
         DbSet<AccountVideoModel> AccountVideos { get; set; }
         DbSet<VideoModel> Videos { get; set; }
@@ -61,6 +62,7 @@ namespace Dribbly.Model
         //TEAMS
         DbSet<UserTeamActivityModel> UserTeamActivities { get; set; }
         DbSet<UserJoinTeamRequestActivityModel> UserJoinTeamRequestActivities { get; set; }
+        DbSet<TeamPhotoActivityModel> TeamPhotoActivities { get; set; }
         #endregion
 
         #region Logs
@@ -102,9 +104,11 @@ namespace Dribbly.Model
         public DbSet<GameModel> Games { get; set; }
         public DbSet<TeamModel> Teams { get; set; }
         public DbSet<TeamMembershipModel> TeamMembers { get; set; }
+        public DbSet<TeamPhotoActivityModel> TeamPhotoActivities { get; set; }
         public DbSet<JoinTeamRequestModel> JoinTeamRequests { get; set; }
         public DbSet<UserPermissionModel> UserPermissions { get; set; }
         public DbSet<AccountPhotoModel> AccountPhotos { get; set; }
+        public DbSet<TeamPhotoModel> TeamPhotos { get; set; }
         public DbSet<CourtVideoModel> CourtVideos { get; set; }
         public DbSet<AccountVideoModel> AccountVideos { get; set; }
         public DbSet<VideoModel> Videos { get; set; }

@@ -67,7 +67,9 @@
         JoinTeam = 123,
         RequestToJoinTeam = 124,
         ApprovMemberRequest = 125,
-        RejectMemberRequest = 126
+        RejectMemberRequest = 126,
+        AddTeamPhoto = 127,
+        SetTeamLogo = 128
         #endregion
     }
 }

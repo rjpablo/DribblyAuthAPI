@@ -475,6 +475,14 @@
     <Compile Include="Migrations\202012300013116_Modify_Table_Games_Add_ForeignKey_For_Team1_And_Team2.Designer.cs">
       <DependentUpon>202012300013116_Modify_Table_Games_Add_ForeignKey_For_Team1_And_Team2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101161542310_Add_Table_TeamPhotos.cs" />
+    <Compile Include="Migrations\202101161542310_Add_Table_TeamPhotos.Designer.cs">
+      <DependentUpon>202101161542310_Add_Table_TeamPhotos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101161720099_Add_Table_TeamPhotoActivities.cs" />
+    <Compile Include="Migrations\202101161720099_Add_Table_TeamPhotoActivities.Designer.cs">
+      <DependentUpon>202101161720099_Add_Table_TeamPhotoActivities.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -720,6 +728,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012300013116_Modify_Table_Games_Add_ForeignKey_For_Team1_And_Team2.resx">
       <DependentUpon>202012300013116_Modify_Table_Games_Add_ForeignKey_For_Team1_And_Team2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101161542310_Add_Table_TeamPhotos.resx">
+      <DependentUpon>202101161542310_Add_Table_TeamPhotos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101161720099_Add_Table_TeamPhotoActivities.resx">
+      <DependentUpon>202101161720099_Add_Table_TeamPhotoActivities.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
