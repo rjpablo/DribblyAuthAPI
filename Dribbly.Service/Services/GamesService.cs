@@ -49,7 +49,9 @@ namespace Dribbly.Service.Services
         public async Task<GameModel> GetGame(long id)
         {
             GameModel game = await _dbSet.Where(g => g.Id == id).Include(g => g.Court).Include(g => g.Court.PrimaryPhoto)
-                .Include(g => g.Team1).Include(g => g.Team2).SingleOrDefaultAsync();
+                .Include(g => g.Team1).Include(g => g.Team1.Logo)
+                .Include(g => g.Team2).Include(g => g.Team2.Logo)
+                .SingleOrDefaultAsync();
             if (game != null)
             {
                 game.AddedBy = await _accountRepo.GetAccountBasicInfo(game.AddedById);
