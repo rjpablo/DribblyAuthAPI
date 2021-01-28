@@ -19,6 +19,10 @@ namespace Dribbly.Model.Games
 
         public long Team2Id { get; set; }
 
+        public bool IsTeam1Open { get; set; }
+
+        public bool IsTeam2Open { get; set; }
+
         public GameModel ToGameModel()
         {
             return new GameModel

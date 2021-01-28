@@ -3,6 +3,7 @@ using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Games;
 using Dribbly.Model.Notifications;
+using Dribbly.Model.Teams;
 using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
 using Dribbly.Service.Services.Shared;
@@ -23,6 +24,7 @@ namespace Dribbly.Service.Services
         private readonly INotificationsRepository _notificationsRepo;
         private readonly ICourtsRepository _courtsRepo;
         private readonly ICommonService _commonService;
+        private readonly ITeamsRepository _teamsRepository;
 
         public GamesService(IAuthContext context,
             ISecurityUtility securityUtility,
@@ -30,7 +32,8 @@ namespace Dribbly.Service.Services
             IFileService fileService,
             INotificationsRepository notificationsRepo,
             ICourtsRepository courtsRepo,
-            ICommonService commonService) : base(context.Games)
+            ICommonService commonService,
+            ITeamsRepository teamsRepository) : base(context.Games)
         {
             _context = context;
             _securityUtility = securityUtility;
@@ -39,6 +42,7 @@ namespace Dribbly.Service.Services
             _notificationsRepo = notificationsRepo;
             _courtsRepo = courtsRepo;
             _commonService = commonService;
+            _teamsRepository = teamsRepository;
         }
 
         public IEnumerable<GameModel> GetAll()
@@ -74,28 +78,69 @@ namespace Dribbly.Service.Services
 
         public async Task<GameModel> AddGameAsync(AddGameInputModel input)
         {
-            GameModel game = input.ToGameModel();
-            var currentUserId = _securityUtility.GetUserId();
-            game.AddedById = currentUserId.Value;
-            game.Status = GameStatusEnum.WaitingToStart;
-            game.EntityStatus = EntityStatusEnum.Active;
-            Add(game);
-            _context.SaveChanges();
-            await _commonService.AddUserGameActivity(UserActivityTypeEnum.AddGame, game.Id);
-            NotificationTypeEnum Type = game.AddedById == currentUserId ?
-                NotificationTypeEnum.NewBookingForOwner :
-                NotificationTypeEnum.NewBookingForBooker;
-            await _notificationsRepo.TryAddAsync(new NewBookingNotificationModel
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                BookingId = game.Id,
-                BookedById = game.AddedById,
-                ForUserId = Type == NotificationTypeEnum.NewBookingForBooker ? game.AddedById :
-                (await _courtsRepo.GetOwnerId(game.CourtId)),
-                DateAdded = DateTime.UtcNow,
-                Type = Type
-            });
+                try
+                {
+                    GameModel game = input.ToGameModel();
+                    var currentUserId = _securityUtility.GetUserId();
+                    game.AddedById = currentUserId.Value;
+                    game.Status = GameStatusEnum.WaitingToStart;
+                    game.EntityStatus = EntityStatusEnum.Active;
 
-            return game;
+                    if (input.IsTeam1Open)
+                    {
+                        TeamModel team1 = new TeamModel
+                        {
+                            AddedById = currentUserId.Value,
+                            DateAdded = DateTime.UtcNow,
+                            IsOpen = true,
+                            ManagedById = currentUserId.Value
+                        };
+                        _context.Teams.Add(team1);
+                        _context.SaveChanges();
+                        game.Team1Id = team1.Id;
+                    }
+
+                    if (input.IsTeam2Open)
+                    {
+                        TeamModel team2 = new TeamModel
+                        {
+                            AddedById = currentUserId.Value,
+                            DateAdded = DateTime.UtcNow,
+                            IsOpen = true,
+                            ManagedById = currentUserId.Value
+                        };
+                        _context.Teams.Add(team2);
+                        _context.SaveChanges();
+                        game.Team2Id = team2.Id;
+                    }
+
+                    Add(game);
+                    _context.SaveChanges();
+                    transaction.Commit();
+                    await _commonService.AddUserGameActivity(UserActivityTypeEnum.AddGame, game.Id);
+                    NotificationTypeEnum Type = game.AddedById == currentUserId ?
+                        NotificationTypeEnum.NewBookingForOwner :
+                        NotificationTypeEnum.NewBookingForBooker;
+                    await _notificationsRepo.TryAddAsync(new NewBookingNotificationModel
+                    {
+                        BookingId = game.Id,
+                        BookedById = game.AddedById,
+                        ForUserId = Type == NotificationTypeEnum.NewBookingForBooker ? game.AddedById :
+                        (await _courtsRepo.GetOwnerId(game.CourtId)),
+                        DateAdded = DateTime.UtcNow,
+                        Type = Type
+                    });
+
+                    return game;
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw e;
+                }
+            }
         }
 
         public async Task UpdateGameAsync(GameModel game)

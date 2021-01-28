@@ -483,6 +483,10 @@
     <Compile Include="Migrations\202101161720099_Add_Table_TeamPhotoActivities.Designer.cs">
       <DependentUpon>202101161720099_Add_Table_TeamPhotoActivities.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101252047354_Modify_Table_Teams_Add_Column_IsOpen.cs" />
+    <Compile Include="Migrations\202101252047354_Modify_Table_Teams_Add_Column_IsOpen.Designer.cs">
+      <DependentUpon>202101252047354_Modify_Table_Teams_Add_Column_IsOpen.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -734,6 +738,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101161720099_Add_Table_TeamPhotoActivities.resx">
       <DependentUpon>202101161720099_Add_Table_TeamPhotoActivities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101252047354_Modify_Table_Teams_Add_Column_IsOpen.resx">
+      <DependentUpon>202101252047354_Modify_Table_Teams_Add_Column_IsOpen.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
