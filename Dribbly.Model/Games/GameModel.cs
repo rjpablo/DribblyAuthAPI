@@ -37,6 +37,10 @@ namespace Dribbly.Model.Games
         [ForeignKey(nameof(Team2))]
         public long? Team2Id { get; set; }
 
+        public int? Team1Score { get; set; }
+
+        public int? Team2Score { get; set; }
+
         public long? WinningTeamId { get; set; }
 
         [NotMapped]

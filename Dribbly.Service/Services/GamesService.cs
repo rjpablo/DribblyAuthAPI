@@ -99,6 +99,23 @@ namespace Dribbly.Service.Services
                     }
                 }
                 #endregion
+                #region Finish Game
+                if (toStatus == GameStatusEnum.Finished)
+                {
+                    if (game.Status == GameStatusEnum.Started)
+                    {
+                        game.Status = GameStatusEnum.Finished;
+                        game.End = DateTime.UtcNow;
+                        await _commonService.AddUserGameActivity(UserActivityTypeEnum.EndGame, game.Id);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        throw new DribblyInvalidOperationException("Attempted ending a game with a status of " + game.Status,
+                            friendlyMessageKey: "app.Error_Common_InvalidOperationTryReload");
+                    }
+                }
+                #endregion
             }
             else
             {
@@ -172,6 +189,24 @@ namespace Dribbly.Service.Services
                     throw e;
                 }
             }
+        }
+
+        public async Task UpdateGameResultAsync(GameResultModel result)
+        {
+            GameModel game = GetById(result.GameId);
+            game.Team1Score = result.Team1Score;
+            game.Team2Score = result.Team2Score;
+            game.WinningTeamId = result.WinningTeamId;
+
+            if(game.Status == GameStatusEnum.Started && game.WinningTeamId.HasValue)
+            {
+                await UpdateStatusAsync(game.Id, GameStatusEnum.Finished);
+            }
+
+            Update(game);
+
+            _context.SaveChanges();
+            await _commonService.AddUserGameActivity(UserActivityTypeEnum.UpdateGameResult, game.Id);
         }
 
         public async Task UpdateGameAsync(GameModel game)
