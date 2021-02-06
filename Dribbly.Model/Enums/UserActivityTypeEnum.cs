@@ -37,6 +37,7 @@
 
         AddGame = 61,
         UpdateGame = 62,
+        StartGame = 63,
 
         #endregion
 

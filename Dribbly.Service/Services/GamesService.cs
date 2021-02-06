@@ -76,6 +76,37 @@ namespace Dribbly.Service.Services
             };
         }
 
+        public async Task UpdateStatusAsync(long gameId, GameStatusEnum toStatus)
+        {
+            GameModel game = await _context.Games.SingleOrDefaultAsync(g => g.Id == gameId);
+            var currentUserId = _securityUtility.GetUserId();
+            if (game.AddedById == currentUserId)
+            {
+                #region Starting Game
+                if (toStatus == GameStatusEnum.Started)
+                {
+                    if (game.Status == GameStatusEnum.WaitingToStart)
+                    {
+                        game.Status = GameStatusEnum.Started;
+                        game.Start = DateTime.UtcNow;
+                        await _commonService.AddUserGameActivity(UserActivityTypeEnum.StartGame, game.Id);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        throw new DribblyInvalidOperationException("Attempted starting a game with a status of " + game.Status,
+                            friendlyMessageKey: "app.Error_Common_InvalidOperationTryReload");
+                    }
+                }
+                #endregion
+            }
+            else
+            {
+                throw new DribblyForbiddenException
+                    (String.Format("Unauthorized user attempted to start game. User ID: {0}, Game ID: {1}", currentUserId, game.Id));
+            }
+        }
+
         public async Task<GameModel> AddGameAsync(AddGameInputModel input)
         {
             using (var transaction = _context.Database.BeginTransaction())

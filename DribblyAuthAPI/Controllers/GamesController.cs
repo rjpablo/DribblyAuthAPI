@@ -1,4 +1,5 @@
 ﻿using Dribbly.Model.Games;
+using Dribbly.Service.Enums;
 using Dribbly.Service.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -38,6 +39,8 @@ namespace DribblyAuthAPI.Controllers
             return await _service.GetAddGameModalAsync(courtId);
         }
 
+        // POSTs
+
         [HttpPost, Authorize]
         [Route("UpdateGame")]
         public async Task UpdateGame([FromBody] GameModel model)
@@ -50,6 +53,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task<GameModel> AddGame([FromBody] AddGameInputModel model)
         {
             return await _service.AddGameAsync(model);
+        }
+
+        [HttpPost, Authorize]
+        [Route("UpdateStatus/{gameId}/{toStatus}")]
+        public async Task UpdateStatus(long gameId, GameStatusEnum toStatus)
+        {
+            await _service.UpdateStatusAsync(gameId, toStatus);
         }
     }
 }

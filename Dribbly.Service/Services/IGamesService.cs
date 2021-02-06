@@ -1,4 +1,5 @@
 ﻿using Dribbly.Model.Games;
+using Dribbly.Service.Enums;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,6 +14,8 @@ namespace Dribbly.Service.Services
         Task<AddGameModalModel> GetAddGameModalAsync(long courtId);
 
         Task<GameModel> AddGameAsync(AddGameInputModel input);
+
+        Task UpdateStatusAsync(long gameId, GameStatusEnum toStatus);
 
         Task UpdateGameAsync(GameModel Game);
     }
