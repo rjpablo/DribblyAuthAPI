@@ -116,6 +116,27 @@ namespace Dribbly.Service.Services
                     }
                 }
                 #endregion
+                #region Cancel Game
+                if (toStatus == GameStatusEnum.Cancelled)
+                {
+                    if (game.Status == GameStatusEnum.Finished)
+                    {
+                        throw new DribblyInvalidOperationException("Attempted cancel an already finished game.",
+                            friendlyMessageKey: "app.Error_CancelGame_AlreadyFinished");
+                    }
+                    else if (game.Status == GameStatusEnum.Cancelled)
+                    {
+                        throw new DribblyInvalidOperationException("Attempted cancel an already canceled game.",
+                            friendlyMessageKey: "app.Error_CancelGame_AlreadyCanceled");
+                    }
+                    else
+                    {
+                        game.Status = GameStatusEnum.Cancelled;
+                        await _commonService.AddUserGameActivity(UserActivityTypeEnum.CancelGame, game.Id);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                #endregion
             }
             else
             {

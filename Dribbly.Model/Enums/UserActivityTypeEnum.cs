@@ -40,6 +40,7 @@
         StartGame = 63,
         EndGame = 64,
         UpdateGameResult = 65,
+        CancelGame = 66,
 
         #endregion
 
