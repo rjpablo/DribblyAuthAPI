@@ -230,8 +230,14 @@ namespace Dribbly.Service.Services
             await _commonService.AddUserGameActivity(UserActivityTypeEnum.UpdateGameResult, game.Id);
         }
 
-        public async Task UpdateGameAsync(GameModel game)
+        public async Task UpdateGameAsync(UpdateGameModel input)
         {
+            GameModel game = input;
+            if (input.ToStatus.HasValue)
+            {
+                game.Status = input.ToStatus.Value;
+            }
+
             Update(game);
             var currentUserId = _securityUtility.GetUserId();
             NotificationTypeEnum Type = game.AddedById == currentUserId ?
