@@ -318,8 +318,14 @@ namespace DribblyAuthAPI.Controllers
                 return GetErrorResult(result);
             }
 
+            await _accountService.AddAsync(new AccountModel
+            {
+                IdentityUserId = user.Id,
+                DateAdded = DateTime.UtcNow
+            });
+
             //generate access token response
-            var accessTokenResponse = GenerateLocalAccessTokenResponse(model.UserName);
+            var accessTokenResponse = await GenerateLocalAccessTokenResponseAsync(model.UserName);
 
             return Ok(accessTokenResponse);
         }
@@ -351,7 +357,7 @@ namespace DribblyAuthAPI.Controllers
             }
 
             //generate access token response
-            var accessTokenResponse = GenerateLocalAccessTokenResponse(user.UserName);
+            var accessTokenResponse = await GenerateLocalAccessTokenResponseAsync(user.UserName);
 
             return Ok(accessTokenResponse);
 
@@ -450,7 +456,8 @@ namespace DribblyAuthAPI.Controllers
                 //You can get it from here: https://developers.facebook.com/tools/accesstoken/
                 //More about debug_tokn here: http://stackoverflow.com/questions/16641083/how-does-one-get-the-app-access-token-for-debug-token-inspection-on-facebook
 
-                var appToken = "972264056446245|bFXvMGAgC53LTyANiFxdMCI-_w0";
+                // App Name: FreeHoops Test 2
+                var appToken = "271234698173280|Fp8OFeqRL4aCEAApmlvlRSkebOw";
                 verifyTokenEndPoint = string.Format("https://graph.facebook.com/debug_token?input_token={0}&access_token={1}", accessToken, appToken);
             }
             else if (provider == "Google")
@@ -490,14 +497,15 @@ namespace DribblyAuthAPI.Controllers
             return parsedToken;
         }
 
-        private JObject GenerateLocalAccessTokenResponse(string userName)
+        private async Task<JObject> GenerateLocalAccessTokenResponseAsync(string userName)
         {
-
-            var tokenExpiration = TimeSpan.FromSeconds(30);
+            var tokenExpiration = TimeSpan.FromMinutes(30);
+            var account = await _accountService.GetAccountByUsername(userName);
 
             ClaimsIdentity identity = new ClaimsIdentity(OAuthDefaults.AuthenticationType);
 
             identity.AddClaim(new Claim(ClaimTypes.Name, userName));
+            identity.AddClaim(new Claim("userId", account.IdentityUserId.ToString()));
             identity.AddClaim(new Claim("role", "user"));
 
             var props = new AuthenticationProperties()
@@ -512,6 +520,7 @@ namespace DribblyAuthAPI.Controllers
 
             JObject tokenResponse = new JObject(
                                         new JProperty("userName", userName),
+                                        new JProperty("userId", account.IdentityUserId),
                                         new JProperty("access_token", accessToken),
                                         new JProperty("token_type", "bearer"),
                                         new JProperty("expires_in", tokenExpiration.TotalSeconds.ToString()),

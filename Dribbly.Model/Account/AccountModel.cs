@@ -24,9 +24,9 @@ namespace Dribbly.Model.Account
         [ForeignKey("User")]
         public long IdentityUserId { get; set; }
         [NotMapped]
-        public string Username { get { return User.UserName; } }
+        public string Username { get { return User?.UserName; } }
         [NotMapped]
-        public virtual string Email { get { return User.Email; } }
+        public virtual string Email { get { return User?.Email; } }
         public PlayerPositionEnum? Position { get; set; }
         [ForeignKey(nameof(HomeCourt))]
         public long? HomeCourtId { get; set; }
@@ -65,7 +65,7 @@ namespace Dribbly.Model.Account
         [NotMapped]
         public bool IsDeleted
         {
-            get { return EntityStatus == EntityStatusEnum.Deleted ; }
+            get { return EntityStatus == EntityStatusEnum.Deleted; }
         }
         public bool IsPublic { get; set; }
         public double? Rating { get; set; }
@@ -83,7 +83,7 @@ namespace Dribbly.Model.Account
         [NotMapped]
         public EntityTypeEnum EntityType { get; } = EntityTypeEnum.Account;
         [NotMapped]
-        public string Name { get { return User.UserName; } }
+        public string Name { get { return User?.UserName; } }
         [NotMapped]
         public string Description { get; }
         #endregion

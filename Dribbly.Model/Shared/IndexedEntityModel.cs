@@ -43,7 +43,7 @@ namespace Dribbly.Model.Shared
 
         public IndexedEntityModel(AccountModel account)
         {
-            Id = account.Id;
+            Id = account.IdentityUserId;
             Name = account.Username;
             EntityType = EntityTypeEnum.Account;
             DateAdded = account.DateAdded;

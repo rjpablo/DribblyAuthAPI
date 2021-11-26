@@ -56,8 +56,9 @@ namespace DribblyAuthAPI.API
             //Configure Facebook External Login
             facebookAuthOptions = new FacebookAuthenticationOptions()
             {
-                AppId = "972264056446245",
-                AppSecret = "73439dad77437fb56efcb57e0421b3b6",
+                // App Name: FreeHoops Test 2
+                AppId = "271234698173280",
+                AppSecret = "15b745dced3617c9832032c36f7bf97f",
                 Provider = new FacebookAuthProvider()
             };
             app.UseFacebookAuthentication(facebookAuthOptions);
