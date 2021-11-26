@@ -188,6 +188,7 @@ namespace Dribbly.Service.Services
             Add(court);
             _context.SaveChanges();
             _context.IndexedEntities.Add(new IndexedEntityModel(court));
+            _context.SaveChanges();
             await _commonService.AddUserCourtActivity(UserActivityTypeEnum.AddCourt, court.Id);
             return court.Id;
         }
