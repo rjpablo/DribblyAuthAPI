@@ -100,9 +100,9 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpPost, Authorize]
         [Route("JoinTeam")]
-        public async Task<UserTeamRelationModel> JoinTeam(JoinTeamRequestModel request)
+        public async Task<UserTeamRelationModel> JoinTeam(JoinTeamRequestInputModel input)
         {
-            return await _service.JoinTeamAsync(request);
+            return await _service.JoinTeamAsync(input);
         }
 
         [HttpPost, Authorize]

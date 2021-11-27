@@ -18,6 +18,7 @@ using Dribbly.Model.Courts;
 using Dribbly.Authentication.Services;
 using System.Web;
 using Dribbly.Core.Enums.Permissions;
+using Dribbly.Model.Account;
 
 namespace Dribbly.Service.Services
 {
@@ -31,7 +32,7 @@ namespace Dribbly.Service.Services
         Task<TeamModel> GetTeamAsync(long id);
         Task<UserTeamRelationModel> GetUserTeamRelationAsync(long teamId);
         Task<TeamViewerDataModel> GetTeamViewerDataAsync(long teamId);
-        Task<UserTeamRelationModel> JoinTeamAsync(JoinTeamRequestModel request);
+        Task<UserTeamRelationModel> JoinTeamAsync(JoinTeamRequestInputModel input);
         Task<UserTeamRelationModel> LeaveTeamAsync(long teamId);
         Task ProcessJoinRequestAsync(ProcessJoinTeamRequestInputModel input);
         Task UpdateTeamAsync(TeamModel team);
@@ -359,12 +360,13 @@ namespace Dribbly.Service.Services
             return membership;
         }
 
-        public async Task<UserTeamRelationModel> JoinTeamAsync(JoinTeamRequestModel request)
+        public async Task<UserTeamRelationModel> JoinTeamAsync(JoinTeamRequestInputModel input)
         {
             var currentUserId = _securityUtility.GetUserId();
-            long accountId = await _accountRepo.GetIdentityUserAccountIdNotNullAsync(currentUserId.Value);
+            AccountModel memberAccount = await _accountRepo.GetAccountByIdentityId(currentUserId.Value);
+            JoinTeamRequestModel request = new JoinTeamRequestModel(input.TeamId, memberAccount.Id, input.Position);
 
-            if (await GetHasPendingJoinRequestAsync(request.TeamId, accountId))
+            if (await GetHasPendingJoinRequestAsync(request.TeamId, memberAccount.Id))
             {
                 throw new DribblyForbiddenException($"Attempted to make multiple reqeusts to join team. Team ID: {request.TeamId}, User ID: {currentUserId}",
                     friendlyMessageKey: "app.Error_JoinTeamDuplicate");
@@ -382,13 +384,13 @@ namespace Dribbly.Service.Services
                 throw new DribblyForbiddenException($"Attempted to join an already deleted team. Team ID: {request.TeamId}, User ID: {currentUserId}",
                     friendlyMessageKey: "app.Error_JoinTeamDeleted");
             }
-            if (GetCurrentTeamMemberships(request.TeamId, accountId).Count() > 0)
+            if (GetCurrentTeamMemberships(request.TeamId, memberAccount.Id).Count() > 0)
             {
-                throw new DribblyForbiddenException($"Current member of a team attempted to join the same team. Team ID: {request.TeamId}, Account ID: {accountId}",
+                throw new DribblyForbiddenException($"Current member of a team attempted to join the same team. Team ID: {request.TeamId}, Account ID: {memberAccount.Id}",
                     friendlyMessageKey: "app.Error_JoinTeamAlreadyAMember");
             }
 
-            request.MemberAccountId = accountId;
+            request.MemberAccountId = memberAccount.Id;
             request.DateAdded = DateTime.UtcNow;
 
             if (isManager) // immediately add as member if manager

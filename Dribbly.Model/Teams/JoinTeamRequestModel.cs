@@ -40,5 +40,21 @@ namespace Dribbly.Model.Teams
 
         [NotMapped]
         public string PrimaryPhotoUrl => IconUrl;
+
+        public JoinTeamRequestModel()
+        {}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="teamId"></param>
+        /// <param name="memberAccountId">The <see cref="AccountModel.Id"/> of the requesting member</param>
+        /// <param name="position"></param>
+        public JoinTeamRequestModel(int teamId, long memberAccountId, PlayerPositionEnum position)
+        {
+            TeamId = teamId;
+            MemberAccountId = memberAccountId;
+            Position = position;
+        }
     }
 }
