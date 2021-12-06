@@ -73,13 +73,13 @@ namespace Dribbly.Service.Services
             Add(booking);
             _context.SaveChanges();
             NotificationTypeEnum Type = booking.BookedById == currentUserId ?
-                NotificationTypeEnum.NewBookingForOwner :
-                NotificationTypeEnum.NewBookingForBooker;
+                NotificationTypeEnum.NewGameForOwner :
+                NotificationTypeEnum.NewGameForBooker;
             await _notificationsRepo.TryAddAsync(new NewBookingNotificationModel
             {
                 BookingId = booking.Id,
                 BookedById = booking.BookedById,
-                ForUserId = Type == NotificationTypeEnum.NewBookingForBooker ? booking.BookedById :
+                ForUserId = Type == NotificationTypeEnum.NewGameForBooker ? booking.BookedById :
                 (await _courtsRepo.GetOwnerId(booking.CourtId)),
                 DateAdded = DateTime.UtcNow,
                 Type = Type
@@ -93,13 +93,13 @@ namespace Dribbly.Service.Services
             Update(booking);
             var currentUserId = _securityUtility.GetUserId();
             NotificationTypeEnum Type = booking.BookedById == currentUserId ?
-                NotificationTypeEnum.NewBookingForOwner :
-                NotificationTypeEnum.NewBookingForBooker;
+                NotificationTypeEnum.NewGameForOwner :
+                NotificationTypeEnum.NewGameForBooker;
             await _notificationsRepo.TryAddAsync(new NewBookingNotificationModel
             {
                 BookingId = booking.Id,
                 BookedById = booking.BookedById,
-                ForUserId = Type == NotificationTypeEnum.NewBookingForBooker ? booking.BookedById :
+                ForUserId = Type == NotificationTypeEnum.NewGameForBooker ? booking.BookedById :
                 (await _courtsRepo.GetOwnerId(booking.CourtId)),
                 DateAdded = DateTime.UtcNow,
                 Type = Type

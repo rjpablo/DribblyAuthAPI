@@ -425,8 +425,8 @@ namespace Dribbly.Service.Services
             Update(team);
             var currentUserId = _securityUtility.GetUserId();
             NotificationTypeEnum Type = team.AddedById == currentUserId ?
-                NotificationTypeEnum.NewBookingForOwner :
-                NotificationTypeEnum.NewBookingForBooker;
+                NotificationTypeEnum.NewGameForOwner :
+                NotificationTypeEnum.NewGameForBooker;
             _context.SaveChanges();
             await _commonService.AddUserTeamActivity(UserActivityTypeEnum.UpdateTeam, team.Id);
         }

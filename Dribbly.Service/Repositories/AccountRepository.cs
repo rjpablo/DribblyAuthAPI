@@ -75,7 +75,7 @@ namespace Dribbly.Service.Repositories
         public async Task<AccountBasicInfoModel> GetAccountBasicInfo(long userId)
         {
             AccountModel account = await _dbSet.Include(a => a.ProfilePhoto).Include(a => a.User)
-                .SingleOrDefaultAsync(a => a.IdentityUserId == userId);
+                .SingleOrDefaultAsync(a => a.Id == userId);
             if (account == null)
             {
                 return null;

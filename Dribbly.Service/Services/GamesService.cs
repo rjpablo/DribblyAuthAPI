@@ -1,6 +1,7 @@
 ﻿using Dribbly.Core.Exceptions;
 using Dribbly.Core.Utilities;
 using Dribbly.Model;
+using Dribbly.Model.Account;
 using Dribbly.Model.Games;
 using Dribbly.Model.Notifications;
 using Dribbly.Model.Teams;
@@ -153,7 +154,8 @@ namespace Dribbly.Service.Services
                 {
                     GameModel game = input.ToGameModel();
                     var currentUserId = _securityUtility.GetUserId();
-                    game.AddedById = currentUserId.Value;
+                    AccountModel account = await _accountRepo.GetAccountByIdentityId(currentUserId.Value);
+                    game.AddedById = account.Id;
                     game.Status = GameStatusEnum.WaitingToStart;
                     game.EntityStatus = EntityStatusEnum.Active;
 
@@ -161,10 +163,10 @@ namespace Dribbly.Service.Services
                     {
                         TeamModel team1 = new TeamModel
                         {
-                            AddedById = currentUserId.Value,
+                            AddedById = account.Id,
                             DateAdded = DateTime.UtcNow,
                             IsOpen = true,
-                            ManagedById = currentUserId.Value
+                            ManagedById = account.Id
                         };
                         _context.Teams.Add(team1);
                         _context.SaveChanges();
@@ -175,10 +177,10 @@ namespace Dribbly.Service.Services
                     {
                         TeamModel team2 = new TeamModel
                         {
-                            AddedById = currentUserId.Value,
+                            AddedById = account.Id,
                             DateAdded = DateTime.UtcNow,
                             IsOpen = true,
-                            ManagedById = currentUserId.Value
+                            ManagedById = account.Id
                         };
                         _context.Teams.Add(team2);
                         _context.SaveChanges();
@@ -189,14 +191,14 @@ namespace Dribbly.Service.Services
                     _context.SaveChanges();
                     transaction.Commit();
                     await _commonService.AddUserGameActivity(UserActivityTypeEnum.AddGame, game.Id);
-                    NotificationTypeEnum Type = game.AddedById == currentUserId ?
-                        NotificationTypeEnum.NewBookingForOwner :
-                        NotificationTypeEnum.NewBookingForBooker;
-                    await _notificationsRepo.TryAddAsync(new NewBookingNotificationModel
+                    NotificationTypeEnum Type = game.AddedById == account.Id ?
+                        NotificationTypeEnum.NewGameForOwner :
+                        NotificationTypeEnum.NewGameForBooker;
+                    await _notificationsRepo.TryAddAsync(new NewGameNotificationModel
                     {
-                        BookingId = game.Id,
+                        GameId = game.Id,
                         BookedById = game.AddedById,
-                        ForUserId = Type == NotificationTypeEnum.NewBookingForBooker ? game.AddedById :
+                        ForUserId = Type == NotificationTypeEnum.NewGameForBooker ? game.AddedById :
                         (await _courtsRepo.GetOwnerId(game.CourtId)),
                         DateAdded = DateTime.UtcNow,
                         Type = Type
@@ -241,13 +243,13 @@ namespace Dribbly.Service.Services
             Update(game);
             var currentUserId = _securityUtility.GetUserId();
             NotificationTypeEnum Type = game.AddedById == currentUserId ?
-                NotificationTypeEnum.NewBookingForOwner :
-                NotificationTypeEnum.NewBookingForBooker;
+                NotificationTypeEnum.NewGameForOwner :
+                NotificationTypeEnum.NewGameForBooker;
             await _notificationsRepo.TryAddAsync(new NewBookingNotificationModel
             {
                 BookingId = game.Id,
                 BookedById = game.AddedById,
-                ForUserId = Type == NotificationTypeEnum.NewBookingForBooker ? game.AddedById :
+                ForUserId = Type == NotificationTypeEnum.NewGameForBooker ? game.AddedById :
                 (await _courtsRepo.GetOwnerId(game.CourtId)),
                 DateAdded = DateTime.UtcNow,
                 Type = Type

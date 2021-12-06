@@ -9,9 +9,9 @@ namespace Dribbly.Model.Notifications
     public enum NotificationTypeEnum
     {
         // Notification for court owner when a new booking is made by booker
-        NewBookingForOwner,
+        NewGameForOwner,
         // Notification for booker when a new booking is added by court owner
-        NewBookingForBooker,
+        NewGameForBooker,
         /// <summary>
         /// Notificaion for team owner/manage when a player creates a request to join the team
         /// </summary>

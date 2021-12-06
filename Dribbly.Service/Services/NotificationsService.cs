@@ -96,7 +96,7 @@ namespace Dribbly.Service.Services
 
             // Booking Booked - For Court owner
             IEnumerable<NewBookingNotificationModel> newBookingNotifications = await GetNewBookingNotificationsAsync
-                (notifications.Where(n => n.Type == NotificationTypeEnum.NewBookingForBooker || n.Type == NotificationTypeEnum.NewBookingForOwner)
+                (notifications.Where(n => n.Type == NotificationTypeEnum.NewGameForBooker || n.Type == NotificationTypeEnum.NewGameForOwner)
                 .Select(n => n.Id).ToArray());
 
             var joinTeamRequestNotifications = await GetJoinTeamRequestNotificationsAsync

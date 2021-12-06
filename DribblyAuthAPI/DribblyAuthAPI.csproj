@@ -495,6 +495,10 @@
     <Compile Include="Migrations\202111261644414_Add__DevHelpers_SP_DeleteUserByUserName_Stored_Proc.Designer.cs">
       <DependentUpon>202111261644414_Add__DevHelpers_SP_DeleteUserByUserName_Stored_Proc.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202112062036378_Add_Table_NewGameNotifications.cs" />
+    <Compile Include="Migrations\202112062036378_Add_Table_NewGameNotifications.Designer.cs">
+      <DependentUpon>202112062036378_Add_Table_NewGameNotifications.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -755,6 +759,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202111261644414_Add__DevHelpers_SP_DeleteUserByUserName_Stored_Proc.resx">
       <DependentUpon>202111261644414_Add__DevHelpers_SP_DeleteUserByUserName_Stored_Proc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112062036378_Add_Table_NewGameNotifications.resx">
+      <DependentUpon>202112062036378_Add_Table_NewGameNotifications.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
