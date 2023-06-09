@@ -73,13 +73,13 @@ namespace Dribbly.Service.Services
             Add(booking);
             _context.SaveChanges();
             NotificationTypeEnum Type = booking.BookedById == currentUserId ?
-                NotificationTypeEnum.NewGameForOwner :
-                NotificationTypeEnum.NewGameForBooker;
+                NotificationTypeEnum.BookingNotificationForBooker :
+                NotificationTypeEnum.BookingNotificationForCourtOwner;
             await _notificationsRepo.TryAddAsync(new NewBookingNotificationModel
             {
                 BookingId = booking.Id,
                 BookedById = booking.BookedById,
-                ForUserId = Type == NotificationTypeEnum.NewGameForBooker ? booking.BookedById :
+                ForUserId = Type == NotificationTypeEnum.BookingNotificationForBooker ? booking.BookedById :
                 (await _courtsRepo.GetOwnerId(booking.CourtId)),
                 DateAdded = DateTime.UtcNow,
                 Type = Type
