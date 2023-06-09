@@ -234,7 +234,7 @@ namespace Dribbly.Service.Services
 
         public async Task UpdateGameAsync(UpdateGameModel input)
         {
-            GameModel game = input;
+            GameModel game = await _dbSet.Include(g=>g.Court).SingleOrDefaultAsync(g => g.Id == input.Id);
             if (input.ToStatus.HasValue)
             {
                 game.Status = input.ToStatus.Value;
@@ -242,15 +242,17 @@ namespace Dribbly.Service.Services
 
             Update(game);
             var currentUserId = _securityUtility.GetUserId();
-            NotificationTypeEnum Type = game.AddedById == currentUserId ?
-                NotificationTypeEnum.NewGameForOwner :
-                NotificationTypeEnum.NewGameForBooker;
-            await _notificationsRepo.TryAddAsync(new NewBookingNotificationModel
+            AccountModel currentUserAccount = await _accountRepo.GetAccountByIdentityId(currentUserId.Value);
+            bool isUpdatedByBooker = game.AddedById == currentUserAccount.Id;
+            NotificationTypeEnum Type = isUpdatedByBooker ?
+                NotificationTypeEnum.GameUpdatedForOwner :
+                NotificationTypeEnum.GameUpdatedForBooker;
+            await _notificationsRepo.TryAddAsync(new UpdateGameNotificationModel
             {
-                BookingId = game.Id,
-                BookedById = game.AddedById,
-                ForUserId = Type == NotificationTypeEnum.NewGameForBooker ? game.AddedById :
-                (await _courtsRepo.GetOwnerId(game.CourtId)),
+                GameId = game.Id,
+                UpdatedById = isUpdatedByBooker ? game.AddedById : game.Court.OwnerId,
+                ForUserId = Type == NotificationTypeEnum.GameUpdatedForBooker ? game.AddedById :
+                game.Court.OwnerId,
                 DateAdded = DateTime.UtcNow,
                 Type = Type
             });

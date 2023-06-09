@@ -13,7 +13,7 @@ namespace DribblyAuthAPI.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202112062036378_Add_Table_NewGameNotifications"; }
+            get { return "202112112017439_Add_Table_NewGameNotifications"; }
         }
         
         string IMigrationMetadata.Source

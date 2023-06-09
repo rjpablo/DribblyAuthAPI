@@ -46,7 +46,7 @@ namespace Dribbly.Service.Services.Shared
 
         Task<IndexedEntityModel> GetIndexedEntity
             (long? id, EntityTypeEnum entityType);
-        long? GetUserId();
+        Task<long?> GetAccountId();
         string TryGetRequestData(HttpRequest request);
     }
     #endregion
@@ -66,7 +66,7 @@ namespace Dribbly.Service.Services.Shared
 
         public async Task LogUserActivity(UserActivityModel log)
         {
-            log.UserId = GetUserId().Value;
+            log.UserId = (await GetAccountId()).Value;
             log.DateAdded = DateTime.UtcNow;
             _context.UserActivities.Add(log);
             await _context.SaveChangesAsync();
@@ -260,7 +260,7 @@ namespace Dribbly.Service.Services.Shared
 
         private async Task AddActivityAsync(UserActivityModel activity)
         {
-            var userId = GetUserId();
+            var userId = await GetAccountId();
             if (userId.HasValue)
             {
                 activity.UserId = userId.Value;
@@ -272,7 +272,7 @@ namespace Dribbly.Service.Services.Shared
 
         private async Task AddActivitiesAsync(List<UserActivityModel> activities)
         {
-            var userId = GetUserId();
+            var userId = await GetAccountId();
             if (userId.HasValue)
             {
                 var now = DateTime.UtcNow;
@@ -379,7 +379,7 @@ namespace Dribbly.Service.Services.Shared
 
         #region Helpers
 
-        public long? GetUserId()
+        public async Task<long?> GetAccountId()
         {
             var stringUserId = ClaimsPrincipal.Current.Claims.ToList()
                 .SingleOrDefault(c => c.Type == "userId")?.Value;
@@ -387,8 +387,10 @@ namespace Dribbly.Service.Services.Shared
             {
                 return null;
             }
+            var userId = long.Parse(stringUserId);
+            var accountId = (await _context.Accounts.SingleOrDefaultAsync(a => a.IdentityUserId == userId))?.Id;
 
-            return long.Parse(stringUserId);
+            return accountId;
         }
 
         public string TryGetRequestData(HttpRequest request)

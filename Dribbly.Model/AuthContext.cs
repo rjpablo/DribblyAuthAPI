@@ -73,6 +73,7 @@ namespace Dribbly.Model
         DbSet<NotificationModel> Notifications { get; set; }
         DbSet<NewBookingNotificationModel> NewBookingNotifications { get; set; }
         DbSet<NewGameNotificationModel> NewGameNotifications { get; set; }
+        DbSet<UpdateGameNotificationModel> UpdateGameNotifications { get; set; }
         DbSet<JoinTeamRequestNotificationModel> JoinTeamRequestNotifications { get; set; }
         #endregion
 
@@ -144,6 +145,7 @@ namespace Dribbly.Model
         public DbSet<NotificationModel> Notifications { get; set; }
         public DbSet<NewBookingNotificationModel> NewBookingNotifications { get; set; }
         public DbSet<NewGameNotificationModel> NewGameNotifications { get; set; }
+        public DbSet<UpdateGameNotificationModel> UpdateGameNotifications { get; set; }
         public DbSet<JoinTeamRequestNotificationModel> JoinTeamRequestNotifications { get; set; }
         #endregion
 

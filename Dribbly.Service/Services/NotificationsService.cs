@@ -17,14 +17,17 @@ namespace Dribbly.Service.Services
         IAuthContext _context;
         ISecurityUtility _securityUtility;
         INotificationsRepository _notificationsRepo;
+        IAccountRepository _accountsRepo;
 
         public NotificationsService(IAuthContext context,
             ISecurityUtility securityUtility,
-            INotificationsRepository notificationsRepo) : base(context.Notifications)
+            INotificationsRepository notificationsRepo,
+            IAccountRepository accountsRepo) : base(context.Notifications)
         {
             _context = context;
             _securityUtility = securityUtility;
             _notificationsRepo = notificationsRepo;
+            _accountsRepo = accountsRepo;
         }
 
         public async Task<IEnumerable<NotificationModel>> GetUnviewedAsync(DateTime? afterDate)
@@ -71,8 +74,9 @@ namespace Dribbly.Service.Services
         public async Task<GetNewNotificationsResultModel> GetNewNoficationsAsync(DateTime afterDate)
         {
             long? currentUserId = _securityUtility.GetUserId();
+            var accountId = (await _accountsRepo.GetAccountByIdentityId(currentUserId.Value)).Id;
             IEnumerable<NotificationModel> notifications = _context.Notifications
-                .Where(n => currentUserId.HasValue && n.ForUserId == currentUserId && (n.DateAdded > afterDate));
+                .Where(n => n.ForUserId == accountId && (n.DateAdded > afterDate)).ToList();
 
             var defaultNotifications = await GetDetailedNotificationsAsync(notifications);
 
@@ -81,7 +85,7 @@ namespace Dribbly.Service.Services
                 return new GetNewNotificationsResultModel
                 {
                     Notifications = defaultNotifications,
-                    UnviewedCount = await GetUnviewedCountAsync(currentUserId)
+                    UnviewedCount = await GetUnviewedCountAsync(accountId)
                 };
             }
             else
@@ -94,9 +98,14 @@ namespace Dribbly.Service.Services
         {
             List<NotificationModel> resultWithDetails = new List<NotificationModel>();
 
-            // Booking Booked - For Court owner
+            // Game Booked - For Court owner
             IEnumerable<NewBookingNotificationModel> newBookingNotifications = await GetNewBookingNotificationsAsync
                 (notifications.Where(n => n.Type == NotificationTypeEnum.NewGameForBooker || n.Type == NotificationTypeEnum.NewGameForOwner)
+                .Select(n => n.Id).ToArray());
+
+            // Game Updated
+            IEnumerable<UpdateGameNotificationModel> gameUpdateNotifications = await GetGameUpdateNotificationsAsync
+                (notifications.Where(n => n.Type == NotificationTypeEnum.GameUpdatedForBooker || n.Type == NotificationTypeEnum.GameUpdatedForOwner)
                 .Select(n => n.Id).ToArray());
 
             var joinTeamRequestNotifications = await GetJoinTeamRequestNotificationsAsync
@@ -107,6 +116,28 @@ namespace Dribbly.Service.Services
             resultWithDetails.AddRange(newBookingNotifications);
 
             return resultWithDetails.OrderByDescending(n=>n.DateAdded);
+        }
+        private async Task<IEnumerable<UpdateGameNotificationModel>> GetGameUpdateNotificationsAsync(long[] NotificationIds)
+        {
+            if (NotificationIds.Length == 0) return await Task.FromResult<IEnumerable<UpdateGameNotificationModel>>
+                    (new List<UpdateGameNotificationModel>());
+
+            return await _context.UpdateGameNotifications
+                .Where(n => NotificationIds.Contains(n.Id))
+                .Include(n => n.Game).Include(n => n.Game.Court).Include(n => n.UpdatedBy)
+                .Select(n => new UpdateGameNotificationDto
+                {
+                    Id = n.Id,
+                    DateAdded = n.DateAdded,
+                    ForUserId = n.ForUserId,
+                    IsViewed = n.IsViewed,
+                    Type = n.Type,
+                    Game = n.Game,
+                    UpdatedById = n.UpdatedById,
+                    UpdatedbyName = n.UpdatedBy.User.UserName,
+                    CourtName = n.Game.Court.Name
+                })
+                .ToListAsync();
         }
 
         private async Task<IEnumerable<NewBookingNotificationModel>> GetNewBookingNotificationsAsync(long[] NotificationIds)
