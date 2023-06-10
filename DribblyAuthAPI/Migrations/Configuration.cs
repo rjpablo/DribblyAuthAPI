@@ -54,7 +54,7 @@
         {
             List<SettingModel> settings = new List<SettingModel>()
             {
-                new SettingModel(0, "googleMapApiKey", "Google Map Api Key", "AIzaSyCQwPkj7HcSjORBr6z8ZGf56e4uXNPHUuY"),
+                new SettingModel(0, "googleMapApiKey", "Google Map Api Key", "AIzaSyDmHPmEBQIgvgg0FZX1-xWF4gUOp5ajuHA"),
                 new SettingModel(1, "maxVideoUploadMb", "Maximun size allowed for uploads in MB", "20")
             };
 
