@@ -31,6 +31,7 @@ namespace Dribbly.Model.Teams
         public EntityStatusEnum EntityStatus { get => Member.EntityStatus; }
 
         public string Description => Member.Description;
+        public int JerseyNo { get; set; }
 
         [NotMapped]
         public bool IsCurrentMember => !DateLeft.HasValue;
