@@ -71,6 +71,8 @@
     <Compile Include="Courts\CourtReviewModel.cs" />
     <Compile Include="Courts\CourtModel.cs" />
     <Compile Include="Courts\CourtSearchInputModel.cs" />
+    <Compile Include="DTO\GamePlayer.cs" />
+    <Compile Include="DTO\GameTeam.cs" />
     <Compile Include="Enums\JoinTeamRequestStatus.cs" />
     <Compile Include="Enums\PlayerPositionEnum.cs" />
     <Compile Include="Enums\EntityTypeEnum.cs" />

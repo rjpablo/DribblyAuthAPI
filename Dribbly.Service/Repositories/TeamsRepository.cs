@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dribbly.Service.Repositories
 {
-    public interface ITeamsRepository
+    public interface ITeamsRepository: IBaseRepository<TeamModel>
     {
         IEnumerable<TeamModel> GetAll();
     }

@@ -20,5 +20,9 @@ namespace Dribbly.Service.Services
         Task UpdateGameAsync(UpdateGameModel Game);
 
         Task UpdateGameResultAsync(GameResultModel result);
+
+        Task<DTO.GameTeam> GetGameTeamAsync(long gameId, long teamId);
+
+        Task<GameModel> RecordShotAsync(ShotModel shot);
     }
 }

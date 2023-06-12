@@ -4,6 +4,8 @@ using Dribbly.Model.Account;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.UI.WebControls;
 
@@ -33,5 +35,6 @@ namespace Dribbly.Model.Teams
         public PhotoModel Logo { get; set; }
         public AccountBasicInfoModel AddedBy { get; set; }
         public AccountBasicInfoModel ManagedBy { get; set; }
+        public virtual ICollection<TeamMembershipModel> Members { get; set; }
     }
 }

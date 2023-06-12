@@ -33,6 +33,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpGet]
+        [Route("GetGameTeam/{gameId}/{teamId}")]
+        public async Task<Dribbly.Service.DTO.GameTeam> GetGameTeam(long gameId, long teamId)
+        {
+            return await _service.GetGameTeamAsync(gameId, teamId);
+        }
+
+        [HttpGet]
         [Route("GetAddGameModal/{courtId}")]
         public async Task<AddGameModalModel> GetAddGameModal(long courtId)
         {
@@ -46,6 +53,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task UpdateGame([FromBody] UpdateGameModel model)
         {
             await _service.UpdateGameAsync(model);
+        }
+
+        [HttpPost, Authorize]
+        [Route("RecordShot")]
+        public async Task<GameModel> RecordShot([FromBody] ShotModel shot)
+        {
+            return await _service.RecordShotAsync(shot);
         }
 
         [HttpPost, Authorize]

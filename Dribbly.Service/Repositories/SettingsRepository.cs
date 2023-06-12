@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace Dribbly.Service.Repositories
 {
-    public class SettingsRepository : BaseRepository<SettingModel>
+    public class SettingsRepository
     {
         AuthContext _context;
 
-        public SettingsRepository(IAuthContext context) :base(context.Settings)
+        public SettingsRepository(IAuthContext context)
         {
             _context = new AuthContext();
         }

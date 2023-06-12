@@ -98,6 +98,7 @@
     <Compile Include="Repositories\AccountRepository.cs" />
     <Compile Include="Repositories\AuthRepository.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\ShotsRepository.cs" />
     <Compile Include="Repositories\TeamsRepository.cs" />
     <Compile Include="Repositories\IndexedEntityRepository.cs" />
     <Compile Include="Repositories\CourtsRepository.cs" />

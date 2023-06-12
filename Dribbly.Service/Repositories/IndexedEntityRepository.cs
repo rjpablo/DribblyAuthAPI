@@ -18,9 +18,9 @@ namespace Dribbly.Service.Repositories
     }
     #endregion
 
-    public class IndexedEntitysRepository : BaseRepository<IndexedEntityModel>, IIndexedEntitysRepository
+    public class IndexedEntitysRepository : IIndexedEntitysRepository
     {
-        public IndexedEntitysRepository(IAuthContext context) : base(context.IndexedEntities) { }
+        public IndexedEntitysRepository(IAuthContext context) { }
 
         public async Task Add(IAuthContext db, IIndexedEntity entity)
         {

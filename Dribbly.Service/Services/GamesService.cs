@@ -26,6 +26,7 @@ namespace Dribbly.Service.Services
         private readonly ICourtsRepository _courtsRepo;
         private readonly ICommonService _commonService;
         private readonly ITeamsRepository _teamsRepository;
+        private readonly IShotsRepository _shotsRepository;
 
         public GamesService(IAuthContext context,
             ISecurityUtility securityUtility,
@@ -44,6 +45,7 @@ namespace Dribbly.Service.Services
             _courtsRepo = courtsRepo;
             _commonService = commonService;
             _teamsRepository = teamsRepository;
+            _shotsRepository = new ShotsRepository(context);
         }
 
         public IEnumerable<GameModel> GetAll()
@@ -65,6 +67,63 @@ namespace Dribbly.Service.Services
                     throw new DribblyObjectNotFoundException($"Unable to find account with ID {game.AddedById}.");
                 }
             }
+            return game;
+        }
+
+        public async Task<DTO.GameTeam> GetGameTeamAsync(long gameId, long teamId)
+        {
+            TeamModel team = await _teamsRepository.Get(t => t.Id == teamId,
+                $"{nameof(TeamModel.Members)}.{nameof(TeamMembershipModel.Member)}.{nameof(AccountModel.User)}," +
+                $"{nameof(TeamModel.Logo)}")
+                .SingleOrDefaultAsync();
+
+            if (team != null)
+            {
+                team.Members = team.Members.Where(m => m.DateLeft == null).ToList();
+                var teamDto = new DTO.GameTeam(team, gameId);
+                List<Task> playerTasks = new List<Task>();
+                foreach (var member in teamDto.Players)
+                {
+                    var shots = _shotsRepository.Get(s => s.TakenById == member.Id && !s.IsMiss);
+                    if (shots.Count() > 0)
+                    {
+                        int? points = await shots.SumAsync(s => s.Points);
+                        member.Points = points ?? 0;
+                    }
+                }
+
+                return teamDto;
+            }
+
+            return null;
+        }
+
+        public async Task<GameModel> RecordShotAsync(ShotModel shot)
+        {
+            GameModel game = GetById(shot.GameId);
+
+            if (game == null)
+            {
+                throw new DribblyObjectNotFoundException($"A game with ID {shot.Game.Id} does not exist.");
+            }
+
+            if (!shot.IsMiss)
+            {
+                if (shot.TeamId == game.Team1Id)
+                {
+                    game.Team1Score += shot.Points;
+                }
+                else if (shot.TeamId == game.Team2Id)
+                {
+                    game.Team2Score += shot.Points;
+                }
+
+                Update(game);
+            }
+
+            _shotsRepository.Add(shot);
+            await _context.SaveChangesAsync();
+
             return game;
         }
 
@@ -221,7 +280,7 @@ namespace Dribbly.Service.Services
             game.Team2Score = result.Team2Score;
             game.WinningTeamId = result.WinningTeamId;
 
-            if(game.Status == GameStatusEnum.Started && game.WinningTeamId.HasValue)
+            if (game.Status == GameStatusEnum.Started && game.WinningTeamId.HasValue)
             {
                 await UpdateStatusAsync(game.Id, GameStatusEnum.Finished);
             }
@@ -234,7 +293,7 @@ namespace Dribbly.Service.Services
 
         public async Task UpdateGameAsync(UpdateGameModel input)
         {
-            GameModel game = await _dbSet.Include(g=>g.Court).SingleOrDefaultAsync(g => g.Id == input.Id);
+            GameModel game = await _dbSet.Include(g => g.Court).SingleOrDefaultAsync(g => g.Id == input.Id);
             if (input.ToStatus.HasValue)
             {
                 game.Status = input.ToStatus.Value;
