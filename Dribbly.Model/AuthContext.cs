@@ -30,6 +30,7 @@ namespace Dribbly.Model
         DbSet<PhotoModel> Photos { get; set; }
         DbSet<BookingModel> Bookings { get; set; }
         DbSet<GameModel> Games { get; set; }
+        DbSet<ShotModel> Shots { get; set; }
         DbSet<TeamModel> Teams { get; set; }
         DbSet<TeamMembershipModel> TeamMembers { get; set; }
         DbSet<JoinTeamRequestModel> JoinTeamRequests { get; set; }
@@ -104,6 +105,7 @@ namespace Dribbly.Model
         public DbSet<CourtPhotoModel> CourtPhotos { get; set; }
         public DbSet<BookingModel> Bookings { get; set; }
         public DbSet<GameModel> Games { get; set; }
+        public DbSet<ShotModel> Shots { get; set; }
         public DbSet<TeamModel> Teams { get; set; }
         public DbSet<TeamMembershipModel> TeamMembers { get; set; }
         public DbSet<TeamPhotoActivityModel> TeamPhotoActivities { get; set; }

@@ -86,6 +86,7 @@
     <Compile Include="Notifications\JoinTeamRequestNotificationModel.cs" />
     <Compile Include="Notifications\UpdateGameNotificationModel.cs" />
     <Compile Include="Notifications\NewGameNotificationModel.cs" />
+    <Compile Include="Play\ShotModel.cs" />
     <Compile Include="Shared\IndexedEntityModel.cs" />
     <Compile Include="Shared\GenericEntityUpdateInputModel.cs" />
     <Compile Include="Shared\GetTypeAheadSuggestionsInputModel.cs" />
