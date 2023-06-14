@@ -160,6 +160,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ContactsController.cs" />
+    <Compile Include="Controllers\LeaguesController.cs" />
     <Compile Include="Controllers\TeamsController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\GamesController.cs" />
@@ -511,6 +512,10 @@
     <Compile Include="Migrations\202306121332188_ModifyTable_Games_DefaultScoresToZero.Designer.cs">
       <DependentUpon>202306121332188_ModifyTable_Games_DefaultScoresToZero.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202306141010259_AddTable_Leagues.cs" />
+    <Compile Include="Migrations\202306141010259_AddTable_Leagues.Designer.cs">
+      <DependentUpon>202306141010259_AddTable_Leagues.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -783,6 +788,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306121332188_ModifyTable_Games_DefaultScoresToZero.resx">
       <DependentUpon>202306121332188_ModifyTable_Games_DefaultScoresToZero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306141010259_AddTable_Leagues.resx">
+      <DependentUpon>202306141010259_AddTable_Leagues.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

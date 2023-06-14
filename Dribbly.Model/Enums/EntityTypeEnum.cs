@@ -2,6 +2,7 @@
 using Dribbly.Model.Courts;
 using Dribbly.Model.Games;
 using Dribbly.Model.Posts;
+using Dribbly.Model.Leagues;
 
 namespace Dribbly.Service.Enums
 {
@@ -24,6 +25,10 @@ namespace Dribbly.Service.Enums
         /// <summary>
         /// <see cref="PostModel"/>
         /// </summary>
-        Post
+        Post,
+        /// <summary>
+        /// <see cref="LeagueModel"/>
+        /// </summary>
+        League
     }
 }

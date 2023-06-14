@@ -73,7 +73,11 @@
         ApprovMemberRequest = 125,
         RejectMemberRequest = 126,
         AddTeamPhoto = 127,
-        SetTeamLogo = 128
+        SetTeamLogo = 128,
+        #endregion
+
+        #region League-Related (161-180)
+        AddLeague = 161,
         #endregion
     }
 }
