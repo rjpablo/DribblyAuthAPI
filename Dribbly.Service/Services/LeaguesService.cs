@@ -2,6 +2,7 @@
 using Dribbly.Model;
 using Dribbly.Model.Leagues;
 using Dribbly.Service.Repositories;
+using System.Data.Entity;
 using System.Threading.Tasks;
 
 namespace Dribbly.Service.Services
@@ -33,10 +34,21 @@ namespace Dribbly.Service.Services
             // TODO: log activity
             return league;
         }
+
+        public async Task<LeagueViewerModel> GetLeagueviewerAsync(long leagueId)
+        {
+            var entity = await _leaguesRepository.Get(l => l.Id == leagueId).SingleOrDefaultAsync();
+            if (entity != null)
+            {
+                return new LeagueViewerModel(entity);
+            }
+            return null;
+        }
     }
 
     public interface ILeaguesService
     {
         Task<LeagueModel> AddLeagueAsync(LeagueModel league);
+        Task<LeagueViewerModel> GetLeagueviewerAsync(long leagueId);
     }
 }

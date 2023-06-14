@@ -17,6 +17,14 @@ namespace DribblyAuthAPI.Controllers
         }
 
         //POSTS
+        [HttpGet]
+        [Route("GetLeagueviewer/{leagueId}")]
+        public async Task<LeagueViewerModel> GetLeagueviewer(long leagueId)
+        {
+            return await _service.GetLeagueviewerAsync(leagueId);
+        }
+
+        //POSTS
         [HttpPost]
         [Route("AddLeague")]
         public async Task<LeagueModel> AddLeague([FromBody] LeagueModel input)
