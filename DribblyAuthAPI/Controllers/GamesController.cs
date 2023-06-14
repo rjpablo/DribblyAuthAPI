@@ -48,6 +48,13 @@ namespace DribblyAuthAPI.Controllers
 
         // POSTs
 
+        [HttpPost]
+        [Route("EndGame/{gameId}/{winningTeamId}")]
+        public async Task EndGame(long gameId, long winningTeamId)
+        {
+            await _service.EndGameAsync(gameId, winningTeamId);
+        }
+
         [HttpPost, Authorize]
         [Route("UpdateGame")]
         public async Task UpdateGame([FromBody] UpdateGameModel model)

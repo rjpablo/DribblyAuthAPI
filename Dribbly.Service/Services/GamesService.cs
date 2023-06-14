@@ -136,6 +136,25 @@ namespace Dribbly.Service.Services
             };
         }
 
+        public async Task EndGameAsync(long gameId, long winningTeamId)
+        {
+            GameModel game = await _context.Games.SingleOrDefaultAsync(g => g.Id == gameId);
+            if ((game.Team1Score > game.Team2Score && winningTeamId != game.Team1Id)
+                || (game.Team2Score > game.Team1Score && winningTeamId != game.Team2Id))
+            {
+                throw new DribblyInvalidOperationException("Wrong winning team was provided.");
+            }
+
+            game.WinningTeamId = winningTeamId;
+            game.Status = GameStatusEnum.Finished;
+            game.End = DateTime.UtcNow;
+
+            Update(game);
+
+            _context.SaveChanges();
+            await _commonService.AddUserGameActivity(UserActivityTypeEnum.EndGame, game.Id);
+        }
+
         public async Task UpdateStatusAsync(long gameId, GameStatusEnum toStatus)
         {
             GameModel game = await _context.Games.SingleOrDefaultAsync(g => g.Id == gameId);
