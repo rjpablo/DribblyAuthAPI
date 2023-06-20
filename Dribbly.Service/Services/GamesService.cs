@@ -195,6 +195,18 @@ namespace Dribbly.Service.Services
                     }
                 }
                 #endregion
+                #region Reset Game
+                if (toStatus == GameStatusEnum.WaitingToStart)
+                {
+                    if (game.Status != GameStatusEnum.WaitingToStart)
+                    {
+                        game.Status = GameStatusEnum.WaitingToStart;
+                        game.End = DateTime.UtcNow;
+                        await _commonService.AddUserGameActivity(UserActivityTypeEnum.EndGame, game.Id);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                #endregion
                 #region Cancel Game
                 if (toStatus == GameStatusEnum.Cancelled)
                 {

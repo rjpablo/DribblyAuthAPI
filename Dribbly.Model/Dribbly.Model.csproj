@@ -73,6 +73,7 @@
     <Compile Include="Courts\CourtSearchInputModel.cs" />
     <Compile Include="DTO\GamePlayer.cs" />
     <Compile Include="DTO\GameTeam.cs" />
+    <Compile Include="Enums\TournamentStatusEnum.cs" />
     <Compile Include="Leagues\LeagueViewerModel.cs" />
     <Compile Include="Enums\JoinTeamRequestStatus.cs" />
     <Compile Include="Enums\PlayerPositionEnum.cs" />
@@ -109,6 +110,8 @@
     <Compile Include="Teams\TeamViewerDataModel.cs" />
     <Compile Include="Teams\TeamModel.cs" />
     <Compile Include="Teams\UserTeamRelationModel.cs" />
+    <Compile Include="Tournaments\TournamentViewerModel.cs" />
+    <Compile Include="Tournaments\TournamentModel.cs" />
     <Compile Include="UserActivities\TeamPhotoActivityModel.cs" />
     <Compile Include="UserActivities\CourtVideoActivityModel.cs" />
     <Compile Include="UserActivities\CourtPhotoActivityModel.cs" />

@@ -160,6 +160,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ContactsController.cs" />
+    <Compile Include="Controllers\TournamentsController.cs" />
     <Compile Include="Controllers\SeasonsController.cs" />
     <Compile Include="Controllers\LeaguesController.cs" />
     <Compile Include="Controllers\TeamsController.cs" />
@@ -521,6 +522,10 @@
     <Compile Include="Migrations\202306141621376_AddTable_Seasons.Designer.cs">
       <DependentUpon>202306141621376_AddTable_Seasons.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202306201457004_AddTable_Tournaments.cs" />
+    <Compile Include="Migrations\202306201457004_AddTable_Tournaments.Designer.cs">
+      <DependentUpon>202306201457004_AddTable_Tournaments.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -799,6 +804,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306141621376_AddTable_Seasons.resx">
       <DependentUpon>202306141621376_AddTable_Seasons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306201457004_AddTable_Tournaments.resx">
+      <DependentUpon>202306201457004_AddTable_Tournaments.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
