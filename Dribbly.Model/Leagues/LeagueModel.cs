@@ -1,6 +1,8 @@
 ﻿using Dribbly.Core.Models;
+using Dribbly.Model.Seasons;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dribbly.Model.Leagues
@@ -19,5 +21,6 @@ namespace Dribbly.Model.Leagues
         public string Description { get; set; }
 
         public long AddedById { get; set; }
+        public ICollection<SeasonModel> Seasons { get; set; }
     }
 }

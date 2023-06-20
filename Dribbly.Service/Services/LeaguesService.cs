@@ -37,7 +37,7 @@ namespace Dribbly.Service.Services
 
         public async Task<LeagueViewerModel> GetLeagueviewerAsync(long leagueId)
         {
-            var entity = await _leaguesRepository.Get(l => l.Id == leagueId).SingleOrDefaultAsync();
+            var entity = await _leaguesRepository.Get(l => l.Id == leagueId, nameof(LeagueModel.Seasons)).SingleOrDefaultAsync();
             if (entity != null)
             {
                 return new LeagueViewerModel(entity);

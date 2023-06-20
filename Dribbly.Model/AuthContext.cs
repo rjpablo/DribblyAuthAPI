@@ -9,6 +9,7 @@ using Dribbly.Model.Leagues;
 using Dribbly.Model.Logs;
 using Dribbly.Model.Notifications;
 using Dribbly.Model.Posts;
+using Dribbly.Model.Seasons;
 using Dribbly.Model.Shared;
 using Dribbly.Model.Teams;
 using Dribbly.Model.UserActivities;
@@ -25,6 +26,7 @@ namespace Dribbly.Model
         DbSet<Client> Clients { get; set; }
         DbSet<RefreshToken> RefreshTokens { get; set; }
         DbSet<LeagueModel> Leagues { get; set; }
+        DbSet<SeasonModel> Seasons { get; set; }
         DbSet<CourtModel> Courts { get; set; }
         DbSet<CourtFollowingModel> CourtFollowings { get; set; }
         DbSet<SettingModel> Settings { get; set; }
@@ -101,6 +103,7 @@ namespace Dribbly.Model
         public DbSet<Client> Clients { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<LeagueModel> Leagues { get; set; }
+        public DbSet<SeasonModel> Seasons { get; set; }
         public DbSet<CourtModel> Courts { get; set; }
         public DbSet<CourtFollowingModel> CourtFollowings { get; set; }
         public DbSet<SettingModel> Settings { get; set; }
