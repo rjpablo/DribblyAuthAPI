@@ -3,7 +3,9 @@ using Dribbly.Model.Account;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Shared;
 using Dribbly.Model.Teams;
+using Dribbly.Model.Tournaments;
 using Dribbly.Service.Enums;
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -42,11 +44,14 @@ namespace Dribbly.Model.Games
         public int Team2Score { get; set; } = 0;
 
         public long? WinningTeamId { get; set; }
+        [ForeignKey(nameof(Tournament))]
+        public long? TournamentId { get; set; }
 
+        #endregion MappedColumns
+
+        #region Unmapped Columns
         [NotMapped]
         public EntityTypeEnum EntityType { get; } = EntityTypeEnum.Game;
-
-        #endregion
 
         [NotMapped]
         public string Name { get { return Title; } }
@@ -55,8 +60,9 @@ namespace Dribbly.Model.Games
         public string IconUrl { get { return ""; } }
         [NotMapped]
         public string Description { get { return ""; } }
+        #endregion
 
-        // navigation properties
+        #region Navigational Properties
         public virtual CourtModel Court { get; set; }
 
         public virtual AccountBasicInfoModel AddedBy { get; set; }
@@ -64,5 +70,10 @@ namespace Dribbly.Model.Games
         public virtual TeamModel Team1 { get; set; }
 
         public virtual TeamModel Team2 { get; set; }
+
+        [JsonIgnore] // To avoid "self-referencing loop detected" error
+        public TournamentModel Tournament { get; set; }
+
+        #endregion
     }
 }

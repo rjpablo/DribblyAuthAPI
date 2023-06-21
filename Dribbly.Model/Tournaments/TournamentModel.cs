@@ -1,5 +1,6 @@
 ﻿using Dribbly.Core.Models;
 using Dribbly.Model.Enums;
+using Dribbly.Model.Games;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,5 +16,6 @@ namespace Dribbly.Model.Tournaments
         public string Name { get; set; }
         public long AddedById { get; set; }
         public TournamentStatusEnum Status { get; set; }
+        public ICollection<GameModel> Games { get; set; } = new List<GameModel>();
     }
 }

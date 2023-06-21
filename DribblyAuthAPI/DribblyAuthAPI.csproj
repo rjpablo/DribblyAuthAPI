@@ -526,6 +526,10 @@
     <Compile Include="Migrations\202306201457004_AddTable_Tournaments.Designer.cs">
       <DependentUpon>202306201457004_AddTable_Tournaments.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202306210553285_ModifyTable_Games_AddColumnTournamentId.cs" />
+    <Compile Include="Migrations\202306210553285_ModifyTable_Games_AddColumnTournamentId.Designer.cs">
+      <DependentUpon>202306210553285_ModifyTable_Games_AddColumnTournamentId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -807,6 +811,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306201457004_AddTable_Tournaments.resx">
       <DependentUpon>202306201457004_AddTable_Tournaments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306210553285_ModifyTable_Games_AddColumnTournamentId.resx">
+      <DependentUpon>202306210553285_ModifyTable_Games_AddColumnTournamentId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
