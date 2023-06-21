@@ -22,6 +22,7 @@ namespace Dribbly.Model.Games
         public bool IsTeam1Open { get; set; }
 
         public bool IsTeam2Open { get; set; }
+        public long TournamentId { get; set; }
 
         public GameModel ToGameModel()
         {
@@ -31,7 +32,8 @@ namespace Dribbly.Model.Games
                 Title = Title,
                 CourtId = CourtId,
                 Team1Id = Team1Id,
-                Team2Id = Team2Id
+                Team2Id = Team2Id,
+                TournamentId = TournamentId
             };
         }
     }

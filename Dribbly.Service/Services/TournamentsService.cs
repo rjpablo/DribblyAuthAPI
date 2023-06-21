@@ -1,6 +1,8 @@
 ﻿using Dribbly.Core.Utilities;
 using Dribbly.Model;
+using Dribbly.Model.Games;
 using Dribbly.Model.Leagues;
+using Dribbly.Model.Teams;
 using Dribbly.Model.Tournaments;
 using Dribbly.Service.Repositories;
 using System.Data.Entity;
@@ -36,7 +38,10 @@ namespace Dribbly.Service.Services
 
         public async Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId)
         {
-            var entity = await _tournamentsRepository.Get(t => t.Id == tournamentId).FirstOrDefaultAsync();
+            var entity = await _tournamentsRepository.Get(t => t.Id == tournamentId,
+                $"{nameof(TournamentModel.Games)}.{nameof(GameModel.Team1)}.{nameof(TeamModel.Logo)}," +
+                $"{nameof(TournamentModel.Games)}.{nameof(GameModel.Team2)}.{nameof(TeamModel.Logo)}")
+                .FirstOrDefaultAsync();
             if (entity != null)
             {
                 return new TournamentViewerModel(entity);
