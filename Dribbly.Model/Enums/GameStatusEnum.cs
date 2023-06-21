@@ -5,6 +5,7 @@
         WaitingToStart,
         Started,
         Finished,
-        Cancelled
+        Cancelled,
+        Deleted
     }
 }

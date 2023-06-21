@@ -6,6 +6,7 @@ using Dribbly.Model.Teams;
 using Dribbly.Model.Tournaments;
 using Dribbly.Service.Repositories;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Dribbly.Service.Services
@@ -44,6 +45,7 @@ namespace Dribbly.Service.Services
                 .FirstOrDefaultAsync();
             if (entity != null)
             {
+                entity.Games = entity.Games.Where(g => g.EntityStatus != Enums.EntityStatusEnum.Deleted).ToList();
                 return new TournamentViewerModel(entity);
             }
 

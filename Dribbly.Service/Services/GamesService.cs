@@ -179,7 +179,7 @@ namespace Dribbly.Service.Services
                 }
                 #endregion
                 #region Finish Game
-                if (toStatus == GameStatusEnum.Finished)
+                else if (toStatus == GameStatusEnum.Finished)
                 {
                     if (game.Status == GameStatusEnum.Started)
                     {
@@ -196,7 +196,7 @@ namespace Dribbly.Service.Services
                 }
                 #endregion
                 #region Reset Game
-                if (toStatus == GameStatusEnum.WaitingToStart)
+                else if (toStatus == GameStatusEnum.WaitingToStart)
                 {
                     if (game.Status != GameStatusEnum.WaitingToStart)
                     {
@@ -208,7 +208,7 @@ namespace Dribbly.Service.Services
                 }
                 #endregion
                 #region Cancel Game
-                if (toStatus == GameStatusEnum.Cancelled)
+                else if (toStatus == GameStatusEnum.Cancelled)
                 {
                     if (game.Status == GameStatusEnum.Finished)
                     {
@@ -223,6 +223,28 @@ namespace Dribbly.Service.Services
                     else
                     {
                         game.Status = GameStatusEnum.Cancelled;
+                        await _commonService.AddUserGameActivity(UserActivityTypeEnum.CancelGame, game.Id);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                #endregion
+                #region Delete Game
+                else if (toStatus == GameStatusEnum.Deleted)
+                {
+                    if (game.Status == GameStatusEnum.Finished)
+                    {
+                        throw new DribblyInvalidOperationException("Attempted to delete an already finished game.",
+                            friendlyMessageKey: "app.Error_DeleteGame_AlreadyFinished");
+                    }
+                    else if (game.Status == GameStatusEnum.Started)
+                    {
+                        throw new DribblyInvalidOperationException("Attempted to delete an already started game.",
+                            friendlyMessageKey: "app.Error_DeleteGame_AlreadyStarted");
+                    }
+                    else
+                    {
+                        game.Status = GameStatusEnum.Deleted;
+                        game.EntityStatus = EntityStatusEnum.Deleted;
                         await _commonService.AddUserGameActivity(UserActivityTypeEnum.CancelGame, game.Id);
                         await _context.SaveChangesAsync();
                     }
