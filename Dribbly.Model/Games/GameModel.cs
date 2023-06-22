@@ -47,6 +47,15 @@ namespace Dribbly.Model.Games
         [ForeignKey(nameof(Tournament))]
         public long? TournamentId { get; set; }
 
+        public int CurrentPeriod { get; set; } = 1;
+
+        /// <summary>
+        /// The remaining time (in milliseconds) in the current period
+        /// </summary>
+        public int RemainingTime { get; set; }
+
+        public bool IsTimed { get; set; }
+
         #endregion MappedColumns
 
         #region Unmapped Columns

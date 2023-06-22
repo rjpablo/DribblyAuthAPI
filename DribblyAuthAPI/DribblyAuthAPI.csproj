@@ -530,6 +530,10 @@
     <Compile Include="Migrations\202306210553285_ModifyTable_Games_AddColumnTournamentId.Designer.cs">
       <DependentUpon>202306210553285_ModifyTable_Games_AddColumnTournamentId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202306221259528_ModifyTable_Games_AddColumns_CurrentPeriod_RemainingTime_and_IsTimed.cs" />
+    <Compile Include="Migrations\202306221259528_ModifyTable_Games_AddColumns_CurrentPeriod_RemainingTime_and_IsTimed.Designer.cs">
+      <DependentUpon>202306221259528_ModifyTable_Games_AddColumns_CurrentPeriod_RemainingTime_and_IsTimed.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -814,6 +818,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306210553285_ModifyTable_Games_AddColumnTournamentId.resx">
       <DependentUpon>202306210553285_ModifyTable_Games_AddColumnTournamentId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306221259528_ModifyTable_Games_AddColumns_CurrentPeriod_RemainingTime_and_IsTimed.resx">
+      <DependentUpon>202306221259528_ModifyTable_Games_AddColumns_CurrentPeriod_RemainingTime_and_IsTimed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
