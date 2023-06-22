@@ -59,6 +59,11 @@ namespace Dribbly.Model.Games
         /// </summary>
         public DateTime RemainingTimeUpdatedAt { get; set; }
 
+        /// <summary>
+        /// Whether or not the ball was live when the remainingTime was last updated
+        /// </summary>
+        public bool IsLive { get; set; }
+
         public bool IsTimed { get; set; }
 
         #endregion MappedColumns
