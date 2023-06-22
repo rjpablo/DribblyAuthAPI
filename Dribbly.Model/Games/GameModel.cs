@@ -54,6 +54,11 @@ namespace Dribbly.Model.Games
         /// </summary>
         public int RemainingTime { get; set; }
 
+        /// <summary>
+        /// The timestamp when the remaining time was last updated
+        /// </summary>
+        public DateTime RemainingTimeUpdatedAt { get; set; }
+
         public bool IsTimed { get; set; }
 
         #endregion MappedColumns
