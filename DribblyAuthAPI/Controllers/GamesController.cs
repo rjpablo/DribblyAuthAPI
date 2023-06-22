@@ -57,9 +57,9 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpPost, Authorize]
         [Route("UpdateGame")]
-        public async Task UpdateGame([FromBody] UpdateGameModel model)
+        public async Task<GameModel> UpdateGame([FromBody] UpdateGameModel model)
         {
-            await _service.UpdateGameAsync(model);
+            return await _service.UpdateGameAsync(model);
         }
 
         [HttpPost, Authorize]

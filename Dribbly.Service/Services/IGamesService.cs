@@ -19,7 +19,7 @@ namespace Dribbly.Service.Services
 
         Task UpdateStatusAsync(long gameId, GameStatusEnum toStatus);
 
-        Task UpdateGameAsync(UpdateGameModel Game);
+        Task<GameModel> UpdateGameAsync(UpdateGameModel Game);
 
         Task UpdateGameResultAsync(GameResultModel result);
 

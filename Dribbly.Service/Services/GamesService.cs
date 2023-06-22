@@ -344,13 +344,21 @@ namespace Dribbly.Service.Services
             await _commonService.AddUserGameActivity(UserActivityTypeEnum.UpdateGameResult, game.Id);
         }
 
-        public async Task UpdateGameAsync(UpdateGameModel input)
+        public async Task<GameModel> UpdateGameAsync(UpdateGameModel input)
         {
             GameModel game = await _dbSet.Include(g => g.Court).SingleOrDefaultAsync(g => g.Id == input.Id);
             if (input.ToStatus.HasValue)
             {
                 game.Status = input.ToStatus.Value;
             }
+
+            game.Start = input.Start;
+            game.End = input.End;
+            game.Title = input.Title;
+            game.CourtId = input.CourtId;
+            game.Team1Id = input.Team1Id;
+            game.Team2Id = input.Team2Id;
+
 
             Update(game);
             var currentUserId = _securityUtility.GetUserId();
@@ -370,6 +378,7 @@ namespace Dribbly.Service.Services
             });
             _context.SaveChanges();
             await _commonService.AddUserGameActivity(UserActivityTypeEnum.UpdateGame, game.Id);
+            return await GetGame(game.Id);
         }
     }
 }
