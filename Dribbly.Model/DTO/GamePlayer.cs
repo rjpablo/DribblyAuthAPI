@@ -1,4 +1,5 @@
-﻿using Dribbly.Model.Teams;
+﻿using Dribbly.Model.Courts;
+using Dribbly.Model.Teams;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace Dribbly.Service.DTO
         public int Fouls { get; set; }
         public int Assists { get; set; }
         public long TeamId { get; set; }
+        public PhotoModel ProfilePhoto { get; set; }
 
         public GamePlayer(TeamMembershipModel player)
         {
@@ -23,6 +25,7 @@ namespace Dribbly.Service.DTO
             Name = player.Member.Name;
             JerseyNo = player.JerseyNo;
             TeamId = player.TeamId;
+            ProfilePhoto = player.Member.ProfilePhoto;
         }
     }
 }

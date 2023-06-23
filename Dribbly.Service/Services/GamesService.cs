@@ -74,6 +74,7 @@ namespace Dribbly.Service.Services
         {
             TeamModel team = await _teamsRepository.Get(t => t.Id == teamId,
                 $"{nameof(TeamModel.Members)}.{nameof(TeamMembershipModel.Member)}.{nameof(AccountModel.User)}," +
+                $"{nameof(TeamModel.Members)}.{nameof(TeamMembershipModel.Member)}.{nameof(AccountModel.ProfilePhoto)}," +
                 $"{nameof(TeamModel.Logo)}")
                 .SingleOrDefaultAsync();
 
