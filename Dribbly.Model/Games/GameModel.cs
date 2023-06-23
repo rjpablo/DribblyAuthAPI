@@ -60,6 +60,16 @@ namespace Dribbly.Model.Games
         public DateTime RemainingTimeUpdatedAt { get; set; }
 
         /// <summary>
+        /// The remaining time (in milliseconds) in the shot clock
+        /// </summary>
+        public int? RemainingShotTime { get; set; }
+
+        /// <summary>
+        /// The default shot clock duration in seconds
+        /// </summary>
+        public int? DefaultShotClockDuration { get; set; } = 24;
+
+        /// <summary>
         /// Whether or not the ball was live when the remainingTime was last updated
         /// </summary>
         public bool IsLive { get; set; }

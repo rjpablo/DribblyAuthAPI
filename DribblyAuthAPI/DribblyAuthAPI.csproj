@@ -542,6 +542,10 @@
     <Compile Include="Migrations\202306221538320_ModifyTable_Games_AddColumn_IsLive.Designer.cs">
       <DependentUpon>202306221538320_ModifyTable_Games_AddColumn_IsLive.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202306231347504_ModifyTable_Games_AddColumns_RemainingShotTime_and_DefaultShotClockDuration.cs" />
+    <Compile Include="Migrations\202306231347504_ModifyTable_Games_AddColumns_RemainingShotTime_and_DefaultShotClockDuration.Designer.cs">
+      <DependentUpon>202306231347504_ModifyTable_Games_AddColumns_RemainingShotTime_and_DefaultShotClockDuration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -835,6 +839,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306221538320_ModifyTable_Games_AddColumn_IsLive.resx">
       <DependentUpon>202306221538320_ModifyTable_Games_AddColumn_IsLive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306231347504_ModifyTable_Games_AddColumns_RemainingShotTime_and_DefaultShotClockDuration.resx">
+      <DependentUpon>202306231347504_ModifyTable_Games_AddColumns_RemainingShotTime_and_DefaultShotClockDuration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
