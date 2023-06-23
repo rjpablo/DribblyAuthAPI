@@ -274,6 +274,7 @@ namespace Dribbly.Service.Services
                     {
                         game.RemainingTime = 12 * 60 * 1000; //12mins
                         game.IsLive = false;
+                        game.RemainingShotTime = game.DefaultShotClockDuration * 1000;
                     }
 
                     if (input.IsTeam1Open)
@@ -364,6 +365,7 @@ namespace Dribbly.Service.Services
             {
                 game.RemainingTime = input.TimeRemaining;
                 game.RemainingTimeUpdatedAt = input.UpdatedAt;
+                game.RemainingShotTime = input.ShotTimeRemaining;
                 game.IsLive = input.IsLive;
                 await _context.SaveChangesAsync();
             }
@@ -387,7 +389,9 @@ namespace Dribbly.Service.Services
             if (game.IsTimed && game.Status == GameStatusEnum.WaitingToStart)
             {
                 game.RemainingTime = 12 * 60 * 1000; //12mins
+                game.DefaultShotClockDuration = input.DefaultShotClockDuration;
                 game.IsLive = false;
+                game.RemainingShotTime = game.DefaultShotClockDuration * 1000;
             }
 
 
