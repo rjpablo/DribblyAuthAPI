@@ -546,6 +546,10 @@
     <Compile Include="Migrations\202306231347504_ModifyTable_Games_AddColumns_RemainingShotTime_and_DefaultShotClockDuration.Designer.cs">
       <DependentUpon>202306231347504_ModifyTable_Games_AddColumns_RemainingShotTime_and_DefaultShotClockDuration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202306231607349_ModifyTable_Games_AddColumn_OffensiveRebondShotClock.cs" />
+    <Compile Include="Migrations\202306231607349_ModifyTable_Games_AddColumn_OffensiveRebondShotClock.Designer.cs">
+      <DependentUpon>202306231607349_ModifyTable_Games_AddColumn_OffensiveRebondShotClock.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -842,6 +846,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306231347504_ModifyTable_Games_AddColumns_RemainingShotTime_and_DefaultShotClockDuration.resx">
       <DependentUpon>202306231347504_ModifyTable_Games_AddColumns_RemainingShotTime_and_DefaultShotClockDuration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306231607349_ModifyTable_Games_AddColumn_OffensiveRebondShotClock.resx">
+      <DependentUpon>202306231607349_ModifyTable_Games_AddColumn_OffensiveRebondShotClock.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

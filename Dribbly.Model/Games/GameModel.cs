@@ -70,6 +70,11 @@ namespace Dribbly.Model.Games
         public int? DefaultShotClockDuration { get; set; } = 24;
 
         /// <summary>
+        /// The amount of time (in seconds) the shot clock will reset to after an offensive rebound
+        /// </summary>
+        public int? OffensiveRebondShotClock { get; set; } = 14;
+
+        /// <summary>
         /// Whether or not the ball was live when the remainingTime was last updated
         /// </summary>
         public bool IsLive { get; set; }

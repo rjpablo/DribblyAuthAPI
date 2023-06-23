@@ -390,6 +390,7 @@ namespace Dribbly.Service.Services
             {
                 game.RemainingTime = 12 * 60 * 1000; //12mins
                 game.DefaultShotClockDuration = input.DefaultShotClockDuration;
+                game.OffensiveRebondShotClock = input.OffensiveRebondShotClock;
                 game.IsLive = false;
                 game.RemainingShotTime = game.DefaultShotClockDuration * 1000;
             }
