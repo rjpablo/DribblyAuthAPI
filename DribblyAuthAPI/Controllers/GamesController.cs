@@ -1,6 +1,7 @@
 ﻿using Dribbly.Model.Games;
 using Dribbly.Service.Enums;
 using Dribbly.Service.Services;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -60,6 +61,20 @@ namespace DribblyAuthAPI.Controllers
         public async Task<GameModel> UpdateGame([FromBody] UpdateGameModel model)
         {
             return await _service.UpdateGameAsync(model);
+        }
+
+        [HttpPost, Authorize]
+        [Route("AdvancePeriod/{gameId}/{period}/{remainingTime}")]
+        public async Task AdvancePeriod(long gameId, int period, int remainingTime)
+        {
+            await _service.AdvancePeriodAsync(gameId, period, remainingTime);
+        }
+
+        [HttpPost, Authorize]
+        [Route("UpdateRemainingTime")]
+        public async Task UpdateRemainingTime([FromBody] UpdateGameTimeRemainingInput input)
+        {
+            await _service.UpdateRemainingTimeAsync(input);
         }
 
         [HttpPost, Authorize]

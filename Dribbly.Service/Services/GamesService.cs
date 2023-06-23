@@ -270,6 +270,11 @@ namespace Dribbly.Service.Services
                     game.AddedById = account.Id;
                     game.Status = GameStatusEnum.WaitingToStart;
                     game.EntityStatus = EntityStatusEnum.Active;
+                    if (game.IsTimed)
+                    {
+                        game.RemainingTime = 12 * 60 * 1000; //12mins
+                        game.IsLive = false;
+                    }
 
                     if (input.IsTeam1Open)
                     {
@@ -344,6 +349,26 @@ namespace Dribbly.Service.Services
             await _commonService.AddUserGameActivity(UserActivityTypeEnum.UpdateGameResult, game.Id);
         }
 
+        public async Task AdvancePeriodAsync(long gameId, int period, int remainingTime)
+        {
+            GameModel game = await _dbSet.SingleOrDefaultAsync(g => g.Id == gameId);
+            game.CurrentPeriod = period;
+            game.RemainingTime = remainingTime;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateRemainingTimeAsync(UpdateGameTimeRemainingInput input)
+        {
+            GameModel game = await _dbSet.SingleOrDefaultAsync(g => g.Id == input.GameId);
+            if (game.RemainingTimeUpdatedAt < input.UpdatedAt)
+            {
+                game.RemainingTime = input.TimeRemaining;
+                game.RemainingTimeUpdatedAt = input.UpdatedAt;
+                game.IsLive = input.IsLive;
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public async Task<GameModel> UpdateGameAsync(UpdateGameModel input)
         {
             GameModel game = await _dbSet.Include(g => g.Court).SingleOrDefaultAsync(g => g.Id == input.Id);
@@ -358,6 +383,12 @@ namespace Dribbly.Service.Services
             game.CourtId = input.CourtId;
             game.Team1Id = input.Team1Id;
             game.Team2Id = input.Team2Id;
+            game.IsTimed = input.IsTimed;
+            if (game.IsTimed && game.Status == GameStatusEnum.WaitingToStart)
+            {
+                game.RemainingTime = 12 * 60 * 1000; //12mins
+                game.IsLive = false;
+            }
 
 
             Update(game);

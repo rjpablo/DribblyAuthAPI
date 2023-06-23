@@ -74,6 +74,7 @@
     <Compile Include="DTO\GamePlayer.cs" />
     <Compile Include="DTO\GameTeam.cs" />
     <Compile Include="Enums\TournamentStatusEnum.cs" />
+    <Compile Include="Games\UpdateGameTimeRemainingInput.cs" />
     <Compile Include="Leagues\LeagueViewerModel.cs" />
     <Compile Include="Enums\JoinTeamRequestStatus.cs" />
     <Compile Include="Enums\PlayerPositionEnum.cs" />
