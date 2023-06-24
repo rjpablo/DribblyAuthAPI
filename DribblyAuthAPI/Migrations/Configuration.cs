@@ -28,6 +28,7 @@
             SeedClients();
             SeedPermissions();
             SeedSettings();
+            SeedFouls();
             //SeedBookings();
             //AddCourts();
 
@@ -86,6 +87,14 @@
                     CourtId = 4,
                     Title = "Cardinals Tune Up Booking"
                 });
+        }
+
+        public void SeedFouls()
+        {
+            foreach(var foul in Constants.Fouls)
+            {
+                _context.Fouls.AddOrUpdate(foul);
+            }
         }
 
         public void AddCourts()

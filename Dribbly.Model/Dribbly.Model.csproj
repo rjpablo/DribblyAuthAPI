@@ -73,7 +73,10 @@
     <Compile Include="Courts\CourtSearchInputModel.cs" />
     <Compile Include="DTO\GamePlayer.cs" />
     <Compile Include="DTO\GameTeam.cs" />
+    <Compile Include="Entities\GameEventModel.cs" />
     <Compile Include="Enums\TournamentStatusEnum.cs" />
+    <Compile Include="Fouls\FoulModel.cs" />
+    <Compile Include="Entities\MemberFoulModel.cs" />
     <Compile Include="Games\UpdateGameTimeRemainingInput.cs" />
     <Compile Include="Leagues\LeagueViewerModel.cs" />
     <Compile Include="Enums\JoinTeamRequestStatus.cs" />

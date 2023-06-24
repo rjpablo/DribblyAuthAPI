@@ -4,6 +4,8 @@ using Dribbly.Model.Account;
 using Dribbly.Model.Accounts;
 using Dribbly.Model.Bookings;
 using Dribbly.Model.Courts;
+using Dribbly.Model.Entities;
+using Dribbly.Model.Fouls;
 using Dribbly.Model.Games;
 using Dribbly.Model.Leagues;
 using Dribbly.Model.Logs;
@@ -36,6 +38,9 @@ namespace Dribbly.Model
         DbSet<PhotoModel> Photos { get; set; }
         DbSet<BookingModel> Bookings { get; set; }
         DbSet<GameModel> Games { get; set; }
+        DbSet<FoulModel> Fouls { get; set; }
+        DbSet<MemberFoulModel> MemberFouls { get; set; }
+        DbSet<GameEventModel> GameEvents { get; set; }
         DbSet<ShotModel> Shots { get; set; }
         DbSet<TeamModel> Teams { get; set; }
         DbSet<TeamMembershipModel> TeamMembers { get; set; }
@@ -114,6 +119,9 @@ namespace Dribbly.Model
         public DbSet<CourtPhotoModel> CourtPhotos { get; set; }
         public DbSet<BookingModel> Bookings { get; set; }
         public DbSet<GameModel> Games { get; set; }
+        public DbSet<FoulModel> Fouls { get; set; }
+        public DbSet<MemberFoulModel> MemberFouls { get; set; }
+        public DbSet<GameEventModel> GameEvents { get; set; }
         public DbSet<ShotModel> Shots { get; set; }
         public DbSet<TeamModel> Teams { get; set; }
         public DbSet<TeamMembershipModel> TeamMembers { get; set; }
