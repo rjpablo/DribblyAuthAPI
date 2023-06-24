@@ -1,4 +1,5 @@
 ﻿using Dribbly.Model.Games;
+using Dribbly.Model.Play;
 using Dribbly.Service.Enums;
 using Dribbly.Service.Services;
 using System;
@@ -79,9 +80,9 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpPost, Authorize]
         [Route("RecordShot")]
-        public async Task<GameModel> RecordShot([FromBody] ShotModel shot)
+        public async Task<GameModel> RecordShot([FromBody] ShotDetailsInputModel input)
         {
-            return await _service.RecordShotAsync(shot);
+            return await _service.RecordShotAsync(input);
         }
 
         [HttpPost, Authorize]

@@ -4,10 +4,12 @@ using Dribbly.Model;
 using Dribbly.Model.Account;
 using Dribbly.Model.Games;
 using Dribbly.Model.Notifications;
+using Dribbly.Model.Play;
 using Dribbly.Model.Teams;
 using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
 using Dribbly.Service.Services.Shared;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -86,10 +88,12 @@ namespace Dribbly.Service.Services
                 foreach (var member in teamDto.Players)
                 {
                     var shots = _shotsRepository.Get(s => s.TakenById == member.Id && !s.IsMiss);
+                    var foulCount = await _context.MemberFouls.CountAsync(f => f.PerformedById == member.Id && f.GameId == gameId && f.TeamId == teamId);
                     if (shots.Count() > 0)
                     {
                         int? points = await shots.SumAsync(s => s.Points);
                         member.Points = points ?? 0;
+                        member.Fouls = foulCount;
                     }
                 }
 
@@ -99,30 +103,45 @@ namespace Dribbly.Service.Services
             return null;
         }
 
-        public async Task<GameModel> RecordShotAsync(ShotModel shot)
+        public async Task<GameModel> RecordShotAsync(ShotDetailsInputModel input)
         {
-            GameModel game = GetById(shot.GameId);
+            GameModel game = GetById(input.Shot.GameId);
 
             if (game == null)
             {
-                throw new DribblyObjectNotFoundException($"A game with ID {shot.Game.Id} does not exist.");
+                throw new DribblyObjectNotFoundException($"A game with ID {input.Shot.Game.Id} does not exist.");
             }
 
-            if (!shot.IsMiss)
+            if (!input.Shot.IsMiss)
             {
-                if (shot.TeamId == game.Team1Id)
+                if (input.Shot.TeamId == game.Team1Id)
                 {
-                    game.Team1Score += shot.Points;
+                    game.Team1Score += input.Shot.Points;
                 }
-                else if (shot.TeamId == game.Team2Id)
+                else if (input.Shot.TeamId == game.Team2Id)
                 {
-                    game.Team2Score += shot.Points;
+                    game.Team2Score += input.Shot.Points;
                 }
 
                 Update(game);
             }
 
-            _shotsRepository.Add(shot);
+            input.Shot.Game = null;
+            _shotsRepository.Add(input.Shot);
+
+            if (input.WithFoul)
+            {
+                input.Foul.DateAdded = DateTime.UtcNow;
+                input.Foul.AdditionalData = JsonConvert.SerializeObject(new { foulName = input.Foul.Foul.Name });
+
+                // prevent EF from readding these objects
+                input.Foul.Foul = null;
+                input.Foul.PerformedBy = null;
+                input.Foul.Game = null;
+
+                _context.MemberFouls.Add(input.Foul);
+            }
+
             await _context.SaveChangesAsync();
 
             return game;

@@ -1,4 +1,5 @@
 ﻿using Dribbly.Model.Games;
+using Dribbly.Model.Play;
 using Dribbly.Service.Enums;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace Dribbly.Service.Services
 
         Task<DTO.GameTeam> GetGameTeamAsync(long gameId, long teamId);
 
-        Task<GameModel> RecordShotAsync(ShotModel shot);
+        Task<GameModel> RecordShotAsync(ShotDetailsInputModel input);
 
         Task UpdateRemainingTimeAsync(UpdateGameTimeRemainingInput input);
     }

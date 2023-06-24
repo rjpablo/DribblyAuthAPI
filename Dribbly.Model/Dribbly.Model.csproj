@@ -66,6 +66,7 @@
     <Compile Include="Account\AccountSearchInputModel.cs" />
     <Compile Include="Account\AccountSettingsModel.cs" />
     <Compile Include="AuthContext.cs" />
+    <Compile Include="Constants\Fouls.cs" />
     <Compile Include="Courts\CourtDetailsViewModel.cs" />
     <Compile Include="Courts\CourtReviewModalModel.cs" />
     <Compile Include="Courts\CourtReviewModel.cs" />
@@ -74,6 +75,8 @@
     <Compile Include="DTO\GamePlayer.cs" />
     <Compile Include="DTO\GameTeam.cs" />
     <Compile Include="Entities\GameEventModel.cs" />
+    <Compile Include="Enums\FoulTypeEnum.cs" />
+    <Compile Include="Enums\GameEventTypeEnum.cs" />
     <Compile Include="Enums\TournamentStatusEnum.cs" />
     <Compile Include="Fouls\FoulModel.cs" />
     <Compile Include="Entities\MemberFoulModel.cs" />
@@ -96,6 +99,7 @@
     <Compile Include="Notifications\JoinTeamRequestNotificationModel.cs" />
     <Compile Include="Notifications\UpdateGameNotificationModel.cs" />
     <Compile Include="Notifications\NewGameNotificationModel.cs" />
+    <Compile Include="Play\ShotDetailsInputModel.cs" />
     <Compile Include="Play\ShotModel.cs" />
     <Compile Include="Seasons\SeasonDto.cs" />
     <Compile Include="Seasons\SeasonModel.cs" />
