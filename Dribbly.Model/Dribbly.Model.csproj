@@ -80,6 +80,7 @@
     <Compile Include="Enums\TournamentStatusEnum.cs" />
     <Compile Include="Fouls\FoulModel.cs" />
     <Compile Include="Entities\MemberFoulModel.cs" />
+    <Compile Include="Fouls\UpsertFoulResultModel.cs" />
     <Compile Include="Games\UpdateGameTimeRemainingInput.cs" />
     <Compile Include="Leagues\LeagueViewerModel.cs" />
     <Compile Include="Enums\JoinTeamRequestStatus.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Notifications\NewGameNotificationModel.cs" />
     <Compile Include="Play\ShotDetailsInputModel.cs" />
     <Compile Include="Play\ShotModel.cs" />
+    <Compile Include="Play\UpsertShotResultModel.cs" />
     <Compile Include="Seasons\SeasonDto.cs" />
     <Compile Include="Seasons\SeasonModel.cs" />
     <Compile Include="Shared\IndexedEntityModel.cs" />

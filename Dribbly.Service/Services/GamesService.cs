@@ -28,6 +28,7 @@ namespace Dribbly.Service.Services
         private readonly ICourtsRepository _courtsRepo;
         private readonly ICommonService _commonService;
         private readonly ITeamsRepository _teamsRepository;
+        private readonly IMemberFoulsRepository _memberFoulsRepository;
         private readonly IShotsRepository _shotsRepository;
 
         public GamesService(IAuthContext context,
@@ -47,6 +48,7 @@ namespace Dribbly.Service.Services
             _courtsRepo = courtsRepo;
             _commonService = commonService;
             _teamsRepository = teamsRepository;
+            _memberFoulsRepository = new MemberFoulsRepository(context);
             _shotsRepository = new ShotsRepository(context);
         }
 
@@ -87,7 +89,7 @@ namespace Dribbly.Service.Services
                 List<Task> playerTasks = new List<Task>();
                 foreach (var member in teamDto.Players)
                 {
-                    var shots = _shotsRepository.Get(s => s.TakenById == member.Id && !s.IsMiss);
+                    var shots = _shotsRepository.Get(s => s.TakenById == member.Id && s.GameId == gameId && !s.IsMiss);
                     var foulCount = await _context.MemberFouls.CountAsync(f => f.PerformedById == member.Id && f.GameId == gameId && f.TeamId == teamId);
                     if (shots.Count() > 0)
                     {
@@ -103,7 +105,7 @@ namespace Dribbly.Service.Services
             return null;
         }
 
-        public async Task<GameModel> RecordShotAsync(ShotDetailsInputModel input)
+        public async Task<UpsertShotResultModel> RecordShotAsync(ShotDetailsInputModel input)
         {
             GameModel game = GetById(input.Shot.GameId);
 
@@ -112,39 +114,50 @@ namespace Dribbly.Service.Services
                 throw new DribblyObjectNotFoundException($"A game with ID {input.Shot.Game.Id} does not exist.");
             }
 
-            if (!input.Shot.IsMiss)
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                if (input.Shot.TeamId == game.Team1Id)
+                try
                 {
-                    game.Team1Score += input.Shot.Points;
-                }
-                else if (input.Shot.TeamId == game.Team2Id)
-                {
-                    game.Team2Score += input.Shot.Points;
-                }
+                    var result = new UpsertShotResultModel();
+                    if (!input.Shot.IsMiss)
+                    {
+                        if (input.Shot.TeamId == game.Team1Id)
+                        {
+                            game.Team1Score += input.Shot.Points;
+                        }
+                        else if (input.Shot.TeamId == game.Team2Id)
+                        {
+                            game.Team2Score += input.Shot.Points;
+                        }
 
-                Update(game);
+                        input.Shot.Game = null;
+                        _shotsRepository.Add(input.Shot);
+
+                        Update(game);
+                        await _context.SaveChangesAsync();
+
+                        result.TotalPoints = await _context.Shots
+                            .Where(s => s.TakenById == input.Shot.TakenById && s.GameId == input.Shot.GameId && !s.IsMiss)
+                            .SumAsync(s => s.Points);
+                        result.Game = game;
+                    }
+
+                    if (input.WithFoul)
+                    {
+                        result.FoulResult = await _memberFoulsRepository.UpsertFoul(input.Foul);
+                    }
+
+                    transaction.Commit();
+
+                    return result;
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw e;
+                }
             }
 
-            input.Shot.Game = null;
-            _shotsRepository.Add(input.Shot);
-
-            if (input.WithFoul)
-            {
-                input.Foul.DateAdded = DateTime.UtcNow;
-                input.Foul.AdditionalData = JsonConvert.SerializeObject(new { foulName = input.Foul.Foul.Name });
-
-                // prevent EF from readding these objects
-                input.Foul.Foul = null;
-                input.Foul.PerformedBy = null;
-                input.Foul.Game = null;
-
-                _context.MemberFouls.Add(input.Foul);
-            }
-
-            await _context.SaveChangesAsync();
-
-            return game;
         }
 
         public async Task<AddGameModalModel> GetAddGameModalAsync(long courtId)

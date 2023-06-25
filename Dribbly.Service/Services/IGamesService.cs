@@ -29,7 +29,7 @@ namespace Dribbly.Service.Services
 
         Task<DTO.GameTeam> GetGameTeamAsync(long gameId, long teamId);
 
-        Task<GameModel> RecordShotAsync(ShotDetailsInputModel input);
+        Task<UpsertShotResultModel> RecordShotAsync(ShotDetailsInputModel input);
 
         Task UpdateRemainingTimeAsync(UpdateGameTimeRemainingInput input);
     }

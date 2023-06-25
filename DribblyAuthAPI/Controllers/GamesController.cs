@@ -80,7 +80,7 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpPost, Authorize]
         [Route("RecordShot")]
-        public async Task<GameModel> RecordShot([FromBody] ShotDetailsInputModel input)
+        public async Task<UpsertShotResultModel> RecordShot([FromBody] ShotDetailsInputModel input)
         {
             return await _service.RecordShotAsync(input);
         }

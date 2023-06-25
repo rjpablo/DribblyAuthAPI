@@ -10,7 +10,7 @@ namespace Dribbly.Service.Repositories
     public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntityModel
     {
         public DbSet<T> _dbSet;
-        protected BaseRepository(DbSet<T> dbSet)
+        public BaseRepository(DbSet<T> dbSet)
         {
             _dbSet = dbSet;
         }
