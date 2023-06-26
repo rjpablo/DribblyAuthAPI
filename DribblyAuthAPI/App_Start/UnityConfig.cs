@@ -53,6 +53,7 @@ namespace DribblyAuthAPI
             container.RegisterType<ILeaguesService, LeaguesService>();
             container.RegisterType<ITournamentsRepository, TournamentsRepository>();
             container.RegisterType<ITournamentsService, TournamentsService>();
+            container.RegisterType<IGameEventsService, GameEventsService>();
 
             TestsConfig.RegisterComponents(container);
 

@@ -160,6 +160,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ContactsController.cs" />
+    <Compile Include="Controllers\GameEventsController.cs" />
     <Compile Include="Controllers\TournamentsController.cs" />
     <Compile Include="Controllers\SeasonsController.cs" />
     <Compile Include="Controllers\LeaguesController.cs" />
@@ -554,6 +555,10 @@
     <Compile Include="Migrations\202306241501535_AddTables_MemberFouls_Fouls_and_GameEvents.Designer.cs">
       <DependentUpon>202306241501535_AddTables_MemberFouls_Fouls_and_GameEvents.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202306260411386_ModifyTable_Games_AddColumn_PersonalFoulLimit_and_TechnicalFoulLimit.cs" />
+    <Compile Include="Migrations\202306260411386_ModifyTable_Games_AddColumn_PersonalFoulLimit_and_TechnicalFoulLimit.Designer.cs">
+      <DependentUpon>202306260411386_ModifyTable_Games_AddColumn_PersonalFoulLimit_and_TechnicalFoulLimit.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -856,6 +861,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306241501535_AddTables_MemberFouls_Fouls_and_GameEvents.resx">
       <DependentUpon>202306241501535_AddTables_MemberFouls_Fouls_and_GameEvents.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306260411386_ModifyTable_Games_AddColumn_PersonalFoulLimit_and_TechnicalFoulLimit.resx">
+      <DependentUpon>202306260411386_ModifyTable_Games_AddColumn_PersonalFoulLimit_and_TechnicalFoulLimit.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

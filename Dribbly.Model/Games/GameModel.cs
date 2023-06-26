@@ -81,6 +81,16 @@ namespace Dribbly.Model.Games
 
         public bool IsTimed { get; set; }
 
+        /// <summary>
+        /// The number of personal fouls each player is allowed before fouling out 
+        /// </summary>
+        public int PersonalFoulLimit { get; set; } = 6;
+
+        /// <summary>
+        /// The number of technical fouls each player is allowed before fouling out 
+        /// </summary>
+        public int TechnicalFoulLimit { get; set; } = 2;
+
         #endregion MappedColumns
 
         #region Unmapped Columns

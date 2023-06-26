@@ -82,6 +82,8 @@ namespace Dribbly.Service.Services
                 $"{nameof(TeamModel.Logo)}")
                 .SingleOrDefaultAsync();
 
+            GameModel game = _context.Games.SingleOrDefault(g => g.Id == gameId);
+
             if (team != null)
             {
                 team.Members = team.Members.Where(m => m.DateLeft == null).ToList();
@@ -90,12 +92,14 @@ namespace Dribbly.Service.Services
                 foreach (var member in teamDto.Players)
                 {
                     var shots = _shotsRepository.Get(s => s.TakenById == member.Id && s.GameId == gameId && !s.IsMiss);
-                    var foulCount = await _context.MemberFouls.CountAsync(f => f.PerformedById == member.Id && f.GameId == gameId && f.TeamId == teamId);
+                    var fouls = await _context.MemberFouls.Where(f => f.PerformedById == member.Id && f.GameId == gameId && f.TeamId == teamId).ToListAsync();
                     if (shots.Count() > 0)
                     {
                         int? points = await shots.SumAsync(s => s.Points);
                         member.Points = points ?? 0;
-                        member.Fouls = foulCount;
+                        member.Fouls = fouls.Count();
+                        member.HasFouledOut = member.Fouls >= game.PersonalFoulLimit;
+                        member.IsEjected = fouls.Count(f => f.IsTechnical) >= game.TechnicalFoulLimit;
                     }
                 }
 

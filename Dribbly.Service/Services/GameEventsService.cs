@@ -30,7 +30,7 @@ namespace Dribbly.Service.Services
             _gameEventsRepository = new BaseRepository<GameEventModel>(context.GameEvents);
         }
 
-        public async Task<UpsertFoulResultModel> UpsertFoul(MemberFoulModel foul)
+        public async Task<UpsertFoulResultModel> UpsertFoulAsync(MemberFoulModel foul)
         {
             return await _memberFoulsRepository.UpsertFoul(foul);
         }
@@ -38,6 +38,6 @@ namespace Dribbly.Service.Services
 
     public interface IGameEventsService
     {
-        Task<UpsertFoulResultModel> UpsertFoul(MemberFoulModel foul);
+        Task<UpsertFoulResultModel> UpsertFoulAsync(MemberFoulModel foul);
     }
 }
