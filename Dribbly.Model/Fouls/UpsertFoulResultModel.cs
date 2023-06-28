@@ -16,5 +16,7 @@ namespace Dribbly.Model.Fouls
         /// The player's total number of technical fouls
         /// </summary>
         public int TotalTechnicalFouls { get; set; }
+        public bool IsEjected { get; set; }
+        public bool HasFouledOut { get; set; }
     }
 }

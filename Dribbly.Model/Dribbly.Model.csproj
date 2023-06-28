@@ -75,6 +75,8 @@
     <Compile Include="DTO\GamePlayer.cs" />
     <Compile Include="DTO\GameTeam.cs" />
     <Compile Include="Entities\GameEventModel.cs" />
+    <Compile Include="Entities\GamePlayer.cs" />
+    <Compile Include="Entities\GameTeam.cs" />
     <Compile Include="Enums\FoulTypeEnum.cs" />
     <Compile Include="Enums\GameEventTypeEnum.cs" />
     <Compile Include="Enums\TournamentStatusEnum.cs" />

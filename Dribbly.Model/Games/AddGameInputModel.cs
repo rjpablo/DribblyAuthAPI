@@ -22,10 +22,10 @@ namespace Dribbly.Model.Games
         public bool IsTeam1Open { get; set; }
 
         public bool IsTeam2Open { get; set; }
-        public long TournamentId { get; set; }
+        public long? TournamentId { get; set; }
 
         public bool IsTimed { get; set; }
-        public int? DefaultShotClockDuration { get; set; }
+        public int? DefaultShotClockDuration { get; set; } = 24;
         public int? OffensiveRebondShotClock { get; set; } = 14;
 
         public GameModel ToGameModel()
@@ -35,8 +35,6 @@ namespace Dribbly.Model.Games
                 Start = Start,
                 Title = Title,
                 CourtId = CourtId,
-                Team1Id = Team1Id,
-                Team2Id = Team2Id,
                 TournamentId = TournamentId,
                 IsTimed = IsTimed,
                 DefaultShotClockDuration = DefaultShotClockDuration,

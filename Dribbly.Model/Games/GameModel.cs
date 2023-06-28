@@ -1,6 +1,7 @@
 ﻿using Dribbly.Core.Models;
 using Dribbly.Model.Account;
 using Dribbly.Model.Courts;
+using Dribbly.Model.Entities;
 using Dribbly.Model.Shared;
 using Dribbly.Model.Teams;
 using Dribbly.Model.Tournaments;
@@ -57,7 +58,7 @@ namespace Dribbly.Model.Games
         /// <summary>
         /// The timestamp when the remaining time was last updated
         /// </summary>
-        public DateTime RemainingTimeUpdatedAt { get; set; }
+        public DateTime? RemainingTimeUpdatedAt { get; set; }
 
         /// <summary>
         /// The remaining time (in milliseconds) in the shot clock
@@ -111,9 +112,9 @@ namespace Dribbly.Model.Games
 
         public virtual AccountBasicInfoModel AddedBy { get; set; }
 
-        public virtual TeamModel Team1 { get; set; }
+        public virtual GameTeamModel Team1 { get; set; }
 
-        public virtual TeamModel Team2 { get; set; }
+        public virtual GameTeamModel Team2 { get; set; }
 
         [JsonIgnore] // To avoid "self-referencing loop detected" error
         public TournamentModel Tournament { get; set; }

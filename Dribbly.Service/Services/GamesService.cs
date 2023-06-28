@@ -2,6 +2,7 @@
 using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Account;
+using Dribbly.Model.Entities;
 using Dribbly.Model.Games;
 using Dribbly.Model.Notifications;
 using Dribbly.Model.Play;
@@ -13,6 +14,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,6 +30,7 @@ namespace Dribbly.Service.Services
         private readonly ICourtsRepository _courtsRepo;
         private readonly ICommonService _commonService;
         private readonly ITeamsRepository _teamsRepository;
+        private readonly IBaseRepository<GameModel> _gameRepo;
         private readonly IMemberFoulsRepository _memberFoulsRepository;
         private readonly IShotsRepository _shotsRepository;
 
@@ -48,6 +51,7 @@ namespace Dribbly.Service.Services
             _courtsRepo = courtsRepo;
             _commonService = commonService;
             _teamsRepository = teamsRepository;
+            _gameRepo = new BaseRepository<GameModel>(context.Games);
             _memberFoulsRepository = new MemberFoulsRepository(context);
             _shotsRepository = new ShotsRepository(context);
         }
@@ -59,10 +63,26 @@ namespace Dribbly.Service.Services
 
         public async Task<GameModel> GetGame(long id)
         {
-            GameModel game = await _dbSet.Where(g => g.Id == id).Include(g => g.Court).Include(g => g.Court.PrimaryPhoto)
-                .Include(g => g.Team1).Include(g => g.Team1.Logo)
-                .Include(g => g.Team2).Include(g => g.Team2.Logo)
-                .SingleOrDefaultAsync();
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            //GameModel game = await _dbSet.Where(g => g.Id == id).Include(g => g.Court.PrimaryPhoto)
+            //    .Include(g => g.Team1).Include(g => g.Team1.Team.Logo)
+            //    .Include(g => g.Team2).Include(g => g.Team2.Team.Logo)
+            //    .SingleOrDefaultAsync();
+
+            GameModel game = await _gameRepo.Get(g => g.Id == id,
+                // include team1 details
+                $"{nameof(GameModel.Team1)}.{nameof(GameTeamModel.Team)}.{nameof(TeamModel.Logo)}," +
+                // include team1 players details
+                $"{nameof(GameModel.Team1)}.{nameof(GameTeamModel.Players)}.{nameof(GamePlayerModel.TeamMembership)}" +
+                $".{nameof(TeamMembershipModel.Account)}.{nameof(AccountModel.User)}," +
+                // include team2 details
+                $"{nameof(GameModel.Team2)}.{nameof(GameTeamModel.Team)}.{nameof(TeamModel.Logo)}," +
+                // include team2 players details
+                $"{nameof(GameModel.Team2)}.{nameof(GameTeamModel.Players)}.{nameof(GamePlayerModel.TeamMembership)}" +
+                $".{nameof(TeamMembershipModel.Account)}.{nameof(AccountModel.User)}")
+                .FirstOrDefaultAsync();
             if (game != null)
             {
                 game.AddedBy = await _accountRepo.GetAccountBasicInfo(game.AddedById);
@@ -71,14 +91,20 @@ namespace Dribbly.Service.Services
                     throw new DribblyObjectNotFoundException($"Unable to find account with ID {game.AddedById}.");
                 }
             }
+
+
+            stopWatch.Stop();
+            TimeSpan ts = stopWatch.Elapsed;
+            System.Diagnostics.Debug.WriteLine("**** GetGame execution time: " + ts.TotalSeconds.ToString());
+
             return game;
         }
 
         public async Task<DTO.GameTeam> GetGameTeamAsync(long gameId, long teamId)
         {
             TeamModel team = await _teamsRepository.Get(t => t.Id == teamId,
-                $"{nameof(TeamModel.Members)}.{nameof(TeamMembershipModel.Member)}.{nameof(AccountModel.User)}," +
-                $"{nameof(TeamModel.Members)}.{nameof(TeamMembershipModel.Member)}.{nameof(AccountModel.ProfilePhoto)}," +
+                $"{nameof(TeamModel.Members)}.{nameof(TeamMembershipModel.Account)}.{nameof(AccountModel.User)}," +
+                $"{nameof(TeamModel.Members)}.{nameof(TeamMembershipModel.Account)}.{nameof(AccountModel.ProfilePhoto)}," +
                 $"{nameof(TeamModel.Logo)}")
                 .SingleOrDefaultAsync();
 
@@ -111,7 +137,9 @@ namespace Dribbly.Service.Services
 
         public async Task<UpsertShotResultModel> RecordShotAsync(ShotDetailsInputModel input)
         {
-            GameModel game = GetById(input.Shot.GameId);
+            GameModel game = await _gameRepo.Get(g => g.Id == input.Shot.GameId,
+                $"{nameof(GameModel.Team1)},{nameof(GameModel.Team2)}")
+                .FirstOrDefaultAsync();
 
             if (game == null)
             {
@@ -122,32 +150,47 @@ namespace Dribbly.Service.Services
             {
                 try
                 {
+                    _context.SetEntityState(input.Shot.Game, EntityState.Unchanged);
+                    _shotsRepository.Add(input.Shot);
+                    await _context.SaveChangesAsync();
+
                     var result = new UpsertShotResultModel();
                     if (!input.Shot.IsMiss)
                     {
-                        if (input.Shot.TeamId == game.Team1Id)
+                        if (input.Shot.TeamId == game.Team1.TeamId)
                         {
-                            game.Team1Score += input.Shot.Points;
+                            game.Team1Score = await _context.Shots
+                            .Where(s => s.TeamId == game.Team1.TeamId && s.GameId == input.Shot.GameId && !s.IsMiss)
+                            .SumAsync(s => s.Points);
                         }
-                        else if (input.Shot.TeamId == game.Team2Id)
+                        else if (input.Shot.TeamId == game.Team2.TeamId)
                         {
-                            game.Team2Score += input.Shot.Points;
+                            game.Team2Score = await _context.Shots
+                            .Where(s => s.TeamId == game.Team2.TeamId && s.GameId == input.Shot.GameId && !s.IsMiss)
+                            .SumAsync(s => s.Points);
                         }
 
-                        input.Shot.Game = null;
-                        _shotsRepository.Add(input.Shot);
 
                         Update(game);
                         await _context.SaveChangesAsync();
+                        var gamePlayer = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.IdentityUserId == input.Shot.TakenById
+                        && g.GameId == input.Shot.GameId && g.GameTeam.TeamId == input.Shot.TeamId);
+                        // TODO: add gamePlayer null check
 
                         result.TotalPoints = await _context.Shots
                             .Where(s => s.TakenById == input.Shot.TakenById && s.GameId == input.Shot.GameId && !s.IsMiss)
                             .SumAsync(s => s.Points);
-                        result.Game = game;
+                        gamePlayer.Points = result.TotalPoints;
+                        await _context.SaveChangesAsync();
                     }
+
+                    result.Team1Score = game.Team1Score;
+                    result.Team2Score = game.Team2Score;
+
 
                     if (input.WithFoul)
                     {
+                        input.Foul.Game = game;
                         result.FoulResult = await _memberFoulsRepository.UpsertFoul(input.Foul);
                     }
 
@@ -176,8 +219,8 @@ namespace Dribbly.Service.Services
         public async Task EndGameAsync(long gameId, long winningTeamId)
         {
             GameModel game = await _context.Games.SingleOrDefaultAsync(g => g.Id == gameId);
-            if ((game.Team1Score > game.Team2Score && winningTeamId != game.Team1Id)
-                || (game.Team2Score > game.Team1Score && winningTeamId != game.Team2Id))
+            if ((game.Team1Score > game.Team2Score/* && winningTeamId != game.Team1Id*/)
+                || (game.Team2Score > game.Team1Score/* && winningTeamId != game.Team2Id*/))
             {
                 throw new DribblyInvalidOperationException("Wrong winning team was provided.");
             }
@@ -295,6 +338,24 @@ namespace Dribbly.Service.Services
             }
         }
 
+        public async Task StartGameAsync(long gameId)
+        {
+            GameModel game = await _context.Games.SingleOrDefaultAsync(g => g.Id == gameId);
+            var currentUserId = _securityUtility.GetUserId();
+            if (game.Status == GameStatusEnum.WaitingToStart)
+            {
+                game.Status = GameStatusEnum.Started;
+                game.Start = DateTime.UtcNow;
+                await _commonService.AddUserGameActivity(UserActivityTypeEnum.StartGame, game.Id);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new DribblyInvalidOperationException("Attempted starting a game with a status of " + game.Status,
+                    friendlyMessageKey: "app.Error_Common_InvalidOperationTryReload");
+            }
+        }
+
         public async Task<GameModel> AddGameAsync(AddGameInputModel input)
         {
             using (var transaction = _context.Database.BeginTransaction())
@@ -307,43 +368,72 @@ namespace Dribbly.Service.Services
                     game.AddedById = account.Id;
                     game.Status = GameStatusEnum.WaitingToStart;
                     game.EntityStatus = EntityStatusEnum.Active;
+                    game.DateAdded = DateTime.UtcNow;
                     if (game.IsTimed)
                     {
                         game.RemainingTime = 12 * 60 * 1000; //12mins
                         game.IsLive = false;
                         game.RemainingShotTime = game.DefaultShotClockDuration * 1000;
                     }
-
-                    if (input.IsTeam1Open)
-                    {
-                        TeamModel team1 = new TeamModel
-                        {
-                            AddedById = account.Id,
-                            DateAdded = DateTime.UtcNow,
-                            IsOpen = true,
-                            ManagedById = account.Id
-                        };
-                        _context.Teams.Add(team1);
-                        _context.SaveChanges();
-                        game.Team1Id = team1.Id;
-                    }
-
-                    if (input.IsTeam2Open)
-                    {
-                        TeamModel team2 = new TeamModel
-                        {
-                            AddedById = account.Id,
-                            DateAdded = DateTime.UtcNow,
-                            IsOpen = true,
-                            ManagedById = account.Id
-                        };
-                        _context.Teams.Add(team2);
-                        _context.SaveChanges();
-                        game.Team2Id = team2.Id;
-                    }
-
                     Add(game);
                     _context.SaveChanges();
+
+                    #region Assign Team1 and Players
+                    var team1 = new Model.Entities.GameTeamModel
+                    {
+                        DateAdded = DateTime.UtcNow,
+                        TeamId = input.Team1Id,
+                        GameId = game.Id
+                    };
+                    _context.GameTeams.Add(team1);
+                    _context.SaveChanges();
+
+                    var team1Players = await _context.TeamMembers.Include(m => m.Account)
+                        .Where(m => m.TeamId == input.Team1Id && !m.DateLeft.HasValue)
+                        .ToListAsync();
+                    foreach (var p in team1Players)
+                    {
+                        _context.GamePlayers.Add(new Model.Entities.GamePlayerModel
+                        {
+                            DateAdded = DateTime.UtcNow,
+                            PlayerId = p.Id,
+                            GameTeamId = team1.Id,
+                            GameId = game.Id
+                        });
+                    }
+                    _context.SaveChanges();
+                    #endregion
+
+                    #region Assign Team2 and Players
+                    var team2 = new Model.Entities.GameTeamModel
+                    {
+                        DateAdded = DateTime.UtcNow,
+                        TeamId = input.Team2Id,
+                        GameId = game.Id
+                    };
+                    _context.GameTeams.Add(team2);
+                    _context.SaveChanges();
+
+                    var team2Players = await _context.TeamMembers.Include(m => m.Account)
+                        .Where(m => m.TeamId == input.Team2Id && !m.DateLeft.HasValue)
+                        .ToListAsync();
+                    foreach (var p in team2Players)
+                    {
+                        _context.GamePlayers.Add(new Model.Entities.GamePlayerModel
+                        {
+                            DateAdded = DateTime.UtcNow,
+                            PlayerId = p.Id,
+                            GameTeamId = team2.Id,
+                            GameId = game.Id
+                        });
+                    }
+                    _context.SaveChanges();
+                    #endregion
+
+                    game.Team1Id = team1.Id;
+                    game.Team2Id = team2.Id;
+                    _context.SaveChanges();
+
                     transaction.Commit();
                     await _commonService.AddUserGameActivity(UserActivityTypeEnum.AddGame, game.Id);
                     NotificationTypeEnum Type = game.AddedById == account.Id ?
@@ -359,7 +449,11 @@ namespace Dribbly.Service.Services
                         Type = Type
                     });
 
-                    return game;
+                    return _gameRepo.Get(g => g.Id == game.Id,
+                        $"{nameof(GameModel.Team1)}.{nameof(GameTeamModel.Players)}.{nameof(GamePlayerModel.TeamMembership)}" +
+                        $".{nameof(TeamMembershipModel.Account)}.{nameof(AccountModel.User)}," +
+                        $"{nameof(GameModel.Team2)}.{nameof(GameTeamModel.Players)}.{nameof(GamePlayerModel.TeamMembership)}" +
+                        $".{nameof(TeamMembershipModel.Account)}.{nameof(AccountModel.User)}").Single();
                 }
                 catch (Exception e)
                 {
@@ -420,8 +514,8 @@ namespace Dribbly.Service.Services
             game.End = input.End;
             game.Title = input.Title;
             game.CourtId = input.CourtId;
-            game.Team1Id = input.Team1Id;
-            game.Team2Id = input.Team2Id;
+            //game.Team1Id = input.Team1Id;
+            //game.Team2Id = input.Team2Id;
             game.IsTimed = input.IsTimed;
             if (game.IsTimed && game.Status == GameStatusEnum.WaitingToStart)
             {

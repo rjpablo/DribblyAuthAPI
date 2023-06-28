@@ -179,8 +179,8 @@ namespace Dribbly.Service.Services
 
         public IQueryable<TeamMembershipModel> GetAllMembers(long teamId)
         {
-            return _context.TeamMembers.Include(m => m.Member).Include(m => m.Member.User)
-                .Include(m => m.Member.ProfilePhoto).Where(m => m.TeamId == teamId);
+            return _context.TeamMembers.Include(m => m.Account).Include(m => m.Account.User)
+                .Include(m => m.Account.ProfilePhoto).Where(m => m.TeamId == teamId);
         }
 
         public async Task<UserTeamRelationModel> GetUserTeamRelationAsync(long teamId, long accountId)

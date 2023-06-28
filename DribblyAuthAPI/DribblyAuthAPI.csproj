@@ -559,6 +559,26 @@
     <Compile Include="Migrations\202306260411386_ModifyTable_Games_AddColumn_PersonalFoulLimit_and_TechnicalFoulLimit.Designer.cs">
       <DependentUpon>202306260411386_ModifyTable_Games_AddColumn_PersonalFoulLimit_and_TechnicalFoulLimit.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202306261254435_AddTables_GameTeams_and_GamePlayers.cs" />
+    <Compile Include="Migrations\202306261254435_AddTables_GameTeams_and_GamePlayers.Designer.cs">
+      <DependentUpon>202306261254435_AddTables_GameTeams_and_GamePlayers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306261447460_ModifyTable_Games_RemoveColumns_Team1Id_and_Team2Id.cs" />
+    <Compile Include="Migrations\202306261447460_ModifyTable_Games_RemoveColumns_Team1Id_and_Team2Id.Designer.cs">
+      <DependentUpon>202306261447460_ModifyTable_Games_RemoveColumns_Team1Id_and_Team2Id.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306261457296_ModifyTable_Games_AddColumns_Team1Id_and_Team2Id.cs" />
+    <Compile Include="Migrations\202306261457296_ModifyTable_Games_AddColumns_Team1Id_and_Team2Id.Designer.cs">
+      <DependentUpon>202306261457296_ModifyTable_Games_AddColumns_Team1Id_and_Team2Id.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306261518111_ModifyTable_GamePlayers_DeleteColumns_Name_and_JerseyNo.cs" />
+    <Compile Include="Migrations\202306261518111_ModifyTable_GamePlayers_DeleteColumns_Name_and_JerseyNo.Designer.cs">
+      <DependentUpon>202306261518111_ModifyTable_GamePlayers_DeleteColumns_Name_and_JerseyNo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306261559035_ModifyTable_Games_Make_RemainingTimeUpdatedAt_Column_Nullable.cs" />
+    <Compile Include="Migrations\202306261559035_ModifyTable_Games_Make_RemainingTimeUpdatedAt_Column_Nullable.Designer.cs">
+      <DependentUpon>202306261559035_ModifyTable_Games_Make_RemainingTimeUpdatedAt_Column_Nullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -864,6 +884,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306260411386_ModifyTable_Games_AddColumn_PersonalFoulLimit_and_TechnicalFoulLimit.resx">
       <DependentUpon>202306260411386_ModifyTable_Games_AddColumn_PersonalFoulLimit_and_TechnicalFoulLimit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306261254435_AddTables_GameTeams_and_GamePlayers.resx">
+      <DependentUpon>202306261254435_AddTables_GameTeams_and_GamePlayers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306261447460_ModifyTable_Games_RemoveColumns_Team1Id_and_Team2Id.resx">
+      <DependentUpon>202306261447460_ModifyTable_Games_RemoveColumns_Team1Id_and_Team2Id.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306261457296_ModifyTable_Games_AddColumns_Team1Id_and_Team2Id.resx">
+      <DependentUpon>202306261457296_ModifyTable_Games_AddColumns_Team1Id_and_Team2Id.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306261518111_ModifyTable_GamePlayers_DeleteColumns_Name_and_JerseyNo.resx">
+      <DependentUpon>202306261518111_ModifyTable_GamePlayers_DeleteColumns_Name_and_JerseyNo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306261559035_ModifyTable_Games_Make_RemainingTimeUpdatedAt_Column_Nullable.resx">
+      <DependentUpon>202306261559035_ModifyTable_Games_Make_RemainingTimeUpdatedAt_Column_Nullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

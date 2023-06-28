@@ -1,7 +1,9 @@
 ﻿using Dribbly.Core.Models;
 using Dribbly.Model.Account;
+using Dribbly.Model.Courts;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,25 +14,26 @@ namespace Dribbly.Model.Teams
     {
         [ForeignKey(nameof(Team))]
         public long TeamId { get; set; }
-        [ForeignKey(nameof(Member))]
+        [ForeignKey(nameof(Account))]
         public long MemberAccountId { get; set; }
         /// <summary>
         /// If null, it means that the player is still a member of the team
         /// </summary>
         public DateTime? DateLeft { get; set; }
         public PlayerPositionEnum Position { get; set; }
-        public AccountModel Member { get; set; }
+        public AccountModel Account { get; set; }
+        [JsonIgnore]
         public TeamModel Team { get; set; }
 
-        public EntityTypeEnum EntityType => Member.EntityType;
+        public EntityTypeEnum EntityType => Account.EntityType;
 
-        public string Name => Member.Name;
+        public string Name => Account.Name;
 
-        public string IconUrl => Member.IconUrl;
+        public string IconUrl => Account.IconUrl;
 
-        public EntityStatusEnum EntityStatus { get => Member.EntityStatus; }
+        public EntityStatusEnum EntityStatus { get => Account.EntityStatus; }
 
-        public string Description => Member.Description;
+        public string Description => Account.Description;
         public int JerseyNo { get; set; }
 
         [NotMapped]
@@ -44,5 +47,7 @@ namespace Dribbly.Model.Teams
 
         [NotMapped]
         public string PrimaryPhotoUrl => IconUrl;
+        [NotMapped]
+        public PhotoModel ProfilePhoto { get => Account?.ProfilePhoto; }
     }
 }

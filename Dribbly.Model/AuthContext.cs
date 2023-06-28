@@ -38,6 +38,8 @@ namespace Dribbly.Model
         DbSet<PhotoModel> Photos { get; set; }
         DbSet<BookingModel> Bookings { get; set; }
         DbSet<GameModel> Games { get; set; }
+        DbSet<GameTeamModel> GameTeams { get; set; }
+        DbSet<GamePlayerModel> GamePlayers { get; set; }
         DbSet<FoulModel> Fouls { get; set; }
         DbSet<MemberFoulModel> MemberFouls { get; set; }
         DbSet<GameEventModel> GameEvents { get; set; }
@@ -56,7 +58,6 @@ namespace Dribbly.Model
         DbSet<PostModel> Posts { get; set; }
         IDbSet<ApplicationUser> Users { get; set; }
         DbSet<IndexedEntityModel> IndexedEntities { get; set; }
-        DbEntityEntry Entry(object entity);
 
         #region User Activites
         DbSet<UserActivityModel> UserActivities { get; set; }
@@ -90,6 +91,8 @@ namespace Dribbly.Model
         #endregion
 
         Database Database { get; }
+        DbEntityEntry Entry(object entity);
+        DbEntityEntry SetEntityState(object entity, EntityState state);
         Task<int> SaveChangesAsync();
         int SaveChanges();
     }
@@ -119,6 +122,8 @@ namespace Dribbly.Model
         public DbSet<CourtPhotoModel> CourtPhotos { get; set; }
         public DbSet<BookingModel> Bookings { get; set; }
         public DbSet<GameModel> Games { get; set; }
+        public DbSet<GameTeamModel> GameTeams { get; set; }
+        public DbSet<GamePlayerModel> GamePlayers { get; set; }
         public DbSet<FoulModel> Fouls { get; set; }
         public DbSet<MemberFoulModel> MemberFouls { get; set; }
         public DbSet<GameEventModel> GameEvents { get; set; }
@@ -137,6 +142,15 @@ namespace Dribbly.Model
         public DbSet<CourtReviewModel> CourtReivews { get; set; }
         public DbSet<PostModel> Posts { get; set; }
         public DbSet<IndexedEntityModel> IndexedEntities { get; set; }
+
+        public DbEntityEntry SetEntityState(object entity, EntityState state)
+        {
+            if (entity == null) return null;
+
+            var entry = base.Entry(entity);
+            entry.State = state;
+            return entry;
+        }
 
         #region User Activites
         public DbSet<UserActivityModel> UserActivities { get; set; }

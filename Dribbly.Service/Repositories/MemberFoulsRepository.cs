@@ -35,9 +35,9 @@ namespace Dribbly.Service.Repositories
             foul.AdditionalData = JsonConvert.SerializeObject(new { foulName = foul.Foul.Name });
 
             // prevent EF from re-adding these objects
-            foul.Foul = null;
-            foul.PerformedBy = null;
-            foul.Game = null;
+            _context.SetEntityState(foul.Foul, EntityState.Unchanged);
+            _context.SetEntityState(foul.PerformedBy, EntityState.Unchanged);
+            _context.SetEntityState(foul.Game, EntityState.Unchanged);
 
             _context.MemberFouls.Add(foul);
             await _context.SaveChangesAsync();
@@ -46,10 +46,22 @@ namespace Dribbly.Service.Repositories
                 .Where(f => f.PerformedById == foul.PerformedById && f.GameId == foul.GameId)
                 .ToListAsync();
 
+            // TODO: add game null check
+            var gamePlayer = _context.GamePlayers.SingleOrDefault(g=>g.TeamMembership.Account.IdentityUserId == foul.PerformedById
+            && g.GameTeam.TeamId == foul.TeamId && g.GameId == foul.GameId);
+            var game = _context.Games.SingleOrDefault(g=>g.Id == foul.GameId);
+            // TODO: add gameplyer null check
+            gamePlayer.Fouls = fouls.Count;
+            gamePlayer.HasFouledOut = fouls.Count >= game.PersonalFoulLimit;
+            gamePlayer.IsEjected = fouls.Count(f => f.IsTechnical) >= game.TechnicalFoulLimit;
+            await _context.SaveChangesAsync();
+
             var result = new UpsertFoulResultModel
             {
-                TotalPersonalFouls = fouls.Count,
-                TotalTechnicalFouls = fouls.Count(f => f.IsTechnical)
+                TotalPersonalFouls = gamePlayer.Fouls,
+                TotalTechnicalFouls = fouls.Count(f => f.IsTechnical),
+                IsEjected = gamePlayer.IsEjected,
+                HasFouledOut = gamePlayer.HasFouledOut
             };
             return result;
         }

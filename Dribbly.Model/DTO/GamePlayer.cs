@@ -23,11 +23,11 @@ namespace Dribbly.Service.DTO
 
         public GamePlayer(TeamMembershipModel player)
         {
-            Id = player.Member.IdentityUserId;
-            Name = player.Member.Name;
+            Id = player.Account.IdentityUserId;
+            Name = player.Account.Name;
             JerseyNo = player.JerseyNo;
             TeamId = player.TeamId;
-            ProfilePhoto = player.Member.ProfilePhoto;
+            ProfilePhoto = player.Account.ProfilePhoto;
         }
     }
 }
