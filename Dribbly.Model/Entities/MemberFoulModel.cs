@@ -11,6 +11,7 @@ namespace Dribbly.Model.Entities
         public int FoulId { get; set; }
         public bool IsOffensive { get; set; }
         public bool IsTechnical { get; set; }
+        public bool IsFlagrant { get; set; }
 
         #region Navigational properties
         public FoulModel Foul { get; set; }

@@ -1,5 +1,6 @@
 ﻿using Dribbly.Model;
 using Dribbly.Model.Entities;
+using Dribbly.Model.Enums;
 using Dribbly.Model.Fouls;
 using Dribbly.Model.Games;
 using Dribbly.Model.Teams;
@@ -16,7 +17,8 @@ namespace Dribbly.Service.Repositories
     {
         private readonly IAuthContext _context;
 
-        public MemberFoulsRepository(IAuthContext context) : base(context.MemberFouls) {
+        public MemberFoulsRepository(IAuthContext context) : base(context.MemberFouls)
+        {
             _context = context;
         }
 
@@ -33,6 +35,7 @@ namespace Dribbly.Service.Repositories
             }
 
             foul.AdditionalData = JsonConvert.SerializeObject(new { foulName = foul.Foul.Name });
+            foul.IsFlagrant = foul.Foul.IsFlagrant;
 
             // prevent EF from re-adding these objects
             _context.SetEntityState(foul.Foul, EntityState.Unchanged);
@@ -47,20 +50,22 @@ namespace Dribbly.Service.Repositories
                 .ToListAsync();
 
             // TODO: add game null check
-            var gamePlayer = _context.GamePlayers.SingleOrDefault(g=>g.TeamMembership.Account.IdentityUserId == foul.PerformedById
+            var gamePlayer = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.IdentityUserId == foul.PerformedById
             && g.GameTeam.TeamId == foul.TeamId && g.GameId == foul.GameId);
-            var game = _context.Games.SingleOrDefault(g=>g.Id == foul.GameId);
+            var game = _context.Games.SingleOrDefault(g => g.Id == foul.GameId);
             // TODO: add gameplyer null check
             gamePlayer.Fouls = fouls.Count;
             gamePlayer.HasFouledOut = fouls.Count >= game.PersonalFoulLimit;
-            gamePlayer.IsEjected = fouls.Count(f => f.IsTechnical) >= game.TechnicalFoulLimit;
+            gamePlayer.EjectionStatus = foul.Foul.Name == "Flagrant 2" ? EjectionStatusEnum.EjectedDueToFlagrantFoul2 :
+                fouls.Count(f => f.IsFlagrant) >= 2 ? EjectionStatusEnum.EjectedDueNumberOfFlagrantFouls :
+                EjectionStatusEnum.NotEjected;
             await _context.SaveChangesAsync();
 
             var result = new UpsertFoulResultModel
             {
                 TotalPersonalFouls = gamePlayer.Fouls,
                 TotalTechnicalFouls = fouls.Count(f => f.IsTechnical),
-                IsEjected = gamePlayer.IsEjected,
+                EjectionStatus = gamePlayer.EjectionStatus,
                 HasFouledOut = gamePlayer.HasFouledOut
             };
             return result;

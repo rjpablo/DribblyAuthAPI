@@ -1,5 +1,6 @@
 ﻿using Dribbly.Core.Models;
 using Dribbly.Model.Courts;
+using Dribbly.Model.Enums;
 using Dribbly.Model.Games;
 using Dribbly.Model.Teams;
 using Newtonsoft.Json;
@@ -29,8 +30,8 @@ namespace Dribbly.Model.Entities
         public int Assists { get; set; }
         [ForeignKey(nameof(GameTeam))]
         public long GameTeamId { get; set; }
-        public bool IsEjected { get; set; }
         public bool HasFouledOut { get; set; }
+        public EjectionStatusEnum EjectionStatus { get; set; } = EjectionStatusEnum.NotEjected;
         public PhotoModel ProfilePhoto { get => TeamMembership.Account.ProfilePhoto; }
         public TeamMembershipModel TeamMembership { get; set; }
         [JsonIgnore]

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dribbly.Model.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,5 +19,6 @@ namespace Dribbly.Model.Fouls
         public int TotalTechnicalFouls { get; set; }
         public bool IsEjected { get; set; }
         public bool HasFouledOut { get; set; }
+        public EjectionStatusEnum EjectionStatus { get; set; }
     }
 }
