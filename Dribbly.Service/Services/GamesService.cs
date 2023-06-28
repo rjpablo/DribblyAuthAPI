@@ -500,7 +500,7 @@ namespace Dribbly.Service.Services
         public async Task UpdateRemainingTimeAsync(UpdateGameTimeRemainingInput input)
         {
             GameModel game = await _dbSet.SingleOrDefaultAsync(g => g.Id == input.GameId);
-            if (game.RemainingTimeUpdatedAt < input.UpdatedAt)
+            if (!game.RemainingTimeUpdatedAt.HasValue || game.RemainingTimeUpdatedAt < input.UpdatedAt)
             {
                 game.RemainingTime = input.TimeRemaining;
                 game.RemainingTimeUpdatedAt = input.UpdatedAt;

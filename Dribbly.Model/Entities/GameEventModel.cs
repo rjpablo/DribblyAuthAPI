@@ -19,6 +19,11 @@ namespace Dribbly.Model.Entities
         public long PerformedById { get; set; }
         public GameEventTypeEnum Type { get; set; }
         public string AdditionalData { get; set; }
+        public int? Period { get; set; }
+        /// <summary>
+        /// The time on the game clock when the event happened
+        /// </summary>
+        public int? ClockTime { get; set; }
         public TeamModel Team { get; set; }
         [JsonIgnore]
         public GameModel Game { get; set; }

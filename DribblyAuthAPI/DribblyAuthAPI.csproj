@@ -595,6 +595,10 @@
     <Compile Include="Migrations\202306281350048_AddTable_Shots1.Designer.cs">
       <DependentUpon>202306281350048_AddTable_Shots1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202306281422030_ModifyTable_GameEvents_AddColumns_Period_and_ClockTime.cs" />
+    <Compile Include="Migrations\202306281422030_ModifyTable_GameEvents_AddColumns_Period_and_ClockTime.Designer.cs">
+      <DependentUpon>202306281422030_ModifyTable_GameEvents_AddColumns_Period_and_ClockTime.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -927,6 +931,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306281350048_AddTable_Shots1.resx">
       <DependentUpon>202306281350048_AddTable_Shots1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306281422030_ModifyTable_GameEvents_AddColumns_Period_and_ClockTime.resx">
+      <DependentUpon>202306281422030_ModifyTable_GameEvents_AddColumns_Period_and_ClockTime.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
