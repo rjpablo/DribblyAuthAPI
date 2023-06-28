@@ -81,7 +81,10 @@ namespace Dribbly.Service.Services
                 $"{nameof(GameModel.Team2)}.{nameof(GameTeamModel.Team)}.{nameof(TeamModel.Logo)}," +
                 // include team2 players details
                 $"{nameof(GameModel.Team2)}.{nameof(GameTeamModel.Players)}.{nameof(GamePlayerModel.TeamMembership)}" +
-                $".{nameof(TeamMembershipModel.Account)}.{nameof(AccountModel.User)}")
+                $".{nameof(TeamMembershipModel.Account)}.{nameof(AccountModel.User)}," +
+                // include gameevents for play-by-play
+                $"{nameof(GameModel.GameEvents)}.{nameof(GameEventModel.PerformedBy)}.{nameof(AccountModel.ProfilePhoto)}," +
+                $"{nameof(GameModel.GameEvents)}.{nameof(GameEventModel.Team)},")
                 .FirstOrDefaultAsync();
             if (game != null)
             {
@@ -117,7 +120,7 @@ namespace Dribbly.Service.Services
                 List<Task> playerTasks = new List<Task>();
                 foreach (var member in teamDto.Players)
                 {
-                    var shots = _shotsRepository.Get(s => s.TakenById == member.Id && s.GameId == gameId && !s.IsMiss);
+                    var shots = _shotsRepository.Get(s => s.PerformedById == member.Id && s.GameId == gameId && !s.IsMiss);
                     var fouls = await _context.MemberFouls.Where(f => f.PerformedById == member.Id && f.GameId == gameId && f.TeamId == teamId).ToListAsync();
                     if (shots.Count() > 0)
                     {
@@ -151,6 +154,11 @@ namespace Dribbly.Service.Services
                 try
                 {
                     _context.SetEntityState(input.Shot.Game, EntityState.Unchanged);
+                    input.Shot.Type = input.Shot.IsMiss ?
+                        Model.Enums.GameEventTypeEnum.ShotMissed :
+                        Model.Enums.GameEventTypeEnum.ShotMade;
+                    input.Shot.AdditionalData = JsonConvert.SerializeObject(new { points = input.Shot.Points });
+                    input.Shot.DateAdded = DateTime.UtcNow;
                     _shotsRepository.Add(input.Shot);
                     await _context.SaveChangesAsync();
 
@@ -173,12 +181,12 @@ namespace Dribbly.Service.Services
 
                         Update(game);
                         await _context.SaveChangesAsync();
-                        var gamePlayer = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.IdentityUserId == input.Shot.TakenById
+                        var gamePlayer = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.IdentityUserId == input.Shot.PerformedById
                         && g.GameId == input.Shot.GameId && g.GameTeam.TeamId == input.Shot.TeamId);
                         // TODO: add gamePlayer null check
 
                         result.TotalPoints = await _context.Shots
-                            .Where(s => s.TakenById == input.Shot.TakenById && s.GameId == input.Shot.GameId && !s.IsMiss)
+                            .Where(s => s.PerformedById == input.Shot.PerformedById && s.GameId == input.Shot.GameId && !s.IsMiss)
                             .SumAsync(s => s.Points);
                         gamePlayer.Points = result.TotalPoints;
                         await _context.SaveChangesAsync();

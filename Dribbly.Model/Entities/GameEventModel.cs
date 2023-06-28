@@ -3,6 +3,7 @@ using Dribbly.Model.Account;
 using Dribbly.Model.Enums;
 using Dribbly.Model.Games;
 using Dribbly.Model.Teams;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dribbly.Model.Entities
@@ -19,6 +20,7 @@ namespace Dribbly.Model.Entities
         public GameEventTypeEnum Type { get; set; }
         public string AdditionalData { get; set; }
         public TeamModel Team { get; set; }
+        [JsonIgnore]
         public GameModel Game { get; set; }
         public AccountModel PerformedBy { get; set; }
     }

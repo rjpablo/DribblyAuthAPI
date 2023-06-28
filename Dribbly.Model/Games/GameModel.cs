@@ -8,6 +8,7 @@ using Dribbly.Model.Tournaments;
 using Dribbly.Service.Enums;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -93,6 +94,10 @@ namespace Dribbly.Model.Games
         public int TechnicalFoulLimit { get; set; } = 2;
 
         #endregion MappedColumns
+
+        #region Collections
+        public ICollection<GameEventModel> GameEvents { get; set; }
+        #endregion
 
         #region Unmapped Columns
         [NotMapped]
