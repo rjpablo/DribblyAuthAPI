@@ -615,6 +615,8 @@
   <ItemGroup>
     <Content Include="Files\Web.config" />
     <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\Folder_Debug.pubxml" />
+    <None Include="Properties\PublishProfiles\FTP_FhApiDev.pubxml" />
     <None Include="Properties\PublishProfiles\Local IIS %28DribblyAuthAPI%29.pubxml" />
     <None Include="Properties\PublishProfiles\Somee File System.pubxml" />
     <None Include="Web.Debug.config">
