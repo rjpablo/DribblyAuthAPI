@@ -27,6 +27,7 @@ namespace Dribbly.Model.Entities
         public int Points { get; set; }
         public int Rebounds { get; set; }
         public int Fouls { get; set; }
+        public int Blocks { get; set; }
         public int Assists { get; set; }
         [ForeignKey(nameof(GameTeam))]
         public long GameTeamId { get; set; }
