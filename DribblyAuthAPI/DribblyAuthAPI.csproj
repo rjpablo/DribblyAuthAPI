@@ -603,6 +603,10 @@
     <Compile Include="Migrations\202306290448537_ModifyTable_GamePlayers_AddColumn_Blocks.Designer.cs">
       <DependentUpon>202306290448537_ModifyTable_GamePlayers_AddColumn_Blocks.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202306290839010_ModifyTable_GameEvents_AddColumn_ShotId.cs" />
+    <Compile Include="Migrations\202306290839010_ModifyTable_GameEvents_AddColumn_ShotId.Designer.cs">
+      <DependentUpon>202306290839010_ModifyTable_GameEvents_AddColumn_ShotId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -941,6 +945,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306290448537_ModifyTable_GamePlayers_AddColumn_Blocks.resx">
       <DependentUpon>202306290448537_ModifyTable_GamePlayers_AddColumn_Blocks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306290839010_ModifyTable_GameEvents_AddColumn_ShotId.resx">
+      <DependentUpon>202306290839010_ModifyTable_GameEvents_AddColumn_ShotId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

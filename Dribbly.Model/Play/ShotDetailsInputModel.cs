@@ -18,5 +18,7 @@ namespace Dribbly.Model.Play
         public GameEventModel Block { get; set; }
         public bool WithAssist { get; set; }
         public GameEventModel Assist { get; set; }
+        public bool WithRebound { get; set; }
+        public GameEventModel Rebound { get; set; }
     }
 }

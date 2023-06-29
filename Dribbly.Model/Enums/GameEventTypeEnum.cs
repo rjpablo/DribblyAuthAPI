@@ -13,5 +13,7 @@ namespace Dribbly.Model.Enums
         FoulCommitted = 3,
         ShotBlock = 4,
         Assist = 5,
+        OffensiveRebound = 6,
+        DefensiveRebound = 7
     }
 }

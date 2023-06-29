@@ -14,5 +14,6 @@ namespace Dribbly.Model.Play
         public int Team2Score { get; set; }
         public BlockResultModel BlockResult { get; set; }
         public AssistResultModel AssistResult { get; set; }
+        public ReboundResultModel ReboundResult { get; set; }
     }
 }

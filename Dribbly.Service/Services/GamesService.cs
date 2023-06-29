@@ -202,11 +202,13 @@ namespace Dribbly.Service.Services
                     if (input.WithFoul)
                     {
                         input.Foul.Game = game;
+                        input.Foul.ShotId = input.Shot.Id;
                         result.FoulResult = await _memberFoulsRepository.UpsertFoul(input.Foul);
                     }
 
                     if (input.WithBlock)
                     {
+                        input.Block.ShotId = input.Shot.Id;
                         _context.SetEntityState(input.Block.PerformedBy, EntityState.Unchanged);
                         _gameEventsRepo.Upsert(input.Block);
                         await _context.SaveChangesAsync();
@@ -223,6 +225,7 @@ namespace Dribbly.Service.Services
 
                     if (input.WithAssist)
                     {
+                        input.Assist.ShotId = input.Shot.Id;
                         _context.SetEntityState(input.Assist.PerformedBy, EntityState.Unchanged);
                         _gameEventsRepo.Upsert(input.Assist);
                         await _context.SaveChangesAsync();
@@ -233,6 +236,24 @@ namespace Dribbly.Service.Services
                         result.AssistResult = new AssistResultModel
                         {
                             TotalAssists = assistedBy.Assists
+                        };
+                        await _context.SaveChangesAsync();
+                    }
+
+                    if (input.WithRebound)
+                    {
+                        input.Rebound.ShotId = input.Shot.Id;
+                        _context.SetEntityState(input.Rebound.PerformedBy, EntityState.Unchanged);
+                        _gameEventsRepo.Upsert(input.Rebound);
+                        await _context.SaveChangesAsync();
+                        var reboundedBy = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.Id == input.Rebound.PerformedById
+                                                && g.GameId == input.Rebound.GameId && g.GameTeam.TeamId == input.Rebound.TeamId);
+                        reboundedBy.Rebounds = await _context.GameEvents
+                            .CountAsync(e => (e.Type == GameEventTypeEnum.OffensiveRebound || e.Type == GameEventTypeEnum.DefensiveRebound)
+                            && e.PerformedById == input.Rebound.PerformedById && e.GameId == input.Rebound.GameId);
+                        result.ReboundResult = new ReboundResultModel
+                        {
+                            TotalRebounds = reboundedBy.Rebounds
                         };
                         await _context.SaveChangesAsync();
                     }
