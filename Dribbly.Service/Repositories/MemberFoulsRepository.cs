@@ -50,7 +50,7 @@ namespace Dribbly.Service.Repositories
                 .ToListAsync();
 
             // TODO: add game null check
-            var gamePlayer = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.IdentityUserId == foul.PerformedById
+            var gamePlayer = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.Id == foul.PerformedById
             && g.GameTeam.TeamId == foul.TeamId && g.GameId == foul.GameId);
             var game = _context.Games.SingleOrDefault(g => g.Id == foul.GameId);
             // TODO: add gameplyer null check

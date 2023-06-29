@@ -185,7 +185,7 @@ namespace Dribbly.Service.Services
                         Update(game);
                         await _context.SaveChangesAsync();
 
-                        var gamePlayer = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.IdentityUserId == input.Shot.PerformedById
+                        var gamePlayer = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.Id == input.Shot.PerformedById
                                                 && g.GameId == input.Shot.GameId && g.GameTeam.TeamId == input.Shot.TeamId);
                         // TODO: add gamePlayer null check
 
@@ -210,13 +210,29 @@ namespace Dribbly.Service.Services
                         _context.SetEntityState(input.Block.PerformedBy, EntityState.Unchanged);
                         _gameEventsRepo.Upsert(input.Block);
                         await _context.SaveChangesAsync();
-                        var blocker = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.IdentityUserId == input.Block.PerformedById
+                        var blocker = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.Id == input.Block.PerformedById
                                                 && g.GameId == input.Shot.GameId && g.GameTeam.TeamId == input.Block.TeamId);
                         blocker.Blocks = await _context.GameEvents.CountAsync(e => e.Type == GameEventTypeEnum.ShotBlock
                         && e.PerformedById == input.Block.PerformedById && e.GameId == input.Block.GameId);
                         result.BlockResult = new BlockResultModel
                         {
                             TotalBlocks = blocker.Blocks
+                        };
+                        await _context.SaveChangesAsync();
+                    }
+
+                    if (input.WithAssist)
+                    {
+                        _context.SetEntityState(input.Assist.PerformedBy, EntityState.Unchanged);
+                        _gameEventsRepo.Upsert(input.Assist);
+                        await _context.SaveChangesAsync();
+                        var assistedBy = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.Id == input.Assist.PerformedById
+                                                && g.GameId == input.Shot.GameId && g.GameTeam.TeamId == input.Assist.TeamId);
+                        assistedBy.Assists = await _context.GameEvents.CountAsync(e => e.Type == GameEventTypeEnum.Assist
+                        && e.PerformedById == input.Assist.PerformedById && e.GameId == input.Assist.GameId);
+                        result.AssistResult = new AssistResultModel
+                        {
+                            TotalAssists = assistedBy.Assists
                         };
                         await _context.SaveChangesAsync();
                     }

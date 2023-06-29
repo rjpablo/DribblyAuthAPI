@@ -103,6 +103,7 @@
     <Compile Include="Notifications\JoinTeamRequestNotificationModel.cs" />
     <Compile Include="Notifications\UpdateGameNotificationModel.cs" />
     <Compile Include="Notifications\NewGameNotificationModel.cs" />
+    <Compile Include="Play\AssistResultModel.cs" />
     <Compile Include="Play\BlockResultModel.cs" />
     <Compile Include="Play\ShotDetailsInputModel.cs" />
     <Compile Include="Play\ShotModel.cs" />

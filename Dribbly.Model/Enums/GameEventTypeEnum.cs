@@ -11,6 +11,7 @@ namespace Dribbly.Model.Enums
         ShotMade = 1,
         ShotMissed = 2,
         FoulCommitted = 3,
-        ShotBlock = 4
+        ShotBlock = 4,
+        Assist = 5,
     }
 }
