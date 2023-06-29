@@ -13,5 +13,8 @@ namespace Dribbly.Model.Play
         public ShotModel Shot { get; set; }
         public bool WithFoul { get; set; }
         public MemberFoulModel Foul { get; set; }
+
+        public bool WithBlock { get; set; }
+        public GameEventModel Block { get; set; }
     }
 }

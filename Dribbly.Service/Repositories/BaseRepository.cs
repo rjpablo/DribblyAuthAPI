@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Linq;
 using System.Threading.Tasks;
 using Dribbly.Core.Models;
+using System.Data.Entity.Migrations;
 
 namespace Dribbly.Service.Repositories
 {
@@ -19,6 +20,15 @@ namespace Dribbly.Service.Repositories
         {
             model.DateAdded = DateTime.UtcNow;
             _dbSet.Add(model);
+        }
+
+        public void Upsert(T model)
+        {
+            if (model.DateAdded == default(DateTime) || model.DateAdded == null)
+            {
+                model.DateAdded = DateTime.UtcNow;
+            }
+            _dbSet.AddOrUpdate(model);
         }
 
         public virtual IQueryable<T> Get(
@@ -62,6 +72,7 @@ namespace Dribbly.Service.Repositories
     public interface IBaseRepository<T>
     {
         void Add(T model);
+        void Upsert(T model);
         IQueryable<T> Get(
                 Expression<Func<T, bool>> filter = null,
                 string includeProperties = "",

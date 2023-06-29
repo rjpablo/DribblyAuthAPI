@@ -24,5 +24,12 @@ namespace DribblyAuthAPI.Controllers
         {
             return await _service.UpsertFoulAsync(input);
         }
+
+        [HttpPost]
+        [Route("Upsert")]
+        public async Task<GameEventModel> UpsertAsync([FromBody] GameEventModel gameEvent)
+        {
+            return await _service.UpsertAsync(gameEvent);
+        }
     }
 }

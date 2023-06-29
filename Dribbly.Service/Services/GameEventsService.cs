@@ -34,10 +34,18 @@ namespace Dribbly.Service.Services
         {
             return await _memberFoulsRepository.UpsertFoul(foul);
         }
+
+        public async Task<GameEventModel> UpsertAsync(GameEventModel gameEvent)
+        {
+            _gameEventsRepository.Upsert(gameEvent);
+            await _context.SaveChangesAsync();
+            return gameEvent;
+        }
     }
 
     public interface IGameEventsService
     {
         Task<UpsertFoulResultModel> UpsertFoulAsync(MemberFoulModel foul);
+        Task<GameEventModel> UpsertAsync(GameEventModel gameEvent);
     }
 }
