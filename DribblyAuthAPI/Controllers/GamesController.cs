@@ -112,5 +112,12 @@ namespace DribblyAuthAPI.Controllers
         {
             await _service.UpdateStatusAsync(gameId, toStatus);
         }
+
+        [HttpPost, Authorize]
+        [Route("SetNextPossession/{gameId}/{nextPossession}")]
+        public async Task SetNextPossession(long gameId, int nextPossession)
+        {
+            await _service.SetNextPossessionAsync(gameId, nextPossession);
+        }
     }
 }

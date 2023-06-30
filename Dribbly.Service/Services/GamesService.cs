@@ -557,6 +557,14 @@ namespace Dribbly.Service.Services
             }
         }
 
+        public async Task SetNextPossessionAsync(long gameId, int nextPossession)
+        {
+            // TODO: add validations
+            GameModel game = await _dbSet.SingleOrDefaultAsync(g => g.Id == gameId);
+            game.NextPossession = nextPossession;
+            await _context.SaveChangesAsync();
+        }
+
         public async Task UpdateGameResultAsync(GameResultModel result)
         {
             GameModel game = GetById(result.GameId);
@@ -641,5 +649,35 @@ namespace Dribbly.Service.Services
             await _commonService.AddUserGameActivity(UserActivityTypeEnum.UpdateGame, game.Id);
             return await GetGame(game.Id);
         }
+    }
+    public interface IGamesService
+    {
+        IEnumerable<GameModel> GetAll();
+
+        Task<GameModel> GetGame(long id);
+
+        Task<AddGameModalModel> GetAddGameModalAsync(long courtId);
+
+        Task AdvancePeriodAsync(long gameId, int period, int remainingTime);
+
+        Task<GameModel> AddGameAsync(AddGameInputModel input);
+
+        Task EndGameAsync(long gameId, long winningTeamId);
+
+        Task UpdateStatusAsync(long gameId, GameStatusEnum toStatus);
+
+        Task<GameModel> UpdateGameAsync(UpdateGameModel Game);
+
+        Task UpdateGameResultAsync(GameResultModel result);
+
+        Task StartGameAsync(StartGameInputModel input);
+
+        Task<DTO.GameTeam> GetGameTeamAsync(long gameId, long teamId);
+
+        Task<UpsertShotResultModel> RecordShotAsync(ShotDetailsInputModel input);
+
+        Task UpdateRemainingTimeAsync(UpdateGameTimeRemainingInput input);
+
+        Task SetNextPossessionAsync(long gameId, int nextPossession);
     }
 }

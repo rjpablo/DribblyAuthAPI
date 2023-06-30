@@ -52,6 +52,13 @@ namespace Dribbly.Model.Games
         public int CurrentPeriod { get; set; } = 1;
 
         /// <summary>
+        /// 0 = Not Set
+        /// 1 = Team1
+        /// 2 = Team2
+        /// </summary>
+        public int NextPossession { get; set; }
+
+        /// <summary>
         /// The remaining time (in milliseconds) in the current period
         /// </summary>
         public int RemainingTime { get; set; }
