@@ -27,6 +27,8 @@ namespace Dribbly.Service.Services
 
         Task UpdateGameResultAsync(GameResultModel result);
 
+        Task StartGameAsync(StartGameInputModel input);
+
         Task<DTO.GameTeam> GetGameTeamAsync(long gameId, long teamId);
 
         Task<UpsertShotResultModel> RecordShotAsync(ShotDetailsInputModel input);

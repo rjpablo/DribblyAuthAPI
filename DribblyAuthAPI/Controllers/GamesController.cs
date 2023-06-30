@@ -93,6 +93,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost, Authorize]
+        [Route("StartGame")]
+        public async Task StartGame(StartGameInputModel input)
+        {
+            await _service.StartGameAsync(input);
+        }
+
+        [HttpPost, Authorize]
         [Route("AddGame")]
         public async Task<GameModel> AddGame([FromBody] AddGameInputModel model)
         {

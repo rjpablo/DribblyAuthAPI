@@ -84,6 +84,7 @@
     <Compile Include="Fouls\FoulModel.cs" />
     <Compile Include="Entities\MemberFoulModel.cs" />
     <Compile Include="Fouls\UpsertFoulResultModel.cs" />
+    <Compile Include="Games\StartGameInputModel.cs" />
     <Compile Include="Games\UpdateGameTimeRemainingInput.cs" />
     <Compile Include="Leagues\LeagueViewerModel.cs" />
     <Compile Include="Enums\JoinTeamRequestStatus.cs" />

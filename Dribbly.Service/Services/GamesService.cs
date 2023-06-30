@@ -141,6 +141,54 @@ namespace Dribbly.Service.Services
             return null;
         }
 
+        public async Task StartGameAsync(StartGameInputModel input)
+        {
+            GameModel game = await _context.Games.SingleOrDefaultAsync(g => g.Id == input.GameId);
+            var currentUserId = _securityUtility.GetUserId();
+            if (game.AddedById == currentUserId)
+            {
+                if (game.Status == GameStatusEnum.WaitingToStart)
+                {
+                    using (var transaction = _context.Database.BeginTransaction())
+                    {
+                        try
+                        {
+
+                            game.Status = GameStatusEnum.Started;
+                            game.Start = input.StartedAt;
+                            game.RemainingTimeUpdatedAt = input.StartedAt;
+                            game.IsLive = true;
+                            await _commonService.AddUserGameActivity(UserActivityTypeEnum.StartGame, game.Id);
+                            await _context.SaveChangesAsync();
+
+                            if (input.Jumpball != null)
+                            {
+                                _gameEventsRepo.Add(input.Jumpball);
+                                _context.SaveChanges();
+                            }
+
+                            transaction.Commit();
+                        }
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                            throw;
+                        }
+                    }
+                }
+                else
+                {
+                    throw new DribblyInvalidOperationException("Attempted starting a game with a status of " + game.Status,
+                        friendlyMessageKey: "app.Error_Common_InvalidOperationTryReload");
+                }
+            }
+            else
+            {
+                throw new DribblyForbiddenException
+                    (String.Format("Unauthorized user attempted to start game. User ID: {0}, Game ID: {1}", currentUserId, game.Id));
+            }
+        }
+
         public async Task<UpsertShotResultModel> RecordShotAsync(ShotDetailsInputModel input)
         {
             GameModel game = await _gameRepo.Get(g => g.Id == input.Shot.GameId,
@@ -399,24 +447,6 @@ namespace Dribbly.Service.Services
             {
                 throw new DribblyForbiddenException
                     (String.Format("Unauthorized user attempted to start game. User ID: {0}, Game ID: {1}", currentUserId, game.Id));
-            }
-        }
-
-        public async Task StartGameAsync(long gameId)
-        {
-            GameModel game = await _context.Games.SingleOrDefaultAsync(g => g.Id == gameId);
-            var currentUserId = _securityUtility.GetUserId();
-            if (game.Status == GameStatusEnum.WaitingToStart)
-            {
-                game.Status = GameStatusEnum.Started;
-                game.Start = DateTime.UtcNow;
-                await _commonService.AddUserGameActivity(UserActivityTypeEnum.StartGame, game.Id);
-                await _context.SaveChangesAsync();
-            }
-            else
-            {
-                throw new DribblyInvalidOperationException("Attempted starting a game with a status of " + game.Status,
-                    friendlyMessageKey: "app.Error_Common_InvalidOperationTryReload");
             }
         }
 

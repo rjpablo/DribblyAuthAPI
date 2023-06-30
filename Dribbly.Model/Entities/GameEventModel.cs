@@ -14,9 +14,9 @@ namespace Dribbly.Model.Entities
         [ForeignKey(nameof(Game))]
         public long GameId { get; set; }
         [ForeignKey(nameof(Team))]
-        public long TeamId { get; set; }
+        public long? TeamId { get; set; }
         [ForeignKey(nameof(PerformedBy))]
-        public long PerformedById { get; set; }
+        public long? PerformedById { get; set; }
         public GameEventTypeEnum Type { get; set; }
         public string AdditionalData { get; set; }
         public int? Period { get; set; }

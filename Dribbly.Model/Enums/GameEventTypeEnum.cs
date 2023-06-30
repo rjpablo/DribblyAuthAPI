@@ -14,6 +14,7 @@ namespace Dribbly.Model.Enums
         ShotBlock = 4,
         Assist = 5,
         OffensiveRebound = 6,
-        DefensiveRebound = 7
+        DefensiveRebound = 7,
+        Jumpball = 8,
     }
 }
