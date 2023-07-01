@@ -478,7 +478,8 @@ namespace Dribbly.Service.Services
                     {
                         DateAdded = DateTime.UtcNow,
                         TeamId = input.Team1Id,
-                        GameId = game.Id
+                        GameId = game.Id,
+                        TimeoutsLeft = game.TotalTimeoutLimit
                     };
                     _context.GameTeams.Add(team1);
                     _context.SaveChanges();
@@ -504,7 +505,8 @@ namespace Dribbly.Service.Services
                     {
                         DateAdded = DateTime.UtcNow,
                         TeamId = input.Team2Id,
-                        GameId = game.Id
+                        GameId = game.Id,
+                        TimeoutsLeft = game.TotalTimeoutLimit
                     };
                     _context.GameTeams.Add(team2);
                     _context.SaveChanges();
