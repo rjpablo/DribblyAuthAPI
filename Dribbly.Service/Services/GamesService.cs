@@ -4,6 +4,7 @@ using Dribbly.Model;
 using Dribbly.Model.Account;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Enums;
+using Dribbly.Model.GameEvents;
 using Dribbly.Model.Games;
 using Dribbly.Model.Notifications;
 using Dribbly.Model.Play;
@@ -557,6 +558,67 @@ namespace Dribbly.Service.Services
             }
         }
 
+        public async Task<RecordTimeoutResultModel> RecordTimeoutAsync(RecordTimeoutInputModel input)
+        {
+            using(var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var result = new RecordTimeoutResultModel
+                    {
+                        Type = input.Type,
+                        TeamId = input.TeamId
+                    };
+
+                    GameEventModel timeout = new GameEventModel(GameEventTypeEnum.Timeout)
+                    {
+                        GameId = input.GameId,
+                        TeamId = input.TeamId,
+                        Period = input.Period,
+                        ClockTime = input.ClockTime,
+                        DateAdded = DateTime.UtcNow
+                    };
+
+                    if (!(input.Type == TimeoutTypeEnum.Official))
+                    {
+                        var gameTeam = await _context.GameTeams
+                            .SingleOrDefaultAsync(t => t.TeamId == input.TeamId && t.GameId == input.GameId);
+
+                        // TODO: add gameTeam null error handling
+
+                        if (input.Type == TimeoutTypeEnum.Full)
+                        {
+                            gameTeam.FullTimeoutsUsed++;
+                        }
+                        else if (input.Type == TimeoutTypeEnum.Short)
+                        {
+                            gameTeam.ShortTimeoutsUsed++;
+                        }
+
+                        gameTeam.TimeoutsLeft--;
+
+                        await _context.SaveChangesAsync();
+                        result.TimeoutsLeft = gameTeam.TimeoutsLeft;
+                        result.FullTimeoutsUsed = gameTeam.FullTimeoutsUsed;
+                        result.ShortTimeoutsUsed = gameTeam.ShortTimeoutsUsed;
+                    }
+
+                    _context.GameEvents.Attach(timeout);
+                    _context.SetEntityState(timeout, EntityState.Added);
+                    await _context.SaveChangesAsync();
+
+                    transaction.Commit();
+
+                    return result;
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+        }
+
         public async Task SetNextPossessionAsync(long gameId, int nextPossession)
         {
             // TODO: add validations
@@ -677,6 +739,8 @@ namespace Dribbly.Service.Services
         Task<UpsertShotResultModel> RecordShotAsync(ShotDetailsInputModel input);
 
         Task UpdateRemainingTimeAsync(UpdateGameTimeRemainingInput input);
+
+        Task<RecordTimeoutResultModel> RecordTimeoutAsync(RecordTimeoutInputModel input);
 
         Task SetNextPossessionAsync(long gameId, int nextPossession);
     }

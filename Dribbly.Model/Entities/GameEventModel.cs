@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dribbly.Model.Entities
 {
     [Table("GameEvents")]
-    public class GameEventModel: BaseEntityModel
+    public class GameEventModel : BaseEntityModel
     {
         [ForeignKey(nameof(Game))]
         public long GameId { get; set; }
@@ -37,5 +37,12 @@ namespace Dribbly.Model.Entities
         /// The shot linked to this event, if any
         /// </summary>
         public GameEventModel Shot { get; set; }
+
+        public GameEventModel() { }
+
+        public GameEventModel(GameEventTypeEnum type)
+        {
+            Type = type;
+        }
     }
 }

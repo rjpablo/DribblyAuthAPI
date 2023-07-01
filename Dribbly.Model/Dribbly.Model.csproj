@@ -80,10 +80,13 @@
     <Compile Include="Enums\EjectionStatusEnum.cs" />
     <Compile Include="Enums\FoulTypeEnum.cs" />
     <Compile Include="Enums\GameEventTypeEnum.cs" />
+    <Compile Include="Enums\TimeoutTypeEnum.cs" />
     <Compile Include="Enums\TournamentStatusEnum.cs" />
     <Compile Include="Fouls\FoulModel.cs" />
     <Compile Include="Entities\MemberFoulModel.cs" />
     <Compile Include="Fouls\UpsertFoulResultModel.cs" />
+    <Compile Include="GameEvents\RecordTimeoutInputModel.cs" />
+    <Compile Include="GameEvents\RecordTimeoutResultModel.cs" />
     <Compile Include="Games\StartGameInputModel.cs" />
     <Compile Include="Games\UpdateGameTimeRemainingInput.cs" />
     <Compile Include="Leagues\LeagueViewerModel.cs" />

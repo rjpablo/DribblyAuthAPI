@@ -1,4 +1,5 @@
-﻿using Dribbly.Model.Games;
+﻿using Dribbly.Model.GameEvents;
+using Dribbly.Model.Games;
 using Dribbly.Model.Play;
 using Dribbly.Service.Enums;
 using Dribbly.Service.Services;
@@ -62,6 +63,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task<GameModel> UpdateGame([FromBody] UpdateGameModel model)
         {
             return await _service.UpdateGameAsync(model);
+        }
+
+        [HttpPost, Authorize]
+        [Route("RecordTimeout")]
+        public async Task<RecordTimeoutResultModel> RecordTimeout(RecordTimeoutInputModel input)
+        {
+            return await _service.RecordTimeoutAsync(input);
         }
 
         [HttpPost, Authorize]

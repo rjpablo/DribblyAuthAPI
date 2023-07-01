@@ -10,6 +10,7 @@ namespace Dribbly.Model.Entities
     [Table("GameTeams")]
     public class GameTeamModel : BaseEntityModel
     {
+        #region Mapped Columns
         [ForeignKey(nameof(Game))]
         public long GameId { get; set; }
         [ForeignKey(nameof(Team))]
@@ -18,12 +19,19 @@ namespace Dribbly.Model.Entities
         [JsonIgnore]
         public GameModel Game { get; set; }
         public int TeamFoulCount { get; set; }
-        public ICollection<GamePlayerModel> Players { get; set; } = new List<GamePlayerModel>();
         /// <summary>
         /// The total number of timeouts left
         /// </summary>
         public int TimeoutsLeft { get; set; }
         public int FullTimeoutsUsed { get; set; }
         public int ShortTimeoutsUsed { get; set; }
+        #endregion
+
+        #region Unmapped Columns
+        [NotMapped]
+        public string Name { get => Team.Name; }
+        #endregion
+
+        public ICollection<GamePlayerModel> Players { get; set; } = new List<GamePlayerModel>();
     }
 }

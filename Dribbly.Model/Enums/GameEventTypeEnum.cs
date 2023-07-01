@@ -16,5 +16,6 @@ namespace Dribbly.Model.Enums
         OffensiveRebound = 6,
         DefensiveRebound = 7,
         Jumpball = 8,
+        Timeout = 9,
     }
 }
