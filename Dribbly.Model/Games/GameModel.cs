@@ -51,6 +51,12 @@ namespace Dribbly.Model.Games
 
         public int CurrentPeriod { get; set; } = 1;
 
+        public int TotalTimeoutLimit { get; set; }
+
+        public int FullTimeoutLimit { get; set; }
+
+        public int ShortTimeoutLimit { get; set; }
+
         /// <summary>
         /// 0 = Not Set
         /// 1 = Team1
