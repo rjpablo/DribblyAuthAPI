@@ -19,5 +19,11 @@ namespace Dribbly.Model.Entities
         public GameModel Game { get; set; }
         public int TeamFoulCount { get; set; }
         public ICollection<GamePlayerModel> Players { get; set; } = new List<GamePlayerModel>();
+        /// <summary>
+        /// The total number of timeouts left
+        /// </summary>
+        public int TimeoutsLeft { get; set; }
+        public int FullTimeoutsUsed { get; set; }
+        public int ShortTimeoutsUsed { get; set; }
     }
 }

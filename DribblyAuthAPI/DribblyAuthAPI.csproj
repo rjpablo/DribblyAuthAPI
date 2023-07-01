@@ -619,6 +619,10 @@
     <Compile Include="Migrations\202306301045054_ModifyTable_Games_AddColumn_NextPOssession.Designer.cs">
       <DependentUpon>202306301045054_ModifyTable_Games_AddColumn_NextPOssession.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307010605358_ModifyTable_GameTeams_AddColumns_TimeoutsLeft_FullTimeoutsUsed_ShortTimeoutsUsed.cs" />
+    <Compile Include="Migrations\202307010605358_ModifyTable_GameTeams_AddColumns_TimeoutsLeft_FullTimeoutsUsed_ShortTimeoutsUsed.Designer.cs">
+      <DependentUpon>202307010605358_ModifyTable_GameTeams_AddColumns_TimeoutsLeft_FullTimeoutsUsed_ShortTimeoutsUsed.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -971,6 +975,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306301045054_ModifyTable_Games_AddColumn_NextPOssession.resx">
       <DependentUpon>202306301045054_ModifyTable_Games_AddColumn_NextPOssession.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307010605358_ModifyTable_GameTeams_AddColumns_TimeoutsLeft_FullTimeoutsUsed_ShortTimeoutsUsed.resx">
+      <DependentUpon>202307010605358_ModifyTable_GameTeams_AddColumns_TimeoutsLeft_FullTimeoutsUsed_ShortTimeoutsUsed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
