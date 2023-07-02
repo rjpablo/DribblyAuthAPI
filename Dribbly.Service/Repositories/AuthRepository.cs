@@ -48,7 +48,7 @@ namespace Dribbly.Service.Repositories
             if (user == null)
                 return false;
             input.Token = input.Token.Replace(" ", "+"); // +'s in the token are replaced with a space when token is sent using query strings.
-            IdentityResult resetPassResult = await _userManager.ResetPasswordAsync(user.Id, input.Token, input.Password);
+            IdentityResult resetPassResult = await _userManager.ResetPasswordAsync(user.Id, input.Token, string.Concat(input.Password, user.Salt));
 
             if (!resetPassResult.Succeeded)
             {
