@@ -25,6 +25,7 @@ namespace Dribbly.Model.Entities
         public int TimeoutsLeft { get; set; }
         public int FullTimeoutsUsed { get; set; }
         public int ShortTimeoutsUsed { get; set; }
+        public bool IsInBonus { get; set; }
         #endregion
 
         #region Unmapped Columns

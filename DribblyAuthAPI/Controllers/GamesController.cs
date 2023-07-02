@@ -115,6 +115,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost, Authorize]
+        [Route("SetBonusStatus/{gameTeamId}/{isInBonus}")]
+        public async Task SetBonusStatus(long gameTeamId, bool isInBonus)
+        {
+            await _service.SetBonusStatusAsync(gameTeamId, isInBonus);
+        }
+
+        [HttpPost, Authorize]
         [Route("SetTeamFoulCount/{gameTeamId}/{foulCount}")]
         public async Task SetTeamFoulCount(long gameTeamId, int foulCount)
         {

@@ -578,6 +578,15 @@ namespace Dribbly.Service.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task SetBonusStatusAsync(long gameTeamId, bool isInBonus)
+        {
+            var gameTeam = await _context.GameTeams.SingleOrDefaultAsync(t => t.Id == gameTeamId);
+            // TODO: add validations
+
+            gameTeam.IsInBonus = isInBonus;
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<RecordTimeoutResultModel> RecordTimeoutAsync(RecordTimeoutInputModel input)
         {
             using(var transaction = _context.Database.BeginTransaction())
@@ -770,5 +779,7 @@ namespace Dribbly.Service.Services
         Task SetTimeoutsLeftAsync(long gameTeamId, int timeoutsLeft);
 
         Task SetTeamFoulCountAsync(long gameTeamId, int foulCount);
+
+        Task SetBonusStatusAsync(long gameTeamId, bool isInBonus);
     }
 }
