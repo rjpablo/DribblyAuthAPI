@@ -108,6 +108,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost, Authorize]
+        [Route("SetTimeoutsLeft/{gameTeamId}/{timeoutsLeft}")]
+        public async Task SetTimeoutsLeft(long gameTeamId, int timeoutsLeft)
+        {
+            await _service.SetTimeoutsLeftAsync(gameTeamId, timeoutsLeft);
+        }
+
+        [HttpPost, Authorize]
         [Route("AddGame")]
         public async Task<GameModel> AddGame([FromBody] AddGameInputModel model)
         {

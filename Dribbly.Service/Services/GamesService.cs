@@ -560,6 +560,15 @@ namespace Dribbly.Service.Services
             }
         }
 
+        public async Task SetTimeoutsLeftAsync(long gameTeamId, int timeoutsLeft)
+        {
+            var gameTeam = await _context.GameTeams.SingleOrDefaultAsync(t => t.Id == gameTeamId);
+            // TODO: add validations
+
+            gameTeam.TimeoutsLeft = timeoutsLeft;
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<RecordTimeoutResultModel> RecordTimeoutAsync(RecordTimeoutInputModel input)
         {
             using(var transaction = _context.Database.BeginTransaction())
@@ -597,7 +606,10 @@ namespace Dribbly.Service.Services
                             gameTeam.ShortTimeoutsUsed++;
                         }
 
-                        gameTeam.TimeoutsLeft--;
+                        if (gameTeam.TimeoutsLeft > 0)
+                        {
+                            gameTeam.TimeoutsLeft--;
+                        }
 
                         await _context.SaveChangesAsync();
                         result.TimeoutsLeft = gameTeam.TimeoutsLeft;
@@ -745,5 +757,7 @@ namespace Dribbly.Service.Services
         Task<RecordTimeoutResultModel> RecordTimeoutAsync(RecordTimeoutInputModel input);
 
         Task SetNextPossessionAsync(long gameId, int nextPossession);
+
+        Task SetTimeoutsLeftAsync(long gameTeamId, int timeoutsLeft);
     }
 }
