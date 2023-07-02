@@ -115,6 +115,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost, Authorize]
+        [Route("SetTeamFoulCount/{gameTeamId}/{foulCount}")]
+        public async Task SetTeamFoulCount(long gameTeamId, int foulCount)
+        {
+            await _service.SetTeamFoulCountAsync(gameTeamId, foulCount);
+        }
+
+        [HttpPost, Authorize]
         [Route("AddGame")]
         public async Task<GameModel> AddGame([FromBody] AddGameInputModel model)
         {

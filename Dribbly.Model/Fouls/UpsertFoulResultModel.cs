@@ -19,6 +19,7 @@ namespace Dribbly.Model.Fouls
         public int TotalTechnicalFouls { get; set; }
         public bool IsEjected { get; set; }
         public bool HasFouledOut { get; set; }
+        public int TeamFoulCount { get; set; }
         public EjectionStatusEnum EjectionStatus { get; set; }
     }
 }

@@ -59,6 +59,11 @@ namespace Dribbly.Service.Repositories
             gamePlayer.EjectionStatus = foul.Foul.Name == "Flagrant 2" ? EjectionStatusEnum.EjectedDueToFlagrantFoul2 :
                 fouls.Count(f => f.IsFlagrant) >= 2 ? EjectionStatusEnum.EjectedDueNumberOfFlagrantFouls :
                 EjectionStatusEnum.NotEjected;
+
+            var gameTeam = _context.GameTeams.SingleOrDefault(g => g.GameId == foul.GameId && g.TeamId == foul.TeamId);
+            // TODO: add validation
+            gameTeam.TeamFoulCount++;
+
             await _context.SaveChangesAsync();
 
             var result = new UpsertFoulResultModel
@@ -66,7 +71,8 @@ namespace Dribbly.Service.Repositories
                 TotalPersonalFouls = gamePlayer.Fouls,
                 TotalTechnicalFouls = fouls.Count(f => f.IsTechnical),
                 EjectionStatus = gamePlayer.EjectionStatus,
-                HasFouledOut = gamePlayer.HasFouledOut
+                HasFouledOut = gamePlayer.HasFouledOut,
+                TeamFoulCount = gameTeam.TeamFoulCount
             };
             return result;
         }
