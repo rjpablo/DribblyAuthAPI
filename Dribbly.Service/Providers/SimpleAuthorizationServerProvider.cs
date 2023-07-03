@@ -98,6 +98,7 @@ namespace Dribbly.Service.Providers
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
             ApplicationUser user = null;
+            AccountModel account = null;
             List<PermissionModel> userPermissions = new List<PermissionModel>();
 
             using (var authContext = new AuthContext())
@@ -115,7 +116,7 @@ namespace Dribbly.Service.Providers
 
                     using (AccountRepository _accountRepo = new AccountRepository(authContext, _repo))
                     {
-                        AccountModel account = await _accountRepo.GetAccountByIdentityId(user.Id);
+                        account = await _accountRepo.GetAccountByIdentityId(user.Id);
                         if (account.IsDeleted)
                         {
                             // return the same error for security
@@ -139,6 +140,7 @@ namespace Dribbly.Service.Providers
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
             identity.AddClaim(new Claim("userId", user.Id.ToString()));
+            identity.AddClaim(new Claim("accountId", account.Id.ToString()));
             identity.AddClaim(new Claim("sub", context.UserName));
             identity.AddClaim(new Claim("role", "user"));
 
@@ -159,6 +161,9 @@ namespace Dribbly.Service.Providers
                     },
                     {
                         "userId", user.Id.ToString()
+                    },
+                    {
+                        "accountId", account.Id.ToString()
                     }
                 });
 

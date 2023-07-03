@@ -17,7 +17,7 @@ namespace Dribbly.Service.Services
 
         public SeasonsService(IAuthContext context,
             ISecurityUtility securityUtility,
-            IIndexedEntitysRepository indexedEntitysRepository) : base(context.Seasons)
+            IIndexedEntitysRepository indexedEntitysRepository) : base(context.Seasons, context)
         {
             _context = context;
             _securityUtility = securityUtility;
@@ -27,7 +27,7 @@ namespace Dribbly.Service.Services
 
         public async Task<SeasonModel> AddSeasonAsync(SeasonModel season)
         {
-            season.AddedById = _securityUtility.GetUserId().Value;
+            season.AddedById = _securityUtility.GetAccountId().Value;
             _seasonsRepository.Add(season);
             await _context.SaveChangesAsync();
             // TODO: log activity

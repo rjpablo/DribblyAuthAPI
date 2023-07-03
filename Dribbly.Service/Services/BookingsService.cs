@@ -29,7 +29,7 @@ namespace Dribbly.Service.Services
             IAccountRepository accountRepo,
             IFileService fileService,
             INotificationsRepository notificationsRepo,
-            ICourtsRepository courtsRepo) : base(context.Bookings)
+            ICourtsRepository courtsRepo) : base(context.Bookings, context)
         {
             _context = context;
             _httpContext = httpContext;
@@ -67,12 +67,12 @@ namespace Dribbly.Service.Services
 
         public async Task<BookingModel> AddBookingAsync(BookingModel booking)
         {
-            var currentUserId = _securityUtility.GetUserId();
-            booking.AddedBy = currentUserId.Value;
+            var currenAccountId = _securityUtility.GetAccountId().Value;
+            booking.AddedBy = currenAccountId;
             booking.Status = Enums.BookingStatusEnum.Approved;
             Add(booking);
             _context.SaveChanges();
-            NotificationTypeEnum Type = booking.BookedById == currentUserId ?
+            NotificationTypeEnum Type = booking.BookedById == currenAccountId ?
                 NotificationTypeEnum.BookingNotificationForBooker :
                 NotificationTypeEnum.BookingNotificationForCourtOwner;
             await _notificationsRepo.TryAddAsync(new NewBookingNotificationModel
@@ -91,8 +91,8 @@ namespace Dribbly.Service.Services
         public async Task UpdateBookingAsync(BookingModel booking)
         {
             Update(booking);
-            var currentUserId = _securityUtility.GetUserId();
-            NotificationTypeEnum Type = booking.BookedById == currentUserId ?
+            var currentAccountId = _securityUtility.GetAccountId().Value;
+            NotificationTypeEnum Type = booking.BookedById == currentAccountId ?
                 NotificationTypeEnum.NewGameForOwner :
                 NotificationTypeEnum.NewGameForBooker;
             await _notificationsRepo.TryAddAsync(new NewBookingNotificationModel

@@ -16,7 +16,7 @@ namespace Dribbly.Service.Services
 
         public LeaguesService(IAuthContext context,
             ISecurityUtility securityUtility,
-            IIndexedEntitysRepository indexedEntitysRepository) : base(context.Leagues)
+            IIndexedEntitysRepository indexedEntitysRepository) : base(context.Leagues, context)
         {
             _context = context;
             _securityUtility = securityUtility;
@@ -26,7 +26,7 @@ namespace Dribbly.Service.Services
 
         public async Task<LeagueModel> AddLeagueAsync(LeagueModel league)
         {
-            league.AddedById = _securityUtility.GetUserId().Value;
+            league.AddedById = _securityUtility.GetAccountId().Value;
             league.EntityStatus = Enums.EntityStatusEnum.Active;
             _leaguesRepository.Add(league);
             await _context.SaveChangesAsync();

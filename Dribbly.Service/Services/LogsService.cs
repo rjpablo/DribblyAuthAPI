@@ -15,7 +15,7 @@ namespace Dribbly.Service.Services
         IAuthContext _context;
         ISecurityUtility _securityUtility;
         public LogsService(IAuthContext context,
-            ISecurityUtility securityUtility) : base(context.ErrorLogs)
+            ISecurityUtility securityUtility) : base(context.ErrorLogs, context)
         {
             _context = context;
             _securityUtility = securityUtility;

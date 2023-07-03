@@ -8,7 +8,9 @@ namespace Dribbly.Core.Utilities
     {
         string GetUserName();
         long? GetUserId();
+        long? GetAccountId();
         bool IsAuthenticated();
         bool IsCurrentUser(long userId);
+        bool IsCurrentAccount(long accountId);
     }
 }

@@ -272,13 +272,13 @@ namespace Dribbly.Service.Services.Shared
 
         private async Task AddActivitiesAsync(List<UserActivityModel> activities)
         {
-            var userId = await GetAccountId();
-            if (userId.HasValue)
+            var accountId = await GetAccountId();
+            if (accountId.HasValue)
             {
                 var now = DateTime.UtcNow;
                 foreach (var activity in activities)
                 {
-                    activity.UserId = userId.Value;
+                    activity.UserId = accountId.Value;
                     activity.DateAdded = now;
                     AddActivity(activity);
                 }

@@ -21,7 +21,7 @@ namespace Dribbly.Service.Services
 
         public GameEventsService(IAuthContext context,
             ISecurityUtility securityUtility,
-            IIndexedEntitysRepository indexedEntitysRepository) : base(context.GameEvents)
+            IIndexedEntitysRepository indexedEntitysRepository) : base(context.GameEvents, context)
         {
             _context = context;
             _securityUtility = securityUtility;

@@ -56,7 +56,7 @@ namespace Dribbly.Service.Services
             INotificationsRepository notificationsRepo,
             ICourtsRepository courtsRepo,
             ICommonService commonService,
-            IIndexedEntitysRepository indexedEntitysRepository) : base(context.Teams)
+            IIndexedEntitysRepository indexedEntitysRepository) : base(context.Teams, context)
         {
             _context = context;
             _securityUtility = securityUtility;
@@ -110,8 +110,7 @@ namespace Dribbly.Service.Services
 
         public async Task<UserTeamRelationModel> GetUserTeamRelationAsync(long teamId)
         {
-            var currentUserId = _securityUtility.GetUserId();
-            long? accountId = currentUserId.HasValue ? await _accountRepo.GetIdentityUserAccountId(currentUserId.Value) : null;
+            long? accountId = _securityUtility.GetAccountId();
             return accountId.HasValue ? await GetUserTeamRelationAsync(teamId, accountId.Value) : new UserTeamRelationModel();
         }
 
@@ -122,9 +121,8 @@ namespace Dribbly.Service.Services
 
         public async Task ProcessJoinRequestAsync(ProcessJoinTeamRequestInputModel input)
         {
-            var currentUserId = _securityUtility.GetUserId();
             var team = await GetTeamNotNullAsync(input.Request.TeamId);
-            if (currentUserId != team.ManagedById)
+            if (_securityUtility.GetAccountId() != team.ManagedById)
             {
                 throw new DribblyForbiddenException("Non-manager of team attempted to process a join team request.");
             }
@@ -144,7 +142,7 @@ namespace Dribbly.Service.Services
                 await _notificationsRepo.TryAddAsync(new JoinTeamRequestNotificationModel
                 {
                     RequestId = input.Request.Id,
-                    ForUserId = (await _accountRepo.GetIdentityUserId(input.Request.MemberAccountId)),
+                    ForUserId = input.Request.MemberAccountId,
                     DateAdded = DateTime.UtcNow,
                     Type = NotificationTypeEnum.JoinTeamRequestApproved
                 });
@@ -166,8 +164,8 @@ namespace Dribbly.Service.Services
             {
                 throw new DribblyObjectNotFoundException($"Unable to find team with ID {teamId}.");
             }
-            var currentUserId = _securityUtility.GetUserId();
-            if (team.ManagedById != currentUserId)
+            
+            if (team.ManagedById != _securityUtility.GetAccountId())
             {
                 throw new DribblyForbiddenException("Non-manager of team attempted to access team's join requests.");
             }
@@ -196,12 +194,11 @@ namespace Dribbly.Service.Services
 
         public async Task<UserTeamRelationModel> LeaveTeamAsync(long teamId)
         {
-            var currentUserId = _securityUtility.GetUserId();
-            if (!currentUserId.HasValue)
+            long? accountId = _securityUtility.GetAccountId();
+            if (!accountId.HasValue)
             {
                 throw new UnauthorizedAccessException("Unauthenticated user attempted to leave a team.");
             }
-            long accountId = await _accountRepo.GetIdentityUserAccountIdNotNullAsync(currentUserId.Value);
             var activeMembership = _context.TeamMembers.SingleOrDefault(m => m.TeamId == teamId && m.MemberAccountId == accountId &&
             m.DateLeft == null);
             if (activeMembership == null)
@@ -212,7 +209,7 @@ namespace Dribbly.Service.Services
 
             activeMembership.DateLeft = DateTime.UtcNow;
             await _context.SaveChangesAsync();
-            return await GetUserTeamRelationAsync(teamId, accountId);
+            return await GetUserTeamRelationAsync(teamId, accountId.Value);
         }
 
         public async Task<TeamModel> GetTeamAsync(long id)
@@ -238,9 +235,8 @@ namespace Dribbly.Service.Services
         public async Task<PhotoModel> UploadLogoAsync(long teamId)
         {
             TeamModel team = GetById(teamId);
-            long? currentUserId = _securityUtility.GetUserId();
 
-            if ((currentUserId != team.ManagedById) && !AuthenticationService.HasPermission(AccountPermission.UpdatePhotoNotOwned))
+            if ((_securityUtility.GetAccountId() != team.ManagedById) && !AuthenticationService.HasPermission(AccountPermission.UpdatePhotoNotOwned))
             {
                 throw new UnauthorizedAccessException("Authorization failed when attempting to update account primary photo.");
             }
@@ -272,13 +268,12 @@ namespace Dribbly.Service.Services
 
         private async Task<PhotoModel> AddPhoto(TeamModel team, HttpPostedFile file)
         {
-            long? currentUserId = _securityUtility.GetUserId();
             string uploadPath = _fileService.Upload(file, "teamLogos/");
 
             PhotoModel photo = new PhotoModel
             {
                 Url = uploadPath,
-                UploadedById = currentUserId.Value,
+                UploadedById = _securityUtility.GetAccountId().Value,
                 DateAdded = DateTime.UtcNow
             };
             _context.Photos.Add(photo);
@@ -302,13 +297,12 @@ namespace Dribbly.Service.Services
 
         public async Task CancelJoinRequestAsync(long teamId)
         {
-            var currentUserId = _securityUtility.GetUserId();
-            long accountId = await _accountRepo.GetIdentityUserAccountIdNotNullAsync(currentUserId.Value);
-            JoinTeamRequestModel request = await GetPendingJoinRequestAsync(teamId, accountId);
+            long? accountId = _securityUtility.GetAccountId();
+            JoinTeamRequestModel request = await GetPendingJoinRequestAsync(teamId, accountId.Value);
 
             if (request == null)
             {
-                throw new DribblyForbiddenException($"Attempted to cancel request to join team but no pending request was found. Team ID: {teamId}, User ID: {currentUserId}",
+                throw new DribblyForbiddenException($"Attempted to cancel request to join team but no pending request was found. Team ID: {teamId}, Account ID: {accountId}",
                     friendlyMessageKey: "app.Error_JoinTeamCancelNoPending");
             }
 
@@ -329,9 +323,9 @@ namespace Dribbly.Service.Services
 
         public async Task<TeamModel> AddTeamAsync(TeamModel team)
         {
-            var currentUserId = _securityUtility.GetUserId();
-            team.AddedById = currentUserId.Value;
-            team.ManagedById = currentUserId.Value;
+            var accountId = _securityUtility.GetAccountId().Value;
+            team.AddedById = accountId;
+            team.ManagedById = accountId;
             team.EntityStatus = EntityStatusEnum.Active;
             Add(team);
             _context.SaveChanges();
@@ -363,17 +357,17 @@ namespace Dribbly.Service.Services
         public async Task<UserTeamRelationModel> JoinTeamAsync(JoinTeamRequestInputModel input)
         {
             var currentUserId = _securityUtility.GetUserId();
-            AccountModel memberAccount = await _accountRepo.GetAccountByIdentityId(currentUserId.Value);
-            JoinTeamRequestModel request = new JoinTeamRequestModel(input.TeamId, memberAccount.Id, input.Position);
+            var accountId = _securityUtility.GetAccountId().Value;
+            JoinTeamRequestModel request = new JoinTeamRequestModel(input.TeamId, accountId, input.Position);
 
-            if (await GetHasPendingJoinRequestAsync(request.TeamId, memberAccount.Id))
+            if (await GetHasPendingJoinRequestAsync(request.TeamId, accountId))
             {
                 throw new DribblyForbiddenException($"Attempted to make multiple reqeusts to join team. Team ID: {request.TeamId}, User ID: {currentUserId}",
                     friendlyMessageKey: "app.Error_JoinTeamDuplicate");
             }
 
             var team = await GetTeamNotNullAsync(request.TeamId);
-            var isManager = team.ManagedById == currentUserId;
+            var isManager = team.ManagedById == _securityUtility.GetAccountId();
             if (team.EntityStatus == EntityStatusEnum.Inactive)
             {
                 throw new DribblyForbiddenException($"Attempted to join an inactive team. Team ID: {request.TeamId}, User ID: {currentUserId}",
@@ -384,13 +378,13 @@ namespace Dribbly.Service.Services
                 throw new DribblyForbiddenException($"Attempted to join an already deleted team. Team ID: {request.TeamId}, User ID: {currentUserId}",
                     friendlyMessageKey: "app.Error_JoinTeamDeleted");
             }
-            if (GetCurrentTeamMemberships(request.TeamId, memberAccount.Id).Count() > 0)
+            if (GetCurrentTeamMemberships(request.TeamId, accountId).Count() > 0)
             {
-                throw new DribblyForbiddenException($"Current member of a team attempted to join the same team. Team ID: {request.TeamId}, Account ID: {memberAccount.Id}",
+                throw new DribblyForbiddenException($"Current member of a team attempted to join the same team. Team ID: {request.TeamId}, Account ID: {accountId}",
                     friendlyMessageKey: "app.Error_JoinTeamAlreadyAMember");
             }
 
-            request.MemberAccountId = memberAccount.Id;
+            request.MemberAccountId = accountId;
             request.DateAdded = DateTime.UtcNow;
 
             if (isManager) // immediately add as member if manager
@@ -423,8 +417,8 @@ namespace Dribbly.Service.Services
         public async Task UpdateTeamAsync(TeamModel team)
         {
             Update(team);
-            var currentUserId = _securityUtility.GetUserId();
-            NotificationTypeEnum Type = team.AddedById == currentUserId ?
+            var currentAccountId = _securityUtility.GetAccountId().Value;
+            NotificationTypeEnum Type = team.AddedById == currentAccountId ?
                 NotificationTypeEnum.NewGameForOwner :
                 NotificationTypeEnum.NewGameForBooker;
             _context.SaveChanges();

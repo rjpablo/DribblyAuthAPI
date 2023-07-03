@@ -36,9 +36,25 @@ namespace Dribbly.Core.Utilities
             return long.Parse(stringUserId);
         }
 
+        public long? GetAccountId()
+        {
+            string stringAccountId = GetClaims()?.SingleOrDefault(c => c.Type == "accountId")?.Value;
+            if (string.IsNullOrEmpty(stringAccountId))
+            {
+                return null;
+            }
+            return long.Parse(stringAccountId);
+        }
+
         public bool IsCurrentUser(long userId)
         {
             return userId.Equals(GetUserId());
+        }
+
+        public bool IsCurrentAccount(long accountId)
+        {
+            var currentAccountId = GetAccountId();
+            return !currentAccountId.HasValue || accountId.Equals(currentAccountId);
         }
 
         public bool IsAuthenticated()

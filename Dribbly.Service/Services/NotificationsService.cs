@@ -22,7 +22,7 @@ namespace Dribbly.Service.Services
         public NotificationsService(IAuthContext context,
             ISecurityUtility securityUtility,
             INotificationsRepository notificationsRepo,
-            IAccountRepository accountsRepo) : base(context.Notifications)
+            IAccountRepository accountsRepo) : base(context.Notifications, context)
         {
             _context = context;
             _securityUtility = securityUtility;
@@ -32,7 +32,7 @@ namespace Dribbly.Service.Services
 
         public async Task<IEnumerable<NotificationModel>> GetUnviewedAsync(DateTime? afterDate)
         {
-            return await _notificationsRepo.GetUnviewed(_securityUtility.GetUserId(), afterDate)
+            return await _notificationsRepo.GetUnviewed(_securityUtility.GetAccountId().Value, afterDate)
                 .OrderByDescending(n => n.DateAdded).ToListAsync();
         }
 
@@ -48,7 +48,7 @@ namespace Dribbly.Service.Services
 
         public async Task<UnviewedCountModel> GetUnviewedCountAsync()
         {
-            return await GetUnviewedCountAsync(_securityUtility.GetUserId());
+            return await GetUnviewedCountAsync(_securityUtility.GetAccountId().Value);
         }
         #endregion
 
@@ -58,14 +58,14 @@ namespace Dribbly.Service.Services
             notification.IsViewed = isViewed;
             Update(notification);
             await _context.SaveChangesAsync();
-            return await GetUnviewedCountAsync(_securityUtility.GetUserId());
+            return await GetUnviewedCountAsync(_securityUtility.GetAccountId().Value);
         }
 
         public async Task<IEnumerable<object>> GetNoficationDetailsAsync(DateTime? beforeDate, int getCount = 10)
         {
-            long? currentUserId = _securityUtility.GetUserId();
+            long? currentAccountId = _securityUtility.GetAccountId().Value;
             IEnumerable<NotificationModel> notifications = _context.Notifications
-                .Where(n => currentUserId.HasValue && n.ForUserId == currentUserId && (n.DateAdded < beforeDate || beforeDate == null))
+                .Where(n => currentAccountId.HasValue && n.ForUserId == currentAccountId && (n.DateAdded < beforeDate || beforeDate == null))
                 .OrderByDescending(n => n.DateAdded).Take(getCount);
 
             return await GetDetailedNotificationsAsync(notifications);
@@ -73,8 +73,7 @@ namespace Dribbly.Service.Services
 
         public async Task<GetNewNotificationsResultModel> GetNewNoficationsAsync(DateTime afterDate)
         {
-            long? currentUserId = _securityUtility.GetUserId();
-            var accountId = (await _accountsRepo.GetAccountByIdentityId(currentUserId.Value)).Id;
+            var accountId = _securityUtility.GetAccountId().Value;
             IEnumerable<NotificationModel> notifications = _context.Notifications
                 .Where(n => n.ForUserId == accountId && (n.DateAdded > afterDate)).ToList();
 
@@ -107,6 +106,8 @@ namespace Dribbly.Service.Services
             IEnumerable<UpdateGameNotificationModel> gameUpdateNotifications = await GetGameUpdateNotificationsAsync
                 (notifications.Where(n => n.Type == NotificationTypeEnum.GameUpdatedForBooker || n.Type == NotificationTypeEnum.GameUpdatedForOwner)
                 .Select(n => n.Id).ToArray());
+
+            // TODO: Add logic for New Game notifications (HOOP-46)
 
             var joinTeamRequestNotifications = await GetJoinTeamRequestNotificationsAsync
                 (notifications.Where(n => n.Type == NotificationTypeEnum.JoinTeamRequest || n.Type == NotificationTypeEnum.JoinTeamRequestApproved)
@@ -147,7 +148,7 @@ namespace Dribbly.Service.Services
 
             return await _context.NewBookingNotifications
                 .Where(n => NotificationIds.Contains(n.Id))
-                .Include(n => n.Booking).Include(n => n.Booking.Court).Include(n => n.BookedBy)
+                .Include(n => n.Booking.Court).Include(n => n.BookedBy.User)
                 .Select(n => new NewBookingNotificationDto
                 {
                     Id = n.Id,
@@ -157,7 +158,7 @@ namespace Dribbly.Service.Services
                     Type = n.Type,
                     Booking = n.Booking,
                     BookedById = n.BookedById,
-                    BookedByName = n.BookedBy.UserName,
+                    BookedByName = n.BookedBy.User.UserName,
                     CourtName = n.Booking.Court.Name
                 })
                 .ToListAsync();

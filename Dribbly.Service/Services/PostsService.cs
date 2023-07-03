@@ -37,7 +37,7 @@ namespace Dribbly.Service.Services
             INotificationsRepository notificationsRepo,
             ICourtsRepository courtsRepo,
             ICommonService commonService,
-            IIndexedEntitysRepository indexedEntitysRepository) : base(context.Posts)
+            IIndexedEntitysRepository indexedEntitysRepository) : base(context.Posts, context)
         {
             _context = context;
             _httpContext = httpContext;
@@ -89,7 +89,7 @@ namespace Dribbly.Service.Services
         {
             if (post.AddedByType == EntityTypeEnum.Account)
             {
-                var account = await _accountRepo.GetAccountByIdentityId(post.AddedById);
+                var account = await _accountRepo.GetAccountById(post.AddedById);
                 return new EntityBasicInfoModel(account);
             }
 
@@ -110,7 +110,7 @@ namespace Dribbly.Service.Services
                 Content = input.Content,
                 EntityStatus = EntityStatusEnum.Active
             };
-            post.AddedById = _securityUtility.GetUserId().Value;
+            post.AddedById = _securityUtility.GetAccountId().Value;
             Add(post);
             await _context.SaveChangesAsync();
             await _indexedEntitysRepository.Add(_context, post);
@@ -121,9 +121,8 @@ namespace Dribbly.Service.Services
 
         public async Task<PostModel> UpdatePost(AddEditPostInputModel input)
         {
-            var currentUserId = _securityUtility.GetUserId();
             PostModel post = _context.Posts.SingleOrDefault(p => p.Id == input.Id);
-            if (_securityUtility.IsCurrentUser(post.AddedById))
+            if (_securityUtility.IsCurrentAccount(post.AddedById))
             {
                 post.Content = input.Content;
                 await _context.SaveChangesAsync();
@@ -140,7 +139,6 @@ namespace Dribbly.Service.Services
 
         public async Task<bool> DeletePost(long Id)
         {
-            var currentUserId = _securityUtility.GetUserId();
             PostModel post = _context.Posts.SingleOrDefault(p => p.Id == Id);
             if (post != null)
             {
@@ -150,7 +148,7 @@ namespace Dribbly.Service.Services
                         friendlyMessageKey: "app.ThisPostHasAlreadyBeenDeleted");
                 }
 
-                if (_securityUtility.IsCurrentUser(post.AddedById) || AuthenticationService.HasPermission(PostPermission.DeleteNotOwned))
+                if (_securityUtility.IsCurrentAccount(post.AddedById) || AuthenticationService.HasPermission(PostPermission.DeleteNotOwned))
                 {
                     post.EntityStatus = EntityStatusEnum.Deleted;
                     await _context.SaveChangesAsync();

@@ -38,7 +38,7 @@ namespace Dribbly.Service.Services
             ICourtsRepository courtsRepo,
             IAccountRepository accountRepo,
             ICommonService commonService,
-            IIndexedEntitysRepository indexedEntitysRepository) : base(context.Courts)
+            IIndexedEntitysRepository indexedEntitysRepository) : base(context.Courts, context)
         {
             _context = context;
             _securityUtility = securityUtility;
@@ -77,8 +77,8 @@ namespace Dribbly.Service.Services
                 // Do not populate other properties if court has been deleted to save some resources
                 return result;
             }
-            long? currentUserId = _securityUtility.GetUserId();
-            result.IsFollowed = _context.CourtFollowings.Any(f => currentUserId.HasValue && f.CourtId == id && f.FollowedById == currentUserId);
+            long? currentAccountId = _securityUtility.GetAccountId();
+            result.IsFollowed = _context.CourtFollowings.Any(f => currentAccountId.HasValue && f.CourtId == id && f.FollowedById == currentAccountId);
 
             Task populateOwnerTask = PopulateOwner(result);
             Task<long> followerCountTask = getFollowerCountAsync(court.Id);
@@ -97,9 +97,9 @@ namespace Dribbly.Service.Services
             {
                 if (_securityUtility.IsAuthenticated())
                 {
-                    long? userId = _securityUtility.GetUserId();
+                    long? accountId = _securityUtility.GetAccountId();
                     BookingModel mostRecentBooking = await context.Bookings
-                        .Where(e => userId.HasValue && e.CourtId == courtId && e.BookedById == userId &&
+                        .Where(e => accountId.HasValue && e.CourtId == courtId && e.BookedById == accountId &&
                         e.Start < DateTime.UtcNow && e.End < DateTime.UtcNow && e.Status == Enums.BookingStatusEnum.Approved &&
                         !e.HasReviewed).OrderByDescending(e => e.End).FirstOrDefaultAsync();
                     return mostRecentBooking;
@@ -143,10 +143,10 @@ namespace Dribbly.Service.Services
 
         public async Task<FollowResultModel> FollowCourtAsync(long courtId, bool isFollowing)
         {
-            long? currentUserId = _securityUtility.GetUserId();
+            long? currentAccountId = _securityUtility.GetAccountId();
             FollowResultModel result = new FollowResultModel();
             CourtFollowingModel courtFollowing = await _context.CourtFollowings
-                .SingleOrDefaultAsync(f => currentUserId.HasValue && f.CourtId == courtId && f.FollowedById == currentUserId);
+                .SingleOrDefaultAsync(f => currentAccountId.HasValue && f.CourtId == courtId && f.FollowedById == currentAccountId);
             result.isAlreadyFollowing = courtFollowing != null;
             result.IsNotCurrentlyFollowing = !result.isAlreadyFollowing;
 
@@ -157,7 +157,7 @@ namespace Dribbly.Service.Services
                     _context.CourtFollowings.Add(new CourtFollowingModel
                     {
                         CourtId = courtId,
-                        FollowedById = currentUserId.Value
+                        FollowedById = currentAccountId.Value
                     });
                     await _context.SaveChangesAsync();
                     await _commonService.AddUserCourtActivity(UserActivityTypeEnum.FollowCourt, courtId);
@@ -183,7 +183,7 @@ namespace Dribbly.Service.Services
 
         public async Task<long> RegisterAsync(CourtModel court)
         {
-            court.OwnerId = _securityUtility.GetUserId().Value;
+            court.OwnerId = _securityUtility.GetAccountId().Value;
             court.EntityStatus = EntityStatusEnum.Active;
             Add(court);
             _context.SaveChanges();
@@ -206,7 +206,7 @@ namespace Dribbly.Service.Services
                     PhotoModel photo = new PhotoModel
                     {
                         Url = uploadPath,
-                        UploadedById = _securityUtility.GetUserId().Value,
+                        UploadedById = _securityUtility.GetAccountId().Value,
                         DateAdded = DateTime.Now
                     };
                     _context.Photos.Add(photo);
@@ -233,7 +233,7 @@ namespace Dribbly.Service.Services
 
         public async Task UpdateCourtAsync(CourtModel court)
         {
-            if (court.OwnerId == _securityUtility.GetUserId() || AuthenticationService.HasPermission(CourtPermission.UpdateNotOwned))
+            if (court.OwnerId == _securityUtility.GetAccountId().Value || AuthenticationService.HasPermission(CourtPermission.UpdateNotOwned))
             {
                 Update(court);
                 await _context.SaveChangesAsync();
@@ -249,7 +249,7 @@ namespace Dribbly.Service.Services
         public async Task UpdateCourtPropertiesAsync(GenericEntityUpdateInputModel input)
         {
             CourtModel court = await _dbSet.SingleOrDefaultAsync(c => c.Id == input.Id);
-            if (court.OwnerId == _securityUtility.GetUserId() || AuthenticationService.HasPermission(CourtPermission.UpdateNotOwned))
+            if (court.OwnerId == _securityUtility.GetAccountId().Value || AuthenticationService.HasPermission(CourtPermission.UpdateNotOwned))
             {
                 foreach(KeyValuePair<string, object> item in input.Properties)
                 {
@@ -267,7 +267,7 @@ namespace Dribbly.Service.Services
 
         private void UpdateCourt(CourtModel court)
         {
-            if (court.OwnerId == _securityUtility.GetUserId() || AuthenticationService.HasPermission(CourtPermission.UpdateNotOwned))
+            if (court.OwnerId == _securityUtility.GetAccountId().Value || AuthenticationService.HasPermission(CourtPermission.UpdateNotOwned))
             {
                 Update(court);
             }
@@ -286,7 +286,7 @@ namespace Dribbly.Service.Services
                 throw new DribblyObjectNotFoundException($"Attempted to delete non-existent court. Court ID: {courtId}");
             }
 
-            if (court.OwnerId == _securityUtility.GetUserId() || AuthenticationService.HasPermission(CourtPermission.DeleteNotOwned))
+            if (court.OwnerId == _securityUtility.GetAccountId().Value || AuthenticationService.HasPermission(CourtPermission.DeleteNotOwned))
             {
                 court.EntityStatus = EntityStatusEnum.Deleted;
                 await _context.SaveChangesAsync();
@@ -316,7 +316,7 @@ namespace Dribbly.Service.Services
 
         public async Task SubmitReviewAsync(CourtReviewModel review)
         {
-            review.ReviewedById = _securityUtility.GetUserId().Value;
+            review.ReviewedById = _securityUtility.GetAccountId().Value;
             CourtModel court = GetById(review.CourtId);
             if (court.OwnerId == review.ReviewedById)
             {
@@ -392,7 +392,7 @@ namespace Dribbly.Service.Services
             }
             else
             {
-                if (courtPhoto.Court.OwnerId == _securityUtility.GetUserId() || AuthenticationService.HasPermission(CourtPermission.DeletePhotoNotOwned))
+                if (courtPhoto.Court.OwnerId == _securityUtility.GetAccountId().Value || AuthenticationService.HasPermission(CourtPermission.DeletePhotoNotOwned))
                 {
                     courtPhoto.Photo.DateDeleted = DateTime.UtcNow;
                     _context.CourtPhotos.AddOrUpdate(courtPhoto);
@@ -421,7 +421,7 @@ namespace Dribbly.Service.Services
             PhotoModel photo = new PhotoModel
             {
                 Url = uploadPath,
-                UploadedById = _securityUtility.GetUserId().Value,
+                UploadedById = _securityUtility.GetAccountId().Value,
                 DateAdded = DateTime.Now
             };
             _context.Photos.Add(photo);
@@ -464,7 +464,7 @@ namespace Dribbly.Service.Services
                     friendlyMessageKey: "app.Error_CouldNotUploadVideoCourtNotFound");
             }
 
-            if (_securityUtility.IsCurrentUser(court.OwnerId) || AuthenticationService.HasPermission(CourtPermission.AddVideoNotOwned))
+            if (court.OwnerId == _securityUtility.GetAccountId().Value || AuthenticationService.HasPermission(CourtPermission.AddVideoNotOwned))
             {
                 using (var transaction = _context.Database.BeginTransaction())
                 {
@@ -509,7 +509,8 @@ namespace Dribbly.Service.Services
             }
             else
             {
-                if (_securityUtility.IsCurrentUser(courtVideo.Court.OwnerId) || _securityUtility.IsCurrentUser(courtVideo.Video.AddedBy) ||
+                var currentAccountId = _securityUtility.GetAccountId().Value;
+                if (courtVideo.Court.OwnerId == currentAccountId || courtVideo.Video.AddedBy == currentAccountId ||
                     AuthenticationService.HasPermission(CourtPermission.DeleteVideoNotOwned))
                 {
                     courtVideo.Video.DateDeleted = DateTime.UtcNow;
@@ -529,7 +530,7 @@ namespace Dribbly.Service.Services
         {
             string uploadPath = _fileService.Upload(file, "video/");
             video.Src = uploadPath;
-            video.AddedBy = _securityUtility.GetUserId().Value;
+            video.AddedBy = _securityUtility.GetAccountId().Value;
             video.DateAdded = DateTime.UtcNow;
             video.Size = file.ContentLength;
             video.Type = file.ContentType;

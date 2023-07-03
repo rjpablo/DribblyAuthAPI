@@ -23,7 +23,7 @@ namespace Dribbly.Service.Services
 
         public ContactsService(IAuthContext context,
             ISecurityUtility securityUtility,
-            ICommonService commonService) : base(context.Contacts)
+            ICommonService commonService) : base(context.Contacts, context)
         {
             _context = context;
             _securityUtility = securityUtility;
@@ -47,7 +47,7 @@ namespace Dribbly.Service.Services
                 ContactModel contact = new ContactModel
                 {
                     Number = input.ContactNumber,
-                    AddedBy = _securityUtility.GetUserId().Value
+                    AddedBy = _securityUtility.GetAccountId().Value
                 };
 
                 Add(contact);

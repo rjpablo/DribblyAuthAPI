@@ -44,7 +44,7 @@ namespace Dribbly.Service.Services
             INotificationsRepository notificationsRepo,
             ICourtsRepository courtsRepo,
             ICommonService commonService,
-            ITeamsRepository teamsRepository) : base(context.Games)
+            ITeamsRepository teamsRepository) : base(context.Games, context)
         {
             _context = context;
             _securityUtility = securityUtility;
@@ -145,8 +145,8 @@ namespace Dribbly.Service.Services
         public async Task StartGameAsync(StartGameInputModel input)
         {
             GameModel game = await _context.Games.SingleOrDefaultAsync(g => g.Id == input.GameId);
-            var currentUserId = _securityUtility.GetUserId();
-            if (game.AddedById == currentUserId)
+            var currentAccountId = _securityUtility.GetAccountId();
+            if (game.AddedById == currentAccountId)
             {
                 if (game.Status == GameStatusEnum.WaitingToStart)
                 {
@@ -186,7 +186,7 @@ namespace Dribbly.Service.Services
             else
             {
                 throw new DribblyForbiddenException
-                    (String.Format("Unauthorized user attempted to start game. User ID: {0}, Game ID: {1}", currentUserId, game.Id));
+                    (String.Format("Unauthorized user attempted to start game. Account ID: {0}, Game ID: {1}", currentAccountId, game.Id));
             }
         }
 
@@ -351,8 +351,8 @@ namespace Dribbly.Service.Services
         public async Task UpdateStatusAsync(long gameId, GameStatusEnum toStatus)
         {
             GameModel game = await _context.Games.SingleOrDefaultAsync(g => g.Id == gameId);
-            var currentUserId = _securityUtility.GetUserId();
-            if (game.AddedById == currentUserId)
+            var currentAccountId = _securityUtility.GetAccountId();
+            if (game.AddedById == currentAccountId)
             {
                 #region Starting Game
                 if (toStatus == GameStatusEnum.Started)
@@ -447,7 +447,7 @@ namespace Dribbly.Service.Services
             else
             {
                 throw new DribblyForbiddenException
-                    (String.Format("Unauthorized user attempted to start game. User ID: {0}, Game ID: {1}", currentUserId, game.Id));
+                    (String.Format("Unauthorized user attempted to start game. Account ID: {0}, Game ID: {1}", currentAccountId, game.Id));
             }
         }
 
@@ -458,9 +458,7 @@ namespace Dribbly.Service.Services
                 try
                 {
                     GameModel game = input.ToGameModel();
-                    var currentUserId = _securityUtility.GetUserId();
-                    AccountModel account = await _accountRepo.GetAccountByIdentityId(currentUserId.Value);
-                    game.AddedById = account.Id;
+                    game.AddedById = _securityUtility.GetAccountId().Value;
                     game.Status = GameStatusEnum.WaitingToStart;
                     game.EntityStatus = EntityStatusEnum.Active;
                     game.DateAdded = DateTime.UtcNow;
@@ -533,7 +531,7 @@ namespace Dribbly.Service.Services
 
                     transaction.Commit();
                     await _commonService.AddUserGameActivity(UserActivityTypeEnum.AddGame, game.Id);
-                    NotificationTypeEnum Type = game.AddedById == account.Id ?
+                    NotificationTypeEnum Type = game.AddedById == _securityUtility.GetAccountId().Value ?
                         NotificationTypeEnum.NewGameForOwner :
                         NotificationTypeEnum.NewGameForBooker;
                     await _notificationsRepo.TryAddAsync(new NewGameNotificationModel
@@ -724,9 +722,7 @@ namespace Dribbly.Service.Services
 
 
             Update(game);
-            var currentUserId = _securityUtility.GetUserId();
-            AccountModel currentUserAccount = await _accountRepo.GetAccountByIdentityId(currentUserId.Value);
-            bool isUpdatedByBooker = game.AddedById == currentUserAccount.Id;
+            bool isUpdatedByBooker = game.AddedById == _securityUtility.GetAccountId().Value;
             NotificationTypeEnum Type = isUpdatedByBooker ?
                 NotificationTypeEnum.GameUpdatedForOwner :
                 NotificationTypeEnum.GameUpdatedForBooker;

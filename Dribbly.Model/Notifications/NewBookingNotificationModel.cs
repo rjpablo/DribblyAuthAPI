@@ -1,5 +1,6 @@
 ﻿using Dribbly.Authentication.Models.Auth;
 using Dribbly.Identity.Models;
+using Dribbly.Model.Account;
 using Dribbly.Model.Bookings;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -25,7 +26,7 @@ namespace Dribbly.Model.Notifications
         public string CourtName { get; set; }
 
         public BookingModel Booking { get; set; }
-        public ApplicationUser BookedBy { get; set; }
+        public AccountModel BookedBy { get; set; }
     }
 
     [NotMapped]

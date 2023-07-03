@@ -21,7 +21,7 @@ namespace Dribbly.Service.Services
 
         public TournamentsService(IAuthContext context,
             ISecurityUtility securityUtility,
-            IIndexedEntitysRepository indexedEntitysRepository) : base(context.Tournaments)
+            IIndexedEntitysRepository indexedEntitysRepository) : base(context.Tournaments, context)
         {
             _context = context;
             _securityUtility = securityUtility;
@@ -31,7 +31,7 @@ namespace Dribbly.Service.Services
 
         public async Task<TournamentModel> AddTournamentAsync(TournamentModel season)
         {
-            season.AddedById = _securityUtility.GetUserId().Value;
+            season.AddedById = _securityUtility.GetAccountId().Value;
             _tournamentsRepository.Add(season);
             await _context.SaveChangesAsync();
             // TODO: log activity

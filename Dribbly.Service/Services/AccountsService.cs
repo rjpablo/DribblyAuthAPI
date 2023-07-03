@@ -39,7 +39,7 @@ namespace Dribbly.Service.Services
             ISecurityUtility securityUtility,
             IFileService fileService,
             ICommonService commonService,
-            IIndexedEntitysRepository indexedEntitysRepo) : base(context.Accounts)
+            IIndexedEntitysRepository indexedEntitysRepo) : base(context.Accounts, context)
         {
             _accountRepo = accountRepo;
             _courtsRepo = courtsRepo;
@@ -172,6 +172,7 @@ namespace Dribbly.Service.Services
                     var user = await _authRepo.FindUserByIdAsync(account.IdentityUserId);
                     account.User = user;
                     Add(account);
+                    _context.SetEntityState(account.User, EntityState.Unchanged);
                     await _context.SaveChangesAsync();
                     await _indexedEntitysRepo.Add(_context, new IndexedEntityModel(account));
                     await _commonService.AddUserAccountActivity(UserActivityTypeEnum.CreateAccount, account.Id);
@@ -321,13 +322,12 @@ namespace Dribbly.Service.Services
 
         private async Task<PhotoModel> AddPhoto(AccountModel account, HttpPostedFile file)
         {
-            long? currentUserId = _securityUtility.GetUserId();
             string uploadPath = _fileService.Upload(file, "accountPhotos/");
 
             PhotoModel photo = new PhotoModel
             {
                 Url = uploadPath,
-                UploadedById = currentUserId.Value,
+                UploadedById = _securityUtility.GetAccountId().Value,
                 DateAdded = DateTime.UtcNow
             };
             _context.Photos.Add(photo);
@@ -399,7 +399,7 @@ namespace Dribbly.Service.Services
         {
             string uploadPath = _fileService.Upload(file, "video/");
             video.Src = uploadPath;
-            video.AddedBy = _securityUtility.GetUserId().Value;
+            video.AddedBy = _securityUtility.GetAccountId().Value;
             video.DateAdded = DateTime.UtcNow;
             video.Size = file.ContentLength;
             video.Type = file.ContentType;

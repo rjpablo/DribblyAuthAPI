@@ -10,9 +10,12 @@ namespace Dribbly.Service.Services
 {
     public class BaseEntityService<T> : BaseService<T> where T : BaseEntityModel
     {
-        public BaseEntityService(DbSet<T> dbSet) : base(dbSet)
+        IAuthContext _context;
+        public BaseEntityService(DbSet<T> dbSet,
+        IAuthContext context) : base(dbSet)
         {
             _dbSet = dbSet;
+            _context = context;
         }
 
         protected new void Add(T entity)
