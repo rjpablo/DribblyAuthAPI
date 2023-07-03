@@ -177,6 +177,7 @@ namespace DribblyAuthAPI.Controllers
         [Route("Register")]
         public async Task<IHttpActionResult> Register(UserModel userModel)
         {
+            //TODO: move logic to a service and use a db transaction
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

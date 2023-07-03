@@ -165,10 +165,25 @@ namespace Dribbly.Service.Services
 
         public async Task AddAsync(AccountModel account)
         {
-            Add(account);
-            _context.IndexedEntities.Add(new IndexedEntityModel(account));
-            await _context.SaveChangesAsync();
-            await _commonService.AddUserAccountActivity(UserActivityTypeEnum.CreateAccount, account.Id);
+            using(var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var user = await _authRepo.FindUserByIdAsync(account.IdentityUserId);
+                    account.User = user;
+                    Add(account);
+                    await _context.SaveChangesAsync();
+                    await _indexedEntitysRepo.Add(_context, new IndexedEntityModel(account));
+                    await _commonService.AddUserAccountActivity(UserActivityTypeEnum.CreateAccount, account.Id);
+
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
         }
 
         public async Task SetIsPublic(string userId, bool IsPublic)
