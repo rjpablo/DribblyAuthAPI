@@ -639,6 +639,10 @@
     <Compile Include="Migrations\202307031048333_CreateTable_NewBookingNotifications.Designer.cs">
       <DependentUpon>202307031048333_CreateTable_NewBookingNotifications.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307040900167_ModifyTable_Tournaments_AddColumns_DefaultCourtId_and_LogoId.cs" />
+    <Compile Include="Migrations\202307040900167_ModifyTable_Tournaments_AddColumns_DefaultCourtId_and_LogoId.Designer.cs">
+      <DependentUpon>202307040900167_ModifyTable_Tournaments_AddColumns_DefaultCourtId_and_LogoId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1006,6 +1010,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307031048333_CreateTable_NewBookingNotifications.resx">
       <DependentUpon>202307031048333_CreateTable_NewBookingNotifications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307040900167_ModifyTable_Tournaments_AddColumns_DefaultCourtId_and_LogoId.resx">
+      <DependentUpon>202307040900167_ModifyTable_Tournaments_AddColumns_DefaultCourtId_and_LogoId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

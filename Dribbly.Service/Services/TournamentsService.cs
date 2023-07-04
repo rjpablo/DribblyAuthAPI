@@ -40,15 +40,15 @@ namespace Dribbly.Service.Services
 
         public async Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId)
         {
-            //var entity = await _tournamentsRepository.Get(t => t.Id == tournamentId,
-            //    $"{nameof(TournamentModel.Games)}.{nameof(GameModel.Team1)}.{nameof(GameTeamModel.Team)}.{nameof(TeamModel.Logo)}," +
-            //    $"{nameof(TournamentModel.Games)}.{nameof(GameModel.Team2)}.{nameof(GameTeamModel.Team)}.{nameof(TeamModel.Logo)}")
-            //    .FirstOrDefaultAsync();
-            //if (entity != null)
-            //{
-            //    entity.Games = entity.Games.Where(g => g.EntityStatus != Enums.EntityStatusEnum.Deleted).ToList();
-            //    return new TournamentViewerModel(entity);
-            //}
+            var entity = await _tournamentsRepository.Get(t => t.Id == tournamentId,
+                $"{nameof(TournamentModel.Games)}.{nameof(GameModel.Team1)}.{nameof(GameTeamModel.Team)}.{nameof(TeamModel.Logo)}," +
+                $"{nameof(TournamentModel.Games)}.{nameof(GameModel.Team2)}.{nameof(GameTeamModel.Team)}.{nameof(TeamModel.Logo)}")
+                .FirstOrDefaultAsync();
+            if (entity != null)
+            {
+                entity.Games = entity.Games.Where(g => g.EntityStatus != Enums.EntityStatusEnum.Deleted).ToList();
+                return new TournamentViewerModel(entity);
+            }
 
             return null;
         }
