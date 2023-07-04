@@ -88,7 +88,8 @@ namespace Dribbly.Service.Services
                 $".{nameof(TeamMembershipModel.Account)}.{nameof(AccountModel.User)}," +
                 // include gameevents for play-by-play
                 $"{nameof(GameModel.GameEvents)}.{nameof(GameEventModel.PerformedBy)}.{nameof(AccountModel.ProfilePhoto)}," +
-                $"{nameof(GameModel.GameEvents)}.{nameof(GameEventModel.Team)},")
+                $"{nameof(GameModel.GameEvents)}.{nameof(GameEventModel.Team)}," +
+                $"{nameof(GameModel.Court)}")
                 .FirstOrDefaultAsync();
             if (game != null)
             {

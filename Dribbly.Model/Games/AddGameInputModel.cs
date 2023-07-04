@@ -27,6 +27,16 @@ namespace Dribbly.Model.Games
         public bool IsTimed { get; set; }
         public int? DefaultShotClockDuration { get; set; } = 24;
         public int? OffensiveRebondShotClock { get; set; } = 14;
+        public int NumberOfRegulationPeriods { get; set; }
+
+        /// <summary>
+        /// In minutes
+        /// </summary>
+        public int RegulationPeriodDuration { get; set; }
+        /// <summary>
+        /// In minutes
+        /// </summary>
+        public int OvertimePeriodDuration { get; set; }
 
         public GameModel ToGameModel()
         {
@@ -38,7 +48,10 @@ namespace Dribbly.Model.Games
                 TournamentId = TournamentId,
                 IsTimed = IsTimed,
                 DefaultShotClockDuration = DefaultShotClockDuration,
-                OffensiveRebondShotClock = OffensiveRebondShotClock
+                OffensiveRebondShotClock = OffensiveRebondShotClock,
+                NumberOfRegulationPeriods = NumberOfRegulationPeriods,
+                RegulationPeriodDuration = RegulationPeriodDuration,
+                OvertimePeriodDuration = OvertimePeriodDuration,
             };
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Dribbly.Core.Models;
+using Dribbly.Model.Courts;
 using Dribbly.Model.Enums;
 using Dribbly.Model.Games;
 using System;
@@ -18,6 +19,7 @@ namespace Dribbly.Model.Tournaments
         public long AddedById { get; set; }
         public TournamentStatusEnum Status { get; set; }
         public List<GameModel> Games { get; set; } = new List<GameModel>();
+        public CourtModel DefaultCourt { get; set; }
 
         public TournamentViewerModel(TournamentModel model)
         {
@@ -27,6 +29,7 @@ namespace Dribbly.Model.Tournaments
             AddedById = model.AddedById;
             Status = model.Status;
             Games = model.Games.ToList();
+            DefaultCourt = model.DefaultCourt;
         }
     }
 }

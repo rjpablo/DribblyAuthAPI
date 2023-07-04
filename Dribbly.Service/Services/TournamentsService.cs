@@ -1,5 +1,6 @@
 ﻿using Dribbly.Core.Utilities;
 using Dribbly.Model;
+using Dribbly.Model.Courts;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Games;
 using Dribbly.Model.Leagues;
@@ -42,7 +43,8 @@ namespace Dribbly.Service.Services
         {
             var entity = await _tournamentsRepository.Get(t => t.Id == tournamentId,
                 $"{nameof(TournamentModel.Games)}.{nameof(GameModel.Team1)}.{nameof(GameTeamModel.Team)}.{nameof(TeamModel.Logo)}," +
-                $"{nameof(TournamentModel.Games)}.{nameof(GameModel.Team2)}.{nameof(GameTeamModel.Team)}.{nameof(TeamModel.Logo)}")
+                $"{nameof(TournamentModel.Games)}.{nameof(GameModel.Team2)}.{nameof(GameTeamModel.Team)}.{nameof(TeamModel.Logo)}," +
+                $"{nameof(TournamentModel.DefaultCourt)}.{nameof(CourtModel.PrimaryPhoto)}")
                 .FirstOrDefaultAsync();
             if (entity != null)
             {

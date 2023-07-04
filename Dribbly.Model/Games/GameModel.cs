@@ -41,6 +41,19 @@ namespace Dribbly.Model.Games
         [ForeignKey(nameof(Team2))]
         public long? Team2Id { get; set; }
 
+        #region Period and Durations
+        /// <summary>
+        /// In minutes
+        /// </summary>
+        public int RegulationPeriodDuration { get; set; }
+        public int NumberOfRegulationPeriods { get; set; }
+        /// <summary>
+        /// In minutes
+        /// </summary>
+        public int OvertimePeriodDuration { get; set; }
+
+        #endregion
+
         public int Team1Score { get; set; } = 0;
 
         public int Team2Score { get; set; } = 0;
@@ -51,11 +64,15 @@ namespace Dribbly.Model.Games
 
         public int CurrentPeriod { get; set; } = 1;
 
+        #region Timeout Limits
+
         public int TotalTimeoutLimit { get; set; }
 
         public int FullTimeoutLimit { get; set; }
 
         public int ShortTimeoutLimit { get; set; }
+
+        #endregion
 
         /// <summary>
         /// 0 = Not Set
