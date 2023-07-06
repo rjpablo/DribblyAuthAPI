@@ -29,6 +29,8 @@ namespace Dribbly.Model.Teams
 
         public string Description => Member.Description;
 
+        public int JerseyNo { get; set; }
+
         [NotMapped]
         public bool IsCurrentMember => false;
 
@@ -50,11 +52,12 @@ namespace Dribbly.Model.Teams
         /// <param name="teamId"></param>
         /// <param name="memberAccountId">The <see cref="AccountModel.Id"/> of the requesting member</param>
         /// <param name="position"></param>
-        public JoinTeamRequestModel(int teamId, long memberAccountId, PlayerPositionEnum position)
+        public JoinTeamRequestModel(int teamId, long memberAccountId, PlayerPositionEnum position, int jerseyNo)
         {
             TeamId = teamId;
             MemberAccountId = memberAccountId;
             Position = position;
+            JerseyNo = jerseyNo;
         }
     }
 }

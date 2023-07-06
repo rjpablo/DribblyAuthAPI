@@ -651,6 +651,10 @@
     <Compile Include="Migrations\202307050516527_ModifyTable_GameTeams_AddColumn_Score.Designer.cs">
       <DependentUpon>202307050516527_ModifyTable_GameTeams_AddColumn_Score.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307061420375_ModifyTable_JoinTeamRequests_AddColumn_JerseyNo.cs" />
+    <Compile Include="Migrations\202307061420375_ModifyTable_JoinTeamRequests_AddColumn_JerseyNo.Designer.cs">
+      <DependentUpon>202307061420375_ModifyTable_JoinTeamRequests_AddColumn_JerseyNo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1027,6 +1031,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307050516527_ModifyTable_GameTeams_AddColumn_Score.resx">
       <DependentUpon>202307050516527_ModifyTable_GameTeams_AddColumn_Score.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307061420375_ModifyTable_JoinTeamRequests_AddColumn_JerseyNo.resx">
+      <DependentUpon>202307061420375_ModifyTable_JoinTeamRequests_AddColumn_JerseyNo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

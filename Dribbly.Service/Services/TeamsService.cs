@@ -347,7 +347,8 @@ namespace Dribbly.Service.Services
                 MemberAccountId = request.MemberAccountId,
                 Position = request.Position,
                 TeamId = request.TeamId,
-                DateAdded = DateTime.UtcNow
+                DateAdded = DateTime.UtcNow,
+                JerseyNo = request.JerseyNo
             };
 
             _context.TeamMembers.Add(membership);
@@ -358,7 +359,7 @@ namespace Dribbly.Service.Services
         {
             var currentUserId = _securityUtility.GetUserId();
             var accountId = _securityUtility.GetAccountId().Value;
-            JoinTeamRequestModel request = new JoinTeamRequestModel(input.TeamId, accountId, input.Position);
+            JoinTeamRequestModel request = new JoinTeamRequestModel(input.TeamId, accountId, input.Position, input.JerseyNo);
 
             if (await GetHasPendingJoinRequestAsync(request.TeamId, accountId))
             {
