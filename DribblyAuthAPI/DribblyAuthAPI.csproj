@@ -647,6 +647,10 @@
     <Compile Include="Migrations\202307040956237_ModifyTable_AddColumns_NumberOfRegulationPeriods_RegulationPeriodDuration_OvertimePeriodDuration.Designer.cs">
       <DependentUpon>202307040956237_ModifyTable_AddColumns_NumberOfRegulationPeriods_RegulationPeriodDuration_OvertimePeriodDuration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307050516527_ModifyTable_GameTeams_AddColumn_Score.cs" />
+    <Compile Include="Migrations\202307050516527_ModifyTable_GameTeams_AddColumn_Score.Designer.cs">
+      <DependentUpon>202307050516527_ModifyTable_GameTeams_AddColumn_Score.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1020,6 +1024,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307040956237_ModifyTable_AddColumns_NumberOfRegulationPeriods_RegulationPeriodDuration_OvertimePeriodDuration.resx">
       <DependentUpon>202307040956237_ModifyTable_AddColumns_NumberOfRegulationPeriods_RegulationPeriodDuration_OvertimePeriodDuration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307050516527_ModifyTable_GameTeams_AddColumn_Score.resx">
+      <DependentUpon>202307050516527_ModifyTable_GameTeams_AddColumn_Score.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

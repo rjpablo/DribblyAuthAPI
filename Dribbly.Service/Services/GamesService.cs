@@ -223,12 +223,14 @@ namespace Dribbly.Service.Services
                             game.Team1Score = await _context.Shots
                             .Where(s => s.TeamId == game.Team1.TeamId && s.GameId == input.Shot.GameId && !s.IsMiss)
                             .SumAsync(s => s.Points);
+                            game.Team1.Score = game.Team1Score;
                         }
                         else if (input.Shot.TeamId == game.Team2.TeamId)
                         {
                             game.Team2Score = await _context.Shots
                             .Where(s => s.TeamId == game.Team2.TeamId && s.GameId == input.Shot.GameId && !s.IsMiss)
                             .SumAsync(s => s.Points);
+                            game.Team2.Score = game.Team2Score;
                         }
 
 

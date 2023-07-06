@@ -46,7 +46,7 @@ namespace Dribbly.Model.Games
         /// In minutes
         /// </summary>
         public int RegulationPeriodDuration { get; set; }
-        public int NumberOfRegulationPeriods { get; set; }
+        public int NumberOfRegulationPeriods { get; set; } = 4;
         /// <summary>
         /// In minutes
         /// </summary>

@@ -18,6 +18,7 @@ namespace Dribbly.Model.Entities
         public TeamModel Team { get; set; }
         [JsonIgnore]
         public GameModel Game { get; set; }
+        public int Score { get; set; }
         public int TeamFoulCount { get; set; }
         /// <summary>
         /// The total number of timeouts left
