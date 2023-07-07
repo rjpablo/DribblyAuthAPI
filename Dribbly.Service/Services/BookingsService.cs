@@ -107,4 +107,14 @@ namespace Dribbly.Service.Services
             _context.SaveChanges();
         }
     }
+    public interface IBookingsService
+    {
+        IEnumerable<BookingModel> GetAll();
+
+        Task<BookingModel> GetBooking(long id);
+
+        Task<BookingModel> AddBookingAsync(BookingModel Booking);
+
+        Task UpdateBookingAsync(BookingModel Booking);
+    }
 }

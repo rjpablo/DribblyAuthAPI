@@ -57,7 +57,7 @@ namespace Dribbly.Service.Services
         public async Task<AccountViewerModel> GetAccountViewerDataAsync(string userName)
         {
             var account = await GetAccountByUsername(userName);
-            if(account == null)
+            if (account == null)
             {
                 throw new DribblyObjectNotFoundException($"Account with the username '{userName}' does not exist.");
             }
@@ -127,7 +127,7 @@ namespace Dribbly.Service.Services
 
         public async Task SetStatus(long accountId, EntityStatusEnum status)
         {
-            AccountModel account = _dbSet.Include(u=>u.User).SingleOrDefault(a => a.Id == accountId);
+            AccountModel account = _dbSet.Include(u => u.User).SingleOrDefault(a => a.Id == accountId);
             if (account == null)
             {
                 throw new DribblyObjectNotFoundException
@@ -420,5 +420,38 @@ namespace Dribbly.Service.Services
 
         #endregion
 
+    }
+
+    public interface IAccountsService
+    {
+        Task<AccountModel> GetAccountByUsername(string userName);
+
+        Task<AccountDetailsModalModel> GetAccountDetailsModalAsync(long accountId);
+
+        Task<AccountViewerModel> GetAccountViewerDataAsync(string userName);
+
+        Task AddAsync(AccountModel account);
+
+        Task<IEnumerable<PhotoModel>> AddAccountPhotosAsync(long accountId);
+
+        Task<AccountSettingsModel> GetAccountSettingsAsync(long userId);
+
+        Task<PhotoModel> UploadPrimaryPhotoAsync(long accountId);
+
+        Task UpdateAccountAsync(AccountModel account);
+
+        Task<IEnumerable<PhotoModel>> GetAccountPhotosAsync(int accountId);
+
+        Task DeletePhoto(int photoId, int accountId);
+
+        Task<IEnumerable<VideoModel>> GetAccountVideosAsync(long accountId);
+
+        Task<VideoModel> AddVideoAsync(long accountId, VideoModel video, HttpPostedFile file);
+
+        Task<IEnumerable<AccountsChoicesItemModel>> GetAccountDropDownSuggestions(AccountSearchInputModel input);
+
+        Task SetStatus(long accountId, EntityStatusEnum status);
+
+        Task SetIsPublic(string userId, bool IsPublic);
     }
 }

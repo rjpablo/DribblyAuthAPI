@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Dribbly.Service.Services
 {
-    public class ContactsService: BaseEntityService<ContactModel>, IContactsService
+    public class ContactsService : BaseEntityService<ContactModel>, IContactsService
     {
         private readonly IAuthContext _context;
         private readonly ISecurityUtility _securityUtility;
@@ -67,5 +67,12 @@ namespace Dribbly.Service.Services
 
             return result;
         }
+    }
+
+    public interface IContactsService
+    {
+        Task SendVerificationCodeAsync(ContactVerificationModel input);
+
+        Task<PhoneVerificationResultModel> VerifyMobileNumberAsync(ContactVerificationModel contact);
     }
 }

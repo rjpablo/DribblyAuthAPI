@@ -26,4 +26,8 @@ namespace Dribbly.Service.Services
                 .Select(p=>p.Name);
         }
     }
+    public interface IPermissionsService
+    {
+        Task<IEnumerable<string>> GetUserPermissionNamesAsync(string userId);
+    }
 }
