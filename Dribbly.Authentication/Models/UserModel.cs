@@ -5,6 +5,14 @@ namespace Dribbly.Authentication.Models
     public class UserModel
     {
         [Required]
+        [StringLength(30, ErrorMessage = "The {0} must not exceed {1} characters.")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [StringLength(30, ErrorMessage = "The {0} must not exceed {1} characters.")]
+        public string LastName { get; set; }
+
+        [Required]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 

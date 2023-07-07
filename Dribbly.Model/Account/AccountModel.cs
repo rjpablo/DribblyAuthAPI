@@ -7,6 +7,7 @@ using Dribbly.Service.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dribbly.Model.Account
@@ -23,6 +24,10 @@ namespace Dribbly.Model.Account
         /// </summary>
         [ForeignKey("User")]
         public long IdentityUserId { get; set; }
+        [MaxLength(30)]
+        public string FirstName { get; set; }
+        [MaxLength(30)]
+        public string LastName { get; set; }
         [NotMapped]
         public string Username { get { return User?.UserName; } }
         [NotMapped]

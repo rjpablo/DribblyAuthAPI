@@ -195,7 +195,9 @@ namespace DribblyAuthAPI.Controllers
             await _accountService.AddAsync(new AccountModel
             {
                 IdentityUserId = result.user.Id,
-                DateAdded = DateTime.UtcNow
+                DateAdded = DateTime.UtcNow,
+                FirstName = userModel.FirstName,
+                LastName = userModel.LastName
             });
 
             return Ok();

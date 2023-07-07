@@ -10,6 +10,7 @@ using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
 using Dribbly.Service.Services.Shared;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -31,6 +32,7 @@ namespace Dribbly.Service.Services
         private readonly ICommonService _commonService;
         private readonly IIndexedEntitysRepository _indexedEntitysRepo;
         ISecurityUtility _securityUtility;
+        private ApplicationUserManager _userManager;
 
         public AccountsService(IAuthContext context,
             IAccountRepository accountRepo,
@@ -49,6 +51,7 @@ namespace Dribbly.Service.Services
             _commonService = commonService;
             _indexedEntitysRepo = indexedEntitysRepo;
             _securityUtility = securityUtility;
+            _userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
         }
 
         public async Task<AccountViewerModel> GetAccountViewerDataAsync(string userName)
@@ -165,11 +168,11 @@ namespace Dribbly.Service.Services
 
         public async Task AddAsync(AccountModel account)
         {
-            using(var transaction = _context.Database.BeginTransaction())
+            var user = await _authRepo.FindUserByIdAsync(account.IdentityUserId);
+            using (var transaction = _context.Database.BeginTransaction())
             {
                 try
                 {
-                    var user = await _authRepo.FindUserByIdAsync(account.IdentityUserId);
                     account.User = user;
                     Add(account);
                     _context.SetEntityState(account.User, EntityState.Unchanged);
@@ -182,6 +185,7 @@ namespace Dribbly.Service.Services
                 catch (Exception)
                 {
                     transaction.Rollback();
+                    await _userManager.DeleteAsync(user);
                     throw;
                 }
             }
