@@ -22,22 +22,6 @@ using Dribbly.Model.Account;
 
 namespace Dribbly.Service.Services
 {
-    public interface ITeamsService
-    {
-        Task<TeamModel> AddTeamAsync(TeamModel team);
-        Task CancelJoinRequestAsync(long teamId);
-        IEnumerable<TeamModel> GetAll();
-        Task<IEnumerable<TeamMembershipModel>> GetCurrentMembersAsync(long teamId);
-        Task<IEnumerable<JoinTeamRequestModel>> GetJoinRequestsAsync(long teamId);
-        Task<TeamModel> GetTeamAsync(long id);
-        Task<UserTeamRelationModel> GetUserTeamRelationAsync(long teamId);
-        Task<TeamViewerDataModel> GetTeamViewerDataAsync(long teamId);
-        Task<UserTeamRelationModel> JoinTeamAsync(JoinTeamRequestInputModel input);
-        Task<UserTeamRelationModel> LeaveTeamAsync(long teamId);
-        Task ProcessJoinRequestAsync(ProcessJoinTeamRequestInputModel input);
-        Task UpdateTeamAsync(TeamModel team);
-        Task<PhotoModel> UploadLogoAsync(long teamId);
-    }
     public class TeamsService : BaseEntityService<TeamModel>, ITeamsService
     {
         private readonly IAuthContext _context;
@@ -117,6 +101,19 @@ namespace Dribbly.Service.Services
         public async Task<IEnumerable<TeamMembershipModel>> GetCurrentMembersAsync(long teamId)
         {
             return await GetAllMembers(teamId).Where(m => m.DateLeft == null).ToListAsync();
+        }
+
+        public async Task RemoveMemberAsync(long teamId, long membershipId)
+        {
+            //TODO: validate team existence and link to memebrshipId
+
+            var member = await _context.TeamMembers.SingleOrDefaultAsync(m => m.Id == membershipId);
+            if(member == null)
+            {
+                throw new DribblyForbiddenException("Membership info not found.", friendlyMessage:"Unable to find membership info.");
+            }
+            member.DateLeft = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
         }
 
         public async Task ProcessJoinRequestAsync(ProcessJoinTeamRequestInputModel input)
@@ -425,5 +422,22 @@ namespace Dribbly.Service.Services
             _context.SaveChanges();
             await _commonService.AddUserTeamActivity(UserActivityTypeEnum.UpdateTeam, team.Id);
         }
+    }
+    public interface ITeamsService
+    {
+        Task<TeamModel> AddTeamAsync(TeamModel team);
+        Task CancelJoinRequestAsync(long teamId);
+        IEnumerable<TeamModel> GetAll();
+        Task<IEnumerable<TeamMembershipModel>> GetCurrentMembersAsync(long teamId);
+        Task<IEnumerable<JoinTeamRequestModel>> GetJoinRequestsAsync(long teamId);
+        Task<TeamModel> GetTeamAsync(long id);
+        Task<UserTeamRelationModel> GetUserTeamRelationAsync(long teamId);
+        Task<TeamViewerDataModel> GetTeamViewerDataAsync(long teamId);
+        Task<UserTeamRelationModel> JoinTeamAsync(JoinTeamRequestInputModel input);
+        Task<UserTeamRelationModel> LeaveTeamAsync(long teamId);
+        Task ProcessJoinRequestAsync(ProcessJoinTeamRequestInputModel input);
+        Task RemoveMemberAsync(long teamId, long membershipId);
+        Task UpdateTeamAsync(TeamModel team);
+        Task<PhotoModel> UploadLogoAsync(long teamId);
     }
 }

@@ -105,6 +105,13 @@ namespace DribblyAuthAPI.Controllers
             return await _service.JoinTeamAsync(input);
         }
 
+        [HttpPost]
+        [Route("RemoveMember/{teamId}/{membershipId}")]
+        public async Task RemoveMember(long teamId, long membershipId)
+        {
+            await _service.RemoveMemberAsync(teamId, membershipId);
+        }
+
         [HttpPost, Authorize]
         [Route("ProcessJoinRequest")]
         public async Task ProcessJoinRequest([FromBody] ProcessJoinTeamRequestInputModel input)
