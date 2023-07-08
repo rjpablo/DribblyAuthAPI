@@ -89,6 +89,7 @@
     <Compile Include="GameEvents\RecordTimeoutResultModel.cs" />
     <Compile Include="Games\StartGameInputModel.cs" />
     <Compile Include="Games\UpdateGameTimeRemainingInput.cs" />
+    <Compile Include="Games\UpdateLineupInputModel.cs" />
     <Compile Include="Leagues\LeagueViewerModel.cs" />
     <Compile Include="Enums\JoinTeamRequestStatus.cs" />
     <Compile Include="Enums\PlayerPositionEnum.cs" />

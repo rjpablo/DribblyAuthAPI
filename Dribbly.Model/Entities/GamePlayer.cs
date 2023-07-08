@@ -32,6 +32,7 @@ namespace Dribbly.Model.Entities
         [ForeignKey(nameof(GameTeam))]
         public long GameTeamId { get; set; }
         public bool HasFouledOut { get; set; }
+        public bool IsInGame { get; set; }
         public EjectionStatusEnum EjectionStatus { get; set; } = EjectionStatusEnum.NotEjected;
         public PhotoModel ProfilePhoto { get => TeamMembership.Account.ProfilePhoto; }
         public TeamMembershipModel TeamMembership { get; set; }

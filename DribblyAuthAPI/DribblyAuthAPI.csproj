@@ -659,6 +659,10 @@
     <Compile Include="Migrations\202307070327451_ModifyTable_Accounts_AddColumn_FirstName_and_LastName.Designer.cs">
       <DependentUpon>202307070327451_ModifyTable_Accounts_AddColumn_FirstName_and_LastName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307071741372_ModifyTable_GamePlayers_AddColumn_IsInGame.cs" />
+    <Compile Include="Migrations\202307071741372_ModifyTable_GamePlayers_AddColumn_IsInGame.Designer.cs">
+      <DependentUpon>202307071741372_ModifyTable_GamePlayers_AddColumn_IsInGame.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1041,6 +1045,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307070327451_ModifyTable_Accounts_AddColumn_FirstName_and_LastName.resx">
       <DependentUpon>202307070327451_ModifyTable_Accounts_AddColumn_FirstName_and_LastName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307071741372_ModifyTable_GamePlayers_AddColumn_IsInGame.resx">
+      <DependentUpon>202307071741372_ModifyTable_GamePlayers_AddColumn_IsInGame.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

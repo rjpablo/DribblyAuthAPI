@@ -73,6 +73,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost, Authorize]
+        [Route("UpdateLineup")]
+        public async Task UpdateLineup(UpdateLineupInputModel input)
+        {
+            await _service.UpdateLineupAsync(input);
+        }
+
+        [HttpPost, Authorize]
         [Route("AdvancePeriod/{gameId}/{period}/{remainingTime}")]
         public async Task AdvancePeriod(long gameId, int period, int remainingTime)
         {

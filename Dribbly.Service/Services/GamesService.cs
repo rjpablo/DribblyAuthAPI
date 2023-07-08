@@ -81,6 +81,8 @@ namespace Dribbly.Service.Services
                 // include team1 players details
                 $"{nameof(GameModel.Team1)}.{nameof(GameTeamModel.Players)}.{nameof(GamePlayerModel.TeamMembership)}" +
                 $".{nameof(TeamMembershipModel.Account)}.{nameof(AccountModel.User)}," +
+                $"{nameof(GameModel.Team1)}.{nameof(GameTeamModel.Players)}.{nameof(GamePlayerModel.TeamMembership)}" +
+                $".{nameof(TeamMembershipModel.Account)}.{nameof(AccountModel.ProfilePhoto)}," +
                 // include team2 details
                 $"{nameof(GameModel.Team2)}.{nameof(GameTeamModel.Team)}.{nameof(TeamModel.Logo)}," +
                 // include team2 players details
@@ -590,7 +592,7 @@ namespace Dribbly.Service.Services
 
         public async Task<RecordTimeoutResultModel> RecordTimeoutAsync(RecordTimeoutInputModel input)
         {
-            using(var transaction = _context.Database.BeginTransaction())
+            using (var transaction = _context.Database.BeginTransaction())
             {
                 try
                 {
@@ -742,6 +744,20 @@ namespace Dribbly.Service.Services
             await _commonService.AddUserGameActivity(UserActivityTypeEnum.UpdateGame, game.Id);
             return await GetGame(game.Id);
         }
+
+        public async Task UpdateLineupAsync(UpdateLineupInputModel input)
+        {
+            var gameTeam = await _context.GameTeams
+                .Include(t => t.Players)
+                .SingleAsync(t => t.TeamId == input.TeamId && t.GameId == input.GameId);
+
+            foreach (var player in gameTeam.Players)
+            {
+                player.IsInGame = input.GamePlayerIds.Contains(player.Id);
+            }
+
+            await _context.SaveChangesAsync();
+        }
     }
     public interface IGamesService
     {
@@ -780,5 +796,7 @@ namespace Dribbly.Service.Services
         Task SetTeamFoulCountAsync(long gameTeamId, int foulCount);
 
         Task SetBonusStatusAsync(long gameTeamId, bool isInBonus);
+
+        Task UpdateLineupAsync(UpdateLineupInputModel input);
     }
 }
