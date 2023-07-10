@@ -38,6 +38,8 @@ namespace Dribbly.Model.Games
         /// </summary>
         public int OvertimePeriodDuration { get; set; }
 
+        public bool UsesRunningClock { get; set; }
+
         public GameModel ToGameModel()
         {
             return new GameModel
@@ -52,6 +54,7 @@ namespace Dribbly.Model.Games
                 NumberOfRegulationPeriods = NumberOfRegulationPeriods,
                 RegulationPeriodDuration = RegulationPeriodDuration,
                 OvertimePeriodDuration = OvertimePeriodDuration,
+                UsesRunningClock = UsesRunningClock
             };
         }
     }

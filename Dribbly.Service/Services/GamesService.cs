@@ -469,7 +469,7 @@ namespace Dribbly.Service.Services
                     game.DateAdded = DateTime.UtcNow;
                     if (game.IsTimed)
                     {
-                        game.RemainingTime = 12 * 60 * 1000; //12mins
+                        game.RemainingTime = game.RegulationPeriodDuration * 60 * 1000;
                         game.IsLive = false;
                         game.RemainingShotTime = game.DefaultShotClockDuration * 1000;
                     }

@@ -41,19 +41,6 @@ namespace Dribbly.Model.Games
         [ForeignKey(nameof(Team2))]
         public long? Team2Id { get; set; }
 
-        #region Period and Durations
-        /// <summary>
-        /// In minutes
-        /// </summary>
-        public int RegulationPeriodDuration { get; set; }
-        public int NumberOfRegulationPeriods { get; set; } = 4;
-        /// <summary>
-        /// In minutes
-        /// </summary>
-        public int OvertimePeriodDuration { get; set; }
-
-        #endregion
-
         public int Team1Score { get; set; } = 0;
 
         public int Team2Score { get; set; } = 0;
@@ -97,19 +84,11 @@ namespace Dribbly.Model.Games
         public int? RemainingShotTime { get; set; }
 
         /// <summary>
-        /// The default shot clock duration in seconds
-        /// </summary>
-        public int? DefaultShotClockDuration { get; set; } = 24;
-
-        /// <summary>
-        /// The amount of time (in seconds) the shot clock will reset to after an offensive rebound
-        /// </summary>
-        public int? OffensiveRebondShotClock { get; set; } = 14;
-
-        /// <summary>
         /// Whether or not the ball was live when the remainingTime was last updated
         /// </summary>
         public bool IsLive { get; set; }
+
+        #region Settings
 
         public bool IsTimed { get; set; }
 
@@ -122,6 +101,37 @@ namespace Dribbly.Model.Games
         /// The number of technical fouls each player is allowed before fouling out 
         /// </summary>
         public int TechnicalFoulLimit { get; set; } = 2;
+
+        /// <summary>
+        /// The default shot clock duration in seconds
+        /// </summary>
+        public int? DefaultShotClockDuration { get; set; } = 24;
+
+        /// <summary>
+        /// The amount of time (in seconds) the shot clock will reset to after an offensive rebound
+        /// </summary>
+        public int? OffensiveRebondShotClock { get; set; } = 14;
+
+        #region Period and Durations
+
+        /// <summary>
+        /// In minutes
+        /// </summary>
+        public int RegulationPeriodDuration { get; set; }
+        public int NumberOfRegulationPeriods { get; set; } = 4;
+        /// <summary>
+        /// In minutes
+        /// </summary>
+        public int OvertimePeriodDuration { get; set; }
+
+        #endregion Period and Durations
+
+        /// <summary>
+        /// When set to true, the game clock isn't stopped following a successful field goal.
+        /// </summary>
+        public bool UsesRunningClock { get; set; } = true;
+
+        #endregion Settings
 
         #endregion MappedColumns
 

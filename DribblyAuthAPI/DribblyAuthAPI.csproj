@@ -663,6 +663,10 @@
     <Compile Include="Migrations\202307071741372_ModifyTable_GamePlayers_AddColumn_IsInGame.Designer.cs">
       <DependentUpon>202307071741372_ModifyTable_GamePlayers_AddColumn_IsInGame.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307090625215_ModifyTable_Games_AddColumn_UsesRunningClock.cs" />
+    <Compile Include="Migrations\202307090625215_ModifyTable_Games_AddColumn_UsesRunningClock.Designer.cs">
+      <DependentUpon>202307090625215_ModifyTable_Games_AddColumn_UsesRunningClock.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1048,6 +1052,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307071741372_ModifyTable_GamePlayers_AddColumn_IsInGame.resx">
       <DependentUpon>202307071741372_ModifyTable_GamePlayers_AddColumn_IsInGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307090625215_ModifyTable_Games_AddColumn_UsesRunningClock.resx">
+      <DependentUpon>202307090625215_ModifyTable_Games_AddColumn_UsesRunningClock.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
