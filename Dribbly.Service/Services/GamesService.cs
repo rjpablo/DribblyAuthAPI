@@ -337,8 +337,8 @@ namespace Dribbly.Service.Services
         public async Task EndGameAsync(long gameId, long winningTeamId)
         {
             GameModel game = await _context.Games.SingleOrDefaultAsync(g => g.Id == gameId);
-            if ((game.Team1Score > game.Team2Score/* && winningTeamId != game.Team1Id*/)
-                || (game.Team2Score > game.Team1Score/* && winningTeamId != game.Team2Id*/))
+            if ((game.Team1Score > game.Team2Score && winningTeamId != game.Team1Id)
+                || (game.Team2Score > game.Team1Score && winningTeamId != game.Team2Id))
             {
                 throw new DribblyInvalidOperationException("Wrong winning team was provided.");
             }
