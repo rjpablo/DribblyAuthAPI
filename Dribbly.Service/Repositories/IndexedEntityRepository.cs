@@ -12,7 +12,7 @@ namespace Dribbly.Service.Repositories
     #region Interface
     public interface IIndexedEntitysRepository
     {
-        Task Add(IAuthContext db, IIndexedEntity entity);
+        Task Add(IAuthContext db, IIndexedEntity entity, string additionalData = null);
         Task SetIconUrl(IAuthContext db, IIndexedEntity entity, string url);
         Task Update(IAuthContext db, IIndexedEntity entity);
     }
@@ -22,9 +22,9 @@ namespace Dribbly.Service.Repositories
     {
         public IndexedEntitysRepository(IAuthContext context) { }
 
-        public async Task Add(IAuthContext db, IIndexedEntity entity)
+        public async Task Add(IAuthContext db, IIndexedEntity entity, string additionalData = null)
         {
-            db.IndexedEntities.Add(new IndexedEntityModel(entity));
+            db.IndexedEntities.Add(new IndexedEntityModel(entity, additionalData));
             await db.SaveChangesAsync();
         }
 

@@ -10,6 +10,6 @@ namespace Dribbly.Model.Shared
         /// <summary>
         /// The maximun no. of results to return
         /// </summary>
-        public int MaxCount { get; set; }
+        public int? MaxCount { get; set; }
     }
 }

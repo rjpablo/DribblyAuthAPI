@@ -13,14 +13,17 @@ namespace Dribbly.Model.Shared
 
         public EntityTypeEnum  Type { get; set; }
 
+        public string AdditionalData { get; set; }
+
         public ChoiceItemModel() { }
 
-        public ChoiceItemModel(string text, TValue value, string iconUrl, EntityTypeEnum type)
+        public ChoiceItemModel(string text, TValue value, string iconUrl, EntityTypeEnum type, string additionalData)
         {
             Text = text;
             Value = value;
             IconUrl = iconUrl;
             Type = type;
+            AdditionalData = additionalData;
         }
     }
 }

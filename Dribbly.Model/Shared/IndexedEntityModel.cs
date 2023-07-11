@@ -1,5 +1,6 @@
 ﻿using Dribbly.Model.Account;
 using Dribbly.Service.Enums;
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -39,6 +40,10 @@ namespace Dribbly.Model.Shared
 
         public DateTime DateAdded { get; set; }
 
+        // This column is not added to IIndexedEntity because
+        // only IndexedEntityModel needs it
+        public string AdditionalData { get; set; }
+
         public IndexedEntityModel() { }
 
         public IndexedEntityModel(AccountModel account)
@@ -49,9 +54,10 @@ namespace Dribbly.Model.Shared
             DateAdded = account.DateAdded;
             EntityStatus = EntityStatusEnum.Active;
             IconUrl = account.ProfilePhoto?.Url;
+            AdditionalData = JsonConvert.SerializeObject(new { username = account.Username });
         }
 
-        public IndexedEntityModel(IIndexedEntity entity)
+        public IndexedEntityModel(IIndexedEntity entity, string additionalData = null)
         {
             Id = entity.Id;
             Name = entity.Name;
@@ -60,15 +66,17 @@ namespace Dribbly.Model.Shared
             DateAdded = entity.DateAdded;
             EntityStatus = EntityStatusEnum.Active;
             IconUrl = entity.IconUrl;
+            AdditionalData = additionalData;
         }
 
-        public IndexedEntityModel(string text, long id, string description, string iconUrl, EntityTypeEnum type)
+        public IndexedEntityModel(string text, long id, string description, string iconUrl, EntityTypeEnum type, string additionalData = null)
         {
             Name = text;
             Id = id;
             Description = description;
             IconUrl = iconUrl;
             EntityType = type;
+            AdditionalData = additionalData;
         }
 
         public ChoiceItemModel<long> ToChoiceItemModel()
@@ -78,7 +86,8 @@ namespace Dribbly.Model.Shared
                 Text = Name,
                 Value = Id,
                 IconUrl = IconUrl,
-                Type = EntityType
+                Type = EntityType,
+                AdditionalData = AdditionalData
             };
         }
     }

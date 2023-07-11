@@ -177,7 +177,8 @@ namespace Dribbly.Service.Services
                     Add(account);
                     _context.SetEntityState(account.User, EntityState.Unchanged);
                     await _context.SaveChangesAsync();
-                    await _indexedEntitysRepo.Add(_context, new IndexedEntityModel(account));
+                    var entity = new IndexedEntityModel(account);
+                    await _indexedEntitysRepo.Add(_context, entity, entity.AdditionalData);
                     await _commonService.AddUserAccountActivity(UserActivityTypeEnum.CreateAccount, account.Id);
 
                     transaction.Commit();
