@@ -77,7 +77,8 @@ namespace Dribbly.Model.Shared
             {
                 Text = Name,
                 Value = Id,
-                IconUrl = IconUrl
+                IconUrl = IconUrl,
+                Type = EntityType
             };
         }
     }

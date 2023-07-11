@@ -667,6 +667,10 @@
     <Compile Include="Migrations\202307090625215_ModifyTable_Games_AddColumn_UsesRunningClock.Designer.cs">
       <DependentUpon>202307090625215_ModifyTable_Games_AddColumn_UsesRunningClock.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307111210288_ModifyTable_Tournaments_AddColumn_EntityStatus.cs" />
+    <Compile Include="Migrations\202307111210288_ModifyTable_Tournaments_AddColumn_EntityStatus.Designer.cs">
+      <DependentUpon>202307111210288_ModifyTable_Tournaments_AddColumn_EntityStatus.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1059,6 +1063,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307090625215_ModifyTable_Games_AddColumn_UsesRunningClock.resx">
       <DependentUpon>202307090625215_ModifyTable_Games_AddColumn_UsesRunningClock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307111210288_ModifyTable_Tournaments_AddColumn_EntityStatus.resx">
+      <DependentUpon>202307111210288_ModifyTable_Tournaments_AddColumn_EntityStatus.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

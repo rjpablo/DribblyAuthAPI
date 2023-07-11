@@ -3,7 +3,7 @@ using Dribbly.Model;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Games;
-using Dribbly.Model.Leagues;
+using Dribbly.Model.Shared;
 using Dribbly.Model.Teams;
 using Dribbly.Model.Tournaments;
 using Dribbly.Service.Repositories;
@@ -17,26 +17,40 @@ namespace Dribbly.Service.Services
     {
         IAuthContext _context;
         ISecurityUtility _securityUtility;
-        private readonly IIndexedEntitysRepository _indexedEntitysRepository;
         private readonly ITournamentsRepository _tournamentsRepository;
 
         public TournamentsService(IAuthContext context,
-            ISecurityUtility securityUtility,
-            IIndexedEntitysRepository indexedEntitysRepository) : base(context.Tournaments, context)
+            ISecurityUtility securityUtility) : base(context.Tournaments, context)
         {
             _context = context;
             _securityUtility = securityUtility;
-            _indexedEntitysRepository = indexedEntitysRepository;
             _tournamentsRepository = new TournamentsRepository(context);
         }
 
-        public async Task<TournamentModel> AddTournamentAsync(TournamentModel season)
+        public async Task<TournamentModel> AddTournamentAsync(TournamentModel tournament)
         {
-            season.AddedById = _securityUtility.GetAccountId().Value;
-            _tournamentsRepository.Add(season);
-            await _context.SaveChangesAsync();
-            // TODO: log activity
-            return season;
+            using(var tx = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    tournament.EntityStatus = Enums.EntityStatusEnum.Active;
+                    tournament.AddedById = _securityUtility.GetAccountId().Value;
+                    _tournamentsRepository.Add(tournament);
+                    await _context.SaveChangesAsync();
+
+                    _context.IndexedEntities.Add(new IndexedEntityModel(tournament));
+                    _context.SaveChanges();
+                    // TODO: log activity
+
+                    tx.Commit();
+                    return tournament;
+                }
+                catch (System.Exception)
+                {
+                    tx.Rollback();
+                    throw;
+                }
+            }
         }
 
         public async Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId)
