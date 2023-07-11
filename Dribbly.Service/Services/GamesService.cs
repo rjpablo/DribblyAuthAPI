@@ -353,6 +353,12 @@ namespace Dribbly.Service.Services
             await _commonService.AddUserGameActivity(UserActivityTypeEnum.EndGame, game.Id);
         }
 
+        public async Task<bool> CurrentUserIsGameManagerAsync(long gameId)
+        {
+            var accountId = _securityUtility.GetAccountId().Value;
+            return await _context.Games.AnyAsync(g => g.Id == gameId && g.AddedById == accountId);
+        }
+
         public async Task UpdateStatusAsync(long gameId, GameStatusEnum toStatus)
         {
             GameModel game = await _context.Games.SingleOrDefaultAsync(g => g.Id == gameId);
@@ -770,6 +776,8 @@ namespace Dribbly.Service.Services
         Task AdvancePeriodAsync(long gameId, int period, int remainingTime);
 
         Task<GameModel> AddGameAsync(AddGameInputModel input);
+
+        Task<bool> CurrentUserIsGameManagerAsync(long gameId);
 
         Task EndGameAsync(long gameId, long winningTeamId);
 

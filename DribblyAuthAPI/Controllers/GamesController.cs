@@ -35,6 +35,13 @@ namespace DribblyAuthAPI.Controllers
             return await _service.GetGame(id);
         }
 
+        [HttpGet, Authorize]
+        [Route("CurrentUserIsGameManager/{gameId}")]
+        public async Task<bool> CurrentUserIsGameManager(long gameId)
+        {
+            return await _service.CurrentUserIsGameManagerAsync(gameId);
+        }
+
         [HttpGet]
         [Route("GetGameTeam/{gameId}/{teamId}")]
         public async Task<Dribbly.Service.DTO.GameTeam> GetGameTeam(long gameId, long teamId)
