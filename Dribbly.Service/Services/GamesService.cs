@@ -8,6 +8,7 @@ using Dribbly.Model.GameEvents;
 using Dribbly.Model.Games;
 using Dribbly.Model.Notifications;
 using Dribbly.Model.Play;
+using Dribbly.Model.Shared;
 using Dribbly.Model.Teams;
 using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
@@ -518,6 +519,9 @@ namespace Dribbly.Service.Services
                         TimeoutsLeft = game.TotalTimeoutLimit
                     };
                     _context.GameTeams.Add(team2);
+                    _context.SaveChanges();
+
+                    _context.IndexedEntities.Add(new IndexedEntityModel(game));
                     _context.SaveChanges();
 
                     var team2Players = await _context.TeamMembers.Include(m => m.Account)
