@@ -40,7 +40,6 @@ namespace Dribbly.Service.Services
             IAuthRepository authRepo,
             ISecurityUtility securityUtility,
             IFileService fileService,
-            ICommonService commonService,
             IIndexedEntitysRepository indexedEntitysRepo) : base(context.Accounts, context)
         {
             _accountRepo = accountRepo;
@@ -48,7 +47,7 @@ namespace Dribbly.Service.Services
             _context = context;
             _authRepo = authRepo;
             _fileService = fileService;
-            _commonService = commonService;
+            _commonService = new CommonService(context, securityUtility);
             _indexedEntitysRepo = indexedEntitysRepo;
             _securityUtility = securityUtility;
             _userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
@@ -311,10 +310,10 @@ namespace Dribbly.Service.Services
                     account.ProfilePhotoId = photo.Id;
                     Update(account);
                     await _context.SaveChangesAsync();
-                    transaction.Commit();
                     await _indexedEntitysRepo.SetIconUrl(_context, account, photo.Url);
                     await _commonService.AddAccountPhotoActivitiesAsync(UserActivityTypeEnum.AddAccountPhoto, account.Id, photo);
                     await _commonService.AddAccountPhotoActivitiesAsync(UserActivityTypeEnum.SetAccountPrimaryPhoto, account.Id, photo);
+                    transaction.Commit();
                     return photo;
                 }
                 catch (Exception e)

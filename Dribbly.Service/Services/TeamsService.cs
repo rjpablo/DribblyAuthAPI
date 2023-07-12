@@ -39,7 +39,6 @@ namespace Dribbly.Service.Services
             IFileService fileService,
             INotificationsRepository notificationsRepo,
             ICourtsRepository courtsRepo,
-            ICommonService commonService,
             IIndexedEntitysRepository indexedEntitysRepository) : base(context.Teams, context)
         {
             _context = context;
@@ -48,7 +47,7 @@ namespace Dribbly.Service.Services
             _fileService = fileService;
             _notificationsRepo = notificationsRepo;
             _courtsRepo = courtsRepo;
-            _commonService = commonService;
+            _commonService = new CommonService(context, securityUtility);
             _indexedEntitysRepository = indexedEntitysRepository;
         }
 
@@ -249,10 +248,10 @@ namespace Dribbly.Service.Services
                     team.LogoId = photo.Id;
                     Update(team);
                     await _context.SaveChangesAsync();
-                    transaction.Commit();
                     await _indexedEntitysRepository.SetIconUrl(_context, team, photo.Url);
                     await _commonService.AddTeamPhotoActivitiesAsync(UserActivityTypeEnum.AddTeamPhoto, team.Id, photo);
                     await _commonService.AddTeamPhotoActivitiesAsync(UserActivityTypeEnum.SetTeamLogo, team.Id, photo);
+                    transaction.Commit();
                     return photo;
                 }
                 catch (Exception e)
