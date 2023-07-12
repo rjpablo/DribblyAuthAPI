@@ -17,7 +17,7 @@ namespace DribblyAuthAPI.Controllers
             _commonService = commonService;
         }
 
-        [HttpPost]
+        [HttpPost, AllowAnonymous]
         [Route("GetTypeAheadSuggestions")]
         public async Task<IEnumerable<ChoiceItemModel<long>>> GetTypeAheadSuggestions
             ([FromBody] GetTypeAheadSuggestionsInputModel input)
