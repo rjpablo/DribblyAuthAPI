@@ -1,5 +1,6 @@
 ﻿using Dribbly.Model.Entities;
 using Dribbly.Model.Fouls;
+using Dribbly.Model.GameEvents;
 using Dribbly.Service.Services;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -30,6 +31,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task<GameEventModel> UpsertAsync([FromBody] GameEventModel gameEvent)
         {
             return await _service.UpsertAsync(gameEvent);
+        }
+
+        [HttpPost]
+        [Route("Update")]
+        public async Task<UpdateGameEventResultModel> Update([FromBody] UpdateGameEventInputModel input)
+        {
+            return await _service.UpdateAsync(input);
         }
     }
 }

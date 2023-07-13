@@ -21,9 +21,9 @@ namespace Dribbly.Model.Entities
         [ForeignKey(nameof(Game))]
         public long GameId { get; set; }
         [NotMapped]
-        public string Name { get => TeamMembership.Name; }
+        public string Name { get => TeamMembership?.Name; }
         [NotMapped]
-        public int JerseyNo { get => TeamMembership.JerseyNo; }
+        public int? JerseyNo { get => TeamMembership?.JerseyNo; }
         public int Points { get; set; }
         public int Rebounds { get; set; }
         public int Fouls { get; set; }
@@ -34,7 +34,7 @@ namespace Dribbly.Model.Entities
         public bool HasFouledOut { get; set; }
         public bool IsInGame { get; set; }
         public EjectionStatusEnum EjectionStatus { get; set; } = EjectionStatusEnum.NotEjected;
-        public PhotoModel ProfilePhoto { get => TeamMembership.Account.ProfilePhoto; }
+        public PhotoModel ProfilePhoto { get => TeamMembership?.Account?.ProfilePhoto; }
         public TeamMembershipModel TeamMembership { get; set; }
         [JsonIgnore]
         public GameModel Game { get; set; }

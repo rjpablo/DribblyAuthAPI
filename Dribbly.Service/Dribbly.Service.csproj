@@ -107,6 +107,8 @@
     <Compile Include="Repositories\AccountRepository.cs" />
     <Compile Include="Repositories\AuthRepository.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\GamePlayersRepository.cs" />
+    <Compile Include="Repositories\GamesRepository.cs" />
     <Compile Include="Repositories\MemberFoulsRepository.cs" />
     <Compile Include="Repositories\TournamentsRepository.cs" />
     <Compile Include="Repositories\SeasonsRepository.cs" />
