@@ -38,7 +38,7 @@ namespace Dribbly.Service.Repositories
             var gamePlayers = await _context.GamePlayers.Include(g => g.TeamMembership.Account.User)
                 .Where(g => g.GameId == game.Id && accountIds.Contains(g.TeamMembership.MemberAccountId))
                 .ToListAsync();
-            var shotsMade = await _context.Shots
+            var shots = await _context.Shots
                     .Where(s => accountIds.Contains(s.PerformedById.Value) && s.GameId == game.Id && !s.IsMiss)
                     .ToListAsync();
             var fouls = await _context.MemberFouls
@@ -51,7 +51,11 @@ namespace Dribbly.Service.Repositories
             foreach (var gamePlayer in gamePlayers)
             {
                 var accountId = gamePlayer.TeamMembership.MemberAccountId;
-                gamePlayer.Points = shotsMade
+                gamePlayer.FGA = shots.Count(s => s.PerformedById == accountId);
+                gamePlayer.FGM = shots.Count(s => !s.IsMiss && s.PerformedById == accountId);
+                gamePlayer.ThreePA = shots.Count(s => s.Points == 3 && s.PerformedById == accountId);
+                gamePlayer.ThreePM = shots.Count(s => s.Points == 3 && !s.IsMiss && s.PerformedById == accountId);
+                gamePlayer.Points = shots
                     .Where(s => s.PerformedById == accountId && s.GameId == game.Id && !s.IsMiss)
                     .Sum(s => s.Points);
                 gamePlayer.Fouls = fouls.Count(f => f.PerformedById == accountId);
@@ -59,8 +63,9 @@ namespace Dribbly.Service.Repositories
                 result.Add(gamePlayer);
                 gamePlayer.Blocks = otherPlays.Count(p => p.Type == GameEventTypeEnum.ShotBlock && p.PerformedById == accountId);
                 gamePlayer.Assists = otherPlays.Count(p => p.Type == GameEventTypeEnum.Assist && p.PerformedById == accountId);
-                gamePlayer.Rebounds = otherPlays.Count(p => p.PerformedById == accountId &&
-                 (p.Type == GameEventTypeEnum.DefensiveRebound || p.Type == GameEventTypeEnum.OffensiveRebound));
+                gamePlayer.OReb = otherPlays.Count(p => p.PerformedById == accountId && p.Type == GameEventTypeEnum.OffensiveRebound);
+                gamePlayer.DReb = otherPlays.Count(p => p.PerformedById == accountId && p.Type == GameEventTypeEnum.DefensiveRebound);
+                gamePlayer.Rebounds = gamePlayer.OReb + gamePlayer.DReb;
             }
             await _context.SaveChangesAsync();
             return result;

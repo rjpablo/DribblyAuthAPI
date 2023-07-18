@@ -679,6 +679,10 @@
     <Compile Include="Migrations\202307130917529_ModifyTable_Shots_DropColumn_TakenById.Designer.cs">
       <DependentUpon>202307130917529_ModifyTable_Shots_DropColumn_TakenById.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307181646112_ModifyTable_GamePlayers_AddAdditionalStatColumns.cs" />
+    <Compile Include="Migrations\202307181646112_ModifyTable_GamePlayers_AddAdditionalStatColumns.Designer.cs">
+      <DependentUpon>202307181646112_ModifyTable_GamePlayers_AddAdditionalStatColumns.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1080,6 +1084,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307130917529_ModifyTable_Shots_DropColumn_TakenById.resx">
       <DependentUpon>202307130917529_ModifyTable_Shots_DropColumn_TakenById.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307181646112_ModifyTable_GamePlayers_AddAdditionalStatColumns.resx">
+      <DependentUpon>202307181646112_ModifyTable_GamePlayers_AddAdditionalStatColumns.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

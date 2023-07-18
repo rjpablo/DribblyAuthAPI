@@ -27,9 +27,9 @@ namespace Dribbly.Model.Teams
 
         public EntityTypeEnum EntityType => Account.EntityType;
 
-        public string Name => Account.Name;
+        public string Name => Account?.Name;
 
-        public string IconUrl => Account.IconUrl;
+        public string IconUrl => Account?.IconUrl;
 
         public EntityStatusEnum EntityStatus { get => Account.EntityStatus; }
 

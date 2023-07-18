@@ -37,6 +37,7 @@ namespace Dribbly.Service.Services
         private readonly IBaseRepository<GameEventModel> _gameEventsRepo;
         private readonly IMemberFoulsRepository _memberFoulsRepository;
         private readonly IShotsRepository _shotsRepository;
+        private readonly IGamePlayersRepository _gamePlayerRepo;
 
         public GamesService(IAuthContext context,
             ISecurityUtility securityUtility,
@@ -59,6 +60,7 @@ namespace Dribbly.Service.Services
             _gameEventsRepo = new BaseRepository<GameEventModel>(context.GameEvents);
             _memberFoulsRepository = new MemberFoulsRepository(context);
             _shotsRepository = new ShotsRepository(context);
+            _gamePlayerRepo = new GamePlayersRepository(context);
         }
 
         public IEnumerable<GameModel> GetAll()
@@ -218,6 +220,15 @@ namespace Dribbly.Service.Services
                     _shotsRepository.Add(input.Shot);
                     await _context.SaveChangesAsync();
 
+                    var gamePlayer = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.Id == input.Shot.PerformedById
+                                            && g.GameId == input.Shot.GameId && g.GameTeam.TeamId == input.Shot.TeamId);
+                    gamePlayer.FGA++;
+                    if(input.Shot.Points == 3)
+                    {
+                        gamePlayer.ThreePA++;
+                    }
+                    await _context.SaveChangesAsync();
+
                     var result = new UpsertShotResultModel();
                     if (!input.Shot.IsMiss)
                     {
@@ -240,17 +251,18 @@ namespace Dribbly.Service.Services
                         Update(game);
                         await _context.SaveChangesAsync();
 
-                        var gamePlayer = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.Id == input.Shot.PerformedById
-                                                && g.GameId == input.Shot.GameId && g.GameTeam.TeamId == input.Shot.TeamId);
                         // TODO: add gamePlayer null check
 
-                        result.TotalPoints = await _context.Shots
-                            .Where(s => s.PerformedById == input.Shot.PerformedById && s.GameId == input.Shot.GameId && !s.IsMiss)
-                            .SumAsync(s => s.Points);
-                        gamePlayer.Points = result.TotalPoints;
+                        gamePlayer.Points += input.Shot.Points;
+                        gamePlayer.FGM++;
+                        if (input.Shot.Points == 3)
+                        {
+                            gamePlayer.ThreePM++;
+                        }
                         await _context.SaveChangesAsync();
                     }
 
+                    result.TakenBy = gamePlayer;
                     result.Team1Score = game.Team1Score;
                     result.Team2Score = game.Team2Score;
 
@@ -303,9 +315,12 @@ namespace Dribbly.Service.Services
                         await _context.SaveChangesAsync();
                         var reboundedBy = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.Id == input.Rebound.PerformedById
                                                 && g.GameId == input.Rebound.GameId && g.GameTeam.TeamId == input.Rebound.TeamId);
-                        reboundedBy.Rebounds = await _context.GameEvents
-                            .CountAsync(e => (e.Type == GameEventTypeEnum.OffensiveRebound || e.Type == GameEventTypeEnum.DefensiveRebound)
-                            && e.PerformedById == input.Rebound.PerformedById && e.GameId == input.Rebound.GameId);
+                        var rebounds = await _context.GameEvents
+                            .Where(e => (e.Type == GameEventTypeEnum.OffensiveRebound || e.Type == GameEventTypeEnum.DefensiveRebound)
+                            && e.PerformedById == input.Rebound.PerformedById && e.GameId == input.Rebound.GameId).ToListAsync();
+                        reboundedBy.Rebounds = rebounds.Count();
+                        reboundedBy.OReb = rebounds.Count(e => e.Type == GameEventTypeEnum.OffensiveRebound);
+                        reboundedBy.DReb = rebounds.Count(e => e.Type == GameEventTypeEnum.DefensiveRebound);
                         result.ReboundResult = new ReboundResultModel
                         {
                             TotalRebounds = reboundedBy.Rebounds
