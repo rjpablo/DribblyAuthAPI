@@ -125,9 +125,13 @@ namespace Dribbly.Model
         public DbSet<GameTeamModel> GameTeams { get; set; }
         public DbSet<GamePlayerModel> GamePlayers { get; set; }
         public DbSet<FoulModel> Fouls { get; set; }
+
+        #region Game Events
         public DbSet<MemberFoulModel> MemberFouls { get; set; }
         public DbSet<GameEventModel> GameEvents { get; set; }
         public DbSet<ShotModel> Shots { get; set; }
+        #endregion
+
         public DbSet<TeamModel> Teams { get; set; }
         public DbSet<TeamMembershipModel> TeamMembers { get; set; }
         public DbSet<TeamPhotoActivityModel> TeamPhotoActivities { get; set; }
@@ -174,6 +178,7 @@ namespace Dribbly.Model
         public DbSet<ClientLogModel> ErrorLogs { get; set; }
         public DbSet<ExceptionLog> ExceptionLogs { get; set; }
         #endregion
+
         #region Notifications
         public DbSet<NotificationModel> Notifications { get; set; }
         public DbSet<NewBookingNotificationModel> NewBookingNotifications { get; set; }

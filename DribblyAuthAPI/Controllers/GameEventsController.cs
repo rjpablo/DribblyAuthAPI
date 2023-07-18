@@ -39,5 +39,12 @@ namespace DribblyAuthAPI.Controllers
         {
             return await _service.UpdateAsync(input);
         }
+
+        [HttpPost]
+        [Route("Delete/{gameEventId}")]
+        public async Task<UpdateGameEventResultModel> Delete(long gameEventId)
+        {
+            return await _service.DeleteAsync(gameEventId);
+        }
     }
 }

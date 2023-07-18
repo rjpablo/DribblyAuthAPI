@@ -17,7 +17,6 @@ namespace Dribbly.Model.Games
         #region MappedColumns
         public int Points { get; set; }
         public bool IsMiss { get; set; }
-        public long? TakenById { get; set; }
         #endregion
 
     }

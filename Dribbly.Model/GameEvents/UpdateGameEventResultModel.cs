@@ -19,5 +19,10 @@ namespace Dribbly.Model.Entities
         /// The list of players that were affected
         /// </summary>
         public List<GamePlayerModel> Players { get; set; } = new List<GamePlayerModel>();
+
+        /// <summary>
+        /// Whether or not the update is DELETE
+        /// </summary>
+        public bool IsDelete { get; set; }
     }
 }

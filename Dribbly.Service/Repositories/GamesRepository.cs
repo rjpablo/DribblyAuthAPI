@@ -10,7 +10,8 @@ namespace Dribbly.Service.Repositories
     public class GamesRepository : BaseRepository<GameModel>, IGamesRepository
     {
         private IAuthContext _context;
-        public GamesRepository(IAuthContext context) : base(context.Games) {
+        public GamesRepository(IAuthContext context) : base(context.Games)
+        {
             _context = context;
         }
 
@@ -20,15 +21,17 @@ namespace Dribbly.Service.Repositories
                 $"{nameof(GameModel.Team1)},{nameof(GameModel.Team2)}")
                 .FirstOrDefaultAsync();
 
-                game.Team1Score = await _context.Shots
-                .Where(s => s.TeamId == game.Team1.TeamId && s.GameId == gameId && !s.IsMiss)
-                .SumAsync(s => s.Points);
-                game.Team1.Score = game.Team1Score;
+            game.Team1Score = (await _context.Shots
+            .Where(s => s.TeamId == game.Team1.TeamId && s.GameId == gameId && !s.IsMiss)
+            .SumAsync(s => (int?)s.Points)) ?? 0;
+            game.Team1.Score = game.Team1Score;
+            game.Team1.TeamFoulCount = await _context.MemberFouls.CountAsync(m => m.GameId == gameId && m.TeamId == game.Team1.TeamId);
 
-                game.Team2Score = await _context.Shots
-                .Where(s => s.TeamId == game.Team2.TeamId && s.GameId == gameId && !s.IsMiss)
-                .SumAsync(s => s.Points);
-                game.Team2.Score = game.Team2Score;
+            game.Team2Score = (await _context.Shots
+            .Where(s => s.TeamId == game.Team2.TeamId && s.GameId == gameId && !s.IsMiss)
+            .SumAsync(s => (int?)s.Points)) ?? 0;
+            game.Team2.Score = game.Team2Score;
+            game.Team1.TeamFoulCount = await _context.MemberFouls.CountAsync(m => m.GameId == gameId && m.TeamId == game.Team2.TeamId);
 
             await _context.SaveChangesAsync();
             return game;
