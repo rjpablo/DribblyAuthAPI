@@ -76,6 +76,7 @@
     <Compile Include="Exceptions\ExceptionResponseContent.cs" />
     <Compile Include="Extensions\ClaimsExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\IntExtensions.cs" />
     <Compile Include="Helpers\Hash.cs" />
     <Compile Include="Helpers\Salt.cs" />
     <Compile Include="Models\BaseEntityModel.cs" />

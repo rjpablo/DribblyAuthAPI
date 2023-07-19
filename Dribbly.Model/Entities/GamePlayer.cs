@@ -1,4 +1,5 @@
 ﻿using Dribbly.Core.Models;
+using Dribbly.Model.Account;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Enums;
 using Dribbly.Model.Games;
@@ -24,6 +25,8 @@ namespace Dribbly.Model.Entities
         public string Name { get => TeamMembership?.Name; }
         [NotMapped]
         public int? JerseyNo { get => TeamMembership?.JerseyNo; }
+        [ForeignKey(nameof(Account))]
+        public long AccountId { get; set; }
 
         #region Stats
         public int Points { get; set; }
@@ -63,6 +66,10 @@ namespace Dribbly.Model.Entities
         /// Free Throws made
         /// </summary>
         public int FTM { get; set; }
+        /// <summary>
+        /// Playing time in milliseconds
+        /// </summary>
+        public int PlayTimeMs { get; set; }
 
         #endregion
 
@@ -77,5 +84,6 @@ namespace Dribbly.Model.Entities
         public GameModel Game { get; set; }
         [JsonIgnore]
         public GameTeamModel GameTeam { get; set; }
+        public AccountModel Account { get; set; }
     }
 }

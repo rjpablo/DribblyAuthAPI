@@ -1,4 +1,5 @@
 ﻿using Dribbly.Core.Exceptions;
+using Dribbly.Core.Extensions;
 using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Account;
@@ -223,7 +224,7 @@ namespace Dribbly.Service.Services
                     var gamePlayer = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.Id == input.Shot.PerformedById
                                             && g.GameId == input.Shot.GameId && g.GameTeam.TeamId == input.Shot.TeamId);
                     gamePlayer.FGA++;
-                    if(input.Shot.Points == 3)
+                    if (input.Shot.Points == 3)
                     {
                         gamePlayer.ThreePA++;
                     }
@@ -352,21 +353,64 @@ namespace Dribbly.Service.Services
 
         public async Task EndGameAsync(long gameId, long winningTeamId)
         {
-            GameModel game = await _context.Games.SingleOrDefaultAsync(g => g.Id == gameId);
-            if ((game.Team1Score > game.Team2Score && winningTeamId != game.Team1Id)
-                || (game.Team2Score > game.Team1Score && winningTeamId != game.Team2Id))
+            using(var tx = _context.Database.BeginTransaction())
             {
-                throw new DribblyInvalidOperationException("Wrong winning team was provided.");
+                try
+                {
+                    GameModel game = await _context.Games
+                .Include(g => g.Team1.Players)
+                .Include(g => g.Team2.Players)
+                .SingleOrDefaultAsync(g => g.Id == gameId);
+                    if ((game.Team1Score > game.Team2Score && winningTeamId != game.Team1Id)
+                        || (game.Team2Score > game.Team1Score && winningTeamId != game.Team2Id))
+                    {
+                        throw new DribblyInvalidOperationException("Wrong winning team was provided.");
+                    }
+
+                    game.WinningTeamId = winningTeamId;
+                    game.Status = GameStatusEnum.Finished;
+                    game.End = DateTime.UtcNow;
+
+                    var allPlayers = game.Team1.Players.Concat(game.Team2.Players);
+
+                    foreach (var p in allPlayers)
+                    {
+                        PlayerStatsModel stats = await _context.PlayerStats
+                            .SingleOrDefaultAsync(s => s.AccountId == p.AccountId);
+
+                        if (stats == null)
+                        {
+                            stats = new PlayerStatsModel(p.AccountId);
+                            _context.SetEntityState(stats, EntityState.Added);
+                        }
+
+                        List<GamePlayerModel> allGameStats = await _context.GamePlayers
+                            .Where(gp => gp.AccountId == p.AccountId).ToListAsync();
+
+                        stats.GP = allGameStats.Count();
+                        stats.PPG = allGameStats.Average(s => s.Points);
+                        stats.RPG = allGameStats.Average(s => s.Rebounds);
+                        stats.APG = allGameStats.Average(s => s.Assists);
+                        stats.FGP = allGameStats.Average(s => s.FGM.DivideBy(s.FGA));
+                        stats.ThreePP = allGameStats.Average(s => s.ThreePM.DivideBy(s.ThreePA));
+                        stats.FTP = allGameStats.Average(s => s.FTM.DivideBy(s.FTA));
+                        stats.BPG = allGameStats.Average(s => s.Blocks);
+                        stats.MPG = allGameStats.Average(s => s.PlayTimeMs) / 60000;
+                        stats.LastGameId = gameId;
+                    }
+
+                    Update(game);
+
+                    _context.SaveChanges();
+                    tx.Commit();
+                    await _commonService.AddUserGameActivity(UserActivityTypeEnum.EndGame, game.Id);
+                }
+                catch (Exception)
+                {
+                    tx.Rollback();
+                    throw;
+                }
             }
-
-            game.WinningTeamId = winningTeamId;
-            game.Status = GameStatusEnum.Finished;
-            game.End = DateTime.UtcNow;
-
-            Update(game);
-
-            _context.SaveChanges();
-            await _commonService.AddUserGameActivity(UserActivityTypeEnum.EndGame, game.Id);
         }
 
         public async Task<bool> CurrentUserIsGameManagerAsync(long gameId)
@@ -518,6 +562,7 @@ namespace Dribbly.Service.Services
                         {
                             DateAdded = DateTime.UtcNow,
                             PlayerId = p.Id,
+                            AccountId = p.MemberAccountId,
                             GameTeamId = team1.Id,
                             GameId = game.Id
                         });
@@ -548,6 +593,7 @@ namespace Dribbly.Service.Services
                         {
                             DateAdded = DateTime.UtcNow,
                             PlayerId = p.Id,
+                            AccountId = p.MemberAccountId,
                             GameTeamId = team2.Id,
                             GameId = game.Id
                         });

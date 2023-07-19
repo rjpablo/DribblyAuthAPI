@@ -683,6 +683,18 @@
     <Compile Include="Migrations\202307181646112_ModifyTable_GamePlayers_AddAdditionalStatColumns.Designer.cs">
       <DependentUpon>202307181646112_ModifyTable_GamePlayers_AddAdditionalStatColumns.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307191651510_ModifyTable_GamePlayers_AddColumns_AccountId_and_PlayTimeMs.cs" />
+    <Compile Include="Migrations\202307191651510_ModifyTable_GamePlayers_AddColumns_AccountId_and_PlayTimeMs.Designer.cs">
+      <DependentUpon>202307191651510_ModifyTable_GamePlayers_AddColumns_AccountId_and_PlayTimeMs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307191655021_ModifyTable_GamePlayers_ModifyColumn_AccountId_MakeNonNullable.cs" />
+    <Compile Include="Migrations\202307191655021_ModifyTable_GamePlayers_ModifyColumn_AccountId_MakeNonNullable.Designer.cs">
+      <DependentUpon>202307191655021_ModifyTable_GamePlayers_ModifyColumn_AccountId_MakeNonNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307191658154_CreateTable_PlayerStats.cs" />
+    <Compile Include="Migrations\202307191658154_CreateTable_PlayerStats.Designer.cs">
+      <DependentUpon>202307191658154_CreateTable_PlayerStats.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1090,6 +1102,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307181646112_ModifyTable_GamePlayers_AddAdditionalStatColumns.resx">
       <DependentUpon>202307181646112_ModifyTable_GamePlayers_AddAdditionalStatColumns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307191651510_ModifyTable_GamePlayers_AddColumns_AccountId_and_PlayTimeMs.resx">
+      <DependentUpon>202307191651510_ModifyTable_GamePlayers_AddColumns_AccountId_and_PlayTimeMs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307191655021_ModifyTable_GamePlayers_ModifyColumn_AccountId_MakeNonNullable.resx">
+      <DependentUpon>202307191655021_ModifyTable_GamePlayers_ModifyColumn_AccountId_MakeNonNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307191658154_CreateTable_PlayerStats.resx">
+      <DependentUpon>202307191658154_CreateTable_PlayerStats.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -40,6 +40,7 @@ namespace Dribbly.Model
         DbSet<GameModel> Games { get; set; }
         DbSet<GameTeamModel> GameTeams { get; set; }
         DbSet<GamePlayerModel> GamePlayers { get; set; }
+        DbSet<PlayerStatsModel> PlayerStats { get; set; }
         DbSet<FoulModel> Fouls { get; set; }
         DbSet<MemberFoulModel> MemberFouls { get; set; }
         DbSet<GameEventModel> GameEvents { get; set; }
@@ -124,6 +125,7 @@ namespace Dribbly.Model
         public DbSet<GameModel> Games { get; set; }
         public DbSet<GameTeamModel> GameTeams { get; set; }
         public DbSet<GamePlayerModel> GamePlayers { get; set; }
+        public DbSet<PlayerStatsModel> PlayerStats { get; set; }
         public DbSet<FoulModel> Fouls { get; set; }
 
         #region Game Events
