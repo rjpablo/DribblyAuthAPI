@@ -154,6 +154,7 @@
     <Compile Include="Teams\TeamViewerDataModel.cs" />
     <Compile Include="Teams\TeamModel.cs" />
     <Compile Include="Teams\UserTeamRelationModel.cs" />
+    <Compile Include="Tournaments\GetTournamentsInputModel.cs" />
     <Compile Include="Tournaments\TournamentViewerModel.cs" />
     <Compile Include="Tournaments\TournamentModel.cs" />
     <Compile Include="UserActivities\TeamPhotoActivityModel.cs" />

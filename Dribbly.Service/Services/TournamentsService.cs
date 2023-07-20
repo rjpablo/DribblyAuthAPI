@@ -7,6 +7,7 @@ using Dribbly.Model.Shared;
 using Dribbly.Model.Teams;
 using Dribbly.Model.Tournaments;
 using Dribbly.Service.Repositories;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -53,6 +54,15 @@ namespace Dribbly.Service.Services
             }
         }
 
+        public async Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input)
+        {
+            return await _context.Tournaments.Include(t => t.Logo)
+                .OrderByDescending(t=>t.DateAdded)
+                .Skip(input.PageSize * (input.Page - 1))
+                .Take(input.PageSize)
+                .ToListAsync();
+        }
+
         public async Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId)
         {
             var entity = await _tournamentsRepository.Get(t => t.Id == tournamentId,
@@ -74,5 +84,6 @@ namespace Dribbly.Service.Services
     {
         Task<TournamentModel> AddTournamentAsync(TournamentModel season);
         Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId);
+        Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input);
     }
 }

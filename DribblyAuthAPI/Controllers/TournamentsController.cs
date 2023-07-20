@@ -1,5 +1,6 @@
 ﻿using Dribbly.Model.Tournaments;
 using Dribbly.Service.Services;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -17,11 +18,19 @@ namespace DribblyAuthAPI.Controllers
         }
 
         //POSTS
-        [HttpGet]
+        [HttpGet, AllowAnonymous]
         [Route("GetTournamentviewer/{leagueId}")]
         public async Task<TournamentViewerModel> GetTournamentviewer(long leagueId)
         {
             return await _service.GetTournamentViewerAsync(leagueId);
+        }
+
+        
+        [HttpPost, AllowAnonymous]
+        [Route("GetNew")]
+        public async Task<IEnumerable<TournamentModel>> GetNew([FromBody] GetTournamentsInputModel input)
+        {
+            return await _service.GetNewAsync(input);
         }
 
         //POSTS
