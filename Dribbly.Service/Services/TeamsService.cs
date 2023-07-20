@@ -19,6 +19,8 @@ using Dribbly.Authentication.Services;
 using System.Web;
 using Dribbly.Core.Enums.Permissions;
 using Dribbly.Model.Account;
+using Dribbly.Model.DTO;
+using Dribbly.Core.Models;
 
 namespace Dribbly.Service.Services
 {
@@ -169,6 +171,15 @@ namespace Dribbly.Service.Services
             return await _context.JoinTeamRequests.Include(m => m.Member).Include(m => m.Member.User)
                .Include(m => m.Member.ProfilePhoto).Where(m => m.TeamId == teamId && m.Status == Model.Enums.JoinTeamRequestStatus.Pending)
                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<TeamStatsViewModel>> GetTopTeamsAsync(PagedGetInputModel input)
+        {
+            return (await _context.TeamStats.Include(s => s.Team.Logo)
+                .OrderByDescending(s => s.OverallScore)
+                .ThenBy(s=>s.Team.Name)
+                .Skip(input.PageSize * (input.Page - 1))
+                .ToListAsync()).Select(s=>new TeamStatsViewModel(s));
         }
 
         public IQueryable<TeamMembershipModel> GetAllMembers(long teamId)
@@ -431,6 +442,7 @@ namespace Dribbly.Service.Services
         Task<IEnumerable<JoinTeamRequestModel>> GetJoinRequestsAsync(long teamId);
         Task<TeamModel> GetTeamAsync(long id);
         Task<UserTeamRelationModel> GetUserTeamRelationAsync(long teamId);
+        Task<IEnumerable<TeamStatsViewModel>> GetTopTeamsAsync(PagedGetInputModel input);
         Task<TeamViewerDataModel> GetTeamViewerDataAsync(long teamId);
         Task<UserTeamRelationModel> JoinTeamAsync(JoinTeamRequestInputModel input);
         Task<UserTeamRelationModel> LeaveTeamAsync(long teamId);

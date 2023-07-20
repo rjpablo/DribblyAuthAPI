@@ -1,4 +1,6 @@
-﻿using Dribbly.Model.Courts;
+﻿using Dribbly.Core.Models;
+using Dribbly.Model.Courts;
+using Dribbly.Model.DTO;
 using Dribbly.Model.Teams;
 using Dribbly.Service.Services;
 using System.Collections.Generic;
@@ -75,6 +77,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task<UserTeamRelationModel> LeaveTeam(long teamId)
         {
             return await _service.LeaveTeamAsync(teamId);
+        }
+
+        [HttpPost, AllowAnonymous]
+        [Route("GetTopTeams")]
+        public async Task<IEnumerable<TeamStatsViewModel>> GetTopTeams([FromBody] PagedGetInputModel input)
+        {
+            return await _service.GetTopTeamsAsync(input);
         }
 
         [HttpPost, Authorize]

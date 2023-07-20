@@ -94,6 +94,7 @@
     <Compile Include="DTO\GamePlayer.cs" />
     <Compile Include="DTO\GameTeam.cs" />
     <Compile Include="DTO\PlayerStatsViewModel.cs" />
+    <Compile Include="DTO\TeamStatsViewModel.cs" />
     <Compile Include="Entities\GameEventModel.cs" />
     <Compile Include="Entities\GamePlayer.cs" />
     <Compile Include="Entities\GameTeam.cs" />
