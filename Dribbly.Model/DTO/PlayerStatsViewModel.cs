@@ -1,94 +1,115 @@
-﻿using Dribbly.Core.Models;
-using Dribbly.Model.Account;
+﻿using Dribbly.Model.Courts;
+using Dribbly.Model.Entities;
 using Dribbly.Model.Games;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 
-namespace Dribbly.Model.Entities
+namespace Dribbly.Model.DTO
 {
-    //[DataContract]
-    [Table("PlayerStats")]
-    public class PlayerStatsModel : BaseModel
+    [DataContract]
+    public class PlayerStatsViewModel
     {
-        [Key]
-        [ForeignKey(nameof(Account))]
+        #region Account Info
+        [DataMember]
         public long AccountId { get; set; }
+        [DataMember]
+        public string Name { get; set; }
+        [DataMember]
+        public string Username { get; set; }
+        [DataMember]
+        public PhotoModel ProfilePhoto { get; set; }
 
+        #endregion
+
+        #region Stats
+
+        [DataMember]
         /// <summary>
         /// Games Played
         /// </summary>
         public int GP { get; set; }
 
+        [DataMember]
         /// <summary>
         /// Games Won
         /// </summary>
         public int GW { get; set; }
 
+        [DataMember]
         /// <summary>
         /// Average Points per Game
         /// </summary>
         public double PPG { get; set; }
 
+        [DataMember]
         /// <summary>
         /// Rebounds per game
         /// </summary>
         public double RPG { get; set; }
 
+        [DataMember]
         /// <summary>
         /// Assists per game
         /// </summary>
         public double APG { get; set; }
 
+        [DataMember]
         /// <summary>
         /// Field Goal Percentage
         /// </summary>
         public double FGP { get; set; }
 
+        [DataMember]
         /// <summary>
         /// 3pt percentage
         /// </summary>
         public double ThreePP { get; set; }
 
+        [DataMember]
         /// <summary>
         /// Free Throw percentage
         /// </summary>
         public double FTP { get; set; }
 
+        [DataMember]
         /// <summary>
         /// Blocks per game
         /// </summary>
         public double BPG { get; set; }
 
+        [DataMember]
         /// <summary>
         /// Minutes per game
         /// </summary>
         public double MPG { get; set; }
 
-        /// <summary>
-        /// Total play time in Milliseconds
-        /// </summary>
-        public int PlayTimeMs { get; set; }
-
-        [ForeignKey(nameof(LastGame))]
+        [DataMember]
         public long LastGameId { get; set; }
 
-        /// <summary>
-        /// The player's overall score based on various stats
-        /// </summary>
-        public double OverallScore { get; set; }
-
-        #region Navigational Properties
-        //[DataMember]
-        public AccountModel Account { get; set; }
+        [DataMember]
         public GameModel LastGame { get; set; }
         #endregion
 
-        public PlayerStatsModel() { }
-
-        public PlayerStatsModel(long accountId)
+        public PlayerStatsViewModel(PlayerStatsModel source)
         {
-            AccountId = accountId;
+            // Account Info
+            AccountId = source.AccountId;
+            Name = source.Account.Name;
+            Username = source.Account.Username;
+            ProfilePhoto = source.Account.ProfilePhoto;
+
+            // Stats
+            GP = source.GP;
+            GW = source.GW;
+            PPG = source.PPG;
+            RPG = source.RPG;
+            APG = source.APG;
+            FGP = source.FGP;
+            ThreePP = source.ThreePP;
+            FTP = source.FTP;
+            BPG = source.BPG;
+            MPG = source.MPG;
+            LastGameId = source.LastGameId;
+            LastGame = source.LastGame;
         }
     }
 }

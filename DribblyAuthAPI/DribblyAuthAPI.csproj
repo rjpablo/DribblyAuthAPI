@@ -97,6 +97,7 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
@@ -695,6 +696,14 @@
     <Compile Include="Migrations\202307191658154_CreateTable_PlayerStats.Designer.cs">
       <DependentUpon>202307191658154_CreateTable_PlayerStats.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307200651199_ModifyTable_PlayerStats_AddColumn_PlayTimeMs.cs" />
+    <Compile Include="Migrations\202307200651199_ModifyTable_PlayerStats_AddColumn_PlayTimeMs.Designer.cs">
+      <DependentUpon>202307200651199_ModifyTable_PlayerStats_AddColumn_PlayTimeMs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307200705274_ModifyTable_PlayerStats_AddColumn_OverallScore.cs" />
+    <Compile Include="Migrations\202307200705274_ModifyTable_PlayerStats_AddColumn_OverallScore.Designer.cs">
+      <DependentUpon>202307200705274_ModifyTable_PlayerStats_AddColumn_OverallScore.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1111,6 +1120,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307191658154_CreateTable_PlayerStats.resx">
       <DependentUpon>202307191658154_CreateTable_PlayerStats.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307200651199_ModifyTable_PlayerStats_AddColumn_PlayTimeMs.resx">
+      <DependentUpon>202307200651199_ModifyTable_PlayerStats_AddColumn_PlayTimeMs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307200705274_ModifyTable_PlayerStats_AddColumn_OverallScore.resx">
+      <DependentUpon>202307200705274_ModifyTable_PlayerStats_AddColumn_OverallScore.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

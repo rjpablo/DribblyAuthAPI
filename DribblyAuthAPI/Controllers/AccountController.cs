@@ -1,30 +1,31 @@
-﻿using Dribbly.Email.Services;
-using DribblyAuthAPI.API;
+﻿using Dribbly.Authentication.Models;
+using Dribbly.Authentication.Models.Auth;
+using Dribbly.Email.Services;
 using Dribbly.Identity.Models;
+using Dribbly.Model.Account;
+using Dribbly.Model.Courts;
+using Dribbly.Model.DTO;
+using Dribbly.Model.Entities;
+using Dribbly.Model.Shared;
+using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
 using Dribbly.Service.Services;
+using DribblyAuthAPI.API;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.IdentityModel;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web.Http;
-using Dribbly.Model.Account;
-using Dribbly.Authentication.Models;
-using Dribbly.Authentication.Models.Auth;
-using Dribbly.Model.Courts;
-using System.Collections.Generic;
-using Dribbly.Model.Shared;
 using System.Web;
-using System.IdentityModel;
-using Newtonsoft.Json;
-using Dribbly.Service.Enums;
+using System.Web.Http;
 
 namespace DribblyAuthAPI.Controllers
 {
@@ -94,6 +95,14 @@ namespace DribblyAuthAPI.Controllers
         public async Task<IEnumerable<PhotoModel>> GetAccountPhotos(int accountId)
         {
             return await _accountService.GetAccountPhotosAsync(accountId);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("GetTopPlayers")]
+        public async Task<IEnumerable<PlayerStatsViewModel>> GetTopPlayers()
+        {
+            return await _accountService.GetTopPlayersAsync();
         }
 
         [HttpPost, Authorize]

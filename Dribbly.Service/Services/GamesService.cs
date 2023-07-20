@@ -395,8 +395,10 @@ namespace Dribbly.Service.Services
                         stats.ThreePP = allGameStats.Average(s => s.ThreePM.DivideBy(s.ThreePA));
                         stats.FTP = allGameStats.Average(s => s.FTM.DivideBy(s.FTA));
                         stats.BPG = allGameStats.Average(s => s.Blocks);
-                        stats.MPG = allGameStats.Average(s => s.PlayTimeMs) / 60000;
+                        stats.MPG = (allGameStats.Average(s => s.PlayTimeMs) / 60000);
+                        stats.PlayTimeMs = allGameStats.Sum(s => s.PlayTimeMs);
                         stats.LastGameId = gameId;
+                        stats.OverallScore = (stats.PPG / 34.5) + (stats.APG / 10.2) + (stats.RPG / 14.1) + (stats.BPG / 3.1) + (stats.PlayTimeMs / 2520000);
                     }
 
                     Update(game);

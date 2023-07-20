@@ -11,6 +11,14 @@ namespace DribblyAuthAPI.Migrations
             AddColumn("dbo.GamePlayers", "PlayTimeMs", c => c.Int(nullable: false));
             CreateIndex("dbo.GamePlayers", "AccountId");
             AddForeignKey("dbo.GamePlayers", "AccountId", "dbo.Accounts", "Id");
+
+            Sql(@"UPDATE GamePlayers
+                  SET AccountId = a.Id
+                  FROM GamePlayers g
+                  INNER JOIN TeamMemberships m
+                  ON g.playerId = m.Id
+                  INNER JOIN Accounts a
+                  ON m.memberAccountId = a.Id");
         }
         
         public override void Down()

@@ -6,6 +6,8 @@ using Dribbly.Model;
 using Dribbly.Model.Account;
 using Dribbly.Model.Accounts;
 using Dribbly.Model.Courts;
+using Dribbly.Model.DTO;
+using Dribbly.Model.Entities;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
@@ -420,6 +422,16 @@ namespace Dribbly.Service.Services
 
         #endregion
 
+        public async Task<IEnumerable<PlayerStatsViewModel>> GetTopPlayersAsync()
+        {
+            var result = await _context.PlayerStats.Include(s => s.Account.User).Include(s => s.Account.ProfilePhoto)
+                // The values used to divide the stats are based on NBA's top values
+                .OrderByDescending(s => s.OverallScore)
+                .Take(10)
+                .ToListAsync();
+
+            return result.Select(s => new PlayerStatsViewModel(s));
+        }
     }
 
     public interface IAccountsService
@@ -453,5 +465,7 @@ namespace Dribbly.Service.Services
         Task SetStatus(long accountId, EntityStatusEnum status);
 
         Task SetIsPublic(string userId, bool IsPublic);
+
+        Task<IEnumerable<PlayerStatsViewModel>> GetTopPlayersAsync();
     }
 }
