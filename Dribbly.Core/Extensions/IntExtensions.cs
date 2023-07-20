@@ -4,7 +4,7 @@
     {
         public static double DivideBy(this int dividend, int divisor)
         {
-            return divisor == 0 ? 0 : dividend / divisor;
+            return divisor == 0 ? 0 : (double)dividend / divisor;
         }
     }
 }

@@ -704,6 +704,18 @@
     <Compile Include="Migrations\202307200705274_ModifyTable_PlayerStats_AddColumn_OverallScore.Designer.cs">
       <DependentUpon>202307200705274_ModifyTable_PlayerStats_AddColumn_OverallScore.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307201404281_ModifyTable_GameTeams_AddAdditionalStatsColumns.cs" />
+    <Compile Include="Migrations\202307201404281_ModifyTable_GameTeams_AddAdditionalStatsColumns.Designer.cs">
+      <DependentUpon>202307201404281_ModifyTable_GameTeams_AddAdditionalStatsColumns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307201457063_AddTable_TeamStats.cs" />
+    <Compile Include="Migrations\202307201457063_AddTable_TeamStats.Designer.cs">
+      <DependentUpon>202307201457063_AddTable_TeamStats.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307201550226_ModifyTable_TeamStats_AddColumn_OverallScore.cs" />
+    <Compile Include="Migrations\202307201550226_ModifyTable_TeamStats_AddColumn_OverallScore.Designer.cs">
+      <DependentUpon>202307201550226_ModifyTable_TeamStats_AddColumn_OverallScore.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1126,6 +1138,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307200705274_ModifyTable_PlayerStats_AddColumn_OverallScore.resx">
       <DependentUpon>202307200705274_ModifyTable_PlayerStats_AddColumn_OverallScore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307201404281_ModifyTable_GameTeams_AddAdditionalStatsColumns.resx">
+      <DependentUpon>202307201404281_ModifyTable_GameTeams_AddAdditionalStatsColumns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307201457063_AddTable_TeamStats.resx">
+      <DependentUpon>202307201457063_AddTable_TeamStats.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307201550226_ModifyTable_TeamStats_AddColumn_OverallScore.resx">
+      <DependentUpon>202307201550226_ModifyTable_TeamStats_AddColumn_OverallScore.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

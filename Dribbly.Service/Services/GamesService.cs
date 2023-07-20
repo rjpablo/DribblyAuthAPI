@@ -202,6 +202,8 @@ namespace Dribbly.Service.Services
             GameModel game = await _gameRepo.Get(g => g.Id == input.Shot.GameId,
                 $"{nameof(GameModel.Team1)},{nameof(GameModel.Team2)}")
                 .FirstOrDefaultAsync();
+            var shootersTeam = game.Team1.TeamId == input.Shot.TeamId ? game.Team1 : game.Team2;
+            var opponentTeam = game.Team1.TeamId != shootersTeam.TeamId ? game.Team1 : game.Team2;
 
             if (game == null)
             {
@@ -224,41 +226,38 @@ namespace Dribbly.Service.Services
                     var gamePlayer = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.Id == input.Shot.PerformedById
                                             && g.GameId == input.Shot.GameId && g.GameTeam.TeamId == input.Shot.TeamId);
                     gamePlayer.FGA++;
+                    shootersTeam.FGA++;
                     if (input.Shot.Points == 3)
                     {
                         gamePlayer.ThreePA++;
+                        shootersTeam.ThreePA++;
                     }
                     await _context.SaveChangesAsync();
 
                     var result = new UpsertShotResultModel();
                     if (!input.Shot.IsMiss)
                     {
-                        if (input.Shot.TeamId == game.Team1.TeamId)
-                        {
-                            game.Team1Score = await _context.Shots
-                            .Where(s => s.TeamId == game.Team1.TeamId && s.GameId == input.Shot.GameId && !s.IsMiss)
+                        shootersTeam.Score = await _context.Shots
+                            .Where(s => s.TeamId == shootersTeam.TeamId && s.GameId == input.Shot.GameId && !s.IsMiss)
                             .SumAsync(s => s.Points);
-                            game.Team1.Score = game.Team1Score;
+                        if (shootersTeam.TeamId == game.Team1.TeamId)
+                        {
+                            game.Team1Score = shootersTeam.Score;
                         }
                         else if (input.Shot.TeamId == game.Team2.TeamId)
                         {
-                            game.Team2Score = await _context.Shots
-                            .Where(s => s.TeamId == game.Team2.TeamId && s.GameId == input.Shot.GameId && !s.IsMiss)
-                            .SumAsync(s => s.Points);
-                            game.Team2.Score = game.Team2Score;
+                            game.Team2Score = shootersTeam.Score;
                         }
-
-
-                        Update(game);
-                        await _context.SaveChangesAsync();
 
                         // TODO: add gamePlayer null check
 
                         gamePlayer.Points += input.Shot.Points;
                         gamePlayer.FGM++;
+                        shootersTeam.FGM++;
                         if (input.Shot.Points == 3)
                         {
                             gamePlayer.ThreePM++;
+                            shootersTeam.ThreePM++;
                         }
                         await _context.SaveChangesAsync();
                     }
@@ -288,6 +287,7 @@ namespace Dribbly.Service.Services
                         {
                             TotalBlocks = blocker.Blocks
                         };
+                        opponentTeam.Blocks++;
                         await _context.SaveChangesAsync();
                     }
 
@@ -305,6 +305,7 @@ namespace Dribbly.Service.Services
                         {
                             TotalAssists = assistedBy.Assists
                         };
+                        shootersTeam.Assists++;
                         await _context.SaveChangesAsync();
                     }
 
@@ -326,6 +327,8 @@ namespace Dribbly.Service.Services
                         {
                             TotalRebounds = reboundedBy.Rebounds
                         };
+                        var reboundersTeam = game.Team1.TeamId == input.Rebound.TeamId ? game.Team1 : game.Team2;
+                        reboundersTeam.Rebounds++;
                         await _context.SaveChangesAsync();
                     }
 
@@ -353,7 +356,7 @@ namespace Dribbly.Service.Services
 
         public async Task EndGameAsync(long gameId, long winningTeamId)
         {
-            using(var tx = _context.Database.BeginTransaction())
+            using (var tx = _context.Database.BeginTransaction())
             {
                 try
                 {
@@ -368,11 +371,16 @@ namespace Dribbly.Service.Services
                     }
 
                     game.WinningTeamId = winningTeamId;
+                    game.Team1.Won = game.Team1.Id == winningTeamId;
+                    game.Team2.Won = game.Team1.Id == winningTeamId;
                     game.Status = GameStatusEnum.Finished;
                     game.End = DateTime.UtcNow;
 
+                    await _context.SaveChangesAsync();
+
                     var allPlayers = game.Team1.Players.Concat(game.Team2.Players);
 
+                    #region Update Player Stats
                     foreach (var p in allPlayers)
                     {
                         PlayerStatsModel stats = await _context.PlayerStats
@@ -400,6 +408,32 @@ namespace Dribbly.Service.Services
                         stats.LastGameId = gameId;
                         stats.OverallScore = (stats.PPG / 34.5) + (stats.APG / 10.2) + (stats.RPG / 14.1) + (stats.BPG / 3.1) + (stats.PlayTimeMs / 2520000);
                     }
+                    #endregion
+
+                    #region Update Team Stats
+
+                    foreach (var team in new List<GameTeamModel> { game.Team1, game.Team2 })
+                    {
+                        var ts = await _context.TeamStats.SingleOrDefaultAsync(s => s.TeamId == team.TeamId);
+
+                        if (ts == null)
+                        {
+                            ts = new TeamStatsModel() { TeamId = team.TeamId };
+                            _context.TeamStats.Add(ts);
+                        }
+                        var allStats = await _context.GameTeams.Where(g => g.TeamId == team.TeamId && g.Won.HasValue)
+                            .ToListAsync();
+                        ts.GP = allStats.Count();
+                        ts.GW = allStats.Count(s => s.Won.Value);
+                        ts.PPG = allStats.Average(s=>s.Score);
+                        ts.RPG = allStats.Average(s=>s.Rebounds);
+                        ts.APG = allStats.Average(s=>s.Assists);
+                        ts.BPG = allStats.Average(s=>s.Blocks);
+                        ts.FGP = allStats.Average(s=>s.FGM.DivideBy(s.FGA));
+                        ts.ThreePP = allStats.Average(s=>s.ThreePM.DivideBy(s.ThreePA));
+                        ts.OverallScore = (ts.GW.DivideBy(ts.GP)) + (ts.PPG / 118) + (ts.APG / 28.2) + (ts.BPG / 6.4) + (ts.RPG / 47.7);
+                    }
+                    #endregion
 
                     Update(game);
 

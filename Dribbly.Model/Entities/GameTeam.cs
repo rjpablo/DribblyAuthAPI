@@ -27,7 +27,31 @@ namespace Dribbly.Model.Entities
         public int FullTimeoutsUsed { get; set; }
         public int ShortTimeoutsUsed { get; set; }
         public bool IsInBonus { get; set; }
-        #endregion
+        public bool? Won { get; set; }
+
+        #region Stats
+        /// <summary>
+        /// field goal attempts
+        /// </summary>
+        public int FGA { get; set; }
+        /// <summary>
+        /// field goals made
+        /// </summary>
+        public int FGM { get; set; }
+        /// <summary>
+        /// 3pt attempts
+        /// </summary>
+        public int ThreePA { get; set; }
+        /// <summary>
+        /// 3pts made
+        /// </summary>
+        public int ThreePM { get; set; }
+        public int Blocks { get; set; }
+        public int Rebounds { get; set; }
+        public int Assists { get; set; }
+
+        #endregion Stats
+        #endregion Mapped Columns
 
         #region Unmapped Columns
         [NotMapped]

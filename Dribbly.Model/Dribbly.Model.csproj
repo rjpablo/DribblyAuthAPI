@@ -98,6 +98,7 @@
     <Compile Include="Entities\GamePlayer.cs" />
     <Compile Include="Entities\GameTeam.cs" />
     <Compile Include="Entities\PlayerStatsModel.cs" />
+    <Compile Include="Entities\TeamStatsModel.cs" />
     <Compile Include="Enums\EjectionStatusEnum.cs" />
     <Compile Include="Enums\FoulTypeEnum.cs" />
     <Compile Include="Enums\GameEventTypeEnum.cs" />
