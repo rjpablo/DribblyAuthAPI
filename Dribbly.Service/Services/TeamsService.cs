@@ -21,6 +21,7 @@ using Dribbly.Core.Enums.Permissions;
 using Dribbly.Model.Account;
 using Dribbly.Model.DTO;
 using Dribbly.Core.Models;
+using Dribbly.Model.Shared;
 
 namespace Dribbly.Service.Services
 {
@@ -186,6 +187,14 @@ namespace Dribbly.Service.Services
         {
             return _context.TeamMembers.Include(m => m.Account).Include(m => m.Account.User)
                 .Include(m => m.Account.ProfilePhoto).Where(m => m.TeamId == teamId);
+        }
+
+        public async Task<IEnumerable<ChoiceItemModel<long>>> GetManagedTeamsAsChoicesAsync()
+        {
+            var currentAccountId = _securityUtility.GetAccountId();
+            return (await _context.Teams.Where(t => t.ManagedById == currentAccountId && t.EntityStatus == EntityStatusEnum.Active)
+                .ToListAsync())
+                .Select(t => new ChoiceItemModel<long>(t.Name, t.Id, t.Logo?.Url, EntityTypeEnum.Team));
         }
 
         public async Task<UserTeamRelationModel> GetUserTeamRelationAsync(long teamId, long accountId)
@@ -440,6 +449,7 @@ namespace Dribbly.Service.Services
         IEnumerable<TeamModel> GetAll();
         Task<IEnumerable<TeamMembershipModel>> GetCurrentMembersAsync(long teamId);
         Task<IEnumerable<JoinTeamRequestModel>> GetJoinRequestsAsync(long teamId);
+        Task<IEnumerable<ChoiceItemModel<long>>> GetManagedTeamsAsChoicesAsync();
         Task<TeamModel> GetTeamAsync(long id);
         Task<UserTeamRelationModel> GetUserTeamRelationAsync(long teamId);
         Task<IEnumerable<TeamStatsViewModel>> GetTopTeamsAsync(PagedGetInputModel input);

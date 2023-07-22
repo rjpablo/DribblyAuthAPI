@@ -1,6 +1,7 @@
 ﻿using Dribbly.Core.Models;
 using Dribbly.Model.Courts;
 using Dribbly.Model.DTO;
+using Dribbly.Model.Shared;
 using Dribbly.Model.Teams;
 using Dribbly.Service.Services;
 using System.Collections.Generic;
@@ -32,6 +33,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task<TeamModel> GetTeam(long id)
         {
             return await _service.GetTeamAsync(id);
+        }
+
+        [HttpGet]
+        [Route("GetManagedTeamsAsChoices")]
+        public async Task<IEnumerable<ChoiceItemModel<long>>> GetManagedTeamsAsChoices()
+        {
+            return await _service.GetManagedTeamsAsChoicesAsync();
         }
 
         [HttpGet]

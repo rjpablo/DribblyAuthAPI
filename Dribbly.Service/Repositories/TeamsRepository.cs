@@ -7,17 +7,28 @@ using System.Threading.Tasks;
 
 namespace Dribbly.Service.Repositories
 {
-    public interface ITeamsRepository: IBaseRepository<TeamModel>
-    {
-        IEnumerable<TeamModel> GetAll();
-    }
     public class TeamsRepository : BaseRepository<TeamModel>, ITeamsRepository
     {
-        public TeamsRepository(IAuthContext context) : base(context.Teams) { }
+        private readonly IAuthContext _context;
+
+        public TeamsRepository(IAuthContext context) : base(context.Teams)
+        {
+            _context = context;
+        }
 
         public IEnumerable<TeamModel> GetAll()
         {
             return _dbSet;
         }
+
+        public async Task<bool> IsTeamManagerAsync(long teamId, long accountId)
+        {
+            return await _context.Teams.AnyAsync(t => t.Id == teamId && t.ManagedById == accountId);
+        }
+    }
+    public interface ITeamsRepository : IBaseRepository<TeamModel>
+    {
+        IEnumerable<TeamModel> GetAll();
+        Task<bool> IsTeamManagerAsync(long teamId, long accountId);
     }
 }

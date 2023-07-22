@@ -18,4 +18,10 @@ namespace Dribbly.Core.Models
         {
         }
     }
+
+    public interface IBaseEntityModel
+    {
+        DateTime DateAdded { get; set; }
+        long Id { get; set; }
+    }
 }

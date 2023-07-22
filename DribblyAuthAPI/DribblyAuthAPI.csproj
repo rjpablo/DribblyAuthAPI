@@ -716,6 +716,14 @@
     <Compile Include="Migrations\202307201550226_ModifyTable_TeamStats_AddColumn_OverallScore.Designer.cs">
       <DependentUpon>202307201550226_ModifyTable_TeamStats_AddColumn_OverallScore.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307221320140_AddTable_JoinTournamentRequests.cs" />
+    <Compile Include="Migrations\202307221320140_AddTable_JoinTournamentRequests.Designer.cs">
+      <DependentUpon>202307221320140_AddTable_JoinTournamentRequests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307221321299_ModifyTable_Notifications_AddColumn_AdditionalInfo.cs" />
+    <Compile Include="Migrations\202307221321299_ModifyTable_Notifications_AddColumn_AdditionalInfo.Designer.cs">
+      <DependentUpon>202307221321299_ModifyTable_Notifications_AddColumn_AdditionalInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1147,6 +1155,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307201550226_ModifyTable_TeamStats_AddColumn_OverallScore.resx">
       <DependentUpon>202307201550226_ModifyTable_TeamStats_AddColumn_OverallScore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307221320140_AddTable_JoinTournamentRequests.resx">
+      <DependentUpon>202307221320140_AddTable_JoinTournamentRequests.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307221321299_ModifyTable_Notifications_AddColumn_AdditionalInfo.resx">
+      <DependentUpon>202307221321299_ModifyTable_Notifications_AddColumn_AdditionalInfo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

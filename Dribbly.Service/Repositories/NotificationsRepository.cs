@@ -17,12 +17,13 @@ namespace Dribbly.Service.Repositories
             _context = new AuthContext();
         }
 
-        public async Task TryAddAsync(object notification)
+        public async Task TryAddAsync(INotificationModel notification)
         {
             // Creating notifications should not prevent transactions
             try
             {
-                switch (((NotificationModel)notification).Type)
+                notification.DateAdded = DateTime.UtcNow;
+                switch ((notification).Type)
                 {
                     case NotificationTypeEnum.NewGameForOwner:
                     case NotificationTypeEnum.NewGameForBooker:
@@ -31,6 +32,9 @@ namespace Dribbly.Service.Repositories
                     case NotificationTypeEnum.JoinTeamRequest:
                     case NotificationTypeEnum.JoinTeamRequestApproved:
                         _context.JoinTeamRequestNotifications.Add((JoinTeamRequestNotificationModel)notification);
+                        break;
+                    case NotificationTypeEnum.NewJoinTournamentRequest:
+                        _context.Notifications.Add((NotificationModel)notification);
                         break;
                 }
                 await _context.SaveChangesAsync();
@@ -51,7 +55,7 @@ namespace Dribbly.Service.Repositories
 
     public interface INotificationsRepository
     {
-        Task TryAddAsync(object notification);
+        Task TryAddAsync(INotificationModel notification);
         IQueryable<NotificationModel> GetUnviewed(long? userId, DateTime? afterDate);
     }
 }

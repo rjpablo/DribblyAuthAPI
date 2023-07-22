@@ -40,5 +40,13 @@ namespace DribblyAuthAPI.Controllers
         {
             return await _service.AddTournamentAsync(input);
         }
+
+        //POSTS
+        [HttpPost]
+        [Route("JoinTournament/{tournamentId}/{teamId}")]
+        public async Task JoinTournament(long tournamentId, long teamId)
+        {
+            await _service.JoinTournamentAsync(tournamentId, teamId);
+        }
     }
 }

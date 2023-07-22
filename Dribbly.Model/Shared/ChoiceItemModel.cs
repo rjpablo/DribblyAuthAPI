@@ -17,7 +17,7 @@ namespace Dribbly.Model.Shared
 
         public ChoiceItemModel() { }
 
-        public ChoiceItemModel(string text, TValue value, string iconUrl, EntityTypeEnum type, string additionalData)
+        public ChoiceItemModel(string text, TValue value, string iconUrl, EntityTypeEnum type, string additionalData = null)
         {
             Text = text;
             Value = value;

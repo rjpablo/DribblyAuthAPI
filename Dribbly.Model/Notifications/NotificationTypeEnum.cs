@@ -48,5 +48,9 @@ namespace Dribbly.Model.Notifications
         /// </summary>
         BookingNotificationForBooker = 41,
         #endregion
+
+        #region Tournament-Related 60-79
+        NewJoinTournamentRequest = 60,
+        #endregion
     }
 }
