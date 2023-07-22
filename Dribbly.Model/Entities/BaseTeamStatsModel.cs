@@ -1,22 +1,15 @@
-﻿using Dribbly.Model.Courts;
-using Dribbly.Model.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Dribbly.Core.Models;
+using Dribbly.Model.Teams;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Dribbly.Model.DTO
+namespace Dribbly.Model.Entities
 {
-    public class TeamStatsViewModel
+    public abstract class BaseTeamStatsModel : BaseEntityModel
     {
-        #region Team Info
-        public PhotoModel Logo { get; set; }
-        public string Name { get; set; }
-        #endregion
-
-        #region Stat info
+        [ForeignKey(nameof(Team))]
         public long TeamId { get; set; }
+
+        public TeamModel Team { get; set; }
         /// <summary>
         /// Games played
         /// </summary>
@@ -49,24 +42,6 @@ namespace Dribbly.Model.DTO
         /// 3-point percentage
         /// </summary>
         public double ThreePP { get; set; }
-        #endregion
-
-        public TeamStatsViewModel(BaseTeamStatsModel source)
-        {
-            // Team Info
-            Logo = source.Team.Logo;
-            Name = source.Team.Name;
-
-            // Stat info
-            TeamId = source.TeamId;
-            GP = source.GP;
-            GW = source.GW;
-            PPG = source.PPG;
-            RPG = source.RPG;
-            APG = source.APG;
-            FGP = source.FGP;
-            BPG = source.BPG;
-            ThreePP = source.ThreePP;
-        }
+        public double OverallScore { get; set; }
     }
 }

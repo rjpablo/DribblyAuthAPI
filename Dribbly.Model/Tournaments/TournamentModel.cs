@@ -1,8 +1,10 @@
 ﻿using Dribbly.Core.Models;
 using Dribbly.Model.Courts;
+using Dribbly.Model.Entities;
 using Dribbly.Model.Enums;
 using Dribbly.Model.Games;
 using Dribbly.Model.Shared;
+using Dribbly.Model.Teams;
 using Dribbly.Service.Enums;
 using System;
 using System.Collections.Generic;
@@ -20,6 +22,8 @@ namespace Dribbly.Model.Tournaments
         public long AddedById { get; set; }
         public TournamentStatusEnum Status { get; set; }
         public ICollection<GameModel> Games { get; set; } = new List<GameModel>();
+        public ICollection<TournamentTeamModel> Teams { get; set; } = new List<TournamentTeamModel>();
+        public ICollection<JoinTournamentRequestModel> JoinRequests { get; set; } = new List<JoinTournamentRequestModel>();
         public long? DefaultCourtId { get; set; }
         public long? LogoId { get; set; }
 

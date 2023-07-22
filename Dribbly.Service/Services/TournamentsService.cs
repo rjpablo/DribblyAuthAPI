@@ -79,7 +79,7 @@ namespace Dribbly.Service.Services
                 {
                     var accountId = _securityUtility.GetAccountId().Value;
 
-                    if(!(await _teamsRepository.IsTeamManagerAsync(teamId, accountId)))
+                    if (!(await _teamsRepository.IsTeamManagerAsync(teamId, accountId)))
                     {
                         throw new DribblyForbiddenException($"Non-manager tried to sign team up. Team ID: {teamId}, Account ID: {accountId}",
                             friendlyMessage: "Not allowed. Only a manager of the team is allowed to sign the team up.");
@@ -119,11 +119,14 @@ namespace Dribbly.Service.Services
 
         public async Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId)
         {
-            var entity = await _tournamentsRepository.Get(t => t.Id == tournamentId,
-                $"{nameof(TournamentModel.Games)}.{nameof(GameModel.Team1)}.{nameof(GameTeamModel.Team)}.{nameof(TeamModel.Logo)}," +
-                $"{nameof(TournamentModel.Games)}.{nameof(GameModel.Team2)}.{nameof(GameTeamModel.Team)}.{nameof(TeamModel.Logo)}," +
-                $"{nameof(TournamentModel.DefaultCourt)}.{nameof(CourtModel.PrimaryPhoto)}")
-                .FirstOrDefaultAsync();
+            var entity = await _context.Tournaments
+                .Include(t => t.Games.Select(g => g.Team1.Team.Logo))
+                .Include(t => t.Games.Select(g => g.Team2.Team.Logo))
+                .Include(t => t.DefaultCourt.PrimaryPhoto)
+                .Include(t => t.Teams.Select(tm => tm.Team.Logo))
+                .Include(t => t.JoinRequests)
+                .FirstOrDefaultAsync(t => t.Id == tournamentId);
+
             if (entity != null)
             {
                 entity.Games = entity.Games.Where(g => g.EntityStatus != Enums.EntityStatusEnum.Deleted).ToList();

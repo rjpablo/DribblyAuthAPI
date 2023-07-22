@@ -724,6 +724,10 @@
     <Compile Include="Migrations\202307221321299_ModifyTable_Notifications_AddColumn_AdditionalInfo.Designer.cs">
       <DependentUpon>202307221321299_ModifyTable_Notifications_AddColumn_AdditionalInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307221603170_CreateTable_TournamentTeams.cs" />
+    <Compile Include="Migrations\202307221603170_CreateTable_TournamentTeams.Designer.cs">
+      <DependentUpon>202307221603170_CreateTable_TournamentTeams.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1161,6 +1165,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307221321299_ModifyTable_Notifications_AddColumn_AdditionalInfo.resx">
       <DependentUpon>202307221321299_ModifyTable_Notifications_AddColumn_AdditionalInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307221603170_CreateTable_TournamentTeams.resx">
+      <DependentUpon>202307221603170_CreateTable_TournamentTeams.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
