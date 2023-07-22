@@ -1,4 +1,5 @@
-﻿using Dribbly.Model.Tournaments;
+﻿using Dribbly.Model.DTO;
+using Dribbly.Model.Tournaments;
 using Dribbly.Service.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -39,6 +40,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task<TournamentModel> AddTournament([FromBody] TournamentModel input)
         {
             return await _service.AddTournamentAsync(input);
+        }
+        
+        [HttpPost]
+        [Route("ProcessJoinRequest/{requestId}/{shouldApprove}")]
+        public async Task<TeamStatsViewModel> ProcessJoinRequest(long requestId, bool shouldApprove)
+        {
+            return await _service.ProcessJoinRequestAsync(requestId, shouldApprove);
         }
 
         //POSTS

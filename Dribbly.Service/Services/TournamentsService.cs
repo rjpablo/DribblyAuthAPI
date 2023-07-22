@@ -2,6 +2,7 @@
 using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Courts;
+using Dribbly.Model.DTO;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Games;
 using Dribbly.Model.Notifications;
@@ -71,6 +72,7 @@ namespace Dribbly.Service.Services
                 .ToListAsync();
         }
 
+        #region Join Requests
         public async Task JoinTournamentAsync(long tournamentId, long teamId)
         {
             using (var tx = _context.Database.BeginTransaction())
@@ -83,6 +85,10 @@ namespace Dribbly.Service.Services
                     {
                         throw new DribblyForbiddenException($"Non-manager tried to sign team up. Team ID: {teamId}, Account ID: {accountId}",
                             friendlyMessage: "Not allowed. Only a manager of the team is allowed to sign the team up.");
+                    }
+                    else if (await _context.TournamentTeams.AnyAsync(r => r.TournamentId == tournamentId && r.TeamId == teamId))
+                    {
+                        throw new DribblyInvalidOperationException($"Team is already approved to join tournament. Team ID: {teamId}, Tournament ID: {tournamentId}", friendlyMessage: "This team has already been to approved to join.");
                     }
                     else if (await _context.JoinTournamentRequests.AnyAsync(r => r.TournamentId == tournamentId && r.TeamId == teamId))
                     {
@@ -117,6 +123,72 @@ namespace Dribbly.Service.Services
             }
         }
 
+        public async Task<TeamStatsViewModel> ProcessJoinRequestAsync(long requestId, bool shouldApprove)
+        {
+            var accountId = _securityUtility.GetAccountId().Value;
+            var request = await _context.JoinTournamentRequests.Include(r => r.Team)
+                        .Include(r => r.Tournament).Include(r => r.AddedBy.User)
+                        .SingleAsync(r => r.Id == requestId);
+
+            if (request == null)
+            {
+                throw new DribblyInvalidOperationException("Join tournament request not found.",
+                    friendlyMessage: "The request no longer exists. I may have been cancelled or already processed.");
+            }
+            else if (request.Tournament.AddedById != accountId)
+            {
+                throw new DribblyForbiddenException($"Non-tournament manager tried to process join request. Request ID: {requestId}, Account ID: {accountId}",
+                    friendlyMessage: "Forbidden! You do not have sufficient access to perform this action.");
+            }
+
+            TeamStatsViewModel result = null;
+            if (shouldApprove)
+            {
+                var tournamentTeam = new TournamentTeamModel
+                {
+                    TeamId = request.TeamId,
+                    TournamentId = request.TournamentId,
+                    DateAdded = DateTime.UtcNow
+                };
+                _context.TournamentTeams.Add(tournamentTeam);
+                _ = AddJoinTournamentNotification(request, NotificationTypeEnum.JoinTournamentRequestApproved);
+                await _context.SaveChangesAsync();
+
+                tournamentTeam = await _context.TournamentTeams.SingleAsync(t => t.Id == tournamentTeam.Id);
+                result = new TeamStatsViewModel(tournamentTeam);
+
+            }
+            else
+            {
+                _ = AddJoinTournamentNotification(request, NotificationTypeEnum.JoinTournamentRequestRejected);
+            }
+
+            _context.JoinTournamentRequests.Remove(request);
+            await _context.SaveChangesAsync();
+            return result;
+        }
+
+        public NotificationModel AddJoinTournamentNotification(JoinTournamentRequestModel request, NotificationTypeEnum type)
+        {
+            var notif = new NotificationModel(type);
+            notif.AdditionalInfo = JsonConvert.SerializeObject(new
+            {
+                requestId = request.Id,
+                teamName = request.Team.Name,
+                teamId = request.TeamId,
+                tournamentName = request.Tournament.Name,
+                tournamentId = request.TournamentId
+            });
+
+            notif.ForUserId = type == NotificationTypeEnum.NewJoinTournamentRequest ?
+                request.Tournament.AddedById :
+                request.AddedByID;
+
+            _notificationsRepo.TryAddAsync(notif);
+            return notif;
+        }
+        #endregion
+
         public async Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId)
         {
             var entity = await _context.Tournaments
@@ -124,7 +196,7 @@ namespace Dribbly.Service.Services
                 .Include(t => t.Games.Select(g => g.Team2.Team.Logo))
                 .Include(t => t.DefaultCourt.PrimaryPhoto)
                 .Include(t => t.Teams.Select(tm => tm.Team.Logo))
-                .Include(t => t.JoinRequests)
+                .Include(t => t.JoinRequests.Select(r=>r.Team))
                 .FirstOrDefaultAsync(t => t.Id == tournamentId);
 
             if (entity != null)
@@ -135,26 +207,6 @@ namespace Dribbly.Service.Services
 
             return null;
         }
-
-        public NotificationModel AddJoinTournamentNotification(JoinTournamentRequestModel request, NotificationTypeEnum type)
-        {
-            var notif = new NotificationModel(NotificationTypeEnum.NewJoinTournamentRequest);
-            if (type == NotificationTypeEnum.NewJoinTournamentRequest)
-            {
-                notif.ForUserId = request.Tournament.AddedById;
-                notif.AdditionalInfo = JsonConvert.SerializeObject(new
-                {
-                    requestId = request.Id,
-                    teamName = request.Team.Name,
-                    teamId = request.TeamId,
-                    tournamentName = request.Tournament.Name,
-                    tournamentId = request.TournamentId
-                });
-            }
-
-            _notificationsRepo.TryAddAsync(notif);
-            return notif;
-        }
     }
 
     public interface ITournamentsService
@@ -162,6 +214,10 @@ namespace Dribbly.Service.Services
         Task<TournamentModel> AddTournamentAsync(TournamentModel season);
         Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId);
         Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input);
+
+        #region Join Requests
         Task JoinTournamentAsync(long tournamentId, long teamId);
+        Task<TeamStatsViewModel> ProcessJoinRequestAsync(long requestId, bool shouldApprove);
+        #endregion
     }
 }
