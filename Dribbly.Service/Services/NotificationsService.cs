@@ -64,9 +64,10 @@ namespace Dribbly.Service.Services
         public async Task<IEnumerable<object>> GetNoficationDetailsAsync(DateTime? beforeDate, int getCount = 10)
         {
             long? currentAccountId = _securityUtility.GetAccountId().Value;
-            IEnumerable<NotificationModel> notifications = _context.Notifications
-                .Where(n => currentAccountId.HasValue && n.ForUserId == currentAccountId && (n.DateAdded < beforeDate || beforeDate == null))
-                .OrderByDescending(n => n.DateAdded).Take(getCount);
+            IEnumerable<NotificationModel> notifications = await _context.Notifications
+                .Where(n => currentAccountId.HasValue && n.ForUserId == currentAccountId && (beforeDate == null || n.DateAdded < beforeDate))
+                .OrderByDescending(n => n.DateAdded).Take(getCount)
+                .ToListAsync();
 
             return await GetDetailedNotificationsAsync(notifications);
         }
@@ -113,8 +114,17 @@ namespace Dribbly.Service.Services
                 (notifications.Where(n => n.Type == NotificationTypeEnum.JoinTeamRequest || n.Type == NotificationTypeEnum.JoinTeamRequestApproved)
                 .Select(n => n.Id).ToArray());
 
+            var genericNotifications = notifications.Where(n =>
+            {
+                return n.Type == NotificationTypeEnum.TournamentTeamRemoved ||
+                n.Type == NotificationTypeEnum.NewJoinTournamentRequest ||
+                n.Type == NotificationTypeEnum.JoinTournamentRequestApproved ||
+                n.Type == NotificationTypeEnum.JoinTournamentRequestRejected;
+            });
+            
             resultWithDetails.AddRange(joinTeamRequestNotifications);
             resultWithDetails.AddRange(newBookingNotifications);
+            resultWithDetails.AddRange(genericNotifications);
 
             return resultWithDetails.OrderByDescending(n=>n.DateAdded);
         }

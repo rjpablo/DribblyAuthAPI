@@ -53,6 +53,7 @@ namespace Dribbly.Model.Notifications
         NewJoinTournamentRequest = 60,
         JoinTournamentRequestApproved = 61,
         JoinTournamentRequestRejected = 62,
+        TournamentTeamRemoved = 63,
         #endregion
     }
 }

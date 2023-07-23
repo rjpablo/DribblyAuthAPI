@@ -34,6 +34,9 @@ namespace Dribbly.Service.Repositories
                         _context.JoinTeamRequestNotifications.Add((JoinTeamRequestNotificationModel)notification);
                         break;
                     case NotificationTypeEnum.NewJoinTournamentRequest:
+                    case NotificationTypeEnum.JoinTournamentRequestApproved:
+                    case NotificationTypeEnum.JoinTournamentRequestRejected:
+                    case NotificationTypeEnum.TournamentTeamRemoved:
                         _context.Notifications.Add((NotificationModel)notification);
                         break;
                 }

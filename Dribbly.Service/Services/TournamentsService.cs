@@ -168,6 +168,48 @@ namespace Dribbly.Service.Services
             return result;
         }
 
+        public async Task RemoveTournamentTeamAsync(long tournamentId, long teamId)
+        {
+            using (var tx = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var team = await _context.TournamentTeams
+                        .Include(t => t.Tournament).Include(t => t.Team)
+                        .SingleOrDefaultAsync(r => r.TournamentId == tournamentId && r.TeamId == teamId);
+
+                    if (team == null)
+                    {
+                        // TODO: log info "tournament team to remove not found"
+                        // no need to throw exception
+                        return;
+                    }
+
+
+                    var notif = new NotificationModel(NotificationTypeEnum.TournamentTeamRemoved);
+                    notif.ForUserId = team.Team.ManagedById;
+                    notif.AdditionalInfo = JsonConvert.SerializeObject(new
+                    {
+                        teamName = team.Team.Name,
+                        teamId = team.TeamId,
+                        tournamentName = team.Tournament.Name,
+                        tournamentId = team.TournamentId
+                    });
+
+                    await _notificationsRepo.TryAddAsync(notif);
+
+                    _context.TournamentTeams.Remove(team);
+                    await _context.SaveChangesAsync();
+                    tx.Commit();
+                }
+                catch (Exception)
+                {
+                    tx.Rollback();
+                    throw;
+                }
+            }
+        }
+
         public NotificationModel AddJoinTournamentNotification(JoinTournamentRequestModel request, NotificationTypeEnum type)
         {
             var notif = new NotificationModel(type);
@@ -180,9 +222,16 @@ namespace Dribbly.Service.Services
                 tournamentId = request.TournamentId
             });
 
-            notif.ForUserId = type == NotificationTypeEnum.NewJoinTournamentRequest ?
-                request.Tournament.AddedById :
-                request.AddedByID;
+            switch (notif.Type)
+            {
+                case NotificationTypeEnum.NewJoinTournamentRequest:
+                    notif.ForUserId = request.Tournament.AddedById;
+                    break;
+                case NotificationTypeEnum.JoinTournamentRequestApproved:
+                case NotificationTypeEnum.JoinTournamentRequestRejected:
+                    notif.ForUserId = request.Team.ManagedById;
+                    break;
+            }
 
             _notificationsRepo.TryAddAsync(notif);
             return notif;
@@ -196,7 +245,7 @@ namespace Dribbly.Service.Services
                 .Include(t => t.Games.Select(g => g.Team2.Team.Logo))
                 .Include(t => t.DefaultCourt.PrimaryPhoto)
                 .Include(t => t.Teams.Select(tm => tm.Team.Logo))
-                .Include(t => t.JoinRequests.Select(r=>r.Team))
+                .Include(t => t.JoinRequests.Select(r => r.Team))
                 .FirstOrDefaultAsync(t => t.Id == tournamentId);
 
             if (entity != null)
@@ -214,6 +263,7 @@ namespace Dribbly.Service.Services
         Task<TournamentModel> AddTournamentAsync(TournamentModel season);
         Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId);
         Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input);
+        Task RemoveTournamentTeamAsync(long tournamentId, long teamId);
 
         #region Join Requests
         Task JoinTournamentAsync(long tournamentId, long teamId);
