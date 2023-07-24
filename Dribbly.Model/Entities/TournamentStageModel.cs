@@ -25,6 +25,7 @@ namespace Dribbly.Model.Entities
         public AccountModel AddedBy { get; set; }
         #endregion
 
-        public ICollection<StageBracketModel> brackets { get; set; } = new List<StageBracketModel>();
+        public ICollection<StageBracketModel> Brackets { get; set; } = new List<StageBracketModel>();
+        public ICollection<StageTeamModel> Teams { get; set; } = new List<StageTeamModel>();
     }
 }

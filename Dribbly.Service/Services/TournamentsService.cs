@@ -64,6 +64,8 @@ namespace Dribbly.Service.Services
             }
         }
 
+        #region Stages
+
         public async Task AddTournamentStageAsync(AddTournamentStageInputModel input)
         {
             using (var tx = _context.Database.BeginTransaction())
@@ -83,7 +85,7 @@ namespace Dribbly.Service.Services
                     _context.TournamentStages.Add(stage);
                     await _context.SaveChangesAsync();
 
-                    for(int i = 0; i < input.BracketsCount; i++)
+                    for (int i = 0; i < input.BracketsCount; i++)
                     {
                         _context.StageBrackets.Add(new StageBracketModel
                         {
@@ -105,11 +107,44 @@ namespace Dribbly.Service.Services
             }
         }
 
+        public async Task<TournamentStageModel> SetStageTeamsAsync(SetStageTeamsInputModel input)
+        {
+            var stage = await _context.TournamentStages.Include(s => s.Teams.Select(t => t.Team))
+                .SingleOrDefaultAsync(s => s.Id == input.StageId);
+
+            // remove teams that are not selected
+            var toRemove = stage.Teams.Where(t => !input.TeamIds.Contains(t.TeamId)).ToList();
+            foreach (var team in toRemove)
+            {
+                _context.StageTeams.Remove(team);
+            }
+
+            // add newly added teams
+            foreach (long id in input.TeamIds)
+            {
+                if (!stage.Teams.Any(t => t.TeamId == id))
+                {
+                    stage.Teams.Add(new StageTeamModel()
+                    {
+                        TeamId = id,
+                        StageId = input.StageId,
+                        DateAdded = DateTime.UtcNow
+                    });
+                }
+            }
+
+            await _context.SaveChangesAsync();
+            return await _context.TournamentStages.Include(s => s.Teams.Select(t => t.Team.Logo))
+                .SingleOrDefaultAsync(s => s.Id == input.StageId);
+        }
+
         public async Task<IEnumerable<TournamentStageModel>> GetTournamentStagesAsync(long tournamentId)
         {
-            return await _context.TournamentStages.Include(s=>s.brackets)
+            return await _context.TournamentStages.Include(s => s.Brackets).Include(s => s.Teams.Select(t=>t.Team.Logo))
                 .Where(s => s.TournamentId == tournamentId).ToListAsync();
         }
+
+        #endregion
 
         public async Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input)
         {
@@ -309,11 +344,15 @@ namespace Dribbly.Service.Services
     public interface ITournamentsService
     {
         Task<TournamentModel> AddTournamentAsync(TournamentModel season);
-        Task AddTournamentStageAsync(AddTournamentStageInputModel input);
         Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId);
-        Task<IEnumerable<TournamentStageModel>> GetTournamentStagesAsync(long tournamentId);
         Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input);
         Task RemoveTournamentTeamAsync(long tournamentId, long teamId);
+
+        #region Stages
+        Task AddTournamentStageAsync(AddTournamentStageInputModel input);
+        Task<IEnumerable<TournamentStageModel>> GetTournamentStagesAsync(long tournamentId);
+        Task<TournamentStageModel> SetStageTeamsAsync(SetStageTeamsInputModel input);
+        #endregion
 
         #region Join Requests
         Task JoinTournamentAsync(long tournamentId, long teamId);

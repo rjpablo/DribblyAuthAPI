@@ -50,6 +50,13 @@ namespace DribblyAuthAPI.Controllers
         }
         
         [HttpPost]
+        [Route("SetStageTeams")]
+        public async Task<TournamentStageModel> SetStageTeams([FromBody] SetStageTeamsInputModel input)
+        {
+            return await _service.SetStageTeamsAsync(input);
+        }
+        
+        [HttpPost]
         [Route("AddTournamentStage")]
         public async Task AddTournamentStage(AddTournamentStageInputModel input)
         {
