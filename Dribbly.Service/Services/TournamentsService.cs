@@ -64,7 +64,7 @@ namespace Dribbly.Service.Services
             }
         }
 
-        #region Stages
+        #region Stages and Brackets
 
         public async Task AddTournamentStageAsync(AddTournamentStageInputModel input)
         {
@@ -142,6 +142,13 @@ namespace Dribbly.Service.Services
         {
             return await _context.TournamentStages.Include(s => s.Brackets).Include(s => s.Teams.Select(t=>t.Team.Logo))
                 .Where(s => s.TournamentId == tournamentId).ToListAsync();
+        }
+
+        public async Task SetTeamBracket(long teamId, long stageId, long? bracketId)
+        {
+            var team = await _context.StageTeams.SingleOrDefaultAsync(t => t.TeamId == teamId && t.StageId == stageId);
+            team.BracketId = bracketId;
+            await _context.SaveChangesAsync();
         }
 
         #endregion
@@ -348,10 +355,11 @@ namespace Dribbly.Service.Services
         Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input);
         Task RemoveTournamentTeamAsync(long tournamentId, long teamId);
 
-        #region Stages
+        #region Stages and Brackets
         Task AddTournamentStageAsync(AddTournamentStageInputModel input);
         Task<IEnumerable<TournamentStageModel>> GetTournamentStagesAsync(long tournamentId);
         Task<TournamentStageModel> SetStageTeamsAsync(SetStageTeamsInputModel input);
+        Task SetTeamBracket(long teamId, long stageId, long? bracketId);
         #endregion
 
         #region Join Requests

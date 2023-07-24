@@ -57,6 +57,13 @@ namespace DribblyAuthAPI.Controllers
         }
         
         [HttpPost]
+        [Route("SetTeamBracket/{teamId}/{stageId}/{bracketId?}")]
+        public async Task SetTeamBracket(long teamId, long stageId, long? bracketId)
+        {
+            await _service.SetTeamBracket(teamId, stageId, bracketId);
+        }
+        
+        [HttpPost]
         [Route("AddTournamentStage")]
         public async Task AddTournamentStage(AddTournamentStageInputModel input)
         {
