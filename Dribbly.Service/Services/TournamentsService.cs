@@ -4,6 +4,7 @@ using Dribbly.Model;
 using Dribbly.Model.Courts;
 using Dribbly.Model.DTO;
 using Dribbly.Model.Entities;
+using Dribbly.Model.Enums;
 using Dribbly.Model.Games;
 using Dribbly.Model.Notifications;
 using Dribbly.Model.Shared;
@@ -61,6 +62,53 @@ namespace Dribbly.Service.Services
                     throw;
                 }
             }
+        }
+
+        public async Task AddTournamentStageAsync(AddTournamentStageInputModel input)
+        {
+            using (var tx = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var accountId = _securityUtility.GetAccountId().Value;
+                    var stage = new TournamentStageModel
+                    {
+                        Name = input.StageName,
+                        TournamentId = input.TournamentId,
+                        AddedById = accountId,
+                        DateAdded = DateTime.UtcNow,
+                        Status = StageStatusEnum.NotStarted
+                    };
+
+                    _context.TournamentStages.Add(stage);
+                    await _context.SaveChangesAsync();
+
+                    for(int i = 0; i < input.BracketsCount; i++)
+                    {
+                        _context.StageBrackets.Add(new StageBracketModel
+                        {
+                            StageId = stage.Id,
+                            AddedById = accountId,
+                            DateAdded = DateTime.UtcNow,
+                            Name = "Bracket " + ((char)(65 + i)).ToString()
+                        });
+                    }
+
+                    await _context.SaveChangesAsync();
+                    tx.Commit();
+                }
+                catch (System.Exception)
+                {
+                    tx.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        public async Task<IEnumerable<TournamentStageModel>> GetTournamentStagesAsync(long tournamentId)
+        {
+            return await _context.TournamentStages.Include(s=>s.brackets)
+                .Where(s => s.TournamentId == tournamentId).ToListAsync();
         }
 
         public async Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input)
@@ -261,7 +309,9 @@ namespace Dribbly.Service.Services
     public interface ITournamentsService
     {
         Task<TournamentModel> AddTournamentAsync(TournamentModel season);
+        Task AddTournamentStageAsync(AddTournamentStageInputModel input);
         Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId);
+        Task<IEnumerable<TournamentStageModel>> GetTournamentStagesAsync(long tournamentId);
         Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input);
         Task RemoveTournamentTeamAsync(long tournamentId, long teamId);
 

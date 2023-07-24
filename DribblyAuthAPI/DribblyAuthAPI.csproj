@@ -728,6 +728,10 @@
     <Compile Include="Migrations\202307221603170_CreateTable_TournamentTeams.Designer.cs">
       <DependentUpon>202307221603170_CreateTable_TournamentTeams.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307240618142_CreateTables_TournamentStages_StageTeams_and_StageBrackets.cs" />
+    <Compile Include="Migrations\202307240618142_CreateTables_TournamentStages_StageTeams_and_StageBrackets.Designer.cs">
+      <DependentUpon>202307240618142_CreateTables_TournamentStages_StageTeams_and_StageBrackets.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1168,6 +1172,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307221603170_CreateTable_TournamentTeams.resx">
       <DependentUpon>202307221603170_CreateTable_TournamentTeams.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307240618142_CreateTables_TournamentStages_StageTeams_and_StageBrackets.resx">
+      <DependentUpon>202307240618142_CreateTables_TournamentStages_StageTeams_and_StageBrackets.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

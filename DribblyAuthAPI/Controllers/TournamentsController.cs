@@ -1,4 +1,5 @@
 ﻿using Dribbly.Model.DTO;
+using Dribbly.Model.Entities;
 using Dribbly.Model.Tournaments;
 using Dribbly.Service.Services;
 using System.Collections.Generic;
@@ -17,13 +18,19 @@ namespace DribblyAuthAPI.Controllers
         {
             _service = service;
         }
-
-        //POSTS
+                
         [HttpGet, AllowAnonymous]
         [Route("GetTournamentviewer/{leagueId}")]
         public async Task<TournamentViewerModel> GetTournamentviewer(long leagueId)
         {
             return await _service.GetTournamentViewerAsync(leagueId);
+        }
+                
+        [HttpGet, AllowAnonymous]
+        [Route("GetTournamentStages/{tournamentId}")]
+        public async Task<IEnumerable<TournamentStageModel>> GetTournamentStagesAsync(long tournamentId)
+        {
+            return await _service.GetTournamentStagesAsync(tournamentId);
         }
 
         
@@ -40,6 +47,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task<TournamentModel> AddTournament([FromBody] TournamentModel input)
         {
             return await _service.AddTournamentAsync(input);
+        }
+        
+        [HttpPost]
+        [Route("AddTournamentStage")]
+        public async Task AddTournamentStage(AddTournamentStageInputModel input)
+        {
+            await _service.AddTournamentStageAsync(input);
         }
         
         [HttpPost]

@@ -30,8 +30,15 @@ namespace Dribbly.Model
         DbSet<RefreshToken> RefreshTokens { get; set; }
         DbSet<LeagueModel> Leagues { get; set; }
         DbSet<SeasonModel> Seasons { get; set; }
+
+        #region Tournaments
         DbSet<TournamentModel> Tournaments { get; set; }
         DbSet<TournamentTeamModel> TournamentTeams { get; set; }
+        DbSet<TournamentStageModel> TournamentStages { get; set; }
+        DbSet<StageTeamModel> StageTeams { get; set; }
+        DbSet<StageBracketModel> StageBrackets { get; set; }
+        #endregion
+
         DbSet<JoinTournamentRequestModel> JoinTournamentRequests { get; set; }
         DbSet<CourtModel> Courts { get; set; }
         DbSet<CourtFollowingModel> CourtFollowings { get; set; }
@@ -118,8 +125,15 @@ namespace Dribbly.Model
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<LeagueModel> Leagues { get; set; }
         public DbSet<SeasonModel> Seasons { get; set; }
+
+        #region Tournaments
         public DbSet<TournamentModel> Tournaments { get; set; }
         public DbSet<TournamentTeamModel> TournamentTeams { get; set; }
+        public DbSet<TournamentStageModel> TournamentStages { get; set; }
+        public DbSet<StageTeamModel> StageTeams { get; set; }
+        public DbSet<StageBracketModel> StageBrackets { get; set; }
+        #endregion
+
         public DbSet<JoinTournamentRequestModel> JoinTournamentRequests { get; set; }
         public DbSet<CourtModel> Courts { get; set; }
         public DbSet<CourtFollowingModel> CourtFollowings { get; set; }
