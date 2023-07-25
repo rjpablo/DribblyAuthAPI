@@ -23,6 +23,8 @@ namespace Dribbly.Model.Games
 
         public bool IsTeam2Open { get; set; }
         public long? TournamentId { get; set; }
+        public long? StageId { get; set; }
+        public long? BracketId { get; set; }
 
         public bool IsTimed { get; set; }
         public int? DefaultShotClockDuration { get; set; } = 24;
@@ -48,6 +50,8 @@ namespace Dribbly.Model.Games
                 Title = Title,
                 CourtId = CourtId,
                 TournamentId = TournamentId,
+                StageId = StageId,
+                BracketId = BracketId,
                 IsTimed = IsTimed,
                 DefaultShotClockDuration = DefaultShotClockDuration,
                 OffensiveRebondShotClock = OffensiveRebondShotClock,

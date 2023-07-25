@@ -1,5 +1,6 @@
 ﻿using Dribbly.Model.DTO;
 using Dribbly.Model.Entities;
+using Dribbly.Model.Shared;
 using Dribbly.Model.Tournaments;
 using Dribbly.Service.Services;
 using System.Collections.Generic;
@@ -38,6 +39,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task<bool> IsCurrentUserManager(long tournamentId)
         {
             return await _service.IsCurrentUserManagerAsync(tournamentId);
+        }
+                
+        [HttpGet]
+        [Route("GetTournamentTeamsAsChoices/{tournamentId}/{stageId}")]
+        public async Task<IEnumerable<ChoiceItemModel<long>>> GetTournamentTeamsAsChoicesAsync(long tournamentId, long? stageId)
+        {
+            return await _service.GetTournamentTeamsAsChoicesAsync(tournamentId, stageId);
         }
 
         

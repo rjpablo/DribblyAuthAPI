@@ -48,6 +48,11 @@ namespace Dribbly.Model.Games
         public long? WinningTeamId { get; set; }
         [ForeignKey(nameof(Tournament))]
         public long? TournamentId { get; set; }
+        [ForeignKey(nameof(Stage))]
+        public long? StageId { get; set; }
+        [ForeignKey(nameof(Bracket))]
+        public long? BracketId { get; set; }
+
 
         public int CurrentPeriod { get; set; } = 1;
 
@@ -163,6 +168,12 @@ namespace Dribbly.Model.Games
 
         [JsonIgnore] // To avoid "self-referencing loop detected" error
         public TournamentModel Tournament { get; set; }
+
+        [JsonIgnore]
+        public TournamentStageModel Stage { get; set; }
+
+        [JsonIgnore]
+        public StageBracketModel Bracket { get; set; }
 
         #endregion
     }

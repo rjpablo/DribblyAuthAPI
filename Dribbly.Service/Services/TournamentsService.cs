@@ -10,6 +10,7 @@ using Dribbly.Model.Notifications;
 using Dribbly.Model.Shared;
 using Dribbly.Model.Teams;
 using Dribbly.Model.Tournaments;
+using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
 using Newtonsoft.Json;
 using System;
@@ -63,6 +64,7 @@ namespace Dribbly.Service.Services
                 }
             }
         }
+        
         public async Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input)
         {
             return await _context.Tournaments.Include(t => t.Logo)
@@ -71,11 +73,21 @@ namespace Dribbly.Service.Services
                 .Take(input.PageSize)
                 .ToListAsync();
         }
-
+        
         public async Task<bool> IsCurrentUserManagerAsync(long tournamentId)
         {
             var accountId = _securityUtility.GetAccountId().Value;
             return await _context.Tournaments.AnyAsync(t => t.Id == tournamentId && t.AddedById == accountId);
+        }
+
+        public async Task<IEnumerable<ChoiceItemModel<long>>> GetTournamentTeamsAsChoicesAsync(long tournamentId, long? stageId)
+        {
+            var currentAccountId = _securityUtility.GetAccountId();
+            List<long> teamIds = await _context.StageTeams.Where(s => (!stageId.HasValue || s.Id == stageId) && s.Stage.TournamentId == tournamentId)
+                .Select(s => s.TeamId).ToListAsync();
+            return (await _context.Teams.Where(t => teamIds.Contains(t.Id) && t.EntityStatus == EntityStatusEnum.Active)
+                .ToListAsync())
+                .Select(t => new ChoiceItemModel<long>(t.Name, t.Id, t.Logo?.Url, EntityTypeEnum.Team));
         }
 
         #region Stages and Brackets
@@ -360,6 +372,7 @@ namespace Dribbly.Service.Services
         Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input);
         Task RemoveTournamentTeamAsync(long tournamentId, long teamId);
         Task<bool> IsCurrentUserManagerAsync(long tournamentId);
+        Task<IEnumerable<ChoiceItemModel<long>>> GetTournamentTeamsAsChoicesAsync(long tournamentId, long? stageId);
 
         #region Stages and Brackets
         Task AddTournamentStageAsync(AddTournamentStageInputModel input);
