@@ -80,9 +80,9 @@ namespace DribblyAuthAPI.Controllers
         
         [HttpPost]
         [Route("AddTournamentStage")]
-        public async Task AddTournamentStage(AddTournamentStageInputModel input)
+        public async Task<TournamentStageModel> AddTournamentStage(AddTournamentStageInputModel input)
         {
-            await _service.AddTournamentStageAsync(input);
+            return await _service.AddTournamentStageAsync(input);
         }
         
         [HttpPost]

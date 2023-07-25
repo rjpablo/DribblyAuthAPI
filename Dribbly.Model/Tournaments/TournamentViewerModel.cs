@@ -22,7 +22,8 @@ namespace Dribbly.Model.Tournaments
         public long AddedById { get; set; }
         public TournamentStatusEnum Status { get; set; }
         public List<GameModel> Games { get; set; } = new List<GameModel>();
-        public List<TeamStatsViewModel> Teams { get; set; } = new List<TeamStatsViewModel>();
+        public List<BaseTeamStatsModel> Teams { get; set; } = new List<BaseTeamStatsModel>();
+        public IEnumerable<TournamentStageModel> Stages { get; set; } = new List<TournamentStageModel>();
         public List<JoinTournamentRequestModel> JoinRequests { get; set; } = new List<JoinTournamentRequestModel>();
         public CourtModel DefaultCourt { get; set; }
 
@@ -34,7 +35,8 @@ namespace Dribbly.Model.Tournaments
             AddedById = model.AddedById;
             Status = model.Status;
             Games = model.Games.ToList();
-            Teams = model.Teams.Select(t => new TeamStatsViewModel(t)).ToList();
+            Teams = model.Teams.ToList<BaseTeamStatsModel>();
+            Stages = model.Stages;
             JoinRequests = model.JoinRequests.ToList();
             DefaultCourt = model.DefaultCourt;
         }

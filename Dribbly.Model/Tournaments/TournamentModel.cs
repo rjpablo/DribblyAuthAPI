@@ -23,6 +23,7 @@ namespace Dribbly.Model.Tournaments
         public TournamentStatusEnum Status { get; set; }
         public ICollection<GameModel> Games { get; set; } = new List<GameModel>();
         public ICollection<TournamentTeamModel> Teams { get; set; } = new List<TournamentTeamModel>();
+        public ICollection<TournamentStageModel> Stages { get; set; } = new List<TournamentStageModel>();
         public ICollection<JoinTournamentRequestModel> JoinRequests { get; set; } = new List<JoinTournamentRequestModel>();
         public long? DefaultCourtId { get; set; }
         public long? LogoId { get; set; }

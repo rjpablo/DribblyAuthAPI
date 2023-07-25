@@ -64,7 +64,7 @@ namespace Dribbly.Service.Services
                 }
             }
         }
-        
+
         public async Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input)
         {
             return await _context.Tournaments.Include(t => t.Logo)
@@ -73,7 +73,7 @@ namespace Dribbly.Service.Services
                 .Take(input.PageSize)
                 .ToListAsync();
         }
-        
+
         public async Task<bool> IsCurrentUserManagerAsync(long tournamentId)
         {
             var accountId = _securityUtility.GetAccountId().Value;
@@ -92,7 +92,7 @@ namespace Dribbly.Service.Services
 
         #region Stages and Brackets
 
-        public async Task AddTournamentStageAsync(AddTournamentStageInputModel input)
+        public async Task<TournamentStageModel> AddTournamentStageAsync(AddTournamentStageInputModel input)
         {
             using (var tx = _context.Database.BeginTransaction())
             {
@@ -124,6 +124,12 @@ namespace Dribbly.Service.Services
 
                     await _context.SaveChangesAsync();
                     tx.Commit();
+
+                    return await _context.TournamentStages
+                        .Include(s=> s.Teams.Select(team => team.Team.Logo))
+                        .Include(s=> s.Games.Select(t=> t.Team1.Team.Logo))
+                        .Include(s=> s.Games.Select(t=> t.Team2.Team.Logo))
+                        .SingleAsync(s => s.Id == stage.Id);
                 }
                 catch (System.Exception)
                 {
@@ -352,9 +358,12 @@ namespace Dribbly.Service.Services
                 .Include(t => t.Games.Select(g => g.Team2.Team.Logo))
                 .Include(t => t.DefaultCourt.PrimaryPhoto)
                 .Include(t => t.Teams.Select(tm => tm.Team.Logo))
+                .Include(t => t.Stages.Select(s => s.Teams.Select(team => team.Team.Logo)))
+                .Include(t => t.Stages.Select(s => s.Games.Select(g=>g.Team1.Team.Logo)))
+                .Include(t => t.Stages.Select(s => s.Games.Select(g=>g.Team2.Team.Logo)))
+                .Include(t => t.Stages.Select(s => s.Brackets))
                 .Include(t => t.JoinRequests.Select(r => r.Team))
                 .FirstOrDefaultAsync(t => t.Id == tournamentId);
-
             if (entity != null)
             {
                 entity.Games = entity.Games.Where(g => g.EntityStatus != Enums.EntityStatusEnum.Deleted).ToList();
@@ -375,7 +384,7 @@ namespace Dribbly.Service.Services
         Task<IEnumerable<ChoiceItemModel<long>>> GetTournamentTeamsAsChoicesAsync(long tournamentId, long? stageId);
 
         #region Stages and Brackets
-        Task AddTournamentStageAsync(AddTournamentStageInputModel input);
+        Task<TournamentStageModel> AddTournamentStageAsync(AddTournamentStageInputModel input);
         Task<IEnumerable<TournamentStageModel>> GetTournamentStagesAsync(long tournamentId);
         Task<TournamentStageModel> SetStageTeamsAsync(SetStageTeamsInputModel input);
         Task SetTeamBracket(long teamId, long stageId, long? bracketId);
