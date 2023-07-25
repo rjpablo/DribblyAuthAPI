@@ -63,6 +63,20 @@ namespace Dribbly.Service.Services
                 }
             }
         }
+        public async Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input)
+        {
+            return await _context.Tournaments.Include(t => t.Logo)
+                .OrderByDescending(t => t.DateAdded)
+                .Skip(input.PageSize * (input.Page - 1))
+                .Take(input.PageSize)
+                .ToListAsync();
+        }
+
+        public async Task<bool> IsCurrentUserManagerAsync(long tournamentId)
+        {
+            var accountId = _securityUtility.GetAccountId().Value;
+            return await _context.Tournaments.AnyAsync(t => t.Id == tournamentId && t.AddedById == accountId);
+        }
 
         #region Stages and Brackets
 
@@ -140,7 +154,7 @@ namespace Dribbly.Service.Services
 
         public async Task<IEnumerable<TournamentStageModel>> GetTournamentStagesAsync(long tournamentId)
         {
-            return await _context.TournamentStages.Include(s => s.Brackets).Include(s => s.Teams.Select(t=>t.Team.Logo))
+            return await _context.TournamentStages.Include(s => s.Brackets).Include(s => s.Teams.Select(t => t.Team.Logo))
                 .Where(s => s.TournamentId == tournamentId).ToListAsync();
         }
 
@@ -152,15 +166,6 @@ namespace Dribbly.Service.Services
         }
 
         #endregion
-
-        public async Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input)
-        {
-            return await _context.Tournaments.Include(t => t.Logo)
-                .OrderByDescending(t => t.DateAdded)
-                .Skip(input.PageSize * (input.Page - 1))
-                .Take(input.PageSize)
-                .ToListAsync();
-        }
 
         #region Join Requests
         public async Task JoinTournamentAsync(long tournamentId, long teamId)
@@ -354,6 +359,7 @@ namespace Dribbly.Service.Services
         Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId);
         Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input);
         Task RemoveTournamentTeamAsync(long tournamentId, long teamId);
+        Task<bool> IsCurrentUserManagerAsync(long tournamentId);
 
         #region Stages and Brackets
         Task AddTournamentStageAsync(AddTournamentStageInputModel input);

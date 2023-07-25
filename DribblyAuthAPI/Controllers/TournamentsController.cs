@@ -32,6 +32,13 @@ namespace DribblyAuthAPI.Controllers
         {
             return await _service.GetTournamentStagesAsync(tournamentId);
         }
+                
+        [HttpGet]
+        [Route("IsCurrentUserManager/{tournamentId}")]
+        public async Task<bool> IsCurrentUserManager(long tournamentId)
+        {
+            return await _service.IsCurrentUserManagerAsync(tournamentId);
+        }
 
         
         [HttpPost, AllowAnonymous]
