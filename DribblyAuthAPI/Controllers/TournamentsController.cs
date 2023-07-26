@@ -19,28 +19,28 @@ namespace DribblyAuthAPI.Controllers
         {
             _service = service;
         }
-                
+
         [HttpGet, AllowAnonymous]
         [Route("GetTournamentviewer/{leagueId}")]
         public async Task<TournamentViewerModel> GetTournamentviewer(long leagueId)
         {
             return await _service.GetTournamentViewerAsync(leagueId);
         }
-                
+
         [HttpGet, AllowAnonymous]
         [Route("GetTournamentStages/{tournamentId}")]
         public async Task<IEnumerable<TournamentStageModel>> GetTournamentStagesAsync(long tournamentId)
         {
             return await _service.GetTournamentStagesAsync(tournamentId);
         }
-                
+
         [HttpGet]
         [Route("IsCurrentUserManager/{tournamentId}")]
         public async Task<bool> IsCurrentUserManager(long tournamentId)
         {
             return await _service.IsCurrentUserManagerAsync(tournamentId);
         }
-                
+
         [HttpGet]
         [Route("GetTournamentTeamsAsChoices/{tournamentId}/{stageId}")]
         public async Task<IEnumerable<ChoiceItemModel<long>>> GetTournamentTeamsAsChoicesAsync(long tournamentId, long? stageId)
@@ -48,7 +48,7 @@ namespace DribblyAuthAPI.Controllers
             return await _service.GetTournamentTeamsAsChoicesAsync(tournamentId, stageId);
         }
 
-        
+
         [HttpPost, AllowAnonymous]
         [Route("GetNew")]
         public async Task<IEnumerable<TournamentModel>> GetNew([FromBody] GetTournamentsInputModel input)
@@ -63,28 +63,42 @@ namespace DribblyAuthAPI.Controllers
         {
             return await _service.AddTournamentAsync(input);
         }
-        
+
         [HttpPost]
         [Route("SetStageTeams")]
         public async Task<TournamentStageModel> SetStageTeams([FromBody] SetStageTeamsInputModel input)
         {
             return await _service.SetStageTeamsAsync(input);
         }
-        
+
         [HttpPost]
         [Route("SetTeamBracket/{teamId}/{stageId}/{bracketId?}")]
         public async Task SetTeamBracket(long teamId, long stageId, long? bracketId)
         {
             await _service.SetTeamBracket(teamId, stageId, bracketId);
         }
-        
+
+        [HttpPost]
+        [Route("DeleteStageBracket/{bracketId?}")]
+        public async Task DeleteStageBracket(long bracketId)
+        {
+            await _service.DeleteStageBracketAsync(bracketId);
+        }
+
+        [HttpPost]
+        [Route("AddStageBracket/{bracketName}/{stageId}")]
+        public async Task<StageBracketModel> AddStageBracket(string bracketName, long stageId)
+        {
+            return await _service.AddStageBracketAsync(bracketName, stageId);
+        }
+
         [HttpPost]
         [Route("AddTournamentStage")]
         public async Task<TournamentStageModel> AddTournamentStage(AddTournamentStageInputModel input)
         {
             return await _service.AddTournamentStageAsync(input);
         }
-        
+
         [HttpPost]
         [Route("ProcessJoinRequest/{requestId}/{shouldApprove}")]
         public async Task<TeamStatsViewModel> ProcessJoinRequest(long requestId, bool shouldApprove)

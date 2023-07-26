@@ -126,9 +126,9 @@ namespace Dribbly.Service.Services
                     tx.Commit();
 
                     return await _context.TournamentStages
-                        .Include(s=> s.Teams.Select(team => team.Team.Logo))
-                        .Include(s=> s.Games.Select(t=> t.Team1.Team.Logo))
-                        .Include(s=> s.Games.Select(t=> t.Team2.Team.Logo))
+                        .Include(s => s.Teams.Select(team => team.Team.Logo))
+                        .Include(s => s.Games.Select(t => t.Team1.Team.Logo))
+                        .Include(s => s.Games.Select(t => t.Team2.Team.Logo))
                         .SingleAsync(s => s.Id == stage.Id);
                 }
                 catch (System.Exception)
@@ -181,6 +181,56 @@ namespace Dribbly.Service.Services
             var team = await _context.StageTeams.SingleOrDefaultAsync(t => t.TeamId == teamId && t.StageId == stageId);
             team.BracketId = bracketId;
             await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteStageBracketAsync(long bracketId)
+        {
+            var bracket = await _context.StageBrackets.SingleOrDefaultAsync(b=>b.Id == bracketId);
+
+            if(bracket == null)
+            {
+                return;
+            }
+
+            var bracketTeams = await _context.StageTeams.Where(t => t.BracketId == bracketId)
+                .ToListAsync();
+            foreach (var team in bracketTeams)
+            {
+                team.BracketId = null;
+            }
+
+            _context.StageBrackets.Remove(bracket);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<StageBracketModel> AddStageBracketAsync(string bracketName, long stageId)
+        {
+            var stage = await _context.TournamentStages.Include(s => s.Brackets)
+                .SingleOrDefaultAsync(s => s.Id == stageId);
+
+            if (stage == null)
+            {
+                throw new DribblyObjectNotFoundException($"Stage info not found. Stage ID: {stageId}",
+                    friendlyMessage: "Stage info could not be found.");
+            }
+
+            if (stage.Brackets.Any(b => b.Name.ToLower() == bracketName.ToLower()))
+            {
+                throw new DribblyInvalidOperationException($"Duplicate bracket name: {bracketName}",
+                    friendlyMessage: $"There's already a bracket named {bracketName}");
+            }
+
+            var bracket = new StageBracketModel
+            {
+                StageId = stageId,
+                Name = bracketName,
+                DateAdded = DateTime.UtcNow,
+                AddedById = _securityUtility.GetAccountId().Value
+            };
+            _context.StageBrackets.Add(bracket);
+
+            await _context.SaveChangesAsync();
+            return _context.StageBrackets.Single(b => b.Id == bracket.Id);
         }
 
         #endregion
@@ -359,8 +409,8 @@ namespace Dribbly.Service.Services
                 .Include(t => t.DefaultCourt.PrimaryPhoto)
                 .Include(t => t.Teams.Select(tm => tm.Team.Logo))
                 .Include(t => t.Stages.Select(s => s.Teams.Select(team => team.Team.Logo)))
-                .Include(t => t.Stages.Select(s => s.Games.Select(g=>g.Team1.Team.Logo)))
-                .Include(t => t.Stages.Select(s => s.Games.Select(g=>g.Team2.Team.Logo)))
+                .Include(t => t.Stages.Select(s => s.Games.Select(g => g.Team1.Team.Logo)))
+                .Include(t => t.Stages.Select(s => s.Games.Select(g => g.Team2.Team.Logo)))
                 .Include(t => t.Stages.Select(s => s.Brackets))
                 .Include(t => t.JoinRequests.Select(r => r.Team))
                 .FirstOrDefaultAsync(t => t.Id == tournamentId);
@@ -388,6 +438,8 @@ namespace Dribbly.Service.Services
         Task<IEnumerable<TournamentStageModel>> GetTournamentStagesAsync(long tournamentId);
         Task<TournamentStageModel> SetStageTeamsAsync(SetStageTeamsInputModel input);
         Task SetTeamBracket(long teamId, long stageId, long? bracketId);
+        Task<StageBracketModel> AddStageBracketAsync(string bracketName, long stageId);
+        Task DeleteStageBracketAsync(long bracketId);
         #endregion
 
         #region Join Requests
