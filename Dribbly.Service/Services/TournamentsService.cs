@@ -183,11 +183,39 @@ namespace Dribbly.Service.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeleteStageAsync(long stageId)
+        {
+            var stage = await _context.TournamentStages
+                .Include(s => s.Games).Include(s => s.Teams).Include(s => s.Tournament)
+                .SingleOrDefaultAsync(b => b.Id == stageId);
+
+            if (stage == null)
+            {
+                return;
+            }
+
+            if (stage.Tournament.AddedById != _securityUtility.GetAccountId().Value)
+            {
+                throw new DribblyForbiddenException("Non-tournament manager tried to delete stage.",
+                    friendlyMessage: "Only a tournament manager can delete a stage");
+            }
+
+            if (stage.Games.Any(g => g.Status != GameStatusEnum.Cancelled && g.Status != GameStatusEnum.Deleted))
+            {
+                throw new DribblyInvalidOperationException("Tried to delete stage with active games",
+                    friendlyMessage: "Cannot delete stage becuase it has active games. " +
+                    "Please cancel all games in the stage before deleting the stage");
+            }
+
+            _context.TournamentStages.Remove(stage);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task DeleteStageBracketAsync(long bracketId)
         {
-            var bracket = await _context.StageBrackets.SingleOrDefaultAsync(b=>b.Id == bracketId);
+            var bracket = await _context.StageBrackets.SingleOrDefaultAsync(b => b.Id == bracketId);
 
-            if(bracket == null)
+            if (bracket == null)
             {
                 return;
             }
@@ -437,6 +465,7 @@ namespace Dribbly.Service.Services
         Task<TournamentStageModel> AddTournamentStageAsync(AddTournamentStageInputModel input);
         Task<IEnumerable<TournamentStageModel>> GetTournamentStagesAsync(long tournamentId);
         Task<TournamentStageModel> SetStageTeamsAsync(SetStageTeamsInputModel input);
+        Task DeleteStageAsync(long stageId);
         Task SetTeamBracket(long teamId, long stageId, long? bracketId);
         Task<StageBracketModel> AddStageBracketAsync(string bracketName, long stageId);
         Task DeleteStageBracketAsync(long bracketId);

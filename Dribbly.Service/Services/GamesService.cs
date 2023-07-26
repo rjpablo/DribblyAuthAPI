@@ -457,9 +457,10 @@ namespace Dribbly.Service.Services
 
         public async Task UpdateStatusAsync(long gameId, GameStatusEnum toStatus)
         {
-            GameModel game = await _context.Games.SingleOrDefaultAsync(g => g.Id == gameId);
+            GameModel game = await _context.Games.Include(g=>g.Tournament)
+                .SingleOrDefaultAsync(g => g.Id == gameId);
             var currentAccountId = _securityUtility.GetAccountId();
-            if (game.AddedById == currentAccountId)
+            if (game.AddedById == currentAccountId || (game.Tournament?.AddedById == currentAccountId))
             {
                 #region Starting Game
                 if (toStatus == GameStatusEnum.Started)

@@ -72,6 +72,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost]
+        [Route("DeleteStage/{stageId}")]
+        public async Task DeleteStage(long stageId)
+        {
+            await _service.DeleteStageAsync(stageId);
+        }
+
+        [HttpPost]
         [Route("SetTeamBracket/{teamId}/{stageId}/{bracketId?}")]
         public async Task SetTeamBracket(long teamId, long stageId, long? bracketId)
         {
