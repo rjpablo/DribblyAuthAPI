@@ -100,6 +100,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost]
+        [Route("RenameStage/{stageId}/{name}")]
+        public async Task RenameStage(long stageId, string name)
+        {
+            await _service.RenameStageAsync(stageId, name);
+        }
+
+        [HttpPost]
         [Route("AddTournamentStage")]
         public async Task<TournamentStageModel> AddTournamentStage(AddTournamentStageInputModel input)
         {

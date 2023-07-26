@@ -231,6 +231,27 @@ namespace Dribbly.Service.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task RenameStageAsync(long stageId, string name)
+        {
+            var stage = await _context.TournamentStages.Include(s => s.Brackets)
+                .SingleOrDefaultAsync(s => s.Id == stageId);
+
+            if (stage == null)
+            {
+                throw new DribblyObjectNotFoundException($"Stage info not found. Stage ID: {stageId}",
+                    friendlyMessage: "Stage info could not be found.");
+            }
+            else if (_context.TournamentStages.Any(s => s.TournamentId == stage.TournamentId && s.Id != stageId &&
+             s.Name.ToLower() == name.ToLower()))
+            {
+                throw new DribblyInvalidOperationException("Stage name not available",
+                    friendlyMessage: $"There is already a stage named {name}");
+            }
+
+            stage.Name = name;
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<StageBracketModel> AddStageBracketAsync(string bracketName, long stageId)
         {
             var stage = await _context.TournamentStages.Include(s => s.Brackets)
@@ -468,6 +489,7 @@ namespace Dribbly.Service.Services
         Task DeleteStageAsync(long stageId);
         Task SetTeamBracket(long teamId, long stageId, long? bracketId);
         Task<StageBracketModel> AddStageBracketAsync(string bracketName, long stageId);
+        Task RenameStageAsync(long stageId, string name);
         Task DeleteStageBracketAsync(long bracketId);
         #endregion
 
