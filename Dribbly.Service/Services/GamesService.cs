@@ -3,6 +3,7 @@ using Dribbly.Core.Extensions;
 using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Account;
+using Dribbly.Model.DTO;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Enums;
 using Dribbly.Model.GameEvents;
@@ -354,6 +355,26 @@ namespace Dribbly.Service.Services
             };
         }
 
+        public async Task<AddGameModalModel> GetAddGameModalAsync(GetAddGameModalInputModel input)
+        {
+            var result = new AddGameModalModel();
+            if (input.TournamentId.HasValue)
+            {
+                var tournament = await _context.Tournaments.SingleOrDefaultAsync(t => t.Id == input.TournamentId);
+                result.OverrideSettings(tournament);
+                if (tournament.DefaultCourtId.HasValue)
+                {
+                    result.CourtChoice = await _commonService.GetChoiceItemModelAsync(tournament.DefaultCourtId, EntityTypeEnum.Court);
+                }
+            }
+            else if (input.CourtId.HasValue)
+            {
+                result.CourtChoice = await _commonService.GetChoiceItemModelAsync(input.CourtId, EntityTypeEnum.Court);
+            }
+
+            return result;
+        }
+
         public async Task EndGameAsync(long gameId, long winningTeamId)
         {
             using (var tx = _context.Database.BeginTransaction())
@@ -425,12 +446,12 @@ namespace Dribbly.Service.Services
                             .ToListAsync();
                         ts.GP = allStats.Count();
                         ts.GW = allStats.Count(s => s.Won.Value);
-                        ts.PPG = allStats.Average(s=>s.Score);
-                        ts.RPG = allStats.Average(s=>s.Rebounds);
-                        ts.APG = allStats.Average(s=>s.Assists);
-                        ts.BPG = allStats.Average(s=>s.Blocks);
-                        ts.FGP = allStats.Average(s=>s.FGM.DivideBy(s.FGA));
-                        ts.ThreePP = allStats.Average(s=>s.ThreePM.DivideBy(s.ThreePA));
+                        ts.PPG = allStats.Average(s => s.Score);
+                        ts.RPG = allStats.Average(s => s.Rebounds);
+                        ts.APG = allStats.Average(s => s.Assists);
+                        ts.BPG = allStats.Average(s => s.Blocks);
+                        ts.FGP = allStats.Average(s => s.FGM.DivideBy(s.FGA));
+                        ts.ThreePP = allStats.Average(s => s.ThreePM.DivideBy(s.ThreePA));
                         ts.OverallScore = (ts.GW.DivideBy(ts.GP)) + (ts.PPG / 118) + (ts.APG / 28.2) + (ts.BPG / 6.4) + (ts.RPG / 47.7);
                     }
                     #endregion
@@ -457,7 +478,7 @@ namespace Dribbly.Service.Services
 
         public async Task UpdateStatusAsync(long gameId, GameStatusEnum toStatus)
         {
-            GameModel game = await _context.Games.Include(g=>g.Tournament)
+            GameModel game = await _context.Games.Include(g => g.Tournament)
                 .SingleOrDefaultAsync(g => g.Id == gameId);
             var currentAccountId = _securityUtility.GetAccountId();
             if (game.AddedById == currentAccountId || (game.Tournament?.AddedById == currentAccountId))
@@ -874,6 +895,8 @@ namespace Dribbly.Service.Services
         Task<GameModel> GetGame(long id);
 
         Task<AddGameModalModel> GetAddGameModalAsync(long courtId);
+
+        Task<AddGameModalModel> GetAddGameModalAsync(GetAddGameModalInputModel input);
 
         Task AdvancePeriodAsync(long gameId, int period, int remainingTime);
 

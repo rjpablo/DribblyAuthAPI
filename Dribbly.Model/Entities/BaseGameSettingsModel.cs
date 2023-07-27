@@ -43,7 +43,12 @@ namespace Dribbly.Model.Entities
         /// <summary>
         /// In minutes
         /// </summary>
-        public int OvertimePeriodDuration { get; set; }
+        public int RegulationPeriodDuration { get; set; } = 10;
+
+        /// <summary>
+        /// In minutes
+        /// </summary>
+        public int OvertimePeriodDuration { get; set; } = 5;
 
         /// <summary>
         /// The default shot clock duration in seconds
@@ -58,11 +63,6 @@ namespace Dribbly.Model.Entities
 
         #region Period and Durations
         public int NumberOfRegulationPeriods { get; set; } = 4;
-
-        /// <summary>
-        /// In minutes
-        /// </summary>
-        public int RegulationPeriodDuration { get; set; }
         #endregion Period and Durations
 
     }

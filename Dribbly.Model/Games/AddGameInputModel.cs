@@ -1,11 +1,12 @@
 ﻿using Dribbly.Core.Models;
+using Dribbly.Model.Entities;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Dribbly.Model.Games
 {
     // Games table has an additional ID column which is a Foreign Key to the bookings table
-    public class AddGameInputModel : BaseEntityModel
+    public class AddGameInputModel : BaseGameSettingsModel
     {
         [Required]
         public DateTime Start { get; set; }
@@ -26,40 +27,21 @@ namespace Dribbly.Model.Games
         public long? StageId { get; set; }
         public long? BracketId { get; set; }
 
-        public bool IsTimed { get; set; }
-        public int? DefaultShotClockDuration { get; set; } = 24;
-        public int? OffensiveRebondShotClockDuration { get; set; } = 14;
-        public int NumberOfRegulationPeriods { get; set; }
-
-        /// <summary>
-        /// In minutes
-        /// </summary>
-        public int RegulationPeriodDuration { get; set; }
-        /// <summary>
-        /// In minutes
-        /// </summary>
-        public int OvertimePeriodDuration { get; set; }
-
-        public bool UsesRunningClock { get; set; }
-
         public GameModel ToGameModel()
         {
-            return new GameModel
+            var game = new GameModel
             {
                 Start = Start,
                 Title = Title,
                 CourtId = CourtId,
                 TournamentId = TournamentId,
                 StageId = StageId,
-                BracketId = BracketId,
-                IsTimed = IsTimed,
-                DefaultShotClockDuration = DefaultShotClockDuration,
-                OffensiveRebondShotClockDuration = OffensiveRebondShotClockDuration,
-                NumberOfRegulationPeriods = NumberOfRegulationPeriods,
-                RegulationPeriodDuration = RegulationPeriodDuration,
-                OvertimePeriodDuration = OvertimePeriodDuration,
-                UsesRunningClock = UsesRunningClock
+                BracketId = BracketId
             };
+
+            game.OverrideSettings(this);
+
+            return game;
         }
     }
 }

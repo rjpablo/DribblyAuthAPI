@@ -1,4 +1,5 @@
-﻿using Dribbly.Model.GameEvents;
+﻿using Dribbly.Model.DTO;
+using Dribbly.Model.GameEvents;
 using Dribbly.Model.Games;
 using Dribbly.Model.Play;
 using Dribbly.Service.Enums;
@@ -63,6 +64,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task EndGame(long gameId, long winningTeamId)
         {
             await _service.EndGameAsync(gameId, winningTeamId);
+        }
+
+        [HttpPost]
+        [Route("GetAddGameModal")]
+        public async Task<AddGameModalModel> GetAddGameModalAsync([FromBody]GetAddGameModalInputModel input)
+        {
+            return await _service.GetAddGameModalAsync(input);
         }
 
         [HttpPost, Authorize]
