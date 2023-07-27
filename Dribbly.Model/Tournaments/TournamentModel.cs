@@ -1,22 +1,17 @@
-﻿using Dribbly.Core.Models;
-using Dribbly.Model.Courts;
+﻿using Dribbly.Model.Courts;
+using Dribbly.Model.DTO;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Enums;
 using Dribbly.Model.Games;
 using Dribbly.Model.Shared;
-using Dribbly.Model.Teams;
 using Dribbly.Service.Enums;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dribbly.Model.Tournaments
 {
     [Table("Tournaments")]
-    public class TournamentModel : BaseEntityModel, IIndexedEntity
+    public class TournamentModel : BaseGameSettingsModel, IIndexedEntity
     {
         public string Name { get; set; }
         public long AddedById { get; set; }
@@ -51,6 +46,31 @@ namespace Dribbly.Model.Tournaments
         public TournamentModel()
         {
             EntityType = Service.Enums.EntityTypeEnum.Tournament;
+        }
+
+        public void OverrideSettings(UpdateTournamentSettingsModel source)
+        {
+            // Timeout Limits
+            TotalTimeoutLimit = source.TotalTimeoutLimit;
+            FullTimeoutLimit = source.FullTimeoutLimit;
+            ShortTimeoutLimit = source.ShortTimeoutLimit;
+
+            // Foul Settings
+            PersonalFoulLimit = source.PersonalFoulLimit;
+            TechnicalFoulLimit = source.TechnicalFoulLimit;
+
+            // Clock
+            IsTimed = source.IsTimed;
+            UsesRunningClock = source.UsesRunningClock;
+            OvertimePeriodDuration = source.OvertimePeriodDuration;
+            DefaultShotClockDuration = source.DefaultShotClockDuration;
+            OffensiveRebondShotClockDuration = source.OffensiveRebondShotClockDuration;
+
+            // Period and Durations
+            NumberOfRegulationPeriods = source.NumberOfRegulationPeriods;
+            RegulationPeriodDuration = source.RegulationPeriodDuration;
+
+            DefaultCourtId = source.DefaultCourtId;
         }
     }
 }

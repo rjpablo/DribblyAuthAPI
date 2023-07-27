@@ -14,9 +14,9 @@ namespace Dribbly.Model.Entities
 
         public int TotalTimeoutLimit { get; set; }
 
-        public int FullTimeoutLimit { get; set; }
+        public int FullTimeoutLimit { get; set; } = 4;
 
-        public int ShortTimeoutLimit { get; set; }
+        public int ShortTimeoutLimit { get; set; } = 1;
 
         #endregion
 
@@ -30,14 +30,10 @@ namespace Dribbly.Model.Entities
         /// The number of technical fouls each player is allowed before fouling out 
         /// </summary>
         public int TechnicalFoulLimit { get; set; } = 2;
-
-        /// <summary>
-        /// The default shot clock duration in seconds
-        /// </summary>
         #endregion
 
         #region Clock
-        public bool IsTimed { get; set; }
+        public bool IsTimed { get; set; } = true;
 
         /// <summary>
         /// When set to true, the game clock isn't stopped following a successful field goal.
@@ -48,6 +44,10 @@ namespace Dribbly.Model.Entities
         /// In minutes
         /// </summary>
         public int OvertimePeriodDuration { get; set; }
+
+        /// <summary>
+        /// The default shot clock duration in seconds
+        /// </summary>
         public int? DefaultShotClockDuration { get; set; } = 24;
         #endregion
 

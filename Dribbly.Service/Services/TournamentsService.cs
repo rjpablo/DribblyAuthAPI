@@ -90,6 +90,66 @@ namespace Dribbly.Service.Services
                 .Select(t => new ChoiceItemModel<long>(t.Name, t.Id, t.Logo?.Url, EntityTypeEnum.Team));
         }
 
+        public async Task<TournamentModel> UpdateTournamentSettingsAsync(UpdateTournamentSettingsModel settings)
+        {
+            var tournament = await _context.Tournaments.Include(t => t.Games)
+                .SingleOrDefaultAsync(t => t.Id == settings.Id);
+
+            if (tournament == null)
+            {
+                throw new DribblyObjectNotFoundException($"Tournament info not found. Tournament ID: {settings.Id}",
+                    friendlyMessage: "Tournament info not found.");
+            }
+
+            if (tournament.AddedById != _securityUtility.GetAccountId().Value)
+            {
+                throw new DribblyForbiddenException("Non-tournament manager tried to update tournament settings.",
+                    friendlyMessage: "Only a tournament manager can update these settings.");
+            }
+
+            tournament.OverrideSettings(settings);
+            if (settings.ApplyToGames)
+            {
+                foreach (var game in tournament.Games)
+                {
+                    if (game.Status == GameStatusEnum.WaitingToStart)
+                    {
+                        game.OverrideSettings(settings);
+                    }
+                }
+            }
+
+            await _context.SaveChangesAsync();
+            return await _context.Tournaments.Include(t=>t.DefaultCourt.PrimaryPhoto)
+                .SingleAsync(t=>t.Id == settings.Id);
+        }
+
+        public async Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId)
+        {
+            var entity = await _context.Tournaments
+                .Include(t => t.Games.Select(g => g.Team1.Team.Logo))
+                .Include(t => t.Games.Select(g => g.Team2.Team.Logo))
+                .Include(t => t.DefaultCourt.PrimaryPhoto)
+                .Include(t => t.Teams.Select(tm => tm.Team.Logo))
+                .Include(t => t.Stages.Select(s => s.Teams.Select(team => team.Team.Logo)))
+                .Include(t => t.Stages.Select(s => s.Games.Select(g => g.Team1.Team.Logo)))
+                .Include(t => t.Stages.Select(s => s.Games.Select(g => g.Team2.Team.Logo)))
+                .Include(t => t.Stages.Select(s => s.Brackets))
+                .Include(t => t.JoinRequests.Select(r => r.Team))
+                .FirstOrDefaultAsync(t => t.Id == tournamentId);
+
+            if (entity == null)
+            {
+                throw new DribblyObjectNotFoundException($"Tournament info not found. Tournament ID: {tournamentId}",
+                           friendlyMessage: "Tournament info not found. The tournament info may have been deleted.");
+            }
+            else
+            {
+                entity.Games = entity.Games.Where(g => g.EntityStatus != Enums.EntityStatusEnum.Deleted).ToList();
+                return new TournamentViewerModel(entity);
+            }
+        }
+
         #region Stages and Brackets
 
         public async Task<TournamentStageModel> AddTournamentStageAsync(AddTournamentStageInputModel input)
@@ -449,28 +509,6 @@ namespace Dribbly.Service.Services
             return notif;
         }
         #endregion
-
-        public async Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId)
-        {
-            var entity = await _context.Tournaments
-                .Include(t => t.Games.Select(g => g.Team1.Team.Logo))
-                .Include(t => t.Games.Select(g => g.Team2.Team.Logo))
-                .Include(t => t.DefaultCourt.PrimaryPhoto)
-                .Include(t => t.Teams.Select(tm => tm.Team.Logo))
-                .Include(t => t.Stages.Select(s => s.Teams.Select(team => team.Team.Logo)))
-                .Include(t => t.Stages.Select(s => s.Games.Select(g => g.Team1.Team.Logo)))
-                .Include(t => t.Stages.Select(s => s.Games.Select(g => g.Team2.Team.Logo)))
-                .Include(t => t.Stages.Select(s => s.Brackets))
-                .Include(t => t.JoinRequests.Select(r => r.Team))
-                .FirstOrDefaultAsync(t => t.Id == tournamentId);
-            if (entity != null)
-            {
-                entity.Games = entity.Games.Where(g => g.EntityStatus != Enums.EntityStatusEnum.Deleted).ToList();
-                return new TournamentViewerModel(entity);
-            }
-
-            return null;
-        }
     }
 
     public interface ITournamentsService
@@ -480,6 +518,7 @@ namespace Dribbly.Service.Services
         Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input);
         Task RemoveTournamentTeamAsync(long tournamentId, long teamId);
         Task<bool> IsCurrentUserManagerAsync(long tournamentId);
+        Task<TournamentModel> UpdateTournamentSettingsAsync(UpdateTournamentSettingsModel settings);
         Task<IEnumerable<ChoiceItemModel<long>>> GetTournamentTeamsAsChoicesAsync(long tournamentId, long? stageId);
 
         #region Stages and Brackets

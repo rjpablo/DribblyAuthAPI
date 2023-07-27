@@ -14,10 +14,8 @@ using System.Threading.Tasks;
 
 namespace Dribbly.Model.Tournaments
 {
-    public class TournamentViewerModel
+    public class TournamentViewerModel : BaseGameSettingsModel
     {
-        public DateTime DateAdded { get; set; }
-        public long Id { get; set; }
         public string Name { get; set; }
         public long AddedById { get; set; }
         public TournamentStatusEnum Status { get; set; }
@@ -39,6 +37,26 @@ namespace Dribbly.Model.Tournaments
             Stages = model.Stages;
             JoinRequests = model.JoinRequests.ToList();
             DefaultCourt = model.DefaultCourt;
+
+            // Timeout Limits
+            TotalTimeoutLimit = model.TotalTimeoutLimit;
+            FullTimeoutLimit = model.FullTimeoutLimit;
+            ShortTimeoutLimit = model.ShortTimeoutLimit;
+
+            // Foul Settings
+            PersonalFoulLimit = model.PersonalFoulLimit;
+            TechnicalFoulLimit = model.TechnicalFoulLimit;
+
+            // Clock
+            IsTimed = model.IsTimed;
+            UsesRunningClock = model.UsesRunningClock;
+            OvertimePeriodDuration = model.OvertimePeriodDuration;
+            DefaultShotClockDuration = model.DefaultShotClockDuration;
+            OffensiveRebondShotClockDuration = model.OffensiveRebondShotClockDuration;
+
+            // Period and Durations
+            NumberOfRegulationPeriods = model.NumberOfRegulationPeriods;
+            RegulationPeriodDuration = model.RegulationPeriodDuration;
         }
     }
 }

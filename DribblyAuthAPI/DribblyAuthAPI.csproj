@@ -740,6 +740,10 @@
     <Compile Include="Migrations\202307270839308_ModifyTable_Games_RenameColumn_OffensiveRebondShotClock_To_OffensiveRebondShotClockDuration.Designer.cs">
       <DependentUpon>202307270839308_ModifyTable_Games_RenameColumn_OffensiveRebondShotClock_To_OffensiveRebondShotClockDuration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307270902234_ModifyTable_Tournaments_Add_columns_for_default_game_settings.cs" />
+    <Compile Include="Migrations\202307270902234_ModifyTable_Tournaments_Add_columns_for_default_game_settings.Designer.cs">
+      <DependentUpon>202307270902234_ModifyTable_Tournaments_Add_columns_for_default_game_settings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1189,6 +1193,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307270839308_ModifyTable_Games_RenameColumn_OffensiveRebondShotClock_To_OffensiveRebondShotClockDuration.resx">
       <DependentUpon>202307270839308_ModifyTable_Games_RenameColumn_OffensiveRebondShotClock_To_OffensiveRebondShotClockDuration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307270902234_ModifyTable_Tournaments_Add_columns_for_default_game_settings.resx">
+      <DependentUpon>202307270902234_ModifyTable_Tournaments_Add_columns_for_default_game_settings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

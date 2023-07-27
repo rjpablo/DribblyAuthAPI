@@ -41,6 +41,13 @@ namespace DribblyAuthAPI.Controllers
             return await _service.IsCurrentUserManagerAsync(tournamentId);
         }
 
+        [HttpPost]
+        [Route("UpdateTournamentSettings")]
+        public async Task<TournamentModel> UpdateTournamentSettings(UpdateTournamentSettingsModel settings)
+        {
+            return await _service.UpdateTournamentSettingsAsync(settings);
+        }
+
         [HttpGet]
         [Route("GetTournamentTeamsAsChoices/{tournamentId}/{stageId}")]
         public async Task<IEnumerable<ChoiceItemModel<long>>> GetTournamentTeamsAsChoicesAsync(long tournamentId, long? stageId)
