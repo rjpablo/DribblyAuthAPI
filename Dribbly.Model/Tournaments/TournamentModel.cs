@@ -25,8 +25,12 @@ namespace Dribbly.Model.Tournaments
         public ICollection<TournamentTeamModel> Teams { get; set; } = new List<TournamentTeamModel>();
         public ICollection<TournamentStageModel> Stages { get; set; } = new List<TournamentStageModel>();
         public ICollection<JoinTournamentRequestModel> JoinRequests { get; set; } = new List<JoinTournamentRequestModel>();
-        public long? DefaultCourtId { get; set; }
         public long? LogoId { get; set; }
+
+        #region Settings
+        public long? DefaultCourtId { get; set; }
+
+        #endregion
 
         public EntityStatusEnum EntityStatus { get; set; }
 

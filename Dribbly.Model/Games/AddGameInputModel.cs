@@ -28,7 +28,7 @@ namespace Dribbly.Model.Games
 
         public bool IsTimed { get; set; }
         public int? DefaultShotClockDuration { get; set; } = 24;
-        public int? OffensiveRebondShotClock { get; set; } = 14;
+        public int? OffensiveRebondShotClockDuration { get; set; } = 14;
         public int NumberOfRegulationPeriods { get; set; }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Dribbly.Model.Games
                 BracketId = BracketId,
                 IsTimed = IsTimed,
                 DefaultShotClockDuration = DefaultShotClockDuration,
-                OffensiveRebondShotClock = OffensiveRebondShotClock,
+                OffensiveRebondShotClockDuration = OffensiveRebondShotClockDuration,
                 NumberOfRegulationPeriods = NumberOfRegulationPeriods,
                 RegulationPeriodDuration = RegulationPeriodDuration,
                 OvertimePeriodDuration = OvertimePeriodDuration,
