@@ -19,6 +19,7 @@ namespace Dribbly.Model.Tournaments
         public string Name { get; set; }
         public long AddedById { get; set; }
         public TournamentStatusEnum Status { get; set; }
+        public PhotoModel Logo { get; set; }
         public List<GameModel> Games { get; set; } = new List<GameModel>();
         public List<BaseTeamStatsModel> Teams { get; set; } = new List<BaseTeamStatsModel>();
         public IEnumerable<TournamentStageModel> Stages { get; set; } = new List<TournamentStageModel>();
@@ -31,6 +32,7 @@ namespace Dribbly.Model.Tournaments
             Id = model.Id;
             Name = model.Name;
             AddedById = model.AddedById;
+            Logo = model.Logo;
             Status = model.Status;
             Games = model.Games.ToList();
             Teams = model.Teams.ToList<BaseTeamStatsModel>();

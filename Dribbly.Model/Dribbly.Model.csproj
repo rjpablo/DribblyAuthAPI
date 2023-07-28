@@ -109,6 +109,7 @@
     <Compile Include="Entities\StageBracketModel.cs" />
     <Compile Include="Entities\StageTeamModel.cs" />
     <Compile Include="Entities\TeamStatsModel.cs" />
+    <Compile Include="Entities\TournamentPhotoModel.cs" />
     <Compile Include="Entities\TournamentStageModel.cs" />
     <Compile Include="Entities\TournamentTeamModel.cs" />
     <Compile Include="Enums\EjectionStatusEnum.cs" />

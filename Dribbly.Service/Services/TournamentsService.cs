@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Dribbly.Service.Services
 {
@@ -28,15 +29,21 @@ namespace Dribbly.Service.Services
         private readonly ITournamentsRepository _tournamentsRepository;
         private readonly ITeamsRepository _teamsRepository;
         private readonly INotificationsRepository _notificationsRepo;
+        private readonly IFileService _fileService;
+        private readonly IIndexedEntitysRepository _indexedEntitysRepository;
 
         public TournamentsService(IAuthContext context,
-            ISecurityUtility securityUtility) : base(context.Tournaments, context)
+            IFileService fileService,
+            ISecurityUtility securityUtility
+            ) : base(context.Tournaments, context)
         {
             _context = context;
             _securityUtility = securityUtility;
             _tournamentsRepository = new TournamentsRepository(context);
             _teamsRepository = new TeamsRepository(context);
             _notificationsRepo = new NotificationsRepository(context);
+            _fileService = fileService;
+            _indexedEntitysRepository = new IndexedEntitysRepository(context);
         }
 
         public async Task<TournamentModel> AddTournamentAsync(TournamentModel tournament)
@@ -120,13 +127,14 @@ namespace Dribbly.Service.Services
             }
 
             await _context.SaveChangesAsync();
-            return await _context.Tournaments.Include(t=>t.DefaultCourt.PrimaryPhoto)
-                .SingleAsync(t=>t.Id == settings.Id);
+            return await _context.Tournaments.Include(t => t.DefaultCourt.PrimaryPhoto)
+                .SingleAsync(t => t.Id == settings.Id);
         }
 
         public async Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId)
         {
             var entity = await _context.Tournaments
+                .Include(t => t.Logo)
                 .Include(t => t.Games.Select(g => g.Team1.Team.Logo))
                 .Include(t => t.Games.Select(g => g.Team2.Team.Logo))
                 .Include(t => t.DefaultCourt.PrimaryPhoto)
@@ -148,6 +156,76 @@ namespace Dribbly.Service.Services
                 entity.Games = entity.Games.Where(g => g.EntityStatus != Enums.EntityStatusEnum.Deleted).ToList();
                 return new TournamentViewerModel(entity);
             }
+        }
+
+        public async Task<PhotoModel> UpdateLogoAsync(long tournamentId)
+        {
+            TournamentModel tournament = await GetTournamentByIdAsync(tournamentId);
+            if (tournament == null)
+            {
+                throw new DribblyObjectNotFoundException($"Tournament info not found. Tournament ID: {tournamentId}",
+                    friendlyMessage: "Tournament info not found.");
+            }
+
+            var accountId = _securityUtility.GetAccountId().Value;
+
+            if (tournament.AddedById != accountId)
+            {
+                throw new DribblyForbiddenException("Non-tournament manager tried to update tournament settings.",
+                    friendlyMessage: "Only a tournament manager can update these settings.");
+            }
+
+            HttpFileCollection files = HttpContext.Current.Request.Files;
+            if (files.Count == 0)
+            {
+                throw new DribblyInvalidOperationException("No files to upload",
+                    friendlyMessage: "The request did not contain the file to be uploaded");
+            }
+
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    PhotoModel photo = await AddPhoto(tournament, files[0]);
+                    tournament.LogoId = photo.Id;
+                    Update(tournament);
+                    await _context.SaveChangesAsync();
+                    await _indexedEntitysRepository.SetIconUrl(_context, tournament, photo.Url);
+                    //TODO: log user activity
+                    transaction.Commit();
+                    return photo;
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw e;
+                }
+            }
+        }
+
+        private async Task<PhotoModel> AddPhoto(TournamentModel tournament, HttpPostedFile file)
+        {
+            var accountId = _securityUtility.GetAccountId().Value;
+            string uploadPath = _fileService.Upload(file, $"{accountId}/tournamentPhotos/");
+
+            PhotoModel photo = new PhotoModel
+            {
+                Url = uploadPath,
+                UploadedById = accountId,
+                DateAdded = DateTime.UtcNow
+            };
+            _context.Photos.Add(photo);
+            await _context.SaveChangesAsync();
+
+            _context.TournamentPhotos.Add(new TournamentPhotoModel
+            {
+                PhotoId = photo.Id,
+                TournamentId = tournament.Id,
+                DateAdded = DateTime.UtcNow
+            });
+            await _context.SaveChangesAsync();
+
+            return photo;
         }
 
         #region Stages and Brackets
@@ -509,12 +587,20 @@ namespace Dribbly.Service.Services
             return notif;
         }
         #endregion
+
+        #region Helper Methods
+        private async Task<TournamentModel> GetTournamentByIdAsync(long tournamentId)
+        {
+            return await _context.Tournaments.SingleOrDefaultAsync(t => t.Id == tournamentId);
+        }
+        #endregion
     }
 
     public interface ITournamentsService
     {
         Task<TournamentModel> AddTournamentAsync(TournamentModel season);
         Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId);
+        Task<PhotoModel> UpdateLogoAsync(long tournamentId);
         Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input);
         Task RemoveTournamentTeamAsync(long tournamentId, long teamId);
         Task<bool> IsCurrentUserManagerAsync(long tournamentId);

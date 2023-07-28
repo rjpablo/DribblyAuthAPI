@@ -37,6 +37,7 @@ namespace Dribbly.Model
         DbSet<TournamentStageModel> TournamentStages { get; set; }
         DbSet<StageTeamModel> StageTeams { get; set; }
         DbSet<StageBracketModel> StageBrackets { get; set; }
+        DbSet<TournamentPhotoModel> TournamentPhotos { get; set; }
         #endregion
 
         DbSet<JoinTournamentRequestModel> JoinTournamentRequests { get; set; }
@@ -132,6 +133,7 @@ namespace Dribbly.Model
         public DbSet<TournamentStageModel> TournamentStages { get; set; }
         public DbSet<StageTeamModel> StageTeams { get; set; }
         public DbSet<StageBracketModel> StageBrackets { get; set; }
+        public DbSet<TournamentPhotoModel> TournamentPhotos { get; set; }
         #endregion
 
         public DbSet<JoinTournamentRequestModel> JoinTournamentRequests { get; set; }

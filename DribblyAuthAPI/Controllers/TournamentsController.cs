@@ -1,4 +1,5 @@
-﻿using Dribbly.Model.DTO;
+﻿using Dribbly.Model.Courts;
+using Dribbly.Model.DTO;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Shared;
 using Dribbly.Model.Tournaments;
@@ -133,6 +134,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task JoinTournament(long tournamentId, long teamId)
         {
             await _service.JoinTournamentAsync(tournamentId, teamId);
+        }
+
+        [HttpPost]
+        [Route("UpdateLogo/{tournamentId}")]
+        public async Task<PhotoModel> UpdateLogo(long tournamentId)
+        {
+            return await _service.UpdateLogoAsync(tournamentId);
         }
 
         [HttpPost]
