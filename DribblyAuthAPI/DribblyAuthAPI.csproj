@@ -748,6 +748,14 @@
     <Compile Include="Migrations\202307281025441_CreateTable_TournamentPhotos.Designer.cs">
       <DependentUpon>202307281025441_CreateTable_TournamentPhotos.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307291106381_Add_Turnover_Columns.cs" />
+    <Compile Include="Migrations\202307291106381_Add_Turnover_Columns.Designer.cs">
+      <DependentUpon>202307291106381_Add_Turnover_Columns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307291702256_Add_Steal_Columns.cs" />
+    <Compile Include="Migrations\202307291702256_Add_Steal_Columns.Designer.cs">
+      <DependentUpon>202307291702256_Add_Steal_Columns.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1203,6 +1211,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307281025441_CreateTable_TournamentPhotos.resx">
       <DependentUpon>202307281025441_CreateTable_TournamentPhotos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307291106381_Add_Turnover_Columns.resx">
+      <DependentUpon>202307291106381_Add_Turnover_Columns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307291702256_Add_Steal_Columns.resx">
+      <DependentUpon>202307291702256_Add_Steal_Columns.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

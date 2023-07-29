@@ -66,6 +66,16 @@ namespace Dribbly.Model.Entities
         public double MPG { get; set; }
 
         /// <summary>
+        /// Turnovers per game
+        /// </summary>
+        public int TPG { get; set; }
+
+        /// <summary>
+        /// Steals per game
+        /// </summary>
+        public int SPG { get; set; }
+
+        /// <summary>
         /// Total play time in Milliseconds
         /// </summary>
         public int PlayTimeMs { get; set; }

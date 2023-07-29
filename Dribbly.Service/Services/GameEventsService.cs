@@ -46,6 +46,17 @@ namespace Dribbly.Service.Services
         public async Task<GameEventModel> UpsertAsync(GameEventModel gameEvent)
         {
             _gameEventsRepository.Upsert(gameEvent);
+
+            if(gameEvent.Type == GameEventTypeEnum.Steal)
+            {
+                var performedBy = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.Id == gameEvent.PerformedById
+                                        && g.GameId == gameEvent.GameId && g.GameTeam.TeamId == gameEvent.TeamId);
+                var gameTeam = await _context.GameTeams
+                                .SingleOrDefaultAsync(t => t.TeamId == gameEvent.TeamId && t.GameId == gameEvent.GameId);
+                gameTeam.Steals++;
+                performedBy.Steals++;
+            }
+
             await _context.SaveChangesAsync();
             return gameEvent;
         }
@@ -163,6 +174,18 @@ namespace Dribbly.Service.Services
                 }
             }
         }
+
+        public async Task RecordTurnoverAsync(GameEventModel turnover)
+        {
+            _gameEventsRepository.Upsert(turnover);
+            var performedBy = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.Id == turnover.PerformedById
+                                    && g.GameId == turnover.GameId && g.GameTeam.TeamId == turnover.TeamId);
+            performedBy.Turnovers++;
+            var gameTeam = await _context.GameTeams
+                            .SingleOrDefaultAsync(t => t.TeamId == turnover.TeamId && t.GameId == turnover.GameId);
+            gameTeam.Turnovers++;
+            await _context.SaveChangesAsync();
+        }
     }
 
     public interface IGameEventsService
@@ -171,5 +194,6 @@ namespace Dribbly.Service.Services
         Task<UpsertFoulResultModel> UpsertFoulAsync(MemberFoulModel foul);
         Task<GameEventModel> UpsertAsync(GameEventModel gameEvent);
         Task<UpdateGameEventResultModel> UpdateAsync(UpdateGameEventInputModel input);
+        Task RecordTurnoverAsync(GameEventModel turnover);
     }
 }

@@ -49,7 +49,8 @@ namespace Dribbly.Model.Entities
         public int Blocks { get; set; }
         public int Rebounds { get; set; }
         public int Assists { get; set; }
-
+        public int Turnovers { get; set; }
+        public int Steals { get; set; }
         #endregion Stats
         #endregion Mapped Columns
 

@@ -34,6 +34,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost]
+        [Route("RecordTurnover")]
+        public async Task RecordTurnover(GameEventModel turnover)
+        {
+            await _service.RecordTurnoverAsync(turnover);
+        }
+
+        [HttpPost]
         [Route("Update")]
         public async Task<UpdateGameEventResultModel> Update([FromBody] UpdateGameEventInputModel input)
         {

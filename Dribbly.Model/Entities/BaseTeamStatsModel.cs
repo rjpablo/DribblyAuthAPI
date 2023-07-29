@@ -39,8 +39,17 @@ namespace Dribbly.Model.Entities
         /// </summary>
         public double BPG { get; set; }
         /// <summary>
+        /// Turnovers per game
+        /// </summary>
+        public int TPG { get; set; }
+        /// <summary>
         /// 3-point percentage
         /// </summary>
+
+        /// <summary>
+        /// Steals per game
+        /// </summary>
+        public int SPG { get; set; }
         public double ThreePP { get; set; }
         public double OverallScore { get; set; }
     }

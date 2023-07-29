@@ -17,6 +17,8 @@ namespace Dribbly.Model.Enums
         DefensiveRebound = 7,
         Jumpball = 8,
         Timeout = 9,
-        ChangeLineup = 10
+        ChangeLineup = 10,
+        TurnOver = 11,
+        Steal = 12
     }
 }
