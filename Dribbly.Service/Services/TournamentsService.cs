@@ -1,4 +1,5 @@
 ﻿using Dribbly.Core.Exceptions;
+using Dribbly.Core.Models;
 using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Courts;
@@ -156,6 +157,16 @@ namespace Dribbly.Service.Services
                 entity.Games = entity.Games.Where(g => g.EntityStatus != Enums.EntityStatusEnum.Deleted).ToList();
                 return new TournamentViewerModel(entity);
             }
+        }
+
+        public async Task<IEnumerable<TeamStatsViewModel>> GetTopTeamsAsync(GetTournamentTeamsInputModel input)
+        {
+            return (await _context.TournamentTeams.Include(s => s.Team.Logo)
+                .Where(t => t.TournamentId == input.TournamentId)
+                .OrderByDescending(s => s.OverallScore)
+                .ThenBy(s => s.Team.Name)
+                .Skip(input.PageSize * (input.Page - 1))
+                .ToListAsync()).Select(s => new TeamStatsViewModel(s));
         }
 
         public async Task<PhotoModel> UpdateLogoAsync(long tournamentId)
@@ -494,17 +505,24 @@ namespace Dribbly.Service.Services
             TeamStatsViewModel result = null;
             if (shouldApprove)
             {
-                var tournamentTeam = new TournamentTeamModel
-                {
-                    TeamId = request.TeamId,
-                    TournamentId = request.TournamentId,
-                    DateAdded = DateTime.UtcNow
-                };
-                _context.TournamentTeams.Add(tournamentTeam);
-                _ = AddJoinTournamentNotification(request, NotificationTypeEnum.JoinTournamentRequestApproved);
-                await _context.SaveChangesAsync();
+                var tournamentTeam = await _context.TournamentTeams
+                    .SingleAsync(t => t.TeamId == request.TeamId && t.TournamentId == request.TournamentId);
 
-                tournamentTeam = await _context.TournamentTeams.SingleAsync(t => t.Id == tournamentTeam.Id);
+                if (tournamentTeam == null)
+                {
+                    tournamentTeam = new TournamentTeamModel
+                    {
+                        TeamId = request.TeamId,
+                        TournamentId = request.TournamentId,
+                        DateAdded = DateTime.UtcNow
+                    };
+                    _context.TournamentTeams.Add(tournamentTeam);
+                    _ = AddJoinTournamentNotification(request, NotificationTypeEnum.JoinTournamentRequestApproved);
+                    await _context.SaveChangesAsync();
+                    tournamentTeam = await _context.TournamentTeams
+                        .SingleAsync(t => t.TeamId == request.TeamId && t.TournamentId == tournamentTeam.Id);
+                }
+
                 result = new TeamStatsViewModel(tournamentTeam);
 
             }
@@ -600,6 +618,7 @@ namespace Dribbly.Service.Services
     {
         Task<TournamentModel> AddTournamentAsync(TournamentModel season);
         Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId);
+        Task<IEnumerable<TeamStatsViewModel>> GetTopTeamsAsync(GetTournamentTeamsInputModel input);
         Task<PhotoModel> UpdateLogoAsync(long tournamentId);
         Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input);
         Task RemoveTournamentTeamAsync(long tournamentId, long teamId);

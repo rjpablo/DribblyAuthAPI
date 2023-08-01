@@ -1,4 +1,5 @@
-﻿using Dribbly.Core.Models;
+﻿using Dribbly.Core.Extensions;
+using Dribbly.Core.Models;
 
 namespace Dribbly.Model.Entities
 {
@@ -46,5 +47,10 @@ namespace Dribbly.Model.Entities
         public int SPG { get; set; }
         public double ThreePP { get; set; }
         public double OverallScore { get; set; }
+
+        public void SetOverallScore()
+        {
+            OverallScore = (GW.DivideBy(GP)) + (PPG / 118) + (APG / 28.2) + (BPG / 6.4) + (RPG / 47.7);
+        }
     }
 }

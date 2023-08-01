@@ -49,6 +49,7 @@ namespace Dribbly.Model.DTO
         /// 3-point percentage
         /// </summary>
         public double ThreePP { get; set; }
+        public double OverallScore { get; set; }
         #endregion
 
         public TeamStatsViewModel(BaseTeamStatsModel source)
@@ -67,6 +68,7 @@ namespace Dribbly.Model.DTO
             FGP = source.FGP;
             BPG = source.BPG;
             ThreePP = source.ThreePP;
+            OverallScore = source.OverallScore;
         }
     }
 }

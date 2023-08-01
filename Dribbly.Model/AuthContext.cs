@@ -121,6 +121,14 @@ namespace Dribbly.Model
             this.Configuration.LazyLoadingEnabled = false;
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TournamentTeamModel>()
+                .HasKey(e => new { e.TeamId, e.TournamentId });
+
+            base.OnModelCreating(modelBuilder);
+        }
+
         public DbSet<AccountModel> Accounts { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
