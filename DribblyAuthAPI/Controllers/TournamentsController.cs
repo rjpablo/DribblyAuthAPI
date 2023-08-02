@@ -137,7 +137,7 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpPost]
         [Route("ProcessJoinRequest/{requestId}/{shouldApprove}")]
-        public async Task<TeamStatsViewModel> ProcessJoinRequest(long requestId, bool shouldApprove)
+        public async Task<TournamentTeamModel> ProcessJoinRequest(long requestId, bool shouldApprove)
         {
             return await _service.ProcessJoinRequestAsync(requestId, shouldApprove);
         }

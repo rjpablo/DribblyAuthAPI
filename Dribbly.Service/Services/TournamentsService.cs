@@ -495,7 +495,7 @@ namespace Dribbly.Service.Services
             }
         }
 
-        public async Task<TeamStatsViewModel> ProcessJoinRequestAsync(long requestId, bool shouldApprove)
+        public async Task<TournamentTeamModel> ProcessJoinRequestAsync(long requestId, bool shouldApprove)
         {
             var accountId = _securityUtility.GetAccountId().Value;
             var request = await _context.JoinTournamentRequests.Include(r => r.Team)
@@ -513,10 +513,10 @@ namespace Dribbly.Service.Services
                     friendlyMessage: "Forbidden! You do not have sufficient access to perform this action.");
             }
 
-            TeamStatsViewModel result = null;
+            TournamentTeamModel tournamentTeam = null;
             if (shouldApprove)
             {
-                var tournamentTeam = await _context.TournamentTeams
+                tournamentTeam = await _context.TournamentTeams
                     .SingleOrDefaultAsync(t => t.TeamId == request.TeamId && t.TournamentId == request.TournamentId);
 
                 if (tournamentTeam == null)
@@ -530,12 +530,9 @@ namespace Dribbly.Service.Services
                     _context.TournamentTeams.Add(tournamentTeam);
                     _ = AddJoinTournamentNotification(request, NotificationTypeEnum.JoinTournamentRequestApproved);
                     await _context.SaveChangesAsync();
-                    tournamentTeam = await _context.TournamentTeams
+                    tournamentTeam = await _context.TournamentTeams.Include(t => t.Team.Logo)
                         .SingleAsync(t => t.TeamId == request.TeamId && t.TournamentId == request.TournamentId);
                 }
-
-                result = new TeamStatsViewModel(tournamentTeam);
-
             }
             else
             {
@@ -544,7 +541,7 @@ namespace Dribbly.Service.Services
 
             _context.JoinTournamentRequests.Remove(request);
             await _context.SaveChangesAsync();
-            return result;
+            return tournamentTeam;
         }
 
         public async Task RemoveTournamentTeamAsync(long tournamentId, long teamId)
@@ -651,7 +648,7 @@ namespace Dribbly.Service.Services
 
         #region Join Requests
         Task JoinTournamentAsync(long tournamentId, long teamId);
-        Task<TeamStatsViewModel> ProcessJoinRequestAsync(long requestId, bool shouldApprove);
+        Task<TournamentTeamModel> ProcessJoinRequestAsync(long requestId, bool shouldApprove);
         #endregion
     }
 }
