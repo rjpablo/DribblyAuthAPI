@@ -72,6 +72,7 @@ namespace Dribbly.Model.Entities
         /// </summary>
         public int PlayTimeMs { get; set; }
         public int Turnovers { get; set; }
+        public bool? Won { get; set; }
 
         #endregion
 

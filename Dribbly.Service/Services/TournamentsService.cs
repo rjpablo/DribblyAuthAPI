@@ -169,6 +169,17 @@ namespace Dribbly.Service.Services
                 .ToListAsync()).Select(s => new TeamStatsViewModel(s));
         }
 
+        public async Task<IEnumerable<PlayerStatsViewModel>> GetPlayersAsync(GetTournamentPlayersInputModel input)
+        {
+            return (await _context.TournamentPlayers
+                .Include(s => s.Account.ProfilePhoto).Include(s => s.Account.User)
+                .Where(t => t.TournamentId == input.TournamentId)
+                .OrderByDescending(s => s.OverallScore)
+                .ThenBy(s => s.Account.User.UserName)
+                .Skip(input.PageSize * (input.Page - 1))
+                .ToListAsync()).Select(p => new PlayerStatsViewModel(p));
+        }
+
         public async Task<PhotoModel> UpdateLogoAsync(long tournamentId)
         {
             TournamentModel tournament = await GetTournamentByIdAsync(tournamentId);
@@ -506,7 +517,7 @@ namespace Dribbly.Service.Services
             if (shouldApprove)
             {
                 var tournamentTeam = await _context.TournamentTeams
-                    .SingleAsync(t => t.TeamId == request.TeamId && t.TournamentId == request.TournamentId);
+                    .SingleOrDefaultAsync(t => t.TeamId == request.TeamId && t.TournamentId == request.TournamentId);
 
                 if (tournamentTeam == null)
                 {
@@ -520,7 +531,7 @@ namespace Dribbly.Service.Services
                     _ = AddJoinTournamentNotification(request, NotificationTypeEnum.JoinTournamentRequestApproved);
                     await _context.SaveChangesAsync();
                     tournamentTeam = await _context.TournamentTeams
-                        .SingleAsync(t => t.TeamId == request.TeamId && t.TournamentId == tournamentTeam.Id);
+                        .SingleAsync(t => t.TeamId == request.TeamId && t.TournamentId == request.TournamentId);
                 }
 
                 result = new TeamStatsViewModel(tournamentTeam);
@@ -619,6 +630,7 @@ namespace Dribbly.Service.Services
         Task<TournamentModel> AddTournamentAsync(TournamentModel season);
         Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId);
         Task<IEnumerable<TeamStatsViewModel>> GetTopTeamsAsync(GetTournamentTeamsInputModel input);
+        Task<IEnumerable<PlayerStatsViewModel>> GetPlayersAsync(GetTournamentPlayersInputModel input);
         Task<PhotoModel> UpdateLogoAsync(long tournamentId);
         Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input);
         Task RemoveTournamentTeamAsync(long tournamentId, long teamId);

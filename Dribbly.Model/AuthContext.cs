@@ -38,6 +38,7 @@ namespace Dribbly.Model
         DbSet<StageTeamModel> StageTeams { get; set; }
         DbSet<StageBracketModel> StageBrackets { get; set; }
         DbSet<TournamentPhotoModel> TournamentPhotos { get; set; }
+        DbSet<TournamentPlayerModel> TournamentPlayers { get; set; }
         #endregion
 
         DbSet<JoinTournamentRequestModel> JoinTournamentRequests { get; set; }
@@ -126,6 +127,9 @@ namespace Dribbly.Model
             modelBuilder.Entity<TournamentTeamModel>()
                 .HasKey(e => new { e.TeamId, e.TournamentId });
 
+            modelBuilder.Entity<TournamentPlayerModel>()
+                .HasKey(e => new { e.AccountId, e.TournamentId });
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -142,6 +146,7 @@ namespace Dribbly.Model
         public DbSet<StageTeamModel> StageTeams { get; set; }
         public DbSet<StageBracketModel> StageBrackets { get; set; }
         public DbSet<TournamentPhotoModel> TournamentPhotos { get; set; }
+        public DbSet<TournamentPlayerModel> TournamentPlayers { get; set; }
         #endregion
 
         public DbSet<JoinTournamentRequestModel> JoinTournamentRequests { get; set; }

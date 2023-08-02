@@ -128,6 +128,13 @@ namespace DribblyAuthAPI.Controllers
             return await _service.GetTopTeamsAsync(input);
         }
 
+        [HttpPost, AllowAnonymous]
+        [Route("GetPlayers")]
+        public async Task<IEnumerable<PlayerStatsViewModel>> GetPlayers(GetTournamentPlayersInputModel input)
+        {
+            return await _service.GetPlayersAsync(input);
+        }
+
         [HttpPost]
         [Route("ProcessJoinRequest/{requestId}/{shouldApprove}")]
         public async Task<TeamStatsViewModel> ProcessJoinRequest(long requestId, bool shouldApprove)

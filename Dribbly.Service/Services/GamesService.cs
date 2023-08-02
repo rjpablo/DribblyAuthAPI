@@ -382,8 +382,8 @@ namespace Dribbly.Service.Services
                 try
                 {
                     GameModel game = await _context.Games
-                    .Include(g => g.Team1.Players)
-                    .Include(g => g.Team2.Players)
+                    .Include(g => g.Team1.Players.Select(p => p.TeamMembership))
+                    .Include(g => g.Team2.Players.Select(p => p.TeamMembership))
                     .SingleOrDefaultAsync(g => g.Id == gameId);
 
                     if ((game.Team1Score > game.Team2Score && winningTeamId != game.Team1Id)
@@ -407,6 +407,7 @@ namespace Dribbly.Service.Services
                     {
                         PlayerStatsModel stats = await _context.PlayerStats
                             .SingleOrDefaultAsync(s => s.AccountId == p.AccountId);
+                        p.Won = game.WinningTeamId == p.GameTeamId;
 
                         if (stats == null)
                         {
@@ -429,6 +430,37 @@ namespace Dribbly.Service.Services
                         stats.PlayTimeMs = allGameStats.Sum(s => s.PlayTimeMs);
                         stats.LastGameId = gameId;
                         stats.OverallScore = (stats.PPG / 34.5) + (stats.APG / 10.2) + (stats.RPG / 14.1) + (stats.BPG / 3.1) + (stats.PlayTimeMs / 2520000);
+
+                        if (game.TournamentId.HasValue)
+                        {
+                            var tournamentStats = await _context.TournamentPlayers
+                                .SingleOrDefaultAsync(t => t.AccountId == p.AccountId && t.TournamentId == game.TournamentId);
+                            if (tournamentStats == null)
+                            {
+                                tournamentStats = new TournamentPlayerModel()
+                                {
+                                    AccountId = p.AccountId,
+                                    TournamentId = game.TournamentId.Value,
+                                    JerseyNo = p.JerseyNo
+                                };
+                                _context.TournamentPlayers.Add(tournamentStats);
+                            }
+                            var tournamentGames = await _context.GamePlayers
+                                .Where(g => g.AccountId == p.AccountId && g.Game.TournamentId == game.TournamentId
+                                                    && g.Won.HasValue) //means the game is finished
+                                                    .ToListAsync();
+                            tournamentGames.Add(p);
+
+                            tournamentStats.GP = tournamentGames.Count();
+                            tournamentStats.GW = tournamentGames.Count(s => s.Won.Value);
+                            tournamentStats.PPG = tournamentGames.Average(s => s.Points);
+                            tournamentStats.RPG = tournamentGames.Average(s => s.Rebounds);
+                            tournamentStats.APG = tournamentGames.Average(s => s.Assists);
+                            tournamentStats.BPG = tournamentGames.Average(s => s.Blocks);
+                            tournamentStats.FGP = tournamentGames.Average(s => s.FGM.DivideBy(s.FGA));
+                            tournamentStats.ThreePP = tournamentGames.Average(s => s.ThreePM.DivideBy(s.ThreePA));
+                            tournamentStats.SetOverallScore();
+                        }
                     }
                     #endregion
 

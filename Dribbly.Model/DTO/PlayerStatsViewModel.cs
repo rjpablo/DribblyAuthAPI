@@ -17,6 +17,8 @@ namespace Dribbly.Model.DTO
         public string Username { get; set; }
         [DataMember]
         public PhotoModel ProfilePhoto { get; set; }
+        [DataMember]
+        public int? JerseyNo { get; set; }
 
         #endregion
 
@@ -110,6 +112,26 @@ namespace Dribbly.Model.DTO
             MPG = source.MPG;
             LastGameId = source.LastGameId;
             LastGame = source.LastGame;
+        }
+
+        public PlayerStatsViewModel(TournamentPlayerModel source)
+        {
+            // Account Info
+            AccountId = source.AccountId;
+            Name = source.Account.Name;
+            Username = source.Account.Username;
+            ProfilePhoto = source.Account.ProfilePhoto;
+            JerseyNo = source.JerseyNo;
+
+            // Stats
+            GP = source.GP;
+            GW = source.GW;
+            PPG = source.PPG;
+            RPG = source.RPG;
+            APG = source.APG;
+            FGP = source.FGP;
+            ThreePP = source.ThreePP;
+            BPG = source.BPG;
         }
     }
 }

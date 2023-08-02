@@ -760,6 +760,18 @@
     <Compile Include="Migrations\202307311709281_ModifyTable_TournamentTeams_ModifyKey_DropColumn_DateAdded.Designer.cs">
       <DependentUpon>202307311709281_ModifyTable_TournamentTeams_ModifyKey_DropColumn_DateAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202308011613384_CreateTable_TournamentPlayers.cs" />
+    <Compile Include="Migrations\202308011613384_CreateTable_TournamentPlayers.Designer.cs">
+      <DependentUpon>202308011613384_CreateTable_TournamentPlayers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308011628391_ModifyTable_GamePlayers_AddColumn_Won.cs" />
+    <Compile Include="Migrations\202308011628391_ModifyTable_GamePlayers_AddColumn_Won.Designer.cs">
+      <DependentUpon>202308011628391_ModifyTable_GamePlayers_AddColumn_Won.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308021057233_ModifyTable_TouranmentPlayers_AddColumn_JerseyNo.cs" />
+    <Compile Include="Migrations\202308021057233_ModifyTable_TouranmentPlayers_AddColumn_JerseyNo.Designer.cs">
+      <DependentUpon>202308021057233_ModifyTable_TouranmentPlayers_AddColumn_JerseyNo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1224,6 +1236,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307311709281_ModifyTable_TournamentTeams_ModifyKey_DropColumn_DateAdded.resx">
       <DependentUpon>202307311709281_ModifyTable_TournamentTeams_ModifyKey_DropColumn_DateAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308011613384_CreateTable_TournamentPlayers.resx">
+      <DependentUpon>202308011613384_CreateTable_TournamentPlayers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308011628391_ModifyTable_GamePlayers_AddColumn_Won.resx">
+      <DependentUpon>202308011628391_ModifyTable_GamePlayers_AddColumn_Won.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308021057233_ModifyTable_TouranmentPlayers_AddColumn_JerseyNo.resx">
+      <DependentUpon>202308021057233_ModifyTable_TouranmentPlayers_AddColumn_JerseyNo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

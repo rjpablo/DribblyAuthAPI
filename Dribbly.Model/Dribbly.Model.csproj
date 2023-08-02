@@ -95,6 +95,7 @@
     <Compile Include="DTO\GamePlayer.cs" />
     <Compile Include="DTO\GameTeam.cs" />
     <Compile Include="DTO\GetAddGameModalInputModel.cs" />
+    <Compile Include="DTO\GetTournamentPlayersInputModel.cs" />
     <Compile Include="DTO\GetTournamentTeamsInputModel.cs" />
     <Compile Include="DTO\PlayerStatsViewModel.cs" />
     <Compile Include="DTO\SetStageTeamsInputModel.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Entities\TeamStatsModel.cs" />
     <Compile Include="Entities\TournamentPhotoModel.cs" />
     <Compile Include="Entities\TournamentStageModel.cs" />
+    <Compile Include="Entities\TournamentPlayerModel.cs" />
     <Compile Include="Entities\TournamentTeamModel.cs" />
     <Compile Include="Enums\EjectionStatusEnum.cs" />
     <Compile Include="Enums\FoulTypeEnum.cs" />
