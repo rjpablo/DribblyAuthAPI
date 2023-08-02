@@ -743,11 +743,12 @@ namespace Dribbly.Service.Services
                         Type = Type
                     });
 
-                    return _gameRepo.Get(g => g.Id == game.Id,
-                        $"{nameof(GameModel.Team1)}.{nameof(GameTeamModel.Players)}.{nameof(GamePlayerModel.TeamMembership)}" +
-                        $".{nameof(TeamMembershipModel.Account)}.{nameof(AccountModel.User)}," +
-                        $"{nameof(GameModel.Team2)}.{nameof(GameTeamModel.Players)}.{nameof(GamePlayerModel.TeamMembership)}" +
-                        $".{nameof(TeamMembershipModel.Account)}.{nameof(AccountModel.User)}").Single();
+                    return _context.Games
+                        .Include(g => g.Team1.Players.Select(p => p.TeamMembership.Account.User))
+                        .Include(g => g.Team1.Team.Logo)
+                        .Include(g => g.Team2.Players.Select(p => p.TeamMembership.Account.User))
+                        .Include(g => g.Team2.Team.Logo)
+                        .Single(g => g.Id == game.Id);
                 }
                 catch (Exception e)
                 {
