@@ -12,13 +12,25 @@ namespace Dribbly.Model.Entities
     [Table("TeamStats")]
     public class TeamStatsModel : BaseTeamStatsModel
     {
-        [Key, ForeignKey(nameof(Team))]
-        public new long TeamId { get; set; }
+        [ForeignKey(nameof(Team))]
+        public new long TeamId
+        {
+            get { return base.TeamId; }
+            set { base.TeamId = value; }
+        }
 
         [NotMapped]
-        public new int Id { get; set; }
+        public new long Id
+        {
+            get { return base.Id; }
+            set { base.Id = value; }
+        }
 
         [NotMapped]
-        public new DateTime DateAdded { get; set; }
+        public new DateTime DateAdded
+        {
+            get { return base.DateAdded; }
+            set { base.DateAdded = value; }
+        }
     }
 }

@@ -130,6 +130,9 @@ namespace Dribbly.Model
             modelBuilder.Entity<TournamentPlayerModel>()
                 .HasKey(e => new { e.AccountId, e.TournamentId });
 
+            modelBuilder.Entity<TeamStatsModel>()
+                .HasKey(e => e.TeamId);
+
             base.OnModelCreating(modelBuilder);
         }
 
