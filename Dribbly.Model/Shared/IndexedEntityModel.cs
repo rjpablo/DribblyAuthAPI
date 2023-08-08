@@ -49,7 +49,7 @@ namespace Dribbly.Model.Shared
         public IndexedEntityModel(AccountModel account)
         {
             Id = account.Id;
-            Name = account.Username;
+            Name = account.Name;
             EntityType = EntityTypeEnum.Account;
             DateAdded = account.DateAdded;
             EntityStatus = EntityStatusEnum.Active;

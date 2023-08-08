@@ -28,6 +28,8 @@ namespace Dribbly.Model.Teams
         public EntityTypeEnum EntityType => Account.EntityType;
 
         public string Name => Account?.Name;
+        public string FirstName => Account?.FirstName;
+        public string LastName => Account?.LastName;
 
         public string IconUrl => Account?.IconUrl;
 

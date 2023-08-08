@@ -88,7 +88,7 @@ namespace Dribbly.Model.Account
         [NotMapped]
         public EntityTypeEnum EntityType { get; } = EntityTypeEnum.Account;
         [NotMapped]
-        public string Name { get { return User?.UserName; } }
+        public string Name { get { return FirstName + " " + LastName; } }
         [NotMapped]
         public string Description { get; }
         #endregion
