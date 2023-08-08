@@ -5,6 +5,7 @@ using Dribbly.Service.Services;
 using Dribbly.SMS.Services;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Facebook;
+using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
@@ -20,6 +21,7 @@ namespace DribblyAuthAPI.API
     {
         public static OAuthBearerAuthenticationOptions OAuthBearerOptions { get; private set; }
         public static FacebookAuthenticationOptions facebookAuthOptions { get; private set; }
+        public static GoogleOAuth2AuthenticationOptions GoogleAuthOptions { get; private set; }
 
         /// <summary>
         /// The “Configuration” method accepts parameter of type “IAppBuilder” this parameter will be
@@ -62,6 +64,13 @@ namespace DribblyAuthAPI.API
                 Provider = new FacebookAuthProvider()
             };
             app.UseFacebookAuthentication(facebookAuthOptions);
+            GoogleAuthOptions = new GoogleOAuth2AuthenticationOptions
+            {
+                ClientId = "631124985942-8p2ut6fueiu72olbnl90gm29il7bcv0c.apps.googleusercontent.com",
+                ClientSecret = "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",
+                Provider = new GoogleAuthProvider()
+            };
+            app.UseGoogleAuthentication(GoogleAuthOptions);
 
             OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
             {

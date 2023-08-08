@@ -1,5 +1,6 @@
 ﻿using Dribbly.Authentication.Models;
 using Dribbly.Authentication.Models.Auth;
+using Dribbly.Core.Exceptions;
 using Dribbly.Email.Services;
 using Dribbly.Identity.Models;
 using Dribbly.Model.Account;
@@ -107,7 +108,7 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpPost, Authorize]
         [Route("UpdateAccount")]
-        public async Task UpdateAccount([FromBody]AccountModel account)
+        public async Task UpdateAccount([FromBody] AccountModel account)
         {
             await _accountService.UpdateAccountAsync(account);
         }
@@ -295,51 +296,22 @@ namespace DribblyAuthAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var verifiedAccessToken = await VerifyExternalAccessToken(model.Provider, model.ExternalAccessToken);
-            if (verifiedAccessToken == null)
+            try
             {
-                return BadRequest("Invalid Provider or External Access Token");
+                return Ok(await _accountService.RegisterExternal(model));
+            }
+            catch (Exception e)
+            {
+                if (e is DribblyInvalidOperationException)
+                {
+                    foreach(var error in ((DribblyInvalidOperationException)e).Errors)
+                    {
+                        ModelState.AddModelError("", error);
+                    }
+                }
+                return BadRequest(ModelState);
             }
 
-            ApplicationUser user = await _repo.FindAsync(new UserLoginInfo(model.Provider, verifiedAccessToken.user_id));
-
-            bool hasRegistered = user != null;
-
-            if (hasRegistered)
-            {
-                return BadRequest("External user is already registered");
-            }
-
-            user = new ApplicationUser() { UserName = model.UserName };
-
-            IdentityResult result = await _repo.CreateAsync(user);
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            var info = new ExternalLoginInfo()
-            {
-                DefaultUserName = model.UserName,
-                Login = new UserLoginInfo(model.Provider, verifiedAccessToken.user_id)
-            };
-
-            result = await _repo.AddLoginAsync(user.Id, info.Login);
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            await _accountService.AddAsync(new AccountModel
-            {
-                IdentityUserId = user.Id,
-                DateAdded = DateTime.UtcNow
-            });
-
-            //generate access token response
-            var accessTokenResponse = await GenerateLocalAccessTokenResponseAsync(model.UserName);
-
-            return Ok(accessTokenResponse);
         }
 
         [AllowAnonymous]
@@ -350,29 +322,38 @@ namespace DribblyAuthAPI.Controllers
 
             if (string.IsNullOrWhiteSpace(provider) || string.IsNullOrWhiteSpace(externalAccessToken))
             {
-                return BadRequest("Provider or external access token is not sent");
+                throw new DribblyInvalidOperationException("Provider or external access token is not sent");
             }
 
-            var verifiedAccessToken = await VerifyExternalAccessToken(provider, externalAccessToken);
+            var verifiedAccessToken = await _accountService.VerifyExternalAccessToken(provider, externalAccessToken);
             if (verifiedAccessToken == null)
             {
-                return BadRequest("Invalid Provider or External Access Token");
+                throw new DribblyInvalidOperationException("Invalid Provider or External Access Token");
             }
 
             ApplicationUser user = await _repo.FindAsync(new UserLoginInfo(provider, verifiedAccessToken.user_id));
 
             bool hasRegistered = user != null;
 
-            if (!hasRegistered)
+            if (hasRegistered)
             {
-                return BadRequest("External user is not registered");
+                //generate access token response
+                var accessTokenResponse = await _accountService.GenerateLocalAccessTokenResponseAsync(user.UserName);
+                return Ok(accessTokenResponse);
             }
-
-            //generate access token response
-            var accessTokenResponse = await GenerateLocalAccessTokenResponseAsync(user.UserName);
-
-            return Ok(accessTokenResponse);
-
+            else
+            {
+                JObject tokenResponse = new JObject(
+                                        new JProperty("hasRegistered", false),
+                                        new JProperty("user_id", verifiedAccessToken.user_id),
+                                        new JProperty("given_name", verifiedAccessToken.given_name),
+                                        new JProperty("family_name", verifiedAccessToken.family_name),
+                                        new JProperty("picture", verifiedAccessToken.picture),
+                                        new JProperty("email", verifiedAccessToken.email),
+                                        new JProperty("provider", provider),
+                                        new JProperty("externalAccessToken", externalAccessToken));
+                return Ok(tokenResponse);
+            }
         }
 
         [HttpPost]
@@ -455,92 +436,6 @@ namespace DribblyAuthAPI.Controllers
             if (string.IsNullOrEmpty(match.Value)) return null;
 
             return match.Value;
-        }
-
-        private async Task<ParsedExternalAccessToken> VerifyExternalAccessToken(string provider, string accessToken)
-        {
-            ParsedExternalAccessToken parsedToken = null;
-
-            var verifyTokenEndPoint = "";
-
-            if (provider == "Facebook")
-            {
-                //You can get it from here: https://developers.facebook.com/tools/accesstoken/
-                //More about debug_tokn here: http://stackoverflow.com/questions/16641083/how-does-one-get-the-app-access-token-for-debug-token-inspection-on-facebook
-
-                // App Name: FreeHoops Test 2
-                var appToken = "271234698173280|Fp8OFeqRL4aCEAApmlvlRSkebOw";
-                verifyTokenEndPoint = string.Format("https://graph.facebook.com/debug_token?input_token={0}&access_token={1}", accessToken, appToken);
-            }
-            else if (provider == "Google")
-            {
-                verifyTokenEndPoint = string.Format("https://www.googleapis.com/oauth2/v1/tokeninfo?access_token={0}", accessToken);
-            }
-            else
-            {
-                return null;
-            }
-
-            var client = new HttpClient();
-            var uri = new Uri(verifyTokenEndPoint);
-            var response = await client.GetAsync(uri);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-
-                dynamic jObj = (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(content);
-
-                parsedToken = new ParsedExternalAccessToken();
-
-                if (provider == "Facebook")
-                {
-                    parsedToken.user_id = jObj["data"]["user_id"];
-                    parsedToken.app_id = jObj["data"]["app_id"];
-
-                    if (!string.Equals(Startup.facebookAuthOptions.AppId, parsedToken.app_id, StringComparison.OrdinalIgnoreCase))
-                    {
-                        return null;
-                    }
-                }
-
-            }
-
-            return parsedToken;
-        }
-
-        private async Task<JObject> GenerateLocalAccessTokenResponseAsync(string userName)
-        {
-            var tokenExpiration = TimeSpan.FromMinutes(30);
-            var account = await _accountService.GetAccountByUsername(userName);
-
-            ClaimsIdentity identity = new ClaimsIdentity(OAuthDefaults.AuthenticationType);
-
-            identity.AddClaim(new Claim(ClaimTypes.Name, userName));
-            identity.AddClaim(new Claim("userId", account.IdentityUserId.ToString()));
-            identity.AddClaim(new Claim("role", "user"));
-
-            var props = new AuthenticationProperties()
-            {
-                IssuedUtc = DateTime.UtcNow,
-                ExpiresUtc = DateTime.UtcNow.Add(tokenExpiration),
-            };
-
-            var ticket = new AuthenticationTicket(identity, props);
-
-            var accessToken = Startup.OAuthBearerOptions.AccessTokenFormat.Protect(ticket);
-
-            JObject tokenResponse = new JObject(
-                                        new JProperty("userName", userName),
-                                        new JProperty("userId", account.IdentityUserId),
-                                        new JProperty("access_token", accessToken),
-                                        new JProperty("token_type", "bearer"),
-                                        new JProperty("expires_in", tokenExpiration.TotalSeconds.ToString()),
-                                        new JProperty(".issued", ticket.Properties.IssuedUtc.ToString()),
-                                        new JProperty(".expires", ticket.Properties.ExpiresUtc.ToString())
-        );
-
-            return tokenResponse;
         }
 
         protected override void Dispose(bool disposing)

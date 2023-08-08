@@ -6,6 +6,8 @@ using Dribbly.Service.Repositories;
 using Dribbly.Service.Services;
 using Dribbly.Service.Services.Shared;
 using Dribbly.Test;
+using DribblyAuthAPI.API;
+using Microsoft.Owin.Security.OAuth;
 using System.Web.Http;
 using Unity;
 using Unity.WebApi;
@@ -54,6 +56,7 @@ namespace DribblyAuthAPI
             container.RegisterType<ITournamentsRepository, TournamentsRepository>();
             container.RegisterType<ITournamentsService, TournamentsService>();
             container.RegisterType<IGameEventsService, GameEventsService>();
+            container.RegisterInstance(Startup.OAuthBearerOptions);
 
             TestsConfig.RegisterComponents(container);
 

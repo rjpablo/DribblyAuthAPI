@@ -1,7 +1,10 @@
-﻿using Dribbly.Authentication.Services;
+﻿using Dribbly.Authentication.Models;
+using Dribbly.Authentication.Services;
 using Dribbly.Core.Enums.Permissions;
 using Dribbly.Core.Exceptions;
 using Dribbly.Core.Utilities;
+using Dribbly.Email.Services;
+using Dribbly.Identity.Models;
 using Dribbly.Model;
 using Dribbly.Model.Account;
 using Dribbly.Model.Accounts;
@@ -12,13 +15,19 @@ using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
 using Dribbly.Service.Services.Shared;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.OAuth;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -35,6 +44,7 @@ namespace Dribbly.Service.Services
         private readonly IIndexedEntitysRepository _indexedEntitysRepo;
         ISecurityUtility _securityUtility;
         private ApplicationUserManager _userManager;
+        private OAuthBearerAuthenticationOptions _oAuthBearerOptions;
 
         public AccountsService(IAuthContext context,
             IAccountRepository accountRepo,
@@ -42,17 +52,20 @@ namespace Dribbly.Service.Services
             IAuthRepository authRepo,
             ISecurityUtility securityUtility,
             IFileService fileService,
-            IIndexedEntitysRepository indexedEntitysRepo) : base(context.Accounts, context)
+            IIndexedEntitysRepository indexedEntitysRepo,
+            IEmailService emailSender,
+            OAuthBearerAuthenticationOptions oAuthBearerAuthenticationOptions) : base(context.Accounts, context)
         {
-            _accountRepo = accountRepo;
             _courtsRepo = courtsRepo;
             _context = context;
-            _authRepo = authRepo;
+            _authRepo = new AuthRepository(emailSender, context);
+            _accountRepo = new AccountRepository(context, _authRepo);
             _fileService = fileService;
             _commonService = new CommonService(context, securityUtility);
             _indexedEntitysRepo = indexedEntitysRepo;
             _securityUtility = securityUtility;
             _userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            _oAuthBearerOptions = oAuthBearerAuthenticationOptions;
         }
 
         public async Task<AccountViewerModel> GetAccountViewerDataAsync(string userName)
@@ -167,30 +180,185 @@ namespace Dribbly.Service.Services
             }
         }
 
+        #region Register External
+
+        public async Task<JObject> RegisterExternal(RegisterExternalBindingModel model)
+        {
+            JObject accessTokenResponse = null;
+            var verifiedAccessToken = await VerifyExternalAccessToken(model.Provider, model.ExternalAccessToken);
+            if (verifiedAccessToken == null || verifiedAccessToken.user_id != model.UserId)
+            {
+                throw new DribblyInvalidOperationException("Invalid Provider or External Access Token", friendlyMessage: "Invalid Provider or External Access Token");
+            }
+
+            ApplicationUser user = await _authRepo.FindAsync(new UserLoginInfo(model.Provider, verifiedAccessToken.user_id));
+            bool hasRegistered = user != null;
+            if (hasRegistered)
+            {
+                accessTokenResponse = await GenerateLocalAccessTokenResponseAsync(model.UserName);
+                return accessTokenResponse;
+            }
+
+            using (var tx = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    user = new ApplicationUser() { UserName = model.UserName, Email = model.Email, EmailConfirmed = true };
+                    IdentityResult result = await _authRepo.CreateAsync(user);
+                    if (!result.Succeeded)
+                    {
+                        throw new DribblyInvalidOperationException("Registration failed.", friendlyMessage: "Registration failed. Please try again.", errors: result.Errors);
+                    }
+
+                    var info = new ExternalLoginInfo()
+                    {
+                        DefaultUserName = model.UserName,
+                        Login = new UserLoginInfo(model.Provider, verifiedAccessToken.user_id)
+                    };
+
+                    result = await _authRepo.AddLoginAsync(user.Id, info.Login);
+                    if (!result.Succeeded)
+                    {
+                        throw new DribblyInvalidOperationException("Registration failed.", friendlyMessage: "Registration failed. Please try again.", errors: result.Errors);
+                    }
+
+                    await _AddAsync(new AccountModel
+                    {
+                        IdentityUserId = user.Id,
+                        DateAdded = DateTime.UtcNow,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        EntityStatus = EntityStatusEnum.Active
+                    });
+
+                    //generate access token response
+                    accessTokenResponse = await GenerateLocalAccessTokenResponseAsync(model.UserName);
+                    tx.Commit();
+                    return accessTokenResponse;
+                }
+                catch (Exception)
+                {
+                    tx.Rollback();
+                    await _userManager.DeleteAsync(user);
+                    throw;
+                }
+            }
+        }
+
+        public async Task<ParsedExternalAccessToken> VerifyExternalAccessToken(string provider, string accessToken)
+        {
+            ParsedExternalAccessToken parsedToken = null;
+
+            var verifyTokenEndPoint = "";
+
+            if (provider == "Facebook")
+            {
+                //You can get it from here: https://developers.facebook.com/tools/accesstoken/
+                //More about debug_tokn here: http://stackoverflow.com/questions/16641083/how-does-one-get-the-app-access-token-for-debug-token-inspection-on-facebook
+
+                // App Name: FreeHoops Test 2
+                var appToken = "271234698173280|Fp8OFeqRL4aCEAApmlvlRSkebOw";
+                verifyTokenEndPoint = string.Format("https://graph.facebook.com/debug_token?input_token={0}&access_token={1}", accessToken, appToken);
+            }
+            else if (provider == "Google")
+            {
+                verifyTokenEndPoint = string.Format("https://oauth2.googleapis.com/tokeninfo?id_token={0}", accessToken);
+            }
+            else
+            {
+                return null;
+            }
+
+            var client = new HttpClient();
+            var uri = new Uri(verifyTokenEndPoint);
+            var response = await client.GetAsync(uri);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                JObject jObj = (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(content);
+
+                parsedToken = new ParsedExternalAccessToken();
+                if (provider == "Google")
+                {
+                    parsedToken.user_id = jObj.Value<string>("sub");
+                    parsedToken.app_id = jObj.Value<string>("aud");
+                    parsedToken.given_name = jObj.Value<string>("given_name");
+                    parsedToken.family_name = jObj.Value<string>("family_name");
+                    parsedToken.email = jObj.Value<string>("email");
+                    parsedToken.picture = jObj.Value<string>("picture");
+                }
+
+            }
+
+            return parsedToken;
+        }
+        public async Task<JObject> GenerateLocalAccessTokenResponseAsync(string userName)
+        {
+            var tokenExpiration = TimeSpan.FromMinutes(30);
+            var account = await GetAccountByUsername(userName);
+
+            ClaimsIdentity identity = new ClaimsIdentity(OAuthDefaults.AuthenticationType);
+
+            identity.AddClaim(new Claim(ClaimTypes.Name, userName));
+            identity.AddClaim(new Claim("userId", account.IdentityUserId.ToString()));
+            identity.AddClaim(new Claim("role", "user"));
+
+            var props = new AuthenticationProperties()
+            {
+                IssuedUtc = DateTime.UtcNow,
+                ExpiresUtc = DateTime.UtcNow.Add(tokenExpiration),
+            };
+
+            var ticket = new AuthenticationTicket(identity, props);                       
+            var accessToken = _oAuthBearerOptions.AccessTokenFormat.Protect(ticket);
+
+            JObject tokenResponse = new JObject(
+                                        new JProperty("hasRegistered", true),
+                                        new JProperty("userName", userName),
+                                        new JProperty("userId", account.IdentityUserId),
+                                        new JProperty("access_token", accessToken),
+                                        new JProperty("token_type", "bearer"),
+                                        new JProperty("expires_in", tokenExpiration.TotalSeconds.ToString()),
+                                        new JProperty(".issued", ticket.Properties.IssuedUtc.ToString()),
+                                        new JProperty(".expires", ticket.Properties.ExpiresUtc.ToString())
+        );
+
+            return tokenResponse;
+        }
+
+        #endregion
+
         public async Task AddAsync(AccountModel account)
         {
-            var user = await _authRepo.FindUserByIdAsync(account.IdentityUserId);
             using (var transaction = _context.Database.BeginTransaction())
             {
                 try
                 {
-                    account.User = user;
-                    Add(account);
-                    _context.SetEntityState(account.User, EntityState.Unchanged);
-                    await _context.SaveChangesAsync();
-                    var entity = new IndexedEntityModel(account);
-                    await _indexedEntitysRepo.Add(_context, entity, entity.AdditionalData);
-                    await _commonService.AddUserAccountActivity(UserActivityTypeEnum.CreateAccount, account.Id);
+                    await _AddAsync(account);
 
                     transaction.Commit();
                 }
                 catch (Exception)
                 {
                     transaction.Rollback();
-                    await _userManager.DeleteAsync(user);
                     throw;
                 }
             }
+        }
+
+        private async Task _AddAsync(AccountModel account)
+        {
+            Add(account);
+            await _context.SaveChangesAsync();
+            var user = await _authRepo.FindUserByIdAsync(account.IdentityUserId);
+            account.User = user;
+            _context.SetEntityState(account.User, EntityState.Unchanged);
+            _context.SetEntityState(account.User.Logins.First(), EntityState.Unchanged);
+            var entity = new IndexedEntityModel(account);
+            await _indexedEntitysRepo.Add(_context, entity, entity.AdditionalData);
+            await _commonService.AddUserAccountActivity(UserActivityTypeEnum.CreateAccount, account.Id);
         }
 
         public async Task SetIsPublic(string userId, bool IsPublic)
@@ -467,5 +635,8 @@ namespace Dribbly.Service.Services
         Task SetIsPublic(string userId, bool IsPublic);
 
         Task<IEnumerable<PlayerStatsViewModel>> GetTopPlayersAsync();
+        Task<JObject> RegisterExternal(RegisterExternalBindingModel model);
+        Task<ParsedExternalAccessToken> VerifyExternalAccessToken(string provider, string accessToken);
+        Task<JObject> GenerateLocalAccessTokenResponseAsync(string userName);
     }
 }
