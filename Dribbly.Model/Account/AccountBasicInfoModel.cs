@@ -10,6 +10,7 @@ namespace Dribbly.Model.Account
     {
         public long Id { get; set; }
         public string Name { get; set; }
+        public string Username { get; set; }
         public EntityStatusEnum EntityStatus { get; set; }
         public long IdentityUserId { get; set; }
         public GenderEnum? Gender { get; set; }
@@ -28,7 +29,8 @@ namespace Dribbly.Model.Account
         {
             IdentityUserId = account.IdentityUserId;
             Id = account.Id;
-            Name = account.User != null ? account.User.UserName : account.Username;
+            Username = account.User != null ? account.User.UserName : account.Username;
+            Name = account.Name;
             Gender = account.Gender;
             IconUrl = account.IconUrl;
             EntityStatus = account.EntityStatus;

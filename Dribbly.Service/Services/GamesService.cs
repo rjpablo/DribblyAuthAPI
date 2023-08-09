@@ -70,6 +70,18 @@ namespace Dribbly.Service.Services
             return All();
         }
 
+        public async Task<IEnumerable<GameModel>> GetGamesAsync(GetGamesFilterModel filter)
+        {
+            var games = await _dbSet.Include(g => g.Court.PrimaryPhoto)
+                .Include(g => g.Team1).Include(g => g.Team1.Team.Logo)
+                .Include(g => g.Team2).Include(g => g.Team2.Team.Logo)
+                .Where(g =>
+                (!filter.TeamIds.Any() || filter.TeamIds.Contains(g.Team1.TeamId) || filter.TeamIds.Contains(g.Team2.TeamId))
+                && (!filter.UpcomingOnly || g.Start > DateTime.UtcNow))
+                .ToListAsync();
+            return games;
+        }
+
         public async Task<GameModel> GetGame(long id)
         {
             Stopwatch stopWatch = new Stopwatch();
@@ -959,6 +971,8 @@ namespace Dribbly.Service.Services
         IEnumerable<GameModel> GetAll();
 
         Task<GameModel> GetGame(long id);
+
+        Task<IEnumerable<GameModel>> GetGamesAsync(GetGamesFilterModel filter);
 
         Task<AddGameModalModel> GetAddGameModalAsync(long courtId);
 
