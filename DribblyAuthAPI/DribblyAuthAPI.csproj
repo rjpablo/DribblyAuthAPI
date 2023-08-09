@@ -815,6 +815,10 @@
     <Compile Include="Migrations\202308021057233_ModifyTable_TouranmentPlayers_AddColumn_JerseyNo.Designer.cs">
       <DependentUpon>202308021057233_ModifyTable_TouranmentPlayers_AddColumn_JerseyNo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202308090045486_ModifyTable_Teams_AddColumn_ShortName.cs" />
+    <Compile Include="Migrations\202308090045486_ModifyTable_Teams_AddColumn_ShortName.Designer.cs">
+      <DependentUpon>202308090045486_ModifyTable_Teams_AddColumn_ShortName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1288,6 +1292,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202308021057233_ModifyTable_TouranmentPlayers_AddColumn_JerseyNo.resx">
       <DependentUpon>202308021057233_ModifyTable_TouranmentPlayers_AddColumn_JerseyNo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308090045486_ModifyTable_Teams_AddColumn_ShortName.resx">
+      <DependentUpon>202308090045486_ModifyTable_Teams_AddColumn_ShortName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

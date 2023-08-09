@@ -13,6 +13,7 @@ namespace Dribbly.Model.DTO
         #region Team Info
         public PhotoModel Logo { get; set; }
         public string Name { get; set; }
+        public string ShortName { get; set; }
         #endregion
 
         #region Stat info
@@ -57,6 +58,7 @@ namespace Dribbly.Model.DTO
             // Team Info
             Logo = source.Team.Logo;
             Name = source.Team.Name;
+            ShortName = source.Team.ShortName;
 
             // Stat info
             TeamId = source.TeamId;

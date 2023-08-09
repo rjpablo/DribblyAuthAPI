@@ -6,6 +6,7 @@ using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.UI.WebControls;
 
@@ -15,6 +16,8 @@ namespace Dribbly.Model.Teams
     public class TeamModel : BaseEntityModel, IIndexedEntity
     {
         public string Name { get; set; }
+        [MaxLength(15)]
+        public string ShortName { get; set; }
         [ForeignKey(nameof(Logo))]
         public long? LogoId { get; set; }
         public string IconUrl { get { return Logo?.Url; } }

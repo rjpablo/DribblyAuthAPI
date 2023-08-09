@@ -57,6 +57,8 @@ namespace Dribbly.Model.Entities
         #region Unmapped Columns
         [NotMapped]
         public string Name { get => Team?.Name; }
+        [NotMapped]
+        public string ShortName { get => Team?.ShortName; }
         #endregion
 
         public ICollection<GamePlayerModel> Players { get; set; } = new List<GamePlayerModel>();
