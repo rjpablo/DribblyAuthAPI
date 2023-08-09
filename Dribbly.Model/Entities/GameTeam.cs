@@ -1,5 +1,4 @@
-﻿using Dribbly.Core.Models;
-using Dribbly.Model.Games;
+﻿using Dribbly.Model.Games;
 using Dribbly.Model.Teams;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dribbly.Model.Entities
 {
     [Table("GameTeams")]
-    public class GameTeamModel : BaseEntityModel
+    public class GameTeamModel : BaseStatsModel
     {
         #region Mapped Columns
         [ForeignKey(nameof(Game))]
@@ -18,7 +17,6 @@ namespace Dribbly.Model.Entities
         public TeamModel Team { get; set; }
         [JsonIgnore]
         public GameModel Game { get; set; }
-        public int Score { get; set; }
         public int TeamFoulCount { get; set; }
         /// <summary>
         /// The total number of timeouts left
@@ -27,31 +25,7 @@ namespace Dribbly.Model.Entities
         public int FullTimeoutsUsed { get; set; }
         public int ShortTimeoutsUsed { get; set; }
         public bool IsInBonus { get; set; }
-        public bool? Won { get; set; }
 
-        #region Stats
-        /// <summary>
-        /// field goal attempts
-        /// </summary>
-        public int FGA { get; set; }
-        /// <summary>
-        /// field goals made
-        /// </summary>
-        public int FGM { get; set; }
-        /// <summary>
-        /// 3pt attempts
-        /// </summary>
-        public int ThreePA { get; set; }
-        /// <summary>
-        /// 3pts made
-        /// </summary>
-        public int ThreePM { get; set; }
-        public int Blocks { get; set; }
-        public int Rebounds { get; set; }
-        public int Assists { get; set; }
-        public int Turnovers { get; set; }
-        public int Steals { get; set; }
-        #endregion Stats
         #endregion Mapped Columns
 
         #region Unmapped Columns

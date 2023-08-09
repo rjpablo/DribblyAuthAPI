@@ -1,6 +1,6 @@
-﻿using Dribbly.Core.Models;
-using Dribbly.Model.Account;
+﻿using Dribbly.Model.Account;
 using Dribbly.Model.Courts;
+using Dribbly.Model.Entities;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
 using Newtonsoft.Json;
@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dribbly.Model.Teams
 {
     [Table("TeamMemberships")]
-    public class TeamMembershipModel : BaseEntityModel, IIndexedEntity, ITeamMemberListItem
+    public class TeamMembershipModel : BaseStatsSummaryModel, IIndexedEntity, ITeamMemberListItem
     {
         [ForeignKey(nameof(Team))]
         public long TeamId { get; set; }
@@ -28,6 +28,8 @@ namespace Dribbly.Model.Teams
         public EntityTypeEnum EntityType => Account.EntityType;
 
         public string Name => Account?.Name;
+        [NotMapped]
+        public string Username => Account?.Username;
         public string FirstName => Account?.FirstName;
         public string LastName => Account?.LastName;
 

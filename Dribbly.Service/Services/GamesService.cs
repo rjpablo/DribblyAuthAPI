@@ -250,16 +250,16 @@ namespace Dribbly.Service.Services
                     var result = new UpsertShotResultModel();
                     if (!input.Shot.IsMiss)
                     {
-                        shootersTeam.Score = await _context.Shots
+                        shootersTeam.Points = await _context.Shots
                             .Where(s => s.TeamId == shootersTeam.TeamId && s.GameId == input.Shot.GameId && !s.IsMiss)
                             .SumAsync(s => s.Points);
                         if (shootersTeam.TeamId == game.Team1.TeamId)
                         {
-                            game.Team1Score = shootersTeam.Score;
+                            game.Team1Score = shootersTeam.Points;
                         }
                         else if (input.Shot.TeamId == game.Team2.TeamId)
                         {
-                            game.Team2Score = shootersTeam.Score;
+                            game.Team2Score = shootersTeam.Points;
                         }
 
                         // TODO: add gamePlayer null check
@@ -417,9 +417,11 @@ namespace Dribbly.Service.Services
                     #region Update Player Stats
                     foreach (var p in allPlayers)
                     {
+                        #region Overall Stats
+
+                        p.Won = game.WinningTeamId == p.GameTeamId;
                         PlayerStatsModel stats = await _context.PlayerStats
                             .SingleOrDefaultAsync(s => s.AccountId == p.AccountId);
-                        p.Won = game.WinningTeamId == p.GameTeamId;
 
                         if (stats == null)
                         {
@@ -428,7 +430,9 @@ namespace Dribbly.Service.Services
                         }
 
                         List<GamePlayerModel> allGameStats = await _context.GamePlayers
-                            .Where(gp => gp.AccountId == p.AccountId).ToListAsync();
+                            .Include(g=>g.TeamMembership).Include(g=>g.Game)
+                            .Where(gp => gp.AccountId == p.AccountId && gp.Won.HasValue).ToListAsync();
+                        allGameStats.Add(p); //add this game because this will not be included above as it's Won field is still null
 
                         stats.GP = allGameStats.Count();
                         stats.PPG = allGameStats.Average(s => s.Points);
@@ -442,6 +446,17 @@ namespace Dribbly.Service.Services
                         stats.PlayTimeMs = allGameStats.Sum(s => s.PlayTimeMs);
                         stats.LastGameId = gameId;
                         stats.OverallScore = (stats.PPG / 34.5) + (stats.APG / 10.2) + (stats.RPG / 14.1) + (stats.BPG / 3.1) + (stats.PlayTimeMs / 2520000);
+
+                        #endregion
+
+                        #region Team Stats
+                        var teammemberShip = _context.TeamMembers
+                            .Single(m=>m.MemberAccountId == p.AccountId && m.TeamId == p.TeamMembership.TeamId);
+                        teammemberShip.UpdateStats(allGameStats.Where(s => s.TeamMembership.TeamId == p.TeamMembership.TeamId));
+                        teammemberShip.SetOverallScore();
+                        #endregion
+
+                        #region Tournament Stats
 
                         if (game.TournamentId.HasValue)
                         {
@@ -457,22 +472,13 @@ namespace Dribbly.Service.Services
                                 };
                                 _context.TournamentPlayers.Add(tournamentStats);
                             }
-                            var tournamentGames = await _context.GamePlayers
-                                .Where(g => g.AccountId == p.AccountId && g.Game.TournamentId == game.TournamentId
-                                                    && g.Won.HasValue) //means the game is finished
-                                                    .ToListAsync();
-                            tournamentGames.Add(p);
+                            var tournamentGames = allGameStats.Where(g => g.Game.TournamentId == game.TournamentId).ToList();
 
-                            tournamentStats.GP = tournamentGames.Count();
-                            tournamentStats.GW = tournamentGames.Count(s => s.Won.Value);
-                            tournamentStats.PPG = tournamentGames.Average(s => s.Points);
-                            tournamentStats.RPG = tournamentGames.Average(s => s.Rebounds);
-                            tournamentStats.APG = tournamentGames.Average(s => s.Assists);
-                            tournamentStats.BPG = tournamentGames.Average(s => s.Blocks);
-                            tournamentStats.FGP = tournamentGames.Average(s => s.FGM.DivideBy(s.FGA));
-                            tournamentStats.ThreePP = tournamentGames.Average(s => s.ThreePM.DivideBy(s.ThreePA));
+                            tournamentStats.UpdateStats(tournamentGames);
                             tournamentStats.SetOverallScore();
                         }
+
+                        #endregion
                     }
                     #endregion
 
@@ -491,14 +497,7 @@ namespace Dribbly.Service.Services
                         var allStats = await _context.GameTeams.Where(g => g.TeamId == team.TeamId
                                                 && g.Won.HasValue) //means the game is finished
                                                 .ToListAsync();
-                        overallStats.GP = allStats.Count();
-                        overallStats.GW = allStats.Count(s => s.Won.Value);
-                        overallStats.PPG = allStats.Average(s => s.Score);
-                        overallStats.RPG = allStats.Average(s => s.Rebounds);
-                        overallStats.APG = allStats.Average(s => s.Assists);
-                        overallStats.BPG = allStats.Average(s => s.Blocks);
-                        overallStats.FGP = allStats.Average(s => s.FGM.DivideBy(s.FGA));
-                        overallStats.ThreePP = allStats.Average(s => s.ThreePM.DivideBy(s.ThreePA));
+                        overallStats.UpdateStats(allStats);
                         overallStats.SetOverallScore();
                         #endregion
 
@@ -519,14 +518,7 @@ namespace Dribbly.Service.Services
                                 .Where(g => g.TeamId == team.TeamId && g.Game.TournamentId == game.TournamentId
                                                     && g.Won.HasValue) //means the game is finished
                                                     .ToListAsync();
-                            tournamentStats.GP = tournamentGames.Count();
-                            tournamentStats.GW = tournamentGames.Count(s => s.Won.Value);
-                            tournamentStats.PPG = tournamentGames.Average(s => s.Score);
-                            tournamentStats.RPG = tournamentGames.Average(s => s.Rebounds);
-                            tournamentStats.APG = tournamentGames.Average(s => s.Assists);
-                            tournamentStats.BPG = tournamentGames.Average(s => s.Blocks);
-                            tournamentStats.FGP = tournamentGames.Average(s => s.FGM.DivideBy(s.FGA));
-                            tournamentStats.ThreePP = tournamentGames.Average(s => s.ThreePM.DivideBy(s.ThreePA));
+                            tournamentStats.UpdateStats(tournamentGames);
                             tournamentStats.SetOverallScore();
                         }
                         #endregion

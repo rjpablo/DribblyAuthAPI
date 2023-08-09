@@ -1,5 +1,7 @@
 ﻿using Dribbly.Core.Extensions;
 using Dribbly.Core.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Dribbly.Model.Entities
 {
@@ -47,6 +49,18 @@ namespace Dribbly.Model.Entities
         public int SPG { get; set; }
         public double ThreePP { get; set; }
         public double OverallScore { get; set; }
+
+        public void UpdateStats(IEnumerable<BaseStatsModel> allGameStats)
+        {
+            GP = allGameStats.Count();
+            GW = allGameStats.Count(s => s.Won.Value);
+            PPG = allGameStats.Average(s => s.Points);
+            RPG = allGameStats.Average(s => s.Rebounds);
+            APG = allGameStats.Average(s => s.Assists);
+            BPG = allGameStats.Average(s => s.Blocks);
+            FGP = allGameStats.Average(s => s.FGM.DivideBy(s.FGA));
+            ThreePP = allGameStats.Average(s => s.ThreePM.DivideBy(s.ThreePA));
+        }
 
         public void SetOverallScore()
         {

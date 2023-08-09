@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dribbly.Model.Entities
 {
     [Table("GamePlayers")]
-    public class GamePlayerModel : BaseEntityModel
+    public class GamePlayerModel : BaseStatsModel
     {
         /**
         * <summary>
@@ -29,8 +29,6 @@ namespace Dribbly.Model.Entities
         public long AccountId { get; set; }
 
         #region Stats
-        public int Points { get; set; }
-        public int Rebounds { get; set; }
         /// <summary>
         /// Offensive Rebounds
         /// </summary>
@@ -40,25 +38,6 @@ namespace Dribbly.Model.Entities
         /// </summary>
         public int DReb { get; set; }
         public int Fouls { get; set; }
-        public int Blocks { get; set; }
-        public int Assists { get; set; }
-        public int Steals { get; set; }
-        /// <summary>
-        /// Field Goal attempts
-        /// </summary>
-        public int FGA { get; set; }
-        /// <summary>
-        /// Field Goals Made
-        /// </summary>
-        public int FGM { get; set; }
-        /// <summary>
-        /// 3pt Attempts
-        /// </summary>
-        public int ThreePA { get; set; }
-        /// <summary>
-        /// 3pts Made
-        /// </summary>
-        public int ThreePM { get; set; }
         /// <summary>
         /// Free Throw Attempts
         /// </summary>
@@ -71,8 +50,6 @@ namespace Dribbly.Model.Entities
         /// Playing time in milliseconds
         /// </summary>
         public int PlayTimeMs { get; set; }
-        public int Turnovers { get; set; }
-        public bool? Won { get; set; }
 
         #endregion
 

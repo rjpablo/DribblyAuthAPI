@@ -24,13 +24,13 @@ namespace Dribbly.Service.Repositories
             game.Team1Score = (await _context.Shots
             .Where(s => s.TeamId == game.Team1.TeamId && s.GameId == gameId && !s.IsMiss)
             .SumAsync(s => (int?)s.Points)) ?? 0;
-            game.Team1.Score = game.Team1Score;
+            game.Team1.Points = game.Team1Score;
             game.Team1.TeamFoulCount = await _context.MemberFouls.CountAsync(m => m.GameId == gameId && m.TeamId == game.Team1.TeamId);
 
             game.Team2Score = (await _context.Shots
             .Where(s => s.TeamId == game.Team2.TeamId && s.GameId == gameId && !s.IsMiss)
             .SumAsync(s => (int?)s.Points)) ?? 0;
-            game.Team2.Score = game.Team2Score;
+            game.Team2.Points = game.Team2Score;
             game.Team1.TeamFoulCount = await _context.MemberFouls.CountAsync(m => m.GameId == gameId && m.TeamId == game.Team2.TeamId);
 
             await _context.SaveChangesAsync();

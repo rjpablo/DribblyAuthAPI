@@ -110,9 +110,9 @@ namespace Dribbly.Service.Services
             //TODO: validate team existence and link to memebrshipId
 
             var member = await _context.TeamMembers.SingleOrDefaultAsync(m => m.Id == membershipId);
-            if(member == null)
+            if (member == null)
             {
-                throw new DribblyForbiddenException("Membership info not found.", friendlyMessage:"Unable to find membership info.");
+                throw new DribblyForbiddenException("Membership info not found.", friendlyMessage: "Unable to find membership info.");
             }
             member.DateLeft = DateTime.UtcNow;
             await _context.SaveChangesAsync();
@@ -163,7 +163,7 @@ namespace Dribbly.Service.Services
             {
                 throw new DribblyObjectNotFoundException($"Unable to find team with ID {teamId}.");
             }
-            
+
             if (team.ManagedById != _securityUtility.GetAccountId())
             {
                 throw new DribblyForbiddenException("Non-manager of team attempted to access team's join requests.");
@@ -178,9 +178,9 @@ namespace Dribbly.Service.Services
         {
             return (await _context.TeamStats.Include(s => s.Team.Logo)
                 .OrderByDescending(s => s.OverallScore)
-                .ThenBy(s=>s.Team.Name)
+                .ThenBy(s => s.Team.Name)
                 .Skip(input.PageSize * (input.Page - 1))
-                .ToListAsync()).Select(s=>new TeamStatsViewModel(s));
+                .ToListAsync()).Select(s => new TeamStatsViewModel(s));
         }
 
         public IQueryable<TeamMembershipModel> GetAllMembers(long teamId)
@@ -431,6 +431,14 @@ namespace Dribbly.Service.Services
             return _context.TeamMembers.Where(m => m.DateLeft == null && m.TeamId == teamId && m.MemberAccountId == memberAccountId);
         }
 
+        public async Task<IEnumerable<TeamMembershipModel>> GetTopPlayersAsync(long teamId)
+        {
+            return await _context.TeamMembers
+                .Include(s => s.Account.User).Include(s => s.Account.ProfilePhoto)
+                .Where(m => m.DateLeft == null && m.TeamId == teamId && m.OverallScore > 0)
+                .OrderByDescending(m => m.OverallScore).Take(5).ToListAsync();
+        }
+
         public async Task UpdateTeamAsync(TeamModel team)
         {
             Update(team);
@@ -453,6 +461,7 @@ namespace Dribbly.Service.Services
         Task<TeamModel> GetTeamAsync(long id);
         Task<UserTeamRelationModel> GetUserTeamRelationAsync(long teamId);
         Task<IEnumerable<TeamStatsViewModel>> GetTopTeamsAsync(PagedGetInputModel input);
+        Task<IEnumerable<TeamMembershipModel>> GetTopPlayersAsync(long teamId);
         Task<TeamViewerDataModel> GetTeamViewerDataAsync(long teamId);
         Task<UserTeamRelationModel> JoinTeamAsync(JoinTeamRequestInputModel input);
         Task<UserTeamRelationModel> LeaveTeamAsync(long teamId);
