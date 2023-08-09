@@ -78,6 +78,9 @@ namespace Dribbly.Service.Services
                 .Where(g =>
                 (!filter.TeamIds.Any() || filter.TeamIds.Contains(g.Team1.TeamId) || filter.TeamIds.Contains(g.Team2.TeamId))
                 && (!filter.UpcomingOnly || g.Start > DateTime.UtcNow))
+                .OrderByDescending(g => g.Start)
+                .Skip(filter.PageSize * (filter.Page - 1))
+                .Take(filter.PageSize)
                 .ToListAsync();
             return games;
         }
@@ -430,7 +433,7 @@ namespace Dribbly.Service.Services
                         }
 
                         List<GamePlayerModel> allGameStats = await _context.GamePlayers
-                            .Include(g=>g.TeamMembership).Include(g=>g.Game)
+                            .Include(g => g.TeamMembership).Include(g => g.Game)
                             .Where(gp => gp.AccountId == p.AccountId && gp.Won.HasValue).ToListAsync();
                         allGameStats.Add(p); //add this game because this will not be included above as it's Won field is still null
 
@@ -451,7 +454,7 @@ namespace Dribbly.Service.Services
 
                         #region Team Stats
                         var teammemberShip = _context.TeamMembers
-                            .Single(m=>m.MemberAccountId == p.AccountId && m.TeamId == p.TeamMembership.TeamId);
+                            .Single(m => m.MemberAccountId == p.AccountId && m.TeamId == p.TeamMembership.TeamId);
                         teammemberShip.UpdateStats(allGameStats.Where(s => s.TeamMembership.TeamId == p.TeamMembership.TeamId));
                         teammemberShip.SetOverallScore();
                         #endregion
