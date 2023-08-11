@@ -75,9 +75,11 @@ namespace Dribbly.Service.Services
             {
                 throw new DribblyObjectNotFoundException($"Account with the username '{userName}' does not exist.");
             }
+            var stats = await _context.PlayerStats.SingleOrDefaultAsync(s => s.AccountId == account.Id);
             return new AccountViewerModel
             {
-                Account = account
+                Account = account,
+                Stats = stats
             };
         }
 
