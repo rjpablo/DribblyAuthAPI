@@ -113,6 +113,13 @@ namespace DribblyAuthAPI.Controllers
             await _accountService.UpdateAccountAsync(account);
         }
 
+        [HttpPost]
+        [Route("GetPlayers")]
+        public async Task<IEnumerable<PlayerStatsViewModel>> GetPlayers([FromBody] GetPlayersFilterModel filter)
+        {
+            return await _accountService.GetPlayersAsync(filter);
+        }
+
         [HttpPost, Authorize]
         [Route("UploadPrimaryPhoto/{accountId}")]
         public async Task<PhotoModel> UploadPrimaryPhoto(long accountId)

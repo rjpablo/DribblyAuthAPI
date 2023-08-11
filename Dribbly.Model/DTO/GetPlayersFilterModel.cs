@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace Dribbly.Model.DTO
 {
-    public class GetGamesFilterModel : PagedGetInputModel
+    public class GetPlayersFilterModel : PagedGetInputModel
     {
-        public bool UpcomingOnly { get; set; }
-        public List<long> TeamIds { get; set; } = new List<long>();
         public List<long> CourdIds { get; set; } = new List<long>();
 
     }

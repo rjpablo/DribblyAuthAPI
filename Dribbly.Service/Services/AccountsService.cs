@@ -83,6 +83,18 @@ namespace Dribbly.Service.Services
             };
         }
 
+        public async Task<IEnumerable<PlayerStatsViewModel>> GetPlayersAsync(GetPlayersFilterModel filter)
+        {
+            var players = await _context.PlayerStats
+                .Include(s=>s.Account.User).Include(s=>s.Account.ProfilePhoto)
+                .Where(s=>!filter.CourdIds.Any() || (s.Account.HomeCourtId.HasValue && filter.CourdIds.Contains(s.Account.HomeCourtId.Value)))
+                .OrderByDescending(s=>s.OverallScore)
+                .Skip(filter.PageSize * (filter.Page - 1))
+                .Take(filter.PageSize)
+                .ToListAsync();
+            return players.Select(s => new PlayerStatsViewModel(s));
+        }
+
         public Task<AccountModel> GetAccountByUsername(string userName)
         {
             return _accountRepo.GetAccountByUsername(userName);
@@ -595,7 +607,6 @@ namespace Dribbly.Service.Services
         public async Task<IEnumerable<PlayerStatsViewModel>> GetTopPlayersAsync()
         {
             var result = await _context.PlayerStats.Include(s => s.Account.User).Include(s => s.Account.ProfilePhoto)
-                // The values used to divide the stats are based on NBA's top values
                 .OrderByDescending(s => s.OverallScore)
                 .Take(10)
                 .ToListAsync();
@@ -627,6 +638,8 @@ namespace Dribbly.Service.Services
         Task DeletePhoto(int photoId, int accountId);
 
         Task<IEnumerable<VideoModel>> GetAccountVideosAsync(long accountId);
+
+        Task<IEnumerable<PlayerStatsViewModel>> GetPlayersAsync(GetPlayersFilterModel filter);
 
         Task<VideoModel> AddVideoAsync(long accountId, VideoModel video, HttpPostedFile file);
 

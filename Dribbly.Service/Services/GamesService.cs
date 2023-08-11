@@ -77,6 +77,7 @@ namespace Dribbly.Service.Services
                 .Include(g => g.Team2).Include(g => g.Team2.Team.Logo)
                 .Where(g =>
                 (!filter.TeamIds.Any() || filter.TeamIds.Contains(g.Team1.TeamId) || filter.TeamIds.Contains(g.Team2.TeamId))
+                && (!filter.CourdIds.Any() || filter.CourdIds.Contains(g.CourtId))
                 && (!filter.UpcomingOnly || g.Start > DateTime.UtcNow))
                 .OrderByDescending(g => g.Start)
                 .Skip(filter.PageSize * (filter.Page - 1))
