@@ -11,6 +11,7 @@ using Dribbly.Model.Accounts;
 using Dribbly.Model.Courts;
 using Dribbly.Model.DTO;
 using Dribbly.Model.Entities;
+using Dribbly.Model.Enums;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
@@ -26,6 +27,7 @@ using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -83,17 +85,56 @@ namespace Dribbly.Service.Services
             };
         }
 
+        #region GetPlayers
+
         public async Task<IEnumerable<PlayerStatsViewModel>> GetPlayersAsync(GetPlayersFilterModel filter)
         {
-            var players = await _context.PlayerStats
-                .Include(s=>s.Account.User).Include(s=>s.Account.ProfilePhoto)
-                .Where(s=>!filter.CourdIds.Any() || (s.Account.HomeCourtId.HasValue && filter.CourdIds.Contains(s.Account.HomeCourtId.Value)))
-                .OrderByDescending(s=>s.OverallScore)
-                .Skip(filter.PageSize * (filter.Page - 1))
-                .Take(filter.PageSize)
-                .ToListAsync();
+            var query = _context.PlayerStats
+                .Include(s => s.Account.User).Include(s => s.Account.ProfilePhoto)
+                .Where(s => !filter.CourdIds.Any() || (s.Account.HomeCourtId.HasValue && filter.CourdIds.Contains(s.Account.HomeCourtId.Value)));
+            query = ApplySortingAndPaging(query, filter);
+            var players = await query.ToListAsync();
             return players.Select(s => new PlayerStatsViewModel(s));
         }
+
+        private IQueryable<PlayerStatsModel> ApplySortingAndPaging(IQueryable<PlayerStatsModel> query, GetPlayersFilterModel filter)
+        {
+            IOrderedQueryable<PlayerStatsModel> ordered = null;
+            bool isAscending = filter.SortDirection == SortDirectionEnum.Ascending;
+            switch (filter.SortBy)
+            {
+                case StatEnum.PPG:
+                    ordered = isAscending ? query.OrderBy(s => s.PPG) : query.OrderByDescending(s => s.PPG);
+                    break;
+                case StatEnum.RPG:
+                    ordered = isAscending ? query.OrderBy(s => s.RPG) : query.OrderByDescending(s => s.RPG);
+                    break;
+                case StatEnum.APG:
+                    ordered = isAscending ? query.OrderBy(s => s.APG) : query.OrderByDescending(s => s.APG);
+                    break;
+                case StatEnum.FGP:
+                    ordered = isAscending ? query.OrderBy(s => s.FGP) : query.OrderByDescending(s => s.FGP);
+                    break;
+                case StatEnum.BPG:
+                    ordered = isAscending ? query.OrderBy(s => s.BPG) : query.OrderByDescending(s => s.BPG);
+                    break;
+                case StatEnum.TPG:
+                    ordered = isAscending ? query.OrderBy(s => s.TPG) : query.OrderByDescending(s => s.TPG);
+                    break;
+                case StatEnum.SPG:
+                    ordered = isAscending ? query.OrderBy(s => s.SPG) : query.OrderByDescending(s => s.SPG);
+                    break;
+                case StatEnum.ThreePP:
+                    ordered = isAscending ? query.OrderBy(s => s.ThreePP) : query.OrderByDescending(s => s.ThreePP);
+                    break;
+                default:
+                    ordered = isAscending ? query.OrderBy(s => s.OverallScore) : query.OrderByDescending(s => s.OverallScore);
+                    break;
+            }
+            return ordered.Skip(filter.PageSize * (filter.Page - 1))
+                .Take(filter.PageSize);
+        }
+        #endregion
 
         public Task<AccountModel> GetAccountByUsername(string userName)
         {

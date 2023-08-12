@@ -122,7 +122,9 @@
     <Compile Include="Enums\EjectionStatusEnum.cs" />
     <Compile Include="Enums\FoulTypeEnum.cs" />
     <Compile Include="Enums\GameEventTypeEnum.cs" />
+    <Compile Include="Enums\SortDirectionEnum.cs" />
     <Compile Include="Enums\StageStatusEnum.cs" />
+    <Compile Include="Enums\PlayerSortByEnum.cs" />
     <Compile Include="Enums\TimeoutTypeEnum.cs" />
     <Compile Include="Enums\TournamentStatusEnum.cs" />
     <Compile Include="Enums\TurnoverCauseEnum.cs" />
