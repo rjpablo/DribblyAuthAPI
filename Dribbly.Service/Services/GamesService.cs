@@ -72,17 +72,27 @@ namespace Dribbly.Service.Services
 
         public async Task<IEnumerable<GameModel>> GetGamesAsync(GetGamesFilterModel filter)
         {
-            var games = await _dbSet.Include(g => g.Court.PrimaryPhoto)
+            var query = _dbSet.Include(g => g.Court.PrimaryPhoto)
                 .Include(g => g.Team1).Include(g => g.Team1.Team.Logo)
                 .Include(g => g.Team2).Include(g => g.Team2.Team.Logo)
                 .Where(g =>
                 (!filter.TeamIds.Any() || filter.TeamIds.Contains(g.Team1.TeamId) || filter.TeamIds.Contains(g.Team2.TeamId))
                 && (!filter.CourdIds.Any() || filter.CourdIds.Contains(g.CourtId))
-                && (!filter.UpcomingOnly || g.Start > DateTime.UtcNow))
+                && (!filter.UpcomingOnly || g.Start > DateTime.UtcNow));
+
+            if(filter.PageSize > 0)
+            {
+                query = query
                 .OrderByDescending(g => g.Start)
                 .Skip(filter.PageSize * (filter.Page - 1))
-                .Take(filter.PageSize)
-                .ToListAsync();
+                .Take(filter.PageSize);
+            }
+            else
+            {
+                query = query.OrderByDescending(g => g.Start);
+            }
+                
+            var games = await query.ToListAsync();
             return games;
         }
 
