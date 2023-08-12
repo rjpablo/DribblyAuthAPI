@@ -74,6 +74,12 @@ namespace Dribbly.Model.DTO
 
         [DataMember]
         /// <summary>
+        /// Steals per game
+        /// </summary>
+        public double SPG { get; set; }
+
+        [DataMember]
+        /// <summary>
         /// Blocks per game
         /// </summary>
         public double BPG { get; set; }
@@ -109,6 +115,7 @@ namespace Dribbly.Model.DTO
             ThreePP = source.ThreePP;
             FTP = source.FTP;
             BPG = source.BPG;
+            SPG = source.SPG;
             MPG = source.MPG;
             LastGameId = source.LastGameId;
             LastGame = source.LastGame;
@@ -132,6 +139,7 @@ namespace Dribbly.Model.DTO
             FGP = source.FGP;
             ThreePP = source.ThreePP;
             BPG = source.BPG;
+            SPG = source.SPG;
         }
     }
 }

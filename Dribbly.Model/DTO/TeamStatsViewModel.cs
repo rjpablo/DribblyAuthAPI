@@ -1,10 +1,5 @@
 ﻿using Dribbly.Model.Courts;
 using Dribbly.Model.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dribbly.Model.DTO
 {
@@ -49,6 +44,10 @@ namespace Dribbly.Model.DTO
         /// <summary>
         /// 3-point percentage
         /// </summary>
+        public double SPG { get; set; }
+        /// <summary>
+        /// 3-point percentage
+        /// </summary>
         public double ThreePP { get; set; }
         public double OverallScore { get; set; }
         #endregion
@@ -69,6 +68,7 @@ namespace Dribbly.Model.DTO
             APG = source.APG;
             FGP = source.FGP;
             BPG = source.BPG;
+            SPG = source.SPG;
             ThreePP = source.ThreePP;
             OverallScore = source.OverallScore;
         }

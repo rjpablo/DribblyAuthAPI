@@ -91,7 +91,7 @@ namespace Dribbly.Service.Services
         {
             var query = _context.PlayerStats
                 .Include(s => s.Account.User).Include(s => s.Account.ProfilePhoto)
-                .Where(s => !filter.CourdIds.Any() || (s.Account.HomeCourtId.HasValue && filter.CourdIds.Contains(s.Account.HomeCourtId.Value)));
+                .Where(s => !filter.CourtIds.Any() || (s.Account.HomeCourtId.HasValue && filter.CourtIds.Contains(s.Account.HomeCourtId.Value)));
             query = ApplySortingAndPaging(query, filter);
             var players = await query.ToListAsync();
             return players.Select(s => new PlayerStatsViewModel(s));

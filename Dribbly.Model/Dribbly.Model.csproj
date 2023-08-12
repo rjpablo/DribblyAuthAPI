@@ -95,6 +95,7 @@
     <Compile Include="DTO\GamePlayer.cs" />
     <Compile Include="DTO\GameTeam.cs" />
     <Compile Include="DTO\GetAddGameModalInputModel.cs" />
+    <Compile Include="DTO\GetTeamsFilterModel.cs" />
     <Compile Include="DTO\GetPlayersFilterModel.cs" />
     <Compile Include="DTO\GetGamesFilterModel.cs" />
     <Compile Include="DTO\GetTournamentPlayersInputModel.cs" />
@@ -124,7 +125,7 @@
     <Compile Include="Enums\GameEventTypeEnum.cs" />
     <Compile Include="Enums\SortDirectionEnum.cs" />
     <Compile Include="Enums\StageStatusEnum.cs" />
-    <Compile Include="Enums\PlayerSortByEnum.cs" />
+    <Compile Include="Enums\StatEnum.cs" />
     <Compile Include="Enums\TimeoutTypeEnum.cs" />
     <Compile Include="Enums\TournamentStatusEnum.cs" />
     <Compile Include="Enums\TurnoverCauseEnum.cs" />

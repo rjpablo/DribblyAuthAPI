@@ -130,6 +130,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost]
+        [Route("GetTeams")]
+        public async Task<IEnumerable<TeamStatsViewModel>> GetTeams(GetTeamsFilterModel filter)
+        {
+            return await _service.GetTeamsAsync(filter);
+        }
+
+        [HttpPost]
         [Route("RemoveMember/{teamId}/{membershipId}")]
         public async Task RemoveMember(long teamId, long membershipId)
         {

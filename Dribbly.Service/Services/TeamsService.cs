@@ -22,6 +22,8 @@ using Dribbly.Model.Account;
 using Dribbly.Model.DTO;
 using Dribbly.Core.Models;
 using Dribbly.Model.Shared;
+using Dribbly.Model.Entities;
+using Dribbly.Model.Enums;
 
 namespace Dribbly.Service.Services
 {
@@ -182,6 +184,56 @@ namespace Dribbly.Service.Services
                 .Skip(input.PageSize * (input.Page - 1))
                 .ToListAsync()).Select(s => new TeamStatsViewModel(s));
         }
+
+        #region GetTeams
+        public async Task<IEnumerable<TeamStatsViewModel>> GetTeamsAsync(GetTeamsFilterModel filter)
+        {
+            var query = _context.TeamStats
+                .Include(s => s.Team.Logo)
+                .Where(s => !filter.CourtIds.Any() || (s.Team.HomeCourtId.HasValue && filter.CourtIds.Contains(s.Team.HomeCourtId.Value)));
+            query = ApplySortingAndPaging(query, filter);
+            var players = await query.ToListAsync();
+            return players.Select(s => new TeamStatsViewModel(s));
+        }
+
+        private IQueryable<TeamStatsModel> ApplySortingAndPaging(IQueryable<TeamStatsModel> query, GetTeamsFilterModel filter)
+        {
+            IOrderedQueryable<TeamStatsModel> ordered = null;
+            bool isAscending = filter.SortDirection == SortDirectionEnum.Ascending;
+            switch (filter.SortBy)
+            {
+                case StatEnum.PPG:
+                    ordered = isAscending ? query.OrderBy(s => s.PPG) : query.OrderByDescending(s => s.PPG);
+                    break;
+                case StatEnum.RPG:
+                    ordered = isAscending ? query.OrderBy(s => s.RPG) : query.OrderByDescending(s => s.RPG);
+                    break;
+                case StatEnum.APG:
+                    ordered = isAscending ? query.OrderBy(s => s.APG) : query.OrderByDescending(s => s.APG);
+                    break;
+                case StatEnum.FGP:
+                    ordered = isAscending ? query.OrderBy(s => s.FGP) : query.OrderByDescending(s => s.FGP);
+                    break;
+                case StatEnum.BPG:
+                    ordered = isAscending ? query.OrderBy(s => s.BPG) : query.OrderByDescending(s => s.BPG);
+                    break;
+                case StatEnum.TPG:
+                    ordered = isAscending ? query.OrderBy(s => s.TPG) : query.OrderByDescending(s => s.TPG);
+                    break;
+                case StatEnum.SPG:
+                    ordered = isAscending ? query.OrderBy(s => s.SPG) : query.OrderByDescending(s => s.SPG);
+                    break;
+                case StatEnum.ThreePP:
+                    ordered = isAscending ? query.OrderBy(s => s.ThreePP) : query.OrderByDescending(s => s.ThreePP);
+                    break;
+                default:
+                    ordered = isAscending ? query.OrderBy(s => s.OverallScore) : query.OrderByDescending(s => s.OverallScore);
+                    break;
+            }
+            return ordered.Skip(filter.PageSize * (filter.Page - 1))
+                .Take(filter.PageSize);
+        }
+        #endregion
 
         public IQueryable<TeamMembershipModel> GetAllMembers(long teamId)
         {
@@ -459,6 +511,7 @@ namespace Dribbly.Service.Services
         Task<IEnumerable<JoinTeamRequestModel>> GetJoinRequestsAsync(long teamId);
         Task<IEnumerable<ChoiceItemModel<long>>> GetManagedTeamsAsChoicesAsync();
         Task<TeamModel> GetTeamAsync(long id);
+        Task<IEnumerable<TeamStatsViewModel>> GetTeamsAsync(GetTeamsFilterModel filter);
         Task<UserTeamRelationModel> GetUserTeamRelationAsync(long teamId);
         Task<IEnumerable<TeamStatsViewModel>> GetTopTeamsAsync(PagedGetInputModel input);
         Task<IEnumerable<TeamMembershipModel>> GetTopPlayersAsync(long teamId);

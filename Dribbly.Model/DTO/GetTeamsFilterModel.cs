@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Dribbly.Model.DTO
 {
-    public class GetPlayersFilterModel : PagedGetInputModel
+    public class GetTeamsFilterModel : PagedGetInputModel
     {
         public StatEnum SortBy { get; set; } = StatEnum.OverallScore;
         public SortDirectionEnum SortDirection { get; set; } = SortDirectionEnum.Ascending;
