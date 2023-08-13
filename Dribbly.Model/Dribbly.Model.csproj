@@ -49,6 +49,9 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DataAnnotationsExtensions, Version=5.0.1.27, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DataAnnotationsExtensions.5.0.1.27\lib\NETFramework40\DataAnnotationsExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -91,6 +94,7 @@
     <Compile Include="Courts\CourtReviewModel.cs" />
     <Compile Include="Courts\CourtModel.cs" />
     <Compile Include="Courts\CourtSearchInputModel.cs" />
+    <Compile Include="DTO\Account\UpdateEmailInput.cs" />
     <Compile Include="DTO\AddTournamentStageInputModel.cs" />
     <Compile Include="DTO\GamePlayer.cs" />
     <Compile Include="DTO\GameTeam.cs" />

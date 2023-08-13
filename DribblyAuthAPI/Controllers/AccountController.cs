@@ -6,6 +6,7 @@ using Dribbly.Identity.Models;
 using Dribbly.Model.Account;
 using Dribbly.Model.Courts;
 using Dribbly.Model.DTO;
+using Dribbly.Model.DTO.Account;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
@@ -77,6 +78,20 @@ namespace DribblyAuthAPI.Controllers
             return await _accountService.GetAccountDropDownSuggestions(input);
         }
 
+        #region Account Settings
+        [HttpPost, Authorize]
+        [Route("ReplaceEmail")]
+        public async Task<IHttpActionResult> ReplaceEmail([FromBody] UpdateEmailInput input)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _accountService.ReplaceEmailAsync(input);
+            return Ok();
+        }
+
         [HttpGet, Authorize]
         [Route("GetAccountSettings/{userId}")]
         public async Task<AccountSettingsModel> GetAccountSettings(long userId)
@@ -85,53 +100,10 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost, Authorize]
-        [Route("AddAccountPhotos/{accountId}")]
-        public async Task<IEnumerable<PhotoModel>> AddAccountPhotos(long accountId)
-        {
-            return await _accountService.AddAccountPhotosAsync(accountId);
-        }
-
-        [HttpGet]
-        [Route("GetAccountPhotos/{accountId}")]
-        public async Task<IEnumerable<PhotoModel>> GetAccountPhotos(int accountId)
-        {
-            return await _accountService.GetAccountPhotosAsync(accountId);
-        }
-
-        [AllowAnonymous]
-        [HttpGet]
-        [Route("GetTopPlayers")]
-        public async Task<IEnumerable<PlayerStatsViewModel>> GetTopPlayers()
-        {
-            return await _accountService.GetTopPlayersAsync();
-        }
-
-        [HttpPost, Authorize]
         [Route("UpdateAccount")]
         public async Task UpdateAccount([FromBody] AccountModel account)
         {
             await _accountService.UpdateAccountAsync(account);
-        }
-
-        [HttpPost]
-        [Route("GetPlayers")]
-        public async Task<IEnumerable<PlayerStatsViewModel>> GetPlayers([FromBody] GetPlayersFilterModel filter)
-        {
-            return await _accountService.GetPlayersAsync(filter);
-        }
-
-        [HttpPost, Authorize]
-        [Route("UploadPrimaryPhoto/{accountId}")]
-        public async Task<PhotoModel> UploadPrimaryPhoto(long accountId)
-        {
-            return await _accountService.UploadPrimaryPhotoAsync(accountId);
-        }
-
-        [HttpPost, Authorize]
-        [Route("DeletePhoto/{photoId}/{accountId}")]
-        public async Task DeletePhoto(int photoId, int accountId)
-        {
-            await _accountService.DeletePhoto(photoId, accountId);
         }
 
         [HttpPost, Authorize]
@@ -147,6 +119,31 @@ namespace DribblyAuthAPI.Controllers
         {
             await _accountService.SetIsPublic(userId, IsPublic);
         }
+        #endregion
+
+        #region Players
+        [HttpGet]
+        [Route("GetAccountPhotos/{accountId}")]
+        public async Task<IEnumerable<PhotoModel>> GetAccountPhotos(int accountId)
+        {
+            return await _accountService.GetAccountPhotosAsync(accountId);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("GetTopPlayers")]
+        public async Task<IEnumerable<PlayerStatsViewModel>> GetTopPlayers()
+        {
+            return await _accountService.GetTopPlayersAsync();
+        }
+
+        [HttpPost]
+        [Route("GetPlayers")]
+        public async Task<IEnumerable<PlayerStatsViewModel>> GetPlayers([FromBody] GetPlayersFilterModel filter)
+        {
+            return await _accountService.GetPlayersAsync(filter);
+        }
+        #endregion
 
         #region Account Videos
 
@@ -186,6 +183,29 @@ namespace DribblyAuthAPI.Controllers
             return await _accountService.GetAccountVideosAsync(accountId);
         }
 
+        #endregion
+
+        #region Account Photos
+        [HttpPost, Authorize]
+        [Route("AddAccountPhotos/{accountId}")]
+        public async Task<IEnumerable<PhotoModel>> AddAccountPhotos(long accountId)
+        {
+            return await _accountService.AddAccountPhotosAsync(accountId);
+        }
+
+        [HttpPost, Authorize]
+        [Route("UploadPrimaryPhoto/{accountId}")]
+        public async Task<PhotoModel> UploadPrimaryPhoto(long accountId)
+        {
+            return await _accountService.UploadPrimaryPhotoAsync(accountId);
+        }
+
+        [HttpPost, Authorize]
+        [Route("DeletePhoto/{photoId}/{accountId}")]
+        public async Task DeletePhoto(int photoId, int accountId)
+        {
+            await _accountService.DeletePhoto(photoId, accountId);
+        }
         #endregion
 
         #region Authentication
@@ -311,7 +331,7 @@ namespace DribblyAuthAPI.Controllers
             {
                 if (e is DribblyInvalidOperationException)
                 {
-                    foreach(var error in ((DribblyInvalidOperationException)e).Errors)
+                    foreach (var error in ((DribblyInvalidOperationException)e).Errors)
                     {
                         ModelState.AddModelError("", error);
                     }

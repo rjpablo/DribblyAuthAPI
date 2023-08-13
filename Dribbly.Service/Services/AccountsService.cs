@@ -10,6 +10,7 @@ using Dribbly.Model.Account;
 using Dribbly.Model.Accounts;
 using Dribbly.Model.Courts;
 using Dribbly.Model.DTO;
+using Dribbly.Model.DTO.Account;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Enums;
 using Dribbly.Model.Shared;
@@ -144,7 +145,6 @@ namespace Dribbly.Service.Services
         public async Task<AccountSettingsModel> GetAccountSettingsAsync(long userId)
         {
             AccountSettingsModel settings = new AccountSettingsModel();
-
             AccountModel account = await _accountRepo.GetAccountByIdentityId(userId);
             if (account == null)
             {
@@ -174,6 +174,17 @@ namespace Dribbly.Service.Services
         }
 
         #region Account Updates
+
+        public async Task ReplaceEmailAsync(UpdateEmailInput input)
+        {
+            var userId = _securityUtility.GetUserId().Value;
+            var emialUser = _userManager.FindByEmail(input.NewEmail);
+            if(emialUser != null)
+            {
+                throw new DribblyInvalidOperationException("Email already taken", friendlyMessage: $"{input.NewEmail} is already in use.");
+            }
+            await _userManager.SetEmailAsync(userId, input.NewEmail);
+        }
 
         public async Task<AccountDetailsModalModel> GetAccountDetailsModalAsync(long accountId)
         {
@@ -667,6 +678,8 @@ namespace Dribbly.Service.Services
         Task AddAsync(AccountModel account);
 
         Task<IEnumerable<PhotoModel>> AddAccountPhotosAsync(long accountId);
+
+        Task ReplaceEmailAsync(UpdateEmailInput input);
 
         Task<AccountSettingsModel> GetAccountSettingsAsync(long userId);
 
