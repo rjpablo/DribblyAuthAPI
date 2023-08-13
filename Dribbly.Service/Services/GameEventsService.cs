@@ -131,6 +131,7 @@ namespace Dribbly.Service.Services
 
         public async Task<UpdateGameEventResultModel> DeleteAsync(long gameEventId)
         {
+            //TODO: Only the game manager should be allowed to perform this action
             using (var tx = _context.Database.BeginTransaction())
             {
                 UpdateGameEventResultModel result = new UpdateGameEventResultModel();
@@ -138,7 +139,7 @@ namespace Dribbly.Service.Services
                 List<long> playersToUpdate = new List<long>();
 
                 var events = _context.GameEvents.Where(e => e.Id == gameEventId || e.ShotId == gameEventId).ToList();
-
+                var gameId = events.First().GameId;
                 try
                 {
                     // DELETE non-Field Goals first because they reference the Field Goal
@@ -174,7 +175,7 @@ namespace Dribbly.Service.Services
                         await _context.SaveChangesAsync();
                     }
 
-                    result.Game = await _gamesRepository.UpdateGameStats(shot.GameId);
+                    result.Game = await _gamesRepository.UpdateGameStats(gameId);
                     result.Teams.Add(result.Game.Team1);
                     result.Teams.Add(result.Game.Team2);
                     result.Players = await _gamePlayersRepository.UpdateGamePlayerStats(playersToUpdate.Distinct().ToList(), result.Game);
