@@ -47,7 +47,7 @@ namespace Dribbly.Service.Services
         {
             _gameEventsRepository.Upsert(gameEvent);
 
-            if(gameEvent.Type == GameEventTypeEnum.Steal)
+            if (gameEvent.Type == GameEventTypeEnum.Steal)
             {
                 var performedBy = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.Id == gameEvent.PerformedById
                                         && g.GameId == gameEvent.GameId && g.GameTeam.TeamId == gameEvent.TeamId);
@@ -69,11 +69,14 @@ namespace Dribbly.Service.Services
                 List<long> accountIdsToUpdate = new List<long>();
                 try
                 {
+                    long origPlayerAccountId;
+                    bool playerChanged = false;
+
                     if (input.Type == GameEventTypeEnum.ShotMade || input.Type == GameEventTypeEnum.ShotMissed)
                     {
                         var shot = await _context.Shots.SingleOrDefaultAsync(s => s.Id == input.Id);
-                        long origPlayerAccountId = shot.PerformedById.Value;
-                        bool playerChanged = input.PerformedById != origPlayerAccountId;
+                        origPlayerAccountId = shot.PerformedById.Value;
+                        playerChanged = input.PerformedById != origPlayerAccountId;
                         bool teamChanged = input.TeamId != shot.TeamId;
 
                         shot.PerformedById = input.PerformedById;
@@ -86,24 +89,36 @@ namespace Dribbly.Service.Services
                         shot.AdditionalData = JsonConvert.SerializeObject(new { points = input.Points });
                         await _context.SaveChangesAsync();
 
-                        result.Event = _context.GameEvents.Include(g => g.PerformedBy.ProfilePhoto)
-                            .Include(g => g.PerformedBy.User).Single(e => e.Id == input.Id);
-                        result.Game = await _gamesRepository.UpdateGameStats(input.GameId);
-                        result.Teams = new List<GameTeamModel> { result.Game.Team1, result.Game.Team2 };
-                        accountIdsToUpdate.Add(input.PerformedById.Value);
-                        if (playerChanged)
-                        {
-                            var OgGamePlayer = await (playerChanged ?
-                                _gamePlayersRepository.UpdateGamePlayerStats(origPlayerAccountId, input.GameId) :
-                                Task.FromResult<GamePlayerModel>(null));
-                            accountIdsToUpdate.Add(origPlayerAccountId);
-                        }
+                        
+                    }
+                    else
+                    {
+                        var evt = _context.GameEvents.Single(e => e.Id == input.Id);
+                        origPlayerAccountId = evt.PerformedById.Value;
+                        playerChanged = input.PerformedById != origPlayerAccountId;
+                        bool teamChanged = input.TeamId != evt.TeamId;
 
-                        result.Players = await _gamePlayersRepository.UpdateGamePlayerStats(accountIdsToUpdate.Distinct().ToList(), result.Game);
+                        evt.PerformedById = input.PerformedById;
+                        evt.TeamId = input.TeamId;
+                        evt.Type = input.Type;
+                        evt.Period = input.Period;
+                        evt.ClockTime = input.ClockTime;
                         await _context.SaveChangesAsync();
-                        tx.Commit();
                     }
 
+                    result.Event = _context.GameEvents.Include(g => g.PerformedBy.ProfilePhoto)
+                            .Include(g => g.PerformedBy.User).Single(e => e.Id == input.Id);
+                    result.Game = await _gamesRepository.UpdateGameStats(input.GameId, input.Type);
+                    result.Teams = new List<GameTeamModel> { result.Game.Team1, result.Game.Team2 };
+                    accountIdsToUpdate.Add(input.PerformedById.Value);
+                    if (playerChanged)
+                    {
+                        accountIdsToUpdate.Add(origPlayerAccountId);
+                    }
+
+                    result.Players = await _gamePlayersRepository.UpdateGamePlayerStats(accountIdsToUpdate.Distinct().ToList(), result.Game);
+                    await _context.SaveChangesAsync();
+                    tx.Commit();
                     return result;
                 }
                 catch (Exception)
