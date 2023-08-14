@@ -23,5 +23,9 @@ namespace Dribbly.Model.GameEvents
         public int Points { get; set; }
         public bool IsMiss { get; set; }
         #endregion
+
+        #region Foul Properties
+        public int? FoulId { get; set; }
+        #endregion
     }
 }

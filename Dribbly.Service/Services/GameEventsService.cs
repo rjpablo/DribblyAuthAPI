@@ -91,6 +91,22 @@ namespace Dribbly.Service.Services
 
                         
                     }
+                    if(input.Type == GameEventTypeEnum.FoulCommitted)
+                    {
+                        var foul = await _context.MemberFouls.SingleOrDefaultAsync(f => f.Id == input.Id);
+                        origPlayerAccountId = foul.PerformedById.Value;
+                        playerChanged = input.PerformedById != origPlayerAccountId;
+                        bool teamChanged = input.TeamId != foul.TeamId;
+                        foul.PerformedById = input.PerformedById;
+                        foul.TeamId = input.TeamId;
+                        foul.Type = input.Type;
+                        foul.Period = input.Period;
+                        foul.ClockTime = input.ClockTime;
+                        foul.FoulId = input.FoulId.Value;
+                        var foulType = Constants.Fouls.Single(f => f.Id == input.FoulId.Value);
+                        foul.AdditionalData = JsonConvert.SerializeObject(new { foulName = foulType.Name, foulId = foul.Id });
+                        await _context.SaveChangesAsync();
+                    }
                     else
                     {
                         var evt = _context.GameEvents.Single(e => e.Id == input.Id);

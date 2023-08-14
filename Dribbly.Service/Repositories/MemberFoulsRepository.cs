@@ -34,7 +34,7 @@ namespace Dribbly.Service.Repositories
                 foul.DateAdded = DateTime.UtcNow;
             }
 
-            foul.AdditionalData = JsonConvert.SerializeObject(new { foulName = foul.Foul.Name });
+            foul.AdditionalData = JsonConvert.SerializeObject(new { foulName = foul.Foul.Name, foulId = foul.FoulId });
             foul.IsFlagrant = foul.Foul.IsFlagrant;
 
             // prevent EF from re-adding these objects
