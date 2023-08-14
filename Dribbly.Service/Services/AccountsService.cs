@@ -421,7 +421,10 @@ namespace Dribbly.Service.Services
             var user = await _authRepo.FindUserByIdAsync(account.IdentityUserId);
             account.User = user;
             _context.SetEntityState(account.User, EntityState.Unchanged);
-            _context.SetEntityState(account.User.Logins.First(), EntityState.Unchanged);
+            if (account.User.Logins.Any())
+            {
+                _context.SetEntityState(account.User.Logins.First(), EntityState.Unchanged);
+            }
             var entity = new IndexedEntityModel(account);
             await _indexedEntitysRepo.Add(_context, entity, entity.AdditionalData);
             await _commonService.AddUserAccountActivity(UserActivityTypeEnum.CreateAccount, account.Id);
