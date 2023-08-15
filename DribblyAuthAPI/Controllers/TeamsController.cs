@@ -103,7 +103,7 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpPost, Authorize]
         [Route("UpdateTeam")]
-        public async Task UpdateTeam([FromBody] TeamModel model)
+        public async Task UpdateTeam([FromBody] UpdateTeamInputModel model)
         {
             await _service.UpdateTeamAsync(model);
         }

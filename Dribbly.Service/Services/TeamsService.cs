@@ -491,8 +491,16 @@ namespace Dribbly.Service.Services
                 .OrderByDescending(m => m.OverallScore).Take(5).ToListAsync();
         }
 
-        public async Task UpdateTeamAsync(TeamModel team)
+        public async Task UpdateTeamAsync(UpdateTeamInputModel input)
         {
+            var team = _context.Teams.SingleOrDefault(t => t.Id == input.Id);
+            if(team == null)
+            {
+                throw new DribblyObjectNotFoundException("Team not fould",
+                    friendlyMessage: "The team's details could not be found. It may have been deleted from the system");
+            }
+            team.Name = input.Name;
+            team.ShortName = input.ShortName;
             Update(team);
             var currentAccountId = _securityUtility.GetAccountId().Value;
             NotificationTypeEnum Type = team.AddedById == currentAccountId ?
@@ -520,7 +528,7 @@ namespace Dribbly.Service.Services
         Task<UserTeamRelationModel> LeaveTeamAsync(long teamId);
         Task ProcessJoinRequestAsync(ProcessJoinTeamRequestInputModel input);
         Task RemoveMemberAsync(long teamId, long membershipId);
-        Task UpdateTeamAsync(TeamModel team);
+        Task UpdateTeamAsync(UpdateTeamInputModel team);
         Task<PhotoModel> UploadLogoAsync(long teamId);
     }
 }

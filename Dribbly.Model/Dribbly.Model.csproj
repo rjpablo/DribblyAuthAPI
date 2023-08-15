@@ -107,6 +107,7 @@
     <Compile Include="DTO\PlayerStatsViewModel.cs" />
     <Compile Include="DTO\SetStageTeamsInputModel.cs" />
     <Compile Include="DTO\TeamStatsViewModel.cs" />
+    <Compile Include="DTO\UpdateTeamInputModel.cs" />
     <Compile Include="DTO\UpdateTournamentSettingsModel.cs" />
     <Compile Include="Entities\BaseGameSettingsModel.cs" />
     <Compile Include="Entities\BaseStatsModel.cs" />
