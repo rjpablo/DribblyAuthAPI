@@ -127,6 +127,7 @@
     <Compile Include="Enums\EjectionStatusEnum.cs" />
     <Compile Include="Enums\FoulTypeEnum.cs" />
     <Compile Include="Enums\GameEventTypeEnum.cs" />
+    <Compile Include="Enums\PostTypeEnum.cs" />
     <Compile Include="Enums\SortDirectionEnum.cs" />
     <Compile Include="Enums\StageStatusEnum.cs" />
     <Compile Include="Enums\StatEnum.cs" />

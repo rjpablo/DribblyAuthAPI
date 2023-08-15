@@ -10,11 +10,11 @@ namespace Dribbly.Service.Repositories
 {
     public class NotificationsRepository : BaseRepository<NotificationModel>, INotificationsRepository
     {
-        AuthContext _context;
+        IAuthContext _context;
 
         public NotificationsRepository(IAuthContext context) : base(context.Notifications)
         {
-            _context = new AuthContext();
+            _context = context;
         }
 
         public async Task TryAddAsync(INotificationModel notification)

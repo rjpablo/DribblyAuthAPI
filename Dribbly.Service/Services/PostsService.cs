@@ -2,6 +2,7 @@
 using Dribbly.Core.Enums.Permissions;
 using Dribbly.Core.Exceptions;
 using Dribbly.Core.Utilities;
+using Dribbly.Email.Services;
 using Dribbly.Model;
 using Dribbly.Model.Posts;
 using Dribbly.Model.Shared;
@@ -19,35 +20,23 @@ namespace Dribbly.Service.Services
     public class PostsService : BaseEntityService<PostModel>, IPostsService
     {
         IAuthContext _context;
-        HttpContextBase _httpContext;
         ISecurityUtility _securityUtility;
-        IFileService _fileService;
         IAccountRepository _accountRepo;
-        INotificationsRepository _notificationsRepo;
-        ICourtsRepository _courtsRepo;
         private readonly IIndexedEntitysRepository _indexedEntitysRepository;
+        private readonly ISharedPostsService _sharedPostsService;
 
         ICommonService _commonService { get; }
 
         public PostsService(IAuthContext context,
-            HttpContextBase httpContext,
-            ISecurityUtility securityUtility,
-            IAccountRepository accountRepo,
-            IFileService fileService,
-            INotificationsRepository notificationsRepo,
-            ICourtsRepository courtsRepo,
-            ICommonService commonService,
-            IIndexedEntitysRepository indexedEntitysRepository) : base(context.Posts, context)
+            IEmailService emailSender,
+            ISecurityUtility securityUtility) : base(context.Posts, context)
         {
             _context = context;
-            _httpContext = httpContext;
             _securityUtility = securityUtility;
-            _accountRepo = accountRepo;
-            _fileService = fileService;
-            _notificationsRepo = notificationsRepo;
-            _courtsRepo = courtsRepo;
-            _commonService = commonService;
-            _indexedEntitysRepository = indexedEntitysRepository;
+            _accountRepo = new AccountRepository(context, new AuthRepository(emailSender, context));
+            _commonService = new CommonService(context, _securityUtility);
+            _indexedEntitysRepository = new IndexedEntitysRepository(context);
+            _sharedPostsService = new SharedPostsService(context, securityUtility, _accountRepo, _commonService, new IndexedEntitysRepository(context)); ;
         }
 
         /// <summary>
@@ -70,17 +59,11 @@ namespace Dribbly.Service.Services
                 postOnIdLong = input.PostedOnId;
             }
             var posts = await _context.Posts
+                .Include(p=>p.AddedBy.User)
+                .Include(p=>p.AddedBy.ProfilePhoto)
                 .Where(p => p.PostedOnType == input.PostedOnType && p.PostedOnId == postOnIdLong &&
                 p.EntityStatus == EntityStatusEnum.Active && (!input.CeilingPostId.HasValue || p.Id < input.CeilingPostId))
                 .Take(input.GetCount).OrderByDescending(p => p.Id).ToListAsync();
-
-            foreach (PostModel post in posts)
-            {
-                if (post.AddedByType == EntityTypeEnum.Account)
-                {
-                    post.AddedBy = await GetAddedBy(post);
-                }
-            }
 
             return posts;
         }
@@ -98,25 +81,7 @@ namespace Dribbly.Service.Services
 
         public async Task<PostModel> AddPost(AddEditPostInputModel input)
         {
-            long postOnIdLong = input.PostedOnType == EntityTypeEnum.Account ?
-                (await _accountRepo.GetIdentityUserAccountId(input.PostedOnId)).Value :
-                postOnIdLong = input.PostedOnId;
-
-            PostModel post = new PostModel
-            {
-                AddedByType = input.AddedByType,
-                PostedOnType = input.PostedOnType,
-                PostedOnId = postOnIdLong,
-                Content = input.Content,
-                EntityStatus = EntityStatusEnum.Active
-            };
-            post.AddedById = _securityUtility.GetAccountId().Value;
-            Add(post);
-            await _context.SaveChangesAsync();
-            await _indexedEntitysRepository.Add(_context, post);
-            await _commonService.AddUserPostActivity(UserActivityTypeEnum.AddPost, post.Id);
-            post.AddedBy = await GetAddedBy(post);
-            return post;
+            return await _sharedPostsService.AddPostAsync(input);
         }
 
         public async Task<PostModel> UpdatePost(AddEditPostInputModel input)

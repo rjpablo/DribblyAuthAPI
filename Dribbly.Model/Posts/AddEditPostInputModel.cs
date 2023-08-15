@@ -1,4 +1,5 @@
-﻿using Dribbly.Service.Enums;
+﻿using Dribbly.Model.Enums;
+using Dribbly.Service.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace Dribbly.Model.Posts
@@ -17,5 +18,8 @@ namespace Dribbly.Model.Posts
 
         [Required]
         public long PostedOnId { get; set; }
+
+        public PostTypeEnum? Type { get; set; }
+        public string AdditionalData { get; set; }
     }
 }

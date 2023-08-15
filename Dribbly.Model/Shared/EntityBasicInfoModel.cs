@@ -13,6 +13,7 @@ namespace Dribbly.Model.Shared
         public EntityStatusEnum EntityStatus { get; set; }
         public virtual PhotoModel Photo { get; set; }
         public EntityTypeEnum Type { get; set; }
+        public string IconUrl { get; set; }
 
         public EntityBasicInfoModel()
         {
@@ -24,6 +25,7 @@ namespace Dribbly.Model.Shared
             Id = account.Id;
             Name = account.User != null ? account.User.UserName : account.Username;
             Photo = account.ProfilePhoto;
+            IconUrl = account.IconUrl;
             Type = EntityTypeEnum.Account;
             EntityStatus = account.EntityStatus;
         }

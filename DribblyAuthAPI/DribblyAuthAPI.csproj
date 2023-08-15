@@ -827,6 +827,14 @@
     <Compile Include="Migrations\202308090710128_ModifyTable_GameTeams_RenameColumn_Score_To_Points.Designer.cs">
       <DependentUpon>202308090710128_ModifyTable_GameTeams_RenameColumn_Score_To_Points.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202308150918176_ModifyTable_Posts_AddColumns_Type_and_AdditionalData.cs" />
+    <Compile Include="Migrations\202308150918176_ModifyTable_Posts_AddColumns_Type_and_AdditionalData.Designer.cs">
+      <DependentUpon>202308150918176_ModifyTable_Posts_AddColumns_Type_and_AdditionalData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308151047559_ModifyTable_Posts_ModifyColumn_AddedById_add_FK_reference_to_Accounts_table.cs" />
+    <Compile Include="Migrations\202308151047559_ModifyTable_Posts_ModifyColumn_AddedById_add_FK_reference_to_Accounts_table.Designer.cs">
+      <DependentUpon>202308151047559_ModifyTable_Posts_ModifyColumn_AddedById_add_FK_reference_to_Accounts_table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1309,6 +1317,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202308090710128_ModifyTable_GameTeams_RenameColumn_Score_To_Points.resx">
       <DependentUpon>202308090710128_ModifyTable_GameTeams_RenameColumn_Score_To_Points.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308150918176_ModifyTable_Posts_AddColumns_Type_and_AdditionalData.resx">
+      <DependentUpon>202308150918176_ModifyTable_Posts_AddColumns_Type_and_AdditionalData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308151047559_ModifyTable_Posts_ModifyColumn_AddedById_add_FK_reference_to_Accounts_table.resx">
+      <DependentUpon>202308151047559_ModifyTable_Posts_ModifyColumn_AddedById_add_FK_reference_to_Accounts_table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

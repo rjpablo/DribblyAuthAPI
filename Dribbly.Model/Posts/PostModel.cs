@@ -1,6 +1,7 @@
 ﻿using Dribbly.Core.Models;
 using Dribbly.Model.Account;
 using Dribbly.Model.Courts;
+using Dribbly.Model.Enums;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
 using System.ComponentModel.DataAnnotations;
@@ -17,7 +18,7 @@ namespace Dribbly.Model.Posts
         /// <summary>
         /// The ID of the entity that created this post
         /// </summary>
-        [Required]
+        [ForeignKey(nameof(AddedBy))]
         public long AddedById { get; set; }
 
         /// <summary>
@@ -39,8 +40,11 @@ namespace Dribbly.Model.Posts
 
         public EntityStatusEnum EntityStatus { get; set; }
 
+        public PostTypeEnum? Type { get; set; }
+
         [NotMapped]
         public EntityTypeEnum EntityType { get; } = EntityTypeEnum.Post;
+        public string AdditionalData { get; set; }
 
         #endregion
 
@@ -54,7 +58,7 @@ namespace Dribbly.Model.Posts
         [NotMapped]
         public string Description { get { return Content; } }
 
-        public EntityBasicInfoModel AddedBy { get; set; }
+        public AccountModel AddedBy { get; set; }
 
         #endregion
 

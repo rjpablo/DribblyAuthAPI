@@ -1,6 +1,7 @@
 ﻿using Dribbly.Core.Exceptions;
 using Dribbly.Core.Extensions;
 using Dribbly.Core.Utilities;
+using Dribbly.Email.Services;
 using Dribbly.Model;
 using Dribbly.Model.Account;
 using Dribbly.Model.DTO;
@@ -10,6 +11,7 @@ using Dribbly.Model.GameEvents;
 using Dribbly.Model.Games;
 using Dribbly.Model.Notifications;
 using Dribbly.Model.Play;
+using Dribbly.Model.Posts;
 using Dribbly.Model.Shared;
 using Dribbly.Model.Teams;
 using Dribbly.Service.Enums;
@@ -29,6 +31,7 @@ namespace Dribbly.Service.Services
     {
         private readonly IAuthContext _context;
         private readonly ISecurityUtility _securityUtility;
+        private readonly IEmailService _emailSender;
         private readonly IFileService _fileService;
         private readonly IAccountRepository _accountRepo;
         private readonly INotificationsRepository _notificationsRepo;
@@ -40,29 +43,29 @@ namespace Dribbly.Service.Services
         private readonly IMemberFoulsRepository _memberFoulsRepository;
         private readonly IShotsRepository _shotsRepository;
         private readonly IGamePlayersRepository _gamePlayerRepo;
+        private readonly ISharedPostsService _postsService;
 
         public GamesService(IAuthContext context,
             ISecurityUtility securityUtility,
-            IAccountRepository accountRepo,
+            IEmailService emailSender,
             IFileService fileService,
-            INotificationsRepository notificationsRepo,
-            ICourtsRepository courtsRepo,
-            ICommonService commonService,
             ITeamsRepository teamsRepository) : base(context.Games, context)
         {
             _context = context;
             _securityUtility = securityUtility;
-            _accountRepo = accountRepo;
+            _emailSender = emailSender;
+            _accountRepo = new AccountRepository(context, new AuthRepository(_emailSender,context));
+            _commonService = new CommonService(context, _securityUtility);
             _fileService = fileService;
-            _notificationsRepo = notificationsRepo;
-            _courtsRepo = courtsRepo;
-            _commonService = commonService;
+            _notificationsRepo = new NotificationsRepository(context);
+            _courtsRepo = new CourtsRepository(context);
             _teamsRepository = teamsRepository;
             _gameRepo = new BaseRepository<GameModel>(context.Games);
             _gameEventsRepo = new BaseRepository<GameEventModel>(context.GameEvents);
             _memberFoulsRepository = new MemberFoulsRepository(context);
             _shotsRepository = new ShotsRepository(context);
             _gamePlayerRepo = new GamePlayersRepository(context);
+            _postsService = new SharedPostsService(context, securityUtility, _accountRepo, _commonService, new IndexedEntitysRepository(context));
         }
 
         public IEnumerable<GameModel> GetAll()
@@ -80,7 +83,7 @@ namespace Dribbly.Service.Services
                 && (!filter.CourdIds.Any() || filter.CourdIds.Contains(g.CourtId))
                 && (!filter.UpcomingOnly || g.Start > DateTime.UtcNow));
 
-            if(filter.PageSize > 0)
+            if (filter.PageSize > 0)
             {
                 query = query
                 .OrderByDescending(g => g.Start)
@@ -91,7 +94,7 @@ namespace Dribbly.Service.Services
             {
                 query = query.OrderByDescending(g => g.Start);
             }
-                
+
             var games = await query.ToListAsync();
             return games;
         }
@@ -667,10 +670,11 @@ namespace Dribbly.Service.Services
         {
             using (var transaction = _context.Database.BeginTransaction())
             {
+                GameModel game = input.ToGameModel();
                 try
                 {
-                    GameModel game = input.ToGameModel();
-                    game.AddedById = _securityUtility.GetAccountId().Value;
+                    var account = await _accountRepo.GetAccountById(_securityUtility.GetAccountId().Value);
+                    game.AddedById = account.Id;
                     game.Status = GameStatusEnum.WaitingToStart;
                     game.EntityStatus = EntityStatusEnum.Active;
                     game.DateAdded = DateTime.UtcNow;
@@ -746,7 +750,13 @@ namespace Dribbly.Service.Services
                     game.Team2Id = team2.Id;
                     _context.SaveChanges();
 
-                    transaction.Commit();
+                    game = _context.Games
+                        .Include(g => g.Team1.Players.Select(p => p.TeamMembership.Account.User))
+                        .Include(g => g.Team1.Team.Logo)
+                        .Include(g => g.Team2.Players.Select(p => p.TeamMembership.Account.User))
+                        .Include(g => g.Team2.Team.Logo)
+                        .Single(g => g.Id == game.Id);
+
                     await _commonService.AddUserGameActivity(UserActivityTypeEnum.AddGame, game.Id);
                     NotificationTypeEnum Type = game.AddedById == _securityUtility.GetAccountId().Value ?
                         NotificationTypeEnum.NewGameForOwner :
@@ -761,12 +771,25 @@ namespace Dribbly.Service.Services
                         Type = Type
                     });
 
-                    return _context.Games
-                        .Include(g => g.Team1.Players.Select(p => p.TeamMembership.Account.User))
-                        .Include(g => g.Team1.Team.Logo)
-                        .Include(g => g.Team2.Players.Select(p => p.TeamMembership.Account.User))
-                        .Include(g => g.Team2.Team.Logo)
-                        .Single(g => g.Id == game.Id);
+                    await _postsService.AddPostAsync(new AddEditPostInputModel
+                    {
+                        PostedOnType = EntityTypeEnum.Game,
+                        PostedOnId = game.Id,
+                        AddedByType = EntityTypeEnum.Account,
+                        Content = "",
+                        Type = PostTypeEnum.GameCreated,
+                        AdditionalData = JsonConvert.SerializeObject(new
+                        {
+                            gameId = game.Id,
+                            gameCreatedById = game.AddedById,
+                            gameCreatedByUsername = account.Username,
+                            gameCreatedByName = account.Name,
+                        })
+                    });
+
+                    transaction.Commit();
+
+                    return game;
                 }
                 catch (Exception e)
                 {
