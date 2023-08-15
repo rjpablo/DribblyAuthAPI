@@ -104,29 +104,19 @@ namespace Dribbly.Service.Services
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            //GameModel game = await _dbSet.Where(g => g.Id == id).Include(g => g.Court.PrimaryPhoto)
-            //    .Include(g => g.Team1).Include(g => g.Team1.Team.Logo)
-            //    .Include(g => g.Team2).Include(g => g.Team2.Team.Logo)
-            //    .SingleOrDefaultAsync();
+            GameModel game = await _dbSet.Where(g => g.Id == id).Include(g => g.Court.PrimaryPhoto)
+                .Include(g => g.Team1.Team.Logo)
+                .Include(g => g.Team1.Players.Select(p=>p.TeamMembership.Account.User))
+                .Include(g => g.Team1.Players.Select(p=>p.TeamMembership.Account.ProfilePhoto))
+                .Include(g => g.Team2.Team.Logo)
+                .Include(g => g.Team2.Players.Select(p=>p.TeamMembership.Account.User))
+                .Include(g => g.Team2.Players.Select(p=>p.TeamMembership.Account.ProfilePhoto))
+                .Include(g => g.GameEvents.Select(e=>e.PerformedBy.ProfilePhoto))
+                .Include(g => g.GameEvents.Select(e=>e.Team))
+                .Include(g => g.Court)
+                .Include(g => g.Tournament)
+                .SingleOrDefaultAsync();
 
-            GameModel game = await _gameRepo.Get(g => g.Id == id,
-                // include team1 details
-                $"{nameof(GameModel.Team1)}.{nameof(GameTeamModel.Team)}.{nameof(TeamModel.Logo)}," +
-                // include team1 players details
-                $"{nameof(GameModel.Team1)}.{nameof(GameTeamModel.Players)}.{nameof(GamePlayerModel.TeamMembership)}" +
-                $".{nameof(TeamMembershipModel.Account)}.{nameof(AccountModel.User)}," +
-                $"{nameof(GameModel.Team1)}.{nameof(GameTeamModel.Players)}.{nameof(GamePlayerModel.TeamMembership)}" +
-                $".{nameof(TeamMembershipModel.Account)}.{nameof(AccountModel.ProfilePhoto)}," +
-                // include team2 details
-                $"{nameof(GameModel.Team2)}.{nameof(GameTeamModel.Team)}.{nameof(TeamModel.Logo)}," +
-                // include team2 players details
-                $"{nameof(GameModel.Team2)}.{nameof(GameTeamModel.Players)}.{nameof(GamePlayerModel.TeamMembership)}" +
-                $".{nameof(TeamMembershipModel.Account)}.{nameof(AccountModel.User)}," +
-                // include gameevents for play-by-play
-                $"{nameof(GameModel.GameEvents)}.{nameof(GameEventModel.PerformedBy)}.{nameof(AccountModel.ProfilePhoto)}," +
-                $"{nameof(GameModel.GameEvents)}.{nameof(GameEventModel.Team)}," +
-                $"{nameof(GameModel.Court)}")
-                .FirstOrDefaultAsync();
             if (game != null)
             {
                 game.AddedBy = await _accountRepo.GetAccountBasicInfo(game.AddedById);
@@ -140,6 +130,9 @@ namespace Dribbly.Service.Services
             stopWatch.Stop();
             TimeSpan ts = stopWatch.Elapsed;
             System.Diagnostics.Debug.WriteLine("**** GetGame execution time: " + ts.TotalSeconds.ToString());
+
+            // To avoid self-referencing loop error
+            game.Tournament.Games.Clear();
 
             return game;
         }

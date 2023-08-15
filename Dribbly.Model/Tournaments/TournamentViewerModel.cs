@@ -34,7 +34,11 @@ namespace Dribbly.Model.Tournaments
             AddedById = model.AddedById;
             Logo = model.Logo;
             Status = model.Status;
-            Games = model.Games.ToList();
+            Games = model.Games.Select(g=>
+            {
+                g.Tournament = null;// To avoid self-referencing loop error
+                return g;
+            }).ToList();
             Teams = model.Teams.ToList<BaseTeamStatsModel>();
             Stages = model.Stages;
             JoinRequests = model.JoinRequests.ToList();

@@ -110,8 +110,6 @@ namespace Dribbly.Model.Games
         public virtual GameTeamModel Team1 { get; set; }
 
         public virtual GameTeamModel Team2 { get; set; }
-
-        [JsonIgnore] // To avoid "self-referencing loop detected" error
         public TournamentModel Tournament { get; set; }
 
         [JsonIgnore]
