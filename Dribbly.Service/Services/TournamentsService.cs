@@ -482,7 +482,7 @@ namespace Dribbly.Service.Services
                         .Include(r => r.Tournament).Include(r => r.AddedBy.User)
                         .SingleAsync(r => r.Id == request.Id);
 
-                    _ = AddJoinTournamentNotification(request, NotificationTypeEnum.NewJoinTournamentRequest);
+                    _ = await AddJoinTournamentNotification(request, NotificationTypeEnum.NewJoinTournamentRequest);
 
                     await _context.SaveChangesAsync();
                     tx.Commit();
@@ -528,7 +528,7 @@ namespace Dribbly.Service.Services
                         DateAdded = DateTime.UtcNow
                     };
                     _context.TournamentTeams.Add(tournamentTeam);
-                    _ = AddJoinTournamentNotification(request, NotificationTypeEnum.JoinTournamentRequestApproved);
+                    _ = await AddJoinTournamentNotification(request, NotificationTypeEnum.JoinTournamentRequestApproved);
                     await _context.SaveChangesAsync();
                     tournamentTeam = await _context.TournamentTeams.Include(t => t.Team.Logo)
                         .SingleAsync(t => t.TeamId == request.TeamId && t.TournamentId == request.TournamentId);
@@ -561,6 +561,22 @@ namespace Dribbly.Service.Services
                         return;
                     }
 
+                    #region Delete Games
+                    var games = await _context.Games.Where(g => g.TournamentId == tournamentId
+                    && (g.Team1.TeamId == teamId || g.Team2.TeamId == teamId)).ToListAsync();
+
+                    if(games.Any(g=>g.Status == GameStatusEnum.Started || g.Status == GameStatusEnum.Finished))
+                    {
+                        throw new DribblyInvalidOperationException("Tried to withdraw tournament team with finished or on-going game",
+                            friendlyMessage: "Cannot remove team because it has games that have either started or finished");
+                    }
+                    _context.Games.RemoveRange(games);
+                    #endregion
+
+                    #region Delete Stage Teams
+                    var stageTeams = _context.StageTeams.Where(t => t.Stage.TournamentId == tournamentId && t.TeamId == teamId);
+                    _context.StageTeams.RemoveRange(stageTeams);
+                    #endregion
 
                     var notif = new NotificationModel(NotificationTypeEnum.TournamentTeamRemoved);
                     notif.ForUserId = team.Team.ManagedById;
@@ -586,7 +602,7 @@ namespace Dribbly.Service.Services
             }
         }
 
-        public NotificationModel AddJoinTournamentNotification(JoinTournamentRequestModel request, NotificationTypeEnum type)
+        public async Task<NotificationModel> AddJoinTournamentNotification(JoinTournamentRequestModel request, NotificationTypeEnum type)
         {
             var notif = new NotificationModel(type);
             notif.AdditionalInfo = JsonConvert.SerializeObject(new
@@ -609,7 +625,7 @@ namespace Dribbly.Service.Services
                     break;
             }
 
-            _notificationsRepo.TryAddAsync(notif);
+            await _notificationsRepo.TryAddAsync(notif);
             return notif;
         }
         #endregion
