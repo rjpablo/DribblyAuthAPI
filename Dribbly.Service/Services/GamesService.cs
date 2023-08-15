@@ -940,11 +940,12 @@ namespace Dribbly.Service.Services
         public async Task<GameModel> UpdateGameAsync(UpdateGameModel input)
         {
             GameModel game = await _dbSet.Include(g => g.Court).SingleOrDefaultAsync(g => g.Id == input.Id);
+            var currentAccount = await _accountRepo.GetAccountById(_securityUtility.GetAccountId().Value);
+            var scheduleChanged = game.Start != input.Start;
             if (input.ToStatus.HasValue)
             {
                 game.Status = input.ToStatus.Value;
             }
-
             game.Start = input.Start;
             game.End = input.End;
             game.Title = input.Title;
@@ -963,7 +964,7 @@ namespace Dribbly.Service.Services
 
 
             Update(game);
-            bool isUpdatedByBooker = game.AddedById == _securityUtility.GetAccountId().Value;
+            bool isUpdatedByBooker = game.AddedById == currentAccount.Id;
             NotificationTypeEnum Type = isUpdatedByBooker ?
                 NotificationTypeEnum.GameUpdatedForOwner :
                 NotificationTypeEnum.GameUpdatedForBooker;
@@ -976,6 +977,23 @@ namespace Dribbly.Service.Services
                 DateAdded = DateTime.UtcNow,
                 Type = Type
             });
+
+            if(scheduleChanged)
+            {
+                await _postsService.AddPostAsync(new AddEditPostInputModel
+                {
+                    PostedOnType = EntityTypeEnum.Game,
+                    PostedOnId = game.Id,
+                    AddedByType = EntityTypeEnum.Account,
+                    Content = "",
+                    Type = PostTypeEnum.GameRescheduled,
+                    AdditionalData = JsonConvert.SerializeObject(new
+                    {
+                        gameId = game.Id,
+                        newSchedule= game.Start
+                    })
+                });
+            }
             _context.SaveChanges();
             await _commonService.AddUserGameActivity(UserActivityTypeEnum.UpdateGame, game.Id);
             return await GetGame(game.Id);
