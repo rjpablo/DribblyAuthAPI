@@ -8,11 +8,13 @@ using Dribbly.Model.Entities;
 using Dribbly.Model.Enums;
 using Dribbly.Model.Games;
 using Dribbly.Model.Notifications;
+using Dribbly.Model.Posts;
 using Dribbly.Model.Shared;
 using Dribbly.Model.Teams;
 using Dribbly.Model.Tournaments;
 using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
+using Dribbly.Service.Services.Shared;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -32,6 +34,9 @@ namespace Dribbly.Service.Services
         private readonly INotificationsRepository _notificationsRepo;
         private readonly IFileService _fileService;
         private readonly IIndexedEntitysRepository _indexedEntitysRepository;
+        private readonly IAccountRepository _accountRepo;
+        private readonly ICommonService _commonService;
+        private readonly ISharedPostsService _postsService;
 
         public TournamentsService(IAuthContext context,
             IFileService fileService,
@@ -45,6 +50,9 @@ namespace Dribbly.Service.Services
             _notificationsRepo = new NotificationsRepository(context);
             _fileService = fileService;
             _indexedEntitysRepository = new IndexedEntitysRepository(context);
+            _accountRepo = new AccountRepository(context, new AuthRepository(null, context));
+            _commonService = new CommonService(context, _securityUtility);
+            _postsService = new SharedPostsService(context, securityUtility, _accountRepo, _commonService, _indexedEntitysRepository);
         }
 
         public async Task<TournamentModel> AddTournamentAsync(TournamentModel tournament)
@@ -53,13 +61,30 @@ namespace Dribbly.Service.Services
             {
                 try
                 {
+                    var account = await _accountRepo.GetAccountById(_securityUtility.GetAccountId().Value);
                     tournament.EntityStatus = Enums.EntityStatusEnum.Active;
-                    tournament.AddedById = _securityUtility.GetAccountId().Value;
+                    tournament.AddedById = account.Id;
                     _tournamentsRepository.Add(tournament);
                     await _context.SaveChangesAsync();
 
                     _context.IndexedEntities.Add(new IndexedEntityModel(tournament));
                     _context.SaveChanges();
+                    await _postsService.AddPostAsync(new AddEditPostInputModel
+                    {
+                        PostedOnType = EntityTypeEnum.Tournament,
+                        PostedOnId = tournament.Id,
+                        AddedByType = EntityTypeEnum.Account,
+                        Content = "",
+                        Type = PostTypeEnum.TournamentCreated,
+                        AdditionalData = JsonConvert.SerializeObject(new
+                        {
+                            tournamentId = tournament.Id,
+                            createdById = tournament.AddedById,
+                            createdByUsername = account.Username,
+                            createdByName = account.Name,
+                        })
+                    });
+
                     // TODO: log activity
 
                     tx.Commit();
