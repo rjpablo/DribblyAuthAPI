@@ -4,6 +4,7 @@ using Dribbly.Model.Posts;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
+using System.Data.Entity;
 using System.Threading.Tasks;
 
 namespace Dribbly.Service.Services.Shared
@@ -32,22 +33,40 @@ namespace Dribbly.Service.Services.Shared
 
         public async Task<PostModel> AddPostAsync(AddEditPostInputModel input)
         {
-            PostModel post = new PostModel
+            using(var tran = _context.Database.BeginTransaction())
             {
-                AddedByType = input.AddedByType,
-                PostedOnType = input.PostedOnType,
-                PostedOnId = input.PostedOnId,
-                Content = input.Content,
-                EntityStatus = EntityStatusEnum.Active,
-                AdditionalData = input.AdditionalData,
-                Type = input.Type
-            };
-            post.AddedById = _securityUtility.GetAccountId().Value;
-            Add(post);
-            await _context.SaveChangesAsync();
-            await _indexedEntitysRepository.Add(_context, post);
-            await _commonService.AddUserPostActivity(UserActivityTypeEnum.AddPost, post.Id);
-            return post;
+                try
+                {
+                    PostModel post = new PostModel
+                    {
+                        AddedByType = input.AddedByType,
+                        PostedOnType = input.PostedOnType,
+                        PostedOnId = input.PostedOnId,
+                        Content = input.Content,
+                        EntityStatus = EntityStatusEnum.Active,
+                        AdditionalData = input.AdditionalData,
+                        Type = input.Type
+                    };
+                    post.AddedById = _securityUtility.GetAccountId().Value;
+                    Add(post);
+                    await _context.SaveChangesAsync();
+                    await _indexedEntitysRepository.Add(_context, post);
+                    await _commonService.AddUserPostActivity(UserActivityTypeEnum.AddPost, post.Id);
+
+                    tran.Commit();
+
+                    post.AddedBy = await _context.Accounts
+                        .Include(a => a.ProfilePhoto)
+                        .Include(a => a.User)
+                        .SingleAsync(a=>a.Id == post.AddedById);
+                    return post;
+                }
+                catch (System.Exception)
+                {
+                    tran.Rollback();
+                    throw;
+                }
+            }
         }
 
         private async Task<EntityBasicInfoModel> GetAddedBy(PostModel post)
