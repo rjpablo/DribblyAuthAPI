@@ -5,6 +5,8 @@ using Dribbly.Model.Entities;
 using Dribbly.Model.Enums;
 using Dribbly.Model.Fouls;
 using Dribbly.Model.GameEvents;
+using Dribbly.Model.Games;
+using Dribbly.Model.Play;
 using Dribbly.Service.Repositories;
 using Newtonsoft.Json;
 using System;
@@ -24,6 +26,8 @@ namespace Dribbly.Service.Services
         private readonly IBaseRepository<GameEventModel> _gameEventsRepository;
         private readonly IGamesRepository _gamesRepository;
         private readonly IGamePlayersRepository _gamePlayersRepository;
+        private readonly IBaseRepository<GameEventModel> _gameEventsRepo;
+        private readonly IShotsRepository _shotsRepository;
 
         public GameEventsService(IAuthContext context,
             ISecurityUtility securityUtility,
@@ -36,6 +40,8 @@ namespace Dribbly.Service.Services
             _gameEventsRepository = new BaseRepository<GameEventModel>(context.GameEvents);
             _gamesRepository = new GamesRepository(context);
             _gamePlayersRepository = new GamePlayersRepository(context);
+            _gameEventsRepo = new BaseRepository<GameEventModel>(context.GameEvents);
+            _shotsRepository = new ShotsRepository(context);
         }
 
         public async Task<UpsertFoulResultModel> UpsertFoulAsync(MemberFoulModel foul)
@@ -145,6 +151,154 @@ namespace Dribbly.Service.Services
             }
         }
 
+        public async Task<UpsertShotResultModel> RecordShotAsync(ShotDetailsInputModel input)
+        {
+            GameModel game = await _gamesRepository.Get(g => g.Id == input.Shot.GameId,
+                $"{nameof(GameModel.Team1)},{nameof(GameModel.Team2)}")
+                .FirstOrDefaultAsync();
+            var shootersTeam = game.Team1.TeamId == input.Shot.TeamId ? game.Team1 : game.Team2;
+            var opponentTeam = game.Team1.TeamId != shootersTeam.TeamId ? game.Team1 : game.Team2;
+
+            if (game == null)
+            {
+                throw new DribblyObjectNotFoundException($"A game with ID {input.Shot.Game.Id} does not exist.");
+            }
+
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    _context.SetEntityState(input.Shot.Game, EntityState.Unchanged);
+                    input.Shot.Type = input.Shot.IsMiss ?
+                        Model.Enums.GameEventTypeEnum.ShotMissed :
+                        Model.Enums.GameEventTypeEnum.ShotMade;
+                    input.Shot.AdditionalData = JsonConvert.SerializeObject(new { points = input.Shot.Points });
+                    input.Shot.DateAdded = DateTime.UtcNow;
+                    _shotsRepository.Add(input.Shot);
+                    await _context.SaveChangesAsync();
+
+                    var gamePlayer = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.Id == input.Shot.PerformedById
+                                            && g.GameId == input.Shot.GameId && g.GameTeam.TeamId == input.Shot.TeamId);
+                    gamePlayer.FGA++;
+                    shootersTeam.FGA++;
+                    if (input.Shot.Points == 3)
+                    {
+                        gamePlayer.ThreePA++;
+                        shootersTeam.ThreePA++;
+                    }
+                    await _context.SaveChangesAsync();
+
+                    var result = new UpsertShotResultModel();
+                    if (!input.Shot.IsMiss)
+                    {
+                        shootersTeam.Points = await _context.Shots
+                            .Where(s => s.TeamId == shootersTeam.TeamId && s.GameId == input.Shot.GameId && !s.IsMiss)
+                            .SumAsync(s => s.Points);
+                        if (shootersTeam.TeamId == game.Team1.TeamId)
+                        {
+                            game.Team1Score = shootersTeam.Points;
+                        }
+                        else if (input.Shot.TeamId == game.Team2.TeamId)
+                        {
+                            game.Team2Score = shootersTeam.Points;
+                        }
+
+                        // TODO: add gamePlayer null check
+
+                        gamePlayer.Points += input.Shot.Points;
+                        gamePlayer.FGM++;
+                        shootersTeam.FGM++;
+                        if (input.Shot.Points == 3)
+                        {
+                            gamePlayer.ThreePM++;
+                            shootersTeam.ThreePM++;
+                        }
+                        await _context.SaveChangesAsync();
+                    }
+
+                    result.TakenBy = gamePlayer;
+                    result.Team1Score = game.Team1Score;
+                    result.Team2Score = game.Team2Score;
+
+                    if (input.WithFoul)
+                    {
+                        input.Foul.Game = game;
+                        input.Foul.ShotId = input.Shot.Id;
+                        result.FoulResult = await _memberFoulsRepository.UpsertFoul(input.Foul);
+                    }
+
+                    if (input.WithBlock)
+                    {
+                        input.Block.ShotId = input.Shot.Id;
+                        _context.SetEntityState(input.Block.PerformedBy, EntityState.Unchanged);
+                        _gameEventsRepo.Upsert(input.Block);
+                        await _context.SaveChangesAsync();
+                        var blocker = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.Id == input.Block.PerformedById
+                                                && g.GameId == input.Shot.GameId && g.GameTeam.TeamId == input.Block.TeamId);
+                        blocker.Blocks = await _context.GameEvents.CountAsync(e => e.Type == GameEventTypeEnum.ShotBlock
+                        && e.PerformedById == input.Block.PerformedById && e.GameId == input.Block.GameId);
+                        result.BlockResult = new BlockResultModel
+                        {
+                            TotalBlocks = blocker.Blocks
+                        };
+                        opponentTeam.Blocks++;
+                        await _context.SaveChangesAsync();
+                    }
+
+                    if (input.WithAssist)
+                    {
+                        input.Assist.ShotId = input.Shot.Id;
+                        _context.SetEntityState(input.Assist.PerformedBy, EntityState.Unchanged);
+                        _gameEventsRepo.Upsert(input.Assist);
+                        await _context.SaveChangesAsync();
+                        var assistedBy = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.Id == input.Assist.PerformedById
+                                                && g.GameId == input.Shot.GameId && g.GameTeam.TeamId == input.Assist.TeamId);
+                        assistedBy.Assists = await _context.GameEvents.CountAsync(e => e.Type == GameEventTypeEnum.Assist
+                        && e.PerformedById == input.Assist.PerformedById && e.GameId == input.Assist.GameId);
+                        result.AssistResult = new AssistResultModel
+                        {
+                            TotalAssists = assistedBy.Assists
+                        };
+                        shootersTeam.Assists++;
+                        await _context.SaveChangesAsync();
+                    }
+
+                    if (input.WithRebound)
+                    {
+                        input.Rebound.ShotId = input.Shot.Id;
+                        _context.SetEntityState(input.Rebound.PerformedBy, EntityState.Unchanged);
+                        _gameEventsRepo.Upsert(input.Rebound);
+                        await _context.SaveChangesAsync();
+                        var reboundedBy = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.Id == input.Rebound.PerformedById
+                                                && g.GameId == input.Rebound.GameId && g.GameTeam.TeamId == input.Rebound.TeamId);
+                        var rebounds = await _context.GameEvents
+                            .Where(e => (e.Type == GameEventTypeEnum.OffensiveRebound || e.Type == GameEventTypeEnum.DefensiveRebound)
+                            && e.PerformedById == input.Rebound.PerformedById && e.GameId == input.Rebound.GameId).ToListAsync();
+                        reboundedBy.Rebounds = rebounds.Count();
+                        reboundedBy.OReb = rebounds.Count(e => e.Type == GameEventTypeEnum.OffensiveRebound);
+                        reboundedBy.DReb = rebounds.Count(e => e.Type == GameEventTypeEnum.DefensiveRebound);
+                        result.ReboundResult = new ReboundResultModel
+                        {
+                            TotalRebounds = reboundedBy.Rebounds
+                        };
+                        var reboundersTeam = game.Team1.TeamId == input.Rebound.TeamId ? game.Team1 : game.Team2;
+                        reboundersTeam.Rebounds++;
+                        await _context.SaveChangesAsync();
+                    }
+
+                    transaction.Commit();
+
+                    return result;
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw e;
+                }
+            }
+
+        }
+
         public async Task<UpdateGameEventResultModel> DeleteAsync(long gameEventId)
         {
             //TODO: Only the game manager should be allowed to perform this action
@@ -227,5 +381,6 @@ namespace Dribbly.Service.Services
         Task<GameEventModel> UpsertAsync(GameEventModel gameEvent);
         Task<UpdateGameEventResultModel> UpdateAsync(UpdateGameEventInputModel input);
         Task RecordTurnoverAsync(GameEventModel turnover);
+        Task<UpsertShotResultModel> RecordShotAsync(ShotDetailsInputModel input);
     }
 }

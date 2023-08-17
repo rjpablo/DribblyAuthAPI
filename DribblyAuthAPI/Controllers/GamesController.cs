@@ -116,13 +116,6 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost, Authorize]
-        [Route("RecordShot")]
-        public async Task<UpsertShotResultModel> RecordShot([FromBody] ShotDetailsInputModel input)
-        {
-            return await _service.RecordShotAsync(input);
-        }
-
-        [HttpPost, Authorize]
         [Route("UpdateGameResult")]
         public async Task UpdateGameResult(GameResultModel result)
         {
