@@ -43,17 +43,17 @@ namespace Dribbly.Model.Entities
         /// <summary>
         /// Field Goal Percentage
         /// </summary>
-        public double FGP { get; set; }
+        public double? FGP { get; set; }
 
         /// <summary>
         /// 3pt percentage
         /// </summary>
-        public double ThreePP { get; set; }
+        public double? ThreePP { get; set; }
 
         /// <summary>
         /// Free Throw percentage
         /// </summary>
-        public double FTP { get; set; }
+        public double? FTP { get; set; }
 
         /// <summary>
         /// Blocks per game

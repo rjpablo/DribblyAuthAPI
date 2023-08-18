@@ -19,6 +19,14 @@ namespace Dribbly.Model.Entities
         /// </summary>
         public int FGM { get; set; }
         /// <summary>
+        /// free throw attempts
+        /// </summary>
+        public int FTA { get; set; }
+        /// <summary>
+        /// free throws made
+        /// </summary>
+        public int FTM { get; set; }
+        /// <summary>
         /// 3pt attempts
         /// </summary>
         public int ThreePA { get; set; }

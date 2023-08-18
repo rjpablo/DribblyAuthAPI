@@ -39,14 +39,6 @@ namespace Dribbly.Model.Entities
         public int DReb { get; set; }
         public int Fouls { get; set; }
         /// <summary>
-        /// Free Throw Attempts
-        /// </summary>
-        public int FTA { get; set; }
-        /// <summary>
-        /// Free Throws made
-        /// </summary>
-        public int FTM { get; set; }
-        /// <summary>
         /// Playing time in milliseconds
         /// </summary>
         public int PlayTimeMs { get; set; }

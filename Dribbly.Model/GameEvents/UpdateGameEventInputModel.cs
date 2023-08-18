@@ -1,4 +1,5 @@
 ﻿using Dribbly.Model.Enums;
+using System.Collections.Generic;
 
 namespace Dribbly.Model.GameEvents
 {
@@ -18,6 +19,8 @@ namespace Dribbly.Model.GameEvents
         /// The id of the shot linked to this event, if any
         /// </summary>
         public long? ShotId { get; set; }
+
+        public bool IsNew { get; set; }
 
         #region Shot Properties
         public int Points { get; set; }

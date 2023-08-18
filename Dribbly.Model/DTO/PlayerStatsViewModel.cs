@@ -58,19 +58,19 @@ namespace Dribbly.Model.DTO
         /// <summary>
         /// Field Goal Percentage
         /// </summary>
-        public double FGP { get; set; }
+        public double? FGP { get; set; }
 
         [DataMember]
         /// <summary>
         /// 3pt percentage
         /// </summary>
-        public double ThreePP { get; set; }
+        public double? ThreePP { get; set; }
 
         [DataMember]
         /// <summary>
         /// Free Throw percentage
         /// </summary>
-        public double FTP { get; set; }
+        public double? FTP { get; set; }
 
         [DataMember]
         /// <summary>
@@ -140,6 +140,7 @@ namespace Dribbly.Model.DTO
             ThreePP = source.ThreePP;
             BPG = source.BPG;
             SPG = source.SPG;
+            FTP = source.FTP;
         }
     }
 }

@@ -42,6 +42,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost]
+        [Route("UpsertFreeThrow")]
+        public async Task<UpdateGameEventResultModel> UpsertFreeThrow(UpsertFreeThrowInputModel input)
+        {
+            return await _service.UpsertFreeThrowAsync(input);
+        }
+
+        [HttpPost]
         [Route("RecordTurnover")]
         public async Task RecordTurnover(GameEventModel turnover)
         {

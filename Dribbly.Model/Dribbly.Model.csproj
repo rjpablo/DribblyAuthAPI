@@ -129,6 +129,7 @@
     <Compile Include="Enums\FoulTypeEnum.cs" />
     <Compile Include="Enums\GameEventTypeEnum.cs" />
     <Compile Include="Enums\PostTypeEnum.cs" />
+    <Compile Include="Enums\ShotTypeEnum.cs" />
     <Compile Include="Enums\SortDirectionEnum.cs" />
     <Compile Include="Enums\StageStatusEnum.cs" />
     <Compile Include="Enums\StatEnum.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="GameEvents\UpdateGameEventInputModel.cs" />
     <Compile Include="GameEvents\RecordTimeoutInputModel.cs" />
     <Compile Include="GameEvents\RecordTimeoutResultModel.cs" />
+    <Compile Include="GameEvents\UpsertFreeThrowInputModel.cs" />
     <Compile Include="Games\StartGameInputModel.cs" />
     <Compile Include="Games\UpdateGameTimeRemainingInput.cs" />
     <Compile Include="Games\UpdateLineupInputModel.cs" />

@@ -30,7 +30,7 @@ namespace Dribbly.Model.Entities
         /// <summary>
         /// Field Goal Percentage
         /// </summary>
-        public double FGP { get; set; }
+        public double? FGP { get; set; }
         /// <summary>
         /// Blocks per game
         /// </summary>
@@ -42,12 +42,16 @@ namespace Dribbly.Model.Entities
         /// <summary>
         /// 3-point percentage
         /// </summary>
+        public double? ThreePP { get; set; }
+        /// <summary>
+        /// Free Throw Percentage
+        /// </summary>
+        public double? FTP { get; set; }
 
         /// <summary>
         /// Steals per game
         /// </summary>
         public int SPG { get; set; }
-        public double ThreePP { get; set; }
         public double OverallScore { get; set; }
 
         public void UpdateStats(IEnumerable<BaseStatsModel> allGameStats)
@@ -60,11 +64,12 @@ namespace Dribbly.Model.Entities
             BPG = allGameStats.Average(s => s.Blocks);
             FGP = allGameStats.Average(s => s.FGM.DivideBy(s.FGA));
             ThreePP = allGameStats.Average(s => s.ThreePM.DivideBy(s.ThreePA));
+            FTP = allGameStats.Average(s => s.FTM.DivideBy(s.FTA));
         }
 
         public void SetOverallScore()
         {
-            OverallScore = (GW.DivideBy(GP)) + (PPG / 118) + (APG / 28.2) + (BPG / 6.4) + (RPG / 47.7);
+            OverallScore = (GW.DivideBy(GP) ?? 0) + (PPG / 118) + (APG / 28.2) + (BPG / 6.4) + (RPG / 47.7) + (FTP ?? 0);
         }
     }
 }

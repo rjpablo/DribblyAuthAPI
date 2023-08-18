@@ -19,6 +19,8 @@ namespace Dribbly.Model.Enums
         Timeout = 9,
         ChangeLineup = 10,
         TurnOver = 11,
-        Steal = 12
+        Steal = 12,
+        FreeThrowMade = 13,
+        FreeThrowMissed = 14
     }
 }

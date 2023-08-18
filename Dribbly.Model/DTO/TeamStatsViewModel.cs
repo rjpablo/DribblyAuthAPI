@@ -36,7 +36,11 @@ namespace Dribbly.Model.DTO
         /// <summary>
         /// Field Goal Percentage
         /// </summary>
-        public double FGP { get; set; }
+        public double? FGP { get; set; }
+        /// <summary>
+        /// Free Throw percentage
+        /// </summary>
+        public double? FTP { get; set; }
         /// <summary>
         /// Blocks per game
         /// </summary>
@@ -48,7 +52,7 @@ namespace Dribbly.Model.DTO
         /// <summary>
         /// 3-point percentage
         /// </summary>
-        public double ThreePP { get; set; }
+        public double? ThreePP { get; set; }
         public double OverallScore { get; set; }
         #endregion
 
@@ -71,6 +75,7 @@ namespace Dribbly.Model.DTO
             SPG = source.SPG;
             ThreePP = source.ThreePP;
             OverallScore = source.OverallScore;
+            FTP = source.FTP;
         }
     }
 }
