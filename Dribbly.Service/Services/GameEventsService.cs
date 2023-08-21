@@ -113,6 +113,21 @@ namespace Dribbly.Service.Services
                         foul.AdditionalData = JsonConvert.SerializeObject(new { foulName = foulType.Name, foulId = foul.Id });
                         await _context.SaveChangesAsync();
                     }
+                    else if (input.Type == GameEventTypeEnum.FreeThrowMade || input.Type == GameEventTypeEnum.FreeThrowMissed)
+                    {
+                        var shot = await _context.Shots.SingleOrDefaultAsync(s => s.Id == input.Id);
+                        origPlayerAccountId = shot.PerformedById.Value;
+                        playerChanged = input.PerformedById != origPlayerAccountId;
+                        bool teamChanged = input.TeamId != shot.TeamId;
+
+                        shot.PerformedById = input.PerformedById;
+                        shot.TeamId = input.TeamId;
+                        shot.IsMiss = input.IsMiss;
+                        shot.Type = input.IsMiss ? GameEventTypeEnum.FreeThrowMissed : GameEventTypeEnum.FreeThrowMade;
+                        shot.Period = input.Period;
+                        shot.ClockTime = input.ClockTime;
+                        await _context.SaveChangesAsync();
+                    }
                     else
                     {
                         var evt = _context.GameEvents.Single(e => e.Id == input.Id);
