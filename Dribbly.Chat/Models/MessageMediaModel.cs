@@ -13,6 +13,6 @@ namespace Dribbly.Chat.Models
         public long MediaId { get; set; }
         [JsonIgnore]
         public virtual MessageModel Message { get; set; }
-        public virtual MultimediaModel Media { get; set; }
+        public virtual PhotoModel Media { get; set; }
     }
 }

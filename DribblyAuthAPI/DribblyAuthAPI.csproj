@@ -891,6 +891,14 @@
     <Compile Include="Migrations\202308230809433_Add_Chat_Tables.Designer.cs">
       <DependentUpon>202308230809433_Add_Chat_Tables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202308231521439_DropTable_Multimedia.cs" />
+    <Compile Include="Migrations\202308231521439_DropTable_Multimedia.Designer.cs">
+      <DependentUpon>202308231521439_DropTable_Multimedia.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308231524509_Link_Chat_Tables_To_PhotoModel.cs" />
+    <Compile Include="Migrations\202308231524509_Link_Chat_Tables_To_PhotoModel.Designer.cs">
+      <DependentUpon>202308231524509_Link_Chat_Tables_To_PhotoModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1394,6 +1402,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202308230809433_Add_Chat_Tables.resx">
       <DependentUpon>202308230809433_Add_Chat_Tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308231521439_DropTable_Multimedia.resx">
+      <DependentUpon>202308231521439_DropTable_Multimedia.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308231524509_Link_Chat_Tables_To_PhotoModel.resx">
+      <DependentUpon>202308231524509_Link_Chat_Tables_To_PhotoModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

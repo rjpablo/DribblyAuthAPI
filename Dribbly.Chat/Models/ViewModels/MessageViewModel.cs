@@ -15,7 +15,7 @@ namespace Dribbly.Chat.Models.ViewModels
         public bool IsSender { get; set; }
         public long? ChatId { get; set; }
         public DateTime DateSent { get; set; }
-        public List<MultimediaModel> MediaCollection { get; set; }
+        public List<PhotoModel> MediaCollection { get; set; }
 
         public MessageViewModel(MessageModel message, long forParticipantId)
         {
@@ -29,7 +29,7 @@ namespace Dribbly.Chat.Models.ViewModels
                 Status = participant.Status;
                 ChatId = message.ChatId;
                 DateSent = message.DateAdded;
-                MediaCollection = message.MediaCollection.Select(m => m.Media).ToList();
+                //MediaCollection = message.MediaCollection.Select(m => m.Media).ToList();
             }
         }
 

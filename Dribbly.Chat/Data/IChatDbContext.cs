@@ -13,7 +13,8 @@ namespace Dribbly.Chat.Data
         DbSet<ParticipantMessageModel> ParticipantMessages { get; set; }
         DbSet<MessageModel> Messages { get; set; }
         DbSet<MessageMediaModel> MessageMedia { get; set; }
-        DbSet<MultimediaModel> Multimedia { get; set; }
+        //DbSet<MultimediaModel> Multimedia { get; set; }
+        DbSet<PhotoModel> Photos { get; set; }
         Task<int> SaveChangesAsync();
         #endregion
     }

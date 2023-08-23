@@ -53,7 +53,7 @@ namespace Dribbly.Service.Services
                             Type = Core.Enums.MultimediaTypeEnum.Photo,
                             DateAdded = DateTime.UtcNow
                         };
-                        _context.Multimedia.Add(photo);
+                        //_context.Multimedia.Add(photo);
                         await _context.SaveChangesAsync();
                         //TODO: log user activity
                         result.Add(photo);

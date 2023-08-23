@@ -48,7 +48,6 @@ namespace Dribbly.Model
         DbSet<CourtFollowingModel> CourtFollowings { get; set; }
         DbSet<SettingModel> Settings { get; set; }
         DbSet<CourtPhotoModel> CourtPhotos { get; set; }
-        DbSet<PhotoModel> Photos { get; set; }
         DbSet<BookingModel> Bookings { get; set; }
         DbSet<GameModel> Games { get; set; }
         DbSet<GameTeamModel> GameTeams { get; set; }
@@ -134,8 +133,8 @@ namespace Dribbly.Model
             modelBuilder.Entity<TeamStatsModel>()
                 .HasKey(e => e.TeamId);
 
-            modelBuilder.Entity<MultimediaModel>()
-                .ToTable("Multimedia");
+            //modelBuilder.Entity<MultimediaModel>()
+            //    .ToTable("Multimedia");
 
             modelBuilder.Entity<PhotoModel>()
                 .ToTable("Photos");
@@ -165,7 +164,7 @@ namespace Dribbly.Model
         public DbSet<ParticipantMessageModel> ParticipantMessages { get; set; }
         public DbSet<MessageModel> Messages { get; set; }
         public DbSet<MessageMediaModel> MessageMedia { get; set; }
-        public DbSet<MultimediaModel> Multimedia { get; set; }
+        //public DbSet<MultimediaModel> Multimedia { get; set; }
         #endregion
 
         public DbSet<JoinTournamentRequestModel> JoinTournamentRequests { get; set; }

@@ -18,7 +18,7 @@ namespace Dribbly.Chat.Models.ViewModels
         /// </summary>
         public int UnviewedCount { get; set; }
         public ICollection<ChatParticipantModel> Participants { get; set; }
-        public MultimediaModel RoomIcon { get; set; }
+        public PhotoModel RoomIcon { get; set; }
 
         public ChatRoomViewModel(ChatModel chat, long forParticipantId)
         {
@@ -35,7 +35,7 @@ namespace Dribbly.Chat.Models.ViewModels
             if (Type == ChatTypeEnum.Private)
             {
                 RoomName = chat.Participants.Single(p => p.ParticipantId != forParticipantId).Name;
-                RoomIcon = chat.Participants.Single(p => p.ParticipantId != forParticipantId).Photo;
+                //RoomIcon = chat.Participants.Single(p => p.ParticipantId != forParticipantId).Photo;
             }
         }
     }

@@ -58,7 +58,7 @@ namespace Dribbly.Chat.Services
             return chats.Where(c => c.Participants.Select(p => p.ParticipantId).Contains(withUserId)).SingleOrDefault();
         }
 
-        public async Task UpdateParticipantPhoto(long participantUserId, MultimediaModel photo)
+        public async Task UpdateParticipantPhoto(long participantUserId, PhotoModel photo)
         {
             var participant = await _context.ChatParticipants.Where(p => p.ParticipantId == participantUserId)
                 .FirstOrDefaultAsync();
@@ -245,6 +245,6 @@ namespace Dribbly.Chat.Services
         Task<ChatRoomViewModel> GetOrCreatePrivateChatAsync(long withUserId, CreateChatInpuModel input, long userId);
         Task<int> MarkMessageAsSeenAsync(long chatId, long messageId, long userId);
         Task<int> GetUnviewedCountAsync(long chatId, long userId);
-        Task UpdateParticipantPhoto(long participantUserId, MultimediaModel photo);
+        Task UpdateParticipantPhoto(long participantUserId, PhotoModel photo);
     }
 }
