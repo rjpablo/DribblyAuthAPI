@@ -1,4 +1,7 @@
 ﻿using Dribbly.Authentication.Models;
+using Dribbly.Chat.Data;
+using Dribbly.Chat.Models;
+using Dribbly.Core.Models;
 using Dribbly.Identity.Models;
 using Dribbly.Model.Account;
 using Dribbly.Model.Accounts;
@@ -19,11 +22,10 @@ using Dribbly.Model.UserActivities;
 using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Threading.Tasks;
 
 namespace Dribbly.Model
 {
-    public interface IAuthContext : IDisposable
+    public interface IAuthContext : IDisposable, IChatDbContext
     {
         DbSet<AccountModel> Accounts { get; set; }
         DbSet<Client> Clients { get; set; }
@@ -106,7 +108,6 @@ namespace Dribbly.Model
         Database Database { get; }
         DbEntityEntry Entry(object entity);
         DbEntityEntry SetEntityState(object entity, EntityState state);
-        Task<int> SaveChangesAsync();
         int SaveChanges();
     }
 
@@ -133,6 +134,9 @@ namespace Dribbly.Model
             modelBuilder.Entity<TeamStatsModel>()
                 .HasKey(e => e.TeamId);
 
+            modelBuilder.Entity<MultimediaModel>()
+                .ToTable("Multimedia");
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -150,6 +154,15 @@ namespace Dribbly.Model
         public DbSet<StageBracketModel> StageBrackets { get; set; }
         public DbSet<TournamentPhotoModel> TournamentPhotos { get; set; }
         public DbSet<TournamentPlayerModel> TournamentPlayers { get; set; }
+        #endregion
+
+        #region Chats
+        public DbSet<ChatModel> Chats { get; set; }
+        public DbSet<ChatParticipantModel> ChatParticipants { get; set; }
+        public DbSet<ParticipantMessageModel> ParticipantMessages { get; set; }
+        public DbSet<MessageModel> Messages { get; set; }
+        public DbSet<MessageMediaModel> MessageMedia { get; set; }
+        public DbSet<MultimediaModel> Multimedia { get; set; }
         #endregion
 
         public DbSet<JoinTournamentRequestModel> JoinTournamentRequests { get; set; }

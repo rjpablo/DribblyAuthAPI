@@ -141,6 +141,7 @@
     <Compile Include="Services\ContactsService.cs" />
     <Compile Include="Services\GameEventsService.cs" />
     <Compile Include="Services\Shared\SharedPostsService.cs" />
+    <Compile Include="Services\MultimediaService.cs" />
     <Compile Include="Services\TournamentsService.cs" />
     <Compile Include="Services\SeasonsService.cs" />
     <Compile Include="Services\LeaguesService.cs" />
@@ -160,6 +161,10 @@
     <ProjectReference Include="..\Dribbly.Authentication\Dribbly.Authentication.csproj">
       <Project>{2B76E33B-6725-4567-9F2B-23B09396F799}</Project>
       <Name>Dribbly.Authentication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dribbly.Chat\Dribbly.Chat.csproj">
+      <Project>{4a21e360-455b-462e-b7e7-e0a3ae229271}</Project>
+      <Name>Dribbly.Chat</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dribbly.Core\Dribbly.Core.csproj">
       <Project>{8a887a9e-e256-4a63-abe3-f8657b04e011}</Project>

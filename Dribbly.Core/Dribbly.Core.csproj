@@ -71,6 +71,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\MultimediaTypeEnum.cs" />
     <Compile Include="Enums\PermissionsEnum.cs" />
     <Compile Include="Exceptions\DribblyException.cs" />
     <Compile Include="Exceptions\ExceptionResponseContent.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Helpers\Salt.cs" />
     <Compile Include="Models\BaseEntityModel.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\MultimediaModel.cs" />
     <Compile Include="Models\PagedGetInputModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CoreUnityConfig.cs" />

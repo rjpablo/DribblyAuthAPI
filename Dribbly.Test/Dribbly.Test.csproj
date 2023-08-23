@@ -86,6 +86,10 @@
     <Compile Include="Services\TestService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dribbly.Chat\Dribbly.Chat.csproj">
+      <Project>{4A21E360-455B-462E-B7E7-E0A3AE229271}</Project>
+      <Name>Dribbly.Chat</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dribbly.Core\Dribbly.Core.csproj">
       <Project>{8A887A9E-E256-4A63-ABE3-F8657B04E011}</Project>
       <Name>Dribbly.Core</Name>

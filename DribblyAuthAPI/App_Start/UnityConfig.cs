@@ -1,3 +1,5 @@
+using Dribbly.Chat.Data;
+using Dribbly.Chat.Services;
 using Dribbly.Core;
 using Dribbly.Email.Models;
 using Dribbly.Email.Services;
@@ -56,6 +58,9 @@ namespace DribblyAuthAPI
             container.RegisterType<ITournamentsRepository, TournamentsRepository>();
             container.RegisterType<ITournamentsService, TournamentsService>();
             container.RegisterType<IGameEventsService, GameEventsService>();
+            container.RegisterType<IDribblyChatService, DribblyChatService>();
+            container.RegisterType<IMultimediaService, MultimediaService>();
+            container.RegisterType<IChatDbContext, AuthContext>();
             container.RegisterInstance(Startup.OAuthBearerOptions);
 
             TestsConfig.RegisterComponents(container);

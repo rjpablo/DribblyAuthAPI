@@ -1,5 +1,6 @@
 ﻿//reference: http://bitoftech.net/2014/06/01/token-based-authentication-asp-net-web-api-2-owin-asp-net-identity/
 using Dribbly.Model;
+using Dribbly.Service;
 using Dribbly.Service.Providers;
 using Dribbly.Service.Services;
 using Dribbly.SMS.Services;
@@ -42,7 +43,7 @@ namespace DribblyAuthAPI.API
             //to wire up ASP.NET Web API to our Owin server pipeline
             app.UseWebApi(config);
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<AuthContext, Migrations.Configuration>());
-
+            Dribbly.Chat.Startup.MapSignalR(app);
             SMSService.Init();
         }
 
