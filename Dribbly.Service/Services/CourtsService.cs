@@ -1,6 +1,7 @@
 ﻿using Dribbly.Authentication.Services;
 using Dribbly.Core.Enums.Permissions;
 using Dribbly.Core.Exceptions;
+using Dribbly.Core.Models;
 using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Bookings;

@@ -1,11 +1,7 @@
-﻿using Dribbly.Core.Models;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
 
-namespace Dribbly.Model.Courts
+namespace Dribbly.Core.Models
 {
-    [Table("Photos")]
     public class PhotoModel : BaseEntityModel
     {
         public string Url { get; set; }

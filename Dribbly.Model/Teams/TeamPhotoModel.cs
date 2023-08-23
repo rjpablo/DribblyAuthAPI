@@ -1,4 +1,4 @@
-﻿using Dribbly.Model.Courts;
+﻿using Dribbly.Core.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

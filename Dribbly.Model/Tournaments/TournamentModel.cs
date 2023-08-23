@@ -1,4 +1,5 @@
-﻿using Dribbly.Model.Courts;
+﻿using Dribbly.Core.Models;
+using Dribbly.Model.Courts;
 using Dribbly.Model.DTO;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Enums;

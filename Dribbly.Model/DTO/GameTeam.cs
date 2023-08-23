@@ -1,4 +1,4 @@
-﻿using Dribbly.Model.Courts;
+﻿using Dribbly.Core.Models;
 using Dribbly.Model.Teams;
 using System.Collections.Generic;
 using System.Linq;

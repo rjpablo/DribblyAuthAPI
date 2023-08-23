@@ -1,5 +1,5 @@
-﻿using Dribbly.Model.Account;
-using Dribbly.Model.Courts;
+﻿using Dribbly.Core.Models;
+using Dribbly.Model.Account;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;

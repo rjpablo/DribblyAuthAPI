@@ -1,7 +1,7 @@
-﻿using Dribbly.Service.Enums;
-using Dribbly.Model.Courts;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Dribbly.Core.Models;
 using Dribbly.Model.Account;
+using Dribbly.Service.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dribbly.Model.Shared
 {

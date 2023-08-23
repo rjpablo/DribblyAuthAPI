@@ -1,4 +1,4 @@
-﻿using Dribbly.Model.Courts;
+﻿using Dribbly.Core.Models;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Games;
 using System.Runtime.Serialization;

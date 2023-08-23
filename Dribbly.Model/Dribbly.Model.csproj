@@ -229,7 +229,6 @@
     <Compile Include="Shared\FollowResultModel.cs" />
     <Compile Include="Notifications\NotificationTypeEnum.cs" />
     <Compile Include="Shared\PhoneVerificationResultModel.cs" />
-    <Compile Include="Shared\PhotoModel.cs" />
     <Compile Include="Shared\ReviewModel.cs" />
     <Compile Include="Shared\VideoModel.cs" />
   </ItemGroup>

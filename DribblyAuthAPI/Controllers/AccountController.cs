@@ -1,6 +1,7 @@
 ﻿using Dribbly.Authentication.Models;
 using Dribbly.Authentication.Models.Auth;
 using Dribbly.Core.Exceptions;
+using Dribbly.Core.Models;
 using Dribbly.Email.Services;
 using Dribbly.Identity.Models;
 using Dribbly.Model.Account;

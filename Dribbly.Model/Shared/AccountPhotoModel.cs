@@ -1,5 +1,5 @@
-﻿using Dribbly.Model.Account;
-using Dribbly.Model.Courts;
+﻿using Dribbly.Core.Models;
+using Dribbly.Model.Account;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

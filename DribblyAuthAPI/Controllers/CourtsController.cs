@@ -1,6 +1,7 @@
-﻿using Dribbly.Core.Enums.Permissions;
-using Dribbly.Model.Courts;
+﻿using Dribbly.Core.Models;
 using Dribbly.Model.Bookings;
+using Dribbly.Model.Courts;
+using Dribbly.Model.Games;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Services;
 using Newtonsoft.Json;
@@ -10,7 +11,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using Dribbly.Model.Games;
 
 namespace DribblyAuthAPI.Controllers
 {

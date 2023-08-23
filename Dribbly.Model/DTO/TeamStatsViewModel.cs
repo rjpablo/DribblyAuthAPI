@@ -1,4 +1,4 @@
-﻿using Dribbly.Model.Courts;
+﻿using Dribbly.Core.Models;
 using Dribbly.Model.Entities;
 
 namespace Dribbly.Model.DTO

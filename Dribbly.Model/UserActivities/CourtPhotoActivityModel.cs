@@ -1,4 +1,5 @@
-﻿using Dribbly.Model.Courts;
+﻿using Dribbly.Core.Models;
+using Dribbly.Model.Courts;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dribbly.Model.UserActivities

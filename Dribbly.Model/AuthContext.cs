@@ -137,6 +137,9 @@ namespace Dribbly.Model
             modelBuilder.Entity<MultimediaModel>()
                 .ToTable("Multimedia");
 
+            modelBuilder.Entity<PhotoModel>()
+                .ToTable("Photos");
+
             base.OnModelCreating(modelBuilder);
         }
 
