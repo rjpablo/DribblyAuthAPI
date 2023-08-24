@@ -205,7 +205,7 @@ namespace Dribbly.Service.Services
                 .ToListAsync()).Select(p => new PlayerStatsViewModel(p));
         }
 
-        public async Task<PhotoModel> UpdateLogoAsync(long tournamentId)
+        public async Task<MultimediaModel> UpdateLogoAsync(long tournamentId)
         {
             TournamentModel tournament = await GetTournamentByIdAsync(tournamentId);
             if (tournament == null)
@@ -233,7 +233,7 @@ namespace Dribbly.Service.Services
             {
                 try
                 {
-                    PhotoModel photo = await AddPhoto(tournament, files[0]);
+                    MultimediaModel photo = await AddPhoto(tournament, files[0]);
                     tournament.LogoId = photo.Id;
                     Update(tournament);
                     await _context.SaveChangesAsync();
@@ -250,18 +250,18 @@ namespace Dribbly.Service.Services
             }
         }
 
-        private async Task<PhotoModel> AddPhoto(TournamentModel tournament, HttpPostedFile file)
+        private async Task<MultimediaModel> AddPhoto(TournamentModel tournament, HttpPostedFile file)
         {
             var accountId = _securityUtility.GetAccountId().Value;
             string uploadPath = _fileService.Upload(file, $"{accountId}/tournamentPhotos/");
 
-            PhotoModel photo = new PhotoModel
+            MultimediaModel photo = new MultimediaModel
             {
                 Url = uploadPath,
                 UploadedById = accountId,
                 DateAdded = DateTime.UtcNow
             };
-            _context.Photos.Add(photo);
+            _context.Multimedia.Add(photo);
             await _context.SaveChangesAsync();
 
             _context.TournamentPhotos.Add(new TournamentPhotoModel
@@ -669,7 +669,7 @@ namespace Dribbly.Service.Services
         Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId);
         Task<IEnumerable<TeamStatsViewModel>> GetTopTeamsAsync(GetTournamentTeamsInputModel input);
         Task<IEnumerable<PlayerStatsViewModel>> GetPlayersAsync(GetTournamentPlayersInputModel input);
-        Task<PhotoModel> UpdateLogoAsync(long tournamentId);
+        Task<MultimediaModel> UpdateLogoAsync(long tournamentId);
         Task<IEnumerable<TournamentModel>> GetNewAsync(GetTournamentsInputModel input);
         Task RemoveTournamentTeamAsync(long tournamentId, long teamId);
         Task<bool> IsCurrentUserManagerAsync(long tournamentId);

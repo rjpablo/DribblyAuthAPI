@@ -467,11 +467,11 @@ namespace Dribbly.Service.Services
 
         #region Photos
 
-        public async Task<IEnumerable<PhotoModel>> AddAccountPhotosAsync(long accountId)
+        public async Task<IEnumerable<MultimediaModel>> AddAccountPhotosAsync(long accountId)
         {
             HttpFileCollection files = HttpContext.Current.Request.Files;
             AccountModel account = GetById(accountId);
-            List<PhotoModel> photos = new List<PhotoModel>();
+            List<MultimediaModel> photos = new List<MultimediaModel>();
 
             using (var transaction = _context.Database.BeginTransaction())
             {
@@ -494,7 +494,7 @@ namespace Dribbly.Service.Services
             }
         }
 
-        public async Task<IEnumerable<PhotoModel>> GetAccountPhotosAsync(int accountId)
+        public async Task<IEnumerable<MultimediaModel>> GetAccountPhotosAsync(int accountId)
         {
             return await _context.AccountPhotos.Include(p => p.Photo)
                 .Where(p => p.AccountId == accountId && p.Photo.DateDeleted == null)
@@ -529,7 +529,7 @@ namespace Dribbly.Service.Services
             }
         }
 
-        public async Task<PhotoModel> UploadPrimaryPhotoAsync(long accountId)
+        public async Task<MultimediaModel> UploadPrimaryPhotoAsync(long accountId)
         {
             AccountModel account = GetById(accountId);
             long? currentUserId = _securityUtility.GetUserId();
@@ -546,7 +546,7 @@ namespace Dribbly.Service.Services
             {
                 try
                 {
-                    PhotoModel photo = await AddPhoto(account, files[0]);
+                    MultimediaModel photo = await AddPhoto(account, files[0]);
                     account.ProfilePhotoId = photo.Id;
                     Update(account);
                     await _context.SaveChangesAsync();
@@ -564,17 +564,17 @@ namespace Dribbly.Service.Services
             }
         }
 
-        private async Task<PhotoModel> AddPhoto(AccountModel account, HttpPostedFile file)
+        private async Task<MultimediaModel> AddPhoto(AccountModel account, HttpPostedFile file)
         {
             string uploadPath = _fileService.Upload(file, "accountPhotos/");
 
-            PhotoModel photo = new PhotoModel
+            MultimediaModel photo = new MultimediaModel
             {
                 Url = uploadPath,
                 UploadedById = _securityUtility.GetAccountId().Value,
                 DateAdded = DateTime.UtcNow
             };
-            _context.Photos.Add(photo);
+            _context.Multimedia.Add(photo);
             await _context.SaveChangesAsync();
 
             _context.AccountPhotos.Add(new AccountPhotoModel
@@ -681,17 +681,17 @@ namespace Dribbly.Service.Services
 
         Task AddAsync(AccountModel account);
 
-        Task<IEnumerable<PhotoModel>> AddAccountPhotosAsync(long accountId);
+        Task<IEnumerable<MultimediaModel>> AddAccountPhotosAsync(long accountId);
 
         Task ReplaceEmailAsync(UpdateEmailInput input);
 
         Task<AccountSettingsModel> GetAccountSettingsAsync(long userId);
 
-        Task<PhotoModel> UploadPrimaryPhotoAsync(long accountId);
+        Task<MultimediaModel> UploadPrimaryPhotoAsync(long accountId);
 
         Task UpdateAccountAsync(AccountModel account);
 
-        Task<IEnumerable<PhotoModel>> GetAccountPhotosAsync(int accountId);
+        Task<IEnumerable<MultimediaModel>> GetAccountPhotosAsync(int accountId);
 
         Task DeletePhoto(int photoId, int accountId);
 

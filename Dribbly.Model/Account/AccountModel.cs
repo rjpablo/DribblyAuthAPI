@@ -76,7 +76,7 @@ namespace Dribbly.Model.Account
         public double? Rating { get; set; }
 
         public virtual ICollection<AccountPhotoModel> Photos { get; set; }
-        public virtual PhotoModel ProfilePhoto { get; set; }
+        public virtual MultimediaModel ProfilePhoto { get; set; }
         public virtual ICollection<AccountVideoModel> Videos { get; set; }
         [JsonIgnore]
         public virtual ApplicationUser User { get; set; }

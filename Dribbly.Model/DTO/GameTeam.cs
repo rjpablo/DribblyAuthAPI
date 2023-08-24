@@ -11,7 +11,7 @@ namespace Dribbly.Service.DTO
         public long TeamId { get; set; }
         public string TeamName { get; set; }
         public string ShortName { get; set; }
-        public PhotoModel Logo { get; set; }
+        public MultimediaModel Logo { get; set; }
         public List<GamePlayer> Players { get; set; }
 
         public GameTeam(TeamModel team, long gameId)

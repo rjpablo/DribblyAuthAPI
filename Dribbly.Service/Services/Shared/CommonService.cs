@@ -23,18 +23,18 @@ namespace Dribbly.Service.Services.Shared
         #region User Activities
         Task AddUserPostActivity(UserActivityTypeEnum activityType, long postId);
         Task AddUserAccountActivity(UserActivityTypeEnum activityType, long accountId);
-        Task AddAccountPhotoActivitiesAsync(UserActivityTypeEnum activityType, long accountId, params PhotoModel[] photos);
+        Task AddAccountPhotoActivitiesAsync(UserActivityTypeEnum activityType, long accountId, params MultimediaModel[] photos);
         Task AddAccountVideoActivitiesAsync(UserActivityTypeEnum activityType, long accountId, params VideoModel[] photos);
         Task AddUserContactActivity(UserActivityTypeEnum activityType, long? contactId, string contactNo);
         // COURTS
         Task AddUserCourtActivity(UserActivityTypeEnum activityType, long courtId);
         Task AddCourtVideosActivity(UserActivityTypeEnum activityType, long courtId, params VideoModel[] videos);
-        Task AddCourtPhotosActivity(UserActivityTypeEnum activityType, long courtId, params PhotoModel[] photos);
+        Task AddCourtPhotosActivity(UserActivityTypeEnum activityType, long courtId, params MultimediaModel[] photos);
         // GAMES
         Task AddUserGameActivity(UserActivityTypeEnum activityType, long gameId);
         //TEAMS
         Task AddUserTeamActivity(UserActivityTypeEnum activityType, long teamId);
-        Task AddTeamPhotoActivitiesAsync(UserActivityTypeEnum activityType, long teamId, params PhotoModel[] photos);
+        Task AddTeamPhotoActivitiesAsync(UserActivityTypeEnum activityType, long teamId, params MultimediaModel[] photos);
         Task AddUserJoinTeamRequestActivity(UserActivityTypeEnum activityType, long requestId);
         #endregion
 
@@ -73,7 +73,7 @@ namespace Dribbly.Service.Services.Shared
             await _context.SaveChangesAsync();
         }
 
-        public async Task AddAccountPhotoActivitiesAsync(UserActivityTypeEnum activityType, long accountId, params PhotoModel[] photos)
+        public async Task AddAccountPhotoActivitiesAsync(UserActivityTypeEnum activityType, long accountId, params MultimediaModel[] photos)
         {
             List<UserActivityModel> activities = new List<UserActivityModel>();
             foreach (var photo in photos)
@@ -174,7 +174,7 @@ namespace Dribbly.Service.Services.Shared
             await AddActivityAsync(activity);
         }
 
-        public async Task AddTeamPhotoActivitiesAsync(UserActivityTypeEnum activityType, long teamId, params PhotoModel[] photos)
+        public async Task AddTeamPhotoActivitiesAsync(UserActivityTypeEnum activityType, long teamId, params MultimediaModel[] photos)
         {
             List<UserActivityModel> activities = new List<UserActivityModel>();
             foreach (var photo in photos)
@@ -205,7 +205,7 @@ namespace Dribbly.Service.Services.Shared
             await AddActivityAsync(activity);
         }
 
-        public async Task AddCourtPhotosActivity(UserActivityTypeEnum activityType, long courtId, params PhotoModel[] photos)
+        public async Task AddCourtPhotosActivity(UserActivityTypeEnum activityType, long courtId, params MultimediaModel[] photos)
         {
             List<UserActivityModel> activities = new List<UserActivityModel>();
             foreach (var photo in photos)

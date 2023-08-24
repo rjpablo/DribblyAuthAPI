@@ -17,6 +17,6 @@ namespace Dribbly.Chat.Models
         //public virtual IdentityUser Participant { get; set; }
         [ForeignKey(nameof(Photo))]
         public long? PhotoId { get; set; }
-        public PhotoModel Photo { get; set; }
+        public MultimediaModel Photo { get; set; }
     }
 }

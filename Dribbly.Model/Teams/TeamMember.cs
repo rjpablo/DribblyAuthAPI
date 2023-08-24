@@ -52,6 +52,6 @@ namespace Dribbly.Model.Teams
         [NotMapped]
         public string PrimaryPhotoUrl => IconUrl;
         [NotMapped]
-        public PhotoModel ProfilePhoto { get => Account?.ProfilePhoto; }
+        public MultimediaModel ProfilePhoto { get => Account?.ProfilePhoto; }
     }
 }

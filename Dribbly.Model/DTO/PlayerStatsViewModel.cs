@@ -16,7 +16,7 @@ namespace Dribbly.Model.DTO
         [DataMember]
         public string Username { get; set; }
         [DataMember]
-        public PhotoModel ProfilePhoto { get; set; }
+        public MultimediaModel ProfilePhoto { get; set; }
         [DataMember]
         public int? JerseyNo { get; set; }
 

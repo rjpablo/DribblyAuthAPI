@@ -300,7 +300,7 @@ namespace Dribbly.Service.Services
             return team;
         }
 
-        public async Task<PhotoModel> UploadLogoAsync(long teamId)
+        public async Task<MultimediaModel> UploadLogoAsync(long teamId)
         {
             TeamModel team = GetById(teamId);
 
@@ -316,7 +316,7 @@ namespace Dribbly.Service.Services
             {
                 try
                 {
-                    PhotoModel photo = await AddPhoto(team, files[0]);
+                    MultimediaModel photo = await AddPhoto(team, files[0]);
                     team.LogoId = photo.Id;
                     Update(team);
                     await _context.SaveChangesAsync();
@@ -334,17 +334,17 @@ namespace Dribbly.Service.Services
             }
         }
 
-        private async Task<PhotoModel> AddPhoto(TeamModel team, HttpPostedFile file)
+        private async Task<MultimediaModel> AddPhoto(TeamModel team, HttpPostedFile file)
         {
             string uploadPath = _fileService.Upload(file, "teamLogos/");
 
-            PhotoModel photo = new PhotoModel
+            MultimediaModel photo = new MultimediaModel
             {
                 Url = uploadPath,
                 UploadedById = _securityUtility.GetAccountId().Value,
                 DateAdded = DateTime.UtcNow
             };
-            _context.Photos.Add(photo);
+            _context.Multimedia.Add(photo);
             await _context.SaveChangesAsync();
 
             _context.TeamPhotos.Add(new TeamPhotoModel
@@ -529,6 +529,6 @@ namespace Dribbly.Service.Services
         Task ProcessJoinRequestAsync(ProcessJoinTeamRequestInputModel input);
         Task RemoveMemberAsync(long teamId, long membershipId);
         Task UpdateTeamAsync(UpdateTeamInputModel team);
-        Task<PhotoModel> UploadLogoAsync(long teamId);
+        Task<MultimediaModel> UploadLogoAsync(long teamId);
     }
 }

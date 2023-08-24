@@ -9,7 +9,6 @@ using Dribbly.Service.Services;
 using Dribbly.Service.Services.Shared;
 using Dribbly.Test;
 using DribblyAuthAPI.API;
-using Microsoft.Owin.Security.OAuth;
 using System.Web.Http;
 using Unity;
 using Unity.WebApi;

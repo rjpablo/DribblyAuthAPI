@@ -12,7 +12,7 @@ namespace Dribbly.Model.UserActivities
         [ForeignKey(nameof(Court))]
         public long CourtId { get; set; }
 
-        public PhotoModel Photo { get; set; }
+        public MultimediaModel Photo { get; set; }
         public CourtModel Court { get; set; }
 
     }

@@ -32,7 +32,7 @@ namespace Dribbly.Model.Tournaments
 
         #region Navigational Properties
         public CourtModel DefaultCourt { get; set; }
-        public PhotoModel Logo { get; set; }
+        public MultimediaModel Logo { get; set; }
         #endregion
 
         [NotMapped]

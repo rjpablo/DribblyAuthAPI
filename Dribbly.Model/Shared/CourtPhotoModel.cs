@@ -17,6 +17,6 @@ namespace Dribbly.Model.Courts
         public long CourtId { get; set; }
 
         public virtual CourtModel Court { get; set; }
-        public virtual PhotoModel Photo { get; set; }
+        public virtual MultimediaModel Photo { get; set; }
     }
 }

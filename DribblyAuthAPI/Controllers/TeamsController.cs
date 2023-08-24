@@ -117,7 +117,7 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpPost, Authorize]
         [Route("UploadLogo/{teamId}")]
-        public async Task<PhotoModel> UploadLogo(long teamId)
+        public async Task<MultimediaModel> UploadLogo(long teamId)
         {
             return await _service.UploadLogoAsync(teamId);
         }

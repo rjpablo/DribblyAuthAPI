@@ -6,7 +6,7 @@ namespace Dribbly.Model.DTO
     public class TeamStatsViewModel
     {
         #region Team Info
-        public PhotoModel Logo { get; set; }
+        public MultimediaModel Logo { get; set; }
         public string Name { get; set; }
         public string ShortName { get; set; }
         #endregion

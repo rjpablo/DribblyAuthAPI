@@ -35,7 +35,7 @@ namespace Dribbly.Model.Teams
         [NotMapped]
         public string Description { get; set; }
         public CourtModel HomeCourt { get; set; }
-        public PhotoModel Logo { get; set; }
+        public MultimediaModel Logo { get; set; }
         public AccountBasicInfoModel AddedBy { get; set; }
         public AccountBasicInfoModel ManagedBy { get; set; }
         public virtual ICollection<TeamMembershipModel> Members { get; set; }

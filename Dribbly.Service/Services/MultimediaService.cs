@@ -53,7 +53,7 @@ namespace Dribbly.Service.Services
                             Type = Core.Enums.MultimediaTypeEnum.Photo,
                             DateAdded = DateTime.UtcNow
                         };
-                        //_context.Multimedia.Add(photo);
+                        _context.Multimedia.Add(photo);
                         await _context.SaveChangesAsync();
                         //TODO: log user activity
                         result.Add(photo);
@@ -68,31 +68,6 @@ namespace Dribbly.Service.Services
                 }
             }
             return result;
-        }
-
-        private async Task<PhotoModel> AddPhoto(TournamentModel tournament, HttpPostedFile file)
-        {
-            var accountId = _securityUtility.GetAccountId().Value;
-            string uploadPath = _fileService.Upload(file, $"{accountId}/tournamentPhotos/");
-
-            PhotoModel photo = new PhotoModel
-            {
-                Url = uploadPath,
-                UploadedById = accountId,
-                DateAdded = DateTime.UtcNow
-            };
-            _context.Photos.Add(photo);
-            await _context.SaveChangesAsync();
-
-            _context.TournamentPhotos.Add(new TournamentPhotoModel
-            {
-                PhotoId = photo.Id,
-                TournamentId = tournament.Id,
-                DateAdded = DateTime.UtcNow
-            });
-            await _context.SaveChangesAsync();
-
-            return photo;
         }
     }
 

@@ -152,7 +152,7 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpPost]
         [Route("UpdateLogo/{tournamentId}")]
-        public async Task<PhotoModel> UpdateLogo(long tournamentId)
+        public async Task<MultimediaModel> UpdateLogo(long tournamentId)
         {
             return await _service.UpdateLogoAsync(tournamentId);
         }

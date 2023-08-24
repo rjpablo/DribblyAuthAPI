@@ -899,6 +899,10 @@
     <Compile Include="Migrations\202308231524509_Link_Chat_Tables_To_PhotoModel.Designer.cs">
       <DependentUpon>202308231524509_Link_Chat_Tables_To_PhotoModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202308231538287_RenameTable_Photos_to_Multimedia.cs" />
+    <Compile Include="Migrations\202308231538287_RenameTable_Photos_to_Multimedia.Designer.cs">
+      <DependentUpon>202308231538287_RenameTable_Photos_to_Multimedia.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1408,6 +1412,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202308231524509_Link_Chat_Tables_To_PhotoModel.resx">
       <DependentUpon>202308231524509_Link_Chat_Tables_To_PhotoModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308231538287_RenameTable_Photos_to_Multimedia.resx">
+      <DependentUpon>202308231538287_RenameTable_Photos_to_Multimedia.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

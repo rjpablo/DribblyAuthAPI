@@ -11,7 +11,7 @@ namespace Dribbly.Model.Shared
         public long Id { get; set; }
         public string Name { get; set; }
         public EntityStatusEnum EntityStatus { get; set; }
-        public virtual PhotoModel Photo { get; set; }
+        public virtual MultimediaModel Photo { get; set; }
         public EntityTypeEnum Type { get; set; }
         public string IconUrl { get; set; }
 

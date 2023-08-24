@@ -17,6 +17,6 @@ namespace Dribbly.Model.Teams
         public long TeamId { get; set; }
 
         public virtual TeamModel Team { get; set; }
-        public virtual PhotoModel Photo { get; set; }
+        public virtual MultimediaModel Photo { get; set; }
     }
 }

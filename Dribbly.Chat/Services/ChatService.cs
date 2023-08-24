@@ -58,7 +58,7 @@ namespace Dribbly.Chat.Services
             return chats.Where(c => c.Participants.Select(p => p.ParticipantId).Contains(withUserId)).SingleOrDefault();
         }
 
-        public async Task UpdateParticipantPhoto(long participantUserId, PhotoModel photo)
+        public async Task UpdateParticipantPhoto(long participantUserId, MultimediaModel photo)
         {
             var participant = await _context.ChatParticipants.Where(p => p.ParticipantId == participantUserId)
                 .FirstOrDefaultAsync();
@@ -140,23 +140,38 @@ namespace Dribbly.Chat.Services
 
         public async Task<MessageModel> SendMessage(MessageModel message, long senderId)
         {
-            message.DateAdded = DateTime.UtcNow;
-            message.SenderId = senderId;
-            _context.Messages.Add(message);
-            await _context.SaveChangesAsync();
             var chat = _context.Chats
                 .Include(m => m.Messages)
                 .Include(m => m.Participants)
-                .Where(c => c.Id == message.ChatId).First(); //includes
+                .Where(c => c.Id == message.ChatId).First();
             var participants = _context.ChatParticipants.Where(p => p.ChatId == message.ChatId).ToList();
-            foreach (var p in chat.Participants)
+
+            try
             {
-                _context.ParticipantMessages
-                    .Add(new ParticipantMessageModel(message.Id, p.ParticipantId, p.ParticipantId == senderId));
+                message.DateAdded = DateTime.UtcNow;
+                message.SenderId = senderId;
+                foreach (var p in chat.Participants)
+                {
+                    message.Participants.Add(new ParticipantMessageModel
+                    {
+                        ParticipantId = p.ParticipantId,
+                        IsSender = p.ParticipantId == senderId,
+                        DateAdded = DateTime.UtcNow,
+                        Status = p.ParticipantId == senderId ?
+                          Enums.MessageRecipientStatusEnum.Seen :
+                          Enums.MessageRecipientStatusEnum.NotSeen
+                    });
+                }
+                _context.Messages.Add(message);
+                chat.IsTemporary = false;
+                chat.LastUpdateTime = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
             }
-            chat.IsTemporary = false;
-            chat.LastUpdateTime = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
+            catch (Exception e)
+            {
+                //TODO: log error
+                throw;
+            }
 
             // load multimedia before sending to clients
             foreach (var media in message.MediaCollection)
@@ -245,6 +260,6 @@ namespace Dribbly.Chat.Services
         Task<ChatRoomViewModel> GetOrCreatePrivateChatAsync(long withUserId, CreateChatInpuModel input, long userId);
         Task<int> MarkMessageAsSeenAsync(long chatId, long messageId, long userId);
         Task<int> GetUnviewedCountAsync(long chatId, long userId);
-        Task UpdateParticipantPhoto(long participantUserId, PhotoModel photo);
+        Task UpdateParticipantPhoto(long participantUserId, MultimediaModel photo);
     }
 }

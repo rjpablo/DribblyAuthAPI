@@ -20,6 +20,6 @@ namespace Dribbly.Chat.Models
         public bool IsTemporary { get; set; }
         [ForeignKey(nameof(Icon))]
         public long? IconId { get; set; }
-        public PhotoModel Icon { get; set; }
+        public MultimediaModel Icon { get; set; }
     }
 }

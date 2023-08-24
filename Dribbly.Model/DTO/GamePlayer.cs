@@ -15,7 +15,7 @@ namespace Dribbly.Service.DTO
         public long TeamId { get; set; }
         public bool IsEjected { get; set; }
         public bool HasFouledOut { get; set; }
-        public PhotoModel ProfilePhoto { get; set; }
+        public MultimediaModel ProfilePhoto { get; set; }
 
         public GamePlayer(TeamMembershipModel player)
         {

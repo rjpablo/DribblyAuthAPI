@@ -49,7 +49,7 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpGet]
         [Route("GetCourtPhotos/{courtId}")]
-        public IEnumerable<PhotoModel> GetCourtPhotos(long courtId)
+        public IEnumerable<MultimediaModel> GetCourtPhotos(long courtId)
         {
             return _service.GetCourtPhotos(courtId);
         }
@@ -107,7 +107,7 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpPost, Authorize]
         [Route("AddCourtPhotos/{courtId}")]
-        public async Task<IEnumerable<PhotoModel>> AddCourtPhotos(long courtId)
+        public async Task<IEnumerable<MultimediaModel>> AddCourtPhotos(long courtId)
         {
             return await _service.AddPhotosAsync(courtId);
         }

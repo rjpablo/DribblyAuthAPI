@@ -103,8 +103,6 @@ namespace Dribbly.Model
         DbSet<UpdateGameNotificationModel> UpdateGameNotifications { get; set; }
         DbSet<JoinTeamRequestNotificationModel> JoinTeamRequestNotifications { get; set; }
         #endregion
-
-        Database Database { get; }
         DbEntityEntry Entry(object entity);
         DbEntityEntry SetEntityState(object entity, EntityState state);
         int SaveChanges();
@@ -136,8 +134,8 @@ namespace Dribbly.Model
             //modelBuilder.Entity<MultimediaModel>()
             //    .ToTable("Multimedia");
 
-            modelBuilder.Entity<PhotoModel>()
-                .ToTable("Photos");
+            modelBuilder.Entity<MultimediaModel>()
+                .ToTable("Multimedia");
 
             base.OnModelCreating(modelBuilder);
         }
@@ -164,14 +162,13 @@ namespace Dribbly.Model
         public DbSet<ParticipantMessageModel> ParticipantMessages { get; set; }
         public DbSet<MessageModel> Messages { get; set; }
         public DbSet<MessageMediaModel> MessageMedia { get; set; }
-        //public DbSet<MultimediaModel> Multimedia { get; set; }
         #endregion
 
         public DbSet<JoinTournamentRequestModel> JoinTournamentRequests { get; set; }
         public DbSet<CourtModel> Courts { get; set; }
         public DbSet<CourtFollowingModel> CourtFollowings { get; set; }
         public DbSet<SettingModel> Settings { get; set; }
-        public DbSet<PhotoModel> Photos { get; set; }
+        public DbSet<MultimediaModel> Multimedia { get; set; }
         public DbSet<CourtPhotoModel> CourtPhotos { get; set; }
         public DbSet<BookingModel> Bookings { get; set; }
         public DbSet<GameModel> Games { get; set; }

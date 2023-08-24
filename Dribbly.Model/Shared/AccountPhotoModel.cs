@@ -18,6 +18,6 @@ namespace Dribbly.Model.Accounts
         public long AccountId { get; set; }
 
         public virtual AccountModel Account { get; set; }
-        public virtual PhotoModel Photo { get; set; }
+        public virtual MultimediaModel Photo { get; set; }
     }
 }

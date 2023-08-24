@@ -55,7 +55,7 @@ namespace Dribbly.Model.Courts
 
         public virtual ContactModel Contact { get; set; }
 
-        public virtual PhotoModel PrimaryPhoto { get; set; }
+        public virtual MultimediaModel PrimaryPhoto { get; set; }
 
         [NotMapped]
         public string IconUrl { get { return PrimaryPhoto?.Url; } }

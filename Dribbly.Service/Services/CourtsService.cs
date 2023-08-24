@@ -204,13 +204,13 @@ namespace Dribbly.Service.Services
             {
                 try
                 {
-                    PhotoModel photo = new PhotoModel
+                    MultimediaModel photo = new MultimediaModel
                     {
                         Url = uploadPath,
                         UploadedById = _securityUtility.GetAccountId().Value,
                         DateAdded = DateTime.Now
                     };
-                    _context.Photos.Add(photo);
+                    _context.Multimedia.Add(photo);
                     await _context.SaveChangesAsync();
                     _context.CourtPhotos.Add(new CourtPhotoModel
                     {
@@ -364,10 +364,10 @@ namespace Dribbly.Service.Services
 
         #region Court Photos
 
-        public async Task<IEnumerable<PhotoModel>> AddPhotosAsync(long courtId)
+        public async Task<IEnumerable<MultimediaModel>> AddPhotosAsync(long courtId)
         {
             HttpFileCollection files = HttpContext.Current.Request.Files;
-            List<PhotoModel> photos = new List<PhotoModel>();
+            List<MultimediaModel> photos = new List<MultimediaModel>();
             for (int i = 0; i < files.Count; i++)
             {
                 photos.Add(AddCourtPhoto(courtId, files[i]));
@@ -409,23 +409,23 @@ namespace Dribbly.Service.Services
             }
         }
 
-        public IEnumerable<PhotoModel> GetCourtPhotos(long courtId)
+        public IEnumerable<MultimediaModel> GetCourtPhotos(long courtId)
         {
             return _context.CourtPhotos.Include(p1 => p1.Photo)
                 .Where(p => p.CourtId == courtId && p.Photo.DateDeleted == null)
                 .Select(p => p.Photo).OrderByDescending(x => x.DateAdded);
         }
 
-        private PhotoModel AddCourtPhoto(long courtId, HttpPostedFile file)
+        private MultimediaModel AddCourtPhoto(long courtId, HttpPostedFile file)
         {
             string uploadPath = _fileService.Upload(file, "court/");
-            PhotoModel photo = new PhotoModel
+            MultimediaModel photo = new MultimediaModel
             {
                 Url = uploadPath,
                 UploadedById = _securityUtility.GetAccountId().Value,
                 DateAdded = DateTime.Now
             };
-            _context.Photos.Add(photo);
+            _context.Multimedia.Add(photo);
             _context.CourtPhotos.Add(new CourtPhotoModel
             {
                 CourtId = courtId,
@@ -559,7 +559,7 @@ namespace Dribbly.Service.Services
 
         Task<IEnumerable<GameModel>> GetCourtGamesAsync(long courtId);
 
-        IEnumerable<PhotoModel> GetCourtPhotos(long courtId);
+        IEnumerable<MultimediaModel> GetCourtPhotos(long courtId);
 
         Task<IEnumerable<VideoModel>> GetCourtVideosAsync(long courtId);
 
@@ -569,7 +569,7 @@ namespace Dribbly.Service.Services
 
         Task<long> RegisterAsync(CourtModel court);
 
-        Task<IEnumerable<PhotoModel>> AddPhotosAsync(long courtId);
+        Task<IEnumerable<MultimediaModel>> AddPhotosAsync(long courtId);
 
         Task UpdateCourtAsync(CourtModel court);
 

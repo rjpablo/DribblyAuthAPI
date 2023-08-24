@@ -50,7 +50,7 @@ namespace Dribbly.Model.Entities
         public bool HasFouledOut { get; set; }
         public bool IsInGame { get; set; }
         public EjectionStatusEnum EjectionStatus { get; set; } = EjectionStatusEnum.NotEjected;
-        public PhotoModel ProfilePhoto { get => TeamMembership?.Account?.ProfilePhoto; }
+        public MultimediaModel ProfilePhoto { get => TeamMembership?.Account?.ProfilePhoto; }
         public TeamMembershipModel TeamMembership { get; set; }
         [JsonIgnore]
         public GameModel Game { get; set; }

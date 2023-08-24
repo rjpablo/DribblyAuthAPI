@@ -20,7 +20,7 @@ namespace Dribbly.Chat.Models
         /// Whether or not the participant is the sender of the message
         /// </summary>
         public bool IsSender { get; set; }
-        public MessageRecipientStatusEnum Status { get; set; } = 0;
+        public MessageRecipientStatusEnum Status { get; set; } = MessageRecipientStatusEnum.NotSeen;
         [JsonIgnore]
         public virtual MessageModel Message { get; set; }
         public ParticipantMessageModel() { }

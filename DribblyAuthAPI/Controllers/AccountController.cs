@@ -125,7 +125,7 @@ namespace DribblyAuthAPI.Controllers
         #region Players
         [HttpGet]
         [Route("GetAccountPhotos/{accountId}")]
-        public async Task<IEnumerable<PhotoModel>> GetAccountPhotos(int accountId)
+        public async Task<IEnumerable<MultimediaModel>> GetAccountPhotos(int accountId)
         {
             return await _accountService.GetAccountPhotosAsync(accountId);
         }
@@ -189,14 +189,14 @@ namespace DribblyAuthAPI.Controllers
         #region Account Photos
         [HttpPost, Authorize]
         [Route("AddAccountPhotos/{accountId}")]
-        public async Task<IEnumerable<PhotoModel>> AddAccountPhotos(long accountId)
+        public async Task<IEnumerable<MultimediaModel>> AddAccountPhotos(long accountId)
         {
             return await _accountService.AddAccountPhotosAsync(accountId);
         }
 
         [HttpPost, Authorize]
         [Route("UploadPrimaryPhoto/{accountId}")]
-        public async Task<PhotoModel> UploadPrimaryPhoto(long accountId)
+        public async Task<MultimediaModel> UploadPrimaryPhoto(long accountId)
         {
             return await _accountService.UploadPrimaryPhotoAsync(accountId);
         }

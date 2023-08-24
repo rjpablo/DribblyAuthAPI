@@ -13,7 +13,7 @@ namespace Dribbly.Model.UserActivities
         public long TeamId { get; set; }
 
         public TeamModel Team { get; set; }
-        public PhotoModel Photo { get; set; }
+        public MultimediaModel Photo { get; set; }
 
     }
 }

@@ -13,6 +13,6 @@ namespace Dribbly.Model.Entities
         [ForeignKey(nameof(Photo))]
         public long PhotoId { get; set; }
         public TournamentModel Tournament { get; set; }
-        public PhotoModel Photo { get; set; }
+        public MultimediaModel Photo { get; set; }
     }
 }

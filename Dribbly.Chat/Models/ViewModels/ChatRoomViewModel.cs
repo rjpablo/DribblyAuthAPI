@@ -18,7 +18,7 @@ namespace Dribbly.Chat.Models.ViewModels
         /// </summary>
         public int UnviewedCount { get; set; }
         public ICollection<ChatParticipantModel> Participants { get; set; }
-        public PhotoModel RoomIcon { get; set; }
+        public MultimediaModel RoomIcon { get; set; }
 
         public ChatRoomViewModel(ChatModel chat, long forParticipantId)
         {
