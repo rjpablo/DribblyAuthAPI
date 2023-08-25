@@ -1,29 +1,27 @@
-﻿using Dribbly.Authentication.Models.Auth;
+﻿using Dribbly.Core.Enums;
 using Dribbly.Core.Exceptions;
 using Dribbly.Model;
 using Dribbly.Model.Account;
-using Dribbly.Service.Enums;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Dribbly.Service.Repositories
 {
-    public class AccountRepository : BaseRepository<AccountModel>, IAccountRepository
+    public class AccountRepository : BaseRepository<PlayerModel>, IAccountRepository
     {
         IAuthContext _context;
         IAuthRepository _authRepo;
 
-        public AccountRepository(IAuthContext context, IAuthRepository authRepo) : base(context.Accounts)
+        public AccountRepository(IAuthContext context, IAuthRepository authRepo) : base(context.Players)
         {
             _context = context;
             _authRepo = authRepo;
         }
 
-        public async Task<AccountModel> GetAccountByUsername(string userName)
+        public async Task<PlayerModel> GetAccountByUsername(string userName)
         {
-            AccountModel account = await _context.Accounts.Include(a => a.ProfilePhoto).Include(a => a.User)
+            PlayerModel account = await _context.Players.Include(a => a.ProfilePhoto).Include(a => a.User)
                 .Include(a => a.HomeCourt).Include(a => a.HomeCourt.PrimaryPhoto).SingleOrDefaultAsync
                 (a => a.User.UserName.Equals(userName, System.StringComparison.OrdinalIgnoreCase));
             return account;
@@ -34,9 +32,9 @@ namespace Dribbly.Service.Repositories
         /// </summary>
         /// <param name="identityUserId"></param>
         /// <returns></returns>
-        public async Task<AccountModel> GetAccountByIdentityId(long identityUserId)
+        public async Task<PlayerModel> GetAccountByIdentityId(long identityUserId)
         {
-            return await _context.Accounts.Include(a => a.ProfilePhoto).Include(a => a.User)
+            return await _context.Players.Include(a => a.ProfilePhoto).Include(a => a.User)
                 .SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId);
         }
 
@@ -45,25 +43,25 @@ namespace Dribbly.Service.Repositories
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public async Task<AccountModel> GetAccountById(long Id)
+        public async Task<PlayerModel> GetAccountById(long Id)
         {
-            return await _context.Accounts.Include(a => a.ProfilePhoto).Include(a => a.User).Include(a => a.HomeCourt)
+            return await _context.Players.Include(a => a.ProfilePhoto).Include(a => a.User).Include(a => a.HomeCourt)
                 .Include(a => a.HomeCourt.PrimaryPhoto).SingleOrDefaultAsync(a => a.Id == Id);
         }
 
         public async Task<long?> GetIdentityUserAccountId(long identityUserId)
         {
-            return (await _context.Accounts.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId))?.Id;
+            return (await _context.Players.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId))?.Id;
         }
 
         public async Task<long> GetIdentityUserId(long accountId)
         {
-            return (await _context.Accounts.SingleOrDefaultAsync(a => a.Id == accountId)).IdentityUserId;
+            return (await _context.Players.SingleOrDefaultAsync(a => a.Id == accountId)).IdentityUserId;
         }
 
         public async Task<long> GetIdentityUserAccountIdNotNullAsync(long identityUserId)
         {
-            var id = (await _context.Accounts.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId))?.Id;
+            var id = (await _context.Players.SingleOrDefaultAsync(a => a.IdentityUserId == identityUserId))?.Id;
             if (!id.HasValue)
             {
                 throw new DribblyObjectNotFoundException($"An account with identityUserId of {identityUserId} does not exist.");
@@ -74,7 +72,7 @@ namespace Dribbly.Service.Repositories
 
         public async Task<AccountBasicInfoModel> GetAccountBasicInfo(long userId)
         {
-            AccountModel account = await _dbSet.Include(a => a.ProfilePhoto).Include(a => a.User)
+            PlayerModel account = await _dbSet.Include(a => a.ProfilePhoto).Include(a => a.User)
                 .SingleOrDefaultAsync(a => a.Id == userId);
             if (account == null)
             {
@@ -85,14 +83,14 @@ namespace Dribbly.Service.Repositories
 
         public void ActivateByUserId(string userid)
         {
-            AccountModel account = _dbSet.SingleOrDefault(a => a.IdentityUserId.ToString() == userid);
+            PlayerModel account = _dbSet.SingleOrDefault(a => a.IdentityUserId.ToString() == userid);
             if (account != null && account.EntityStatus != EntityStatusEnum.Active)
             {
                 account.EntityStatus = EntityStatusEnum.Active;
             }
         }
 
-        public IQueryable<AccountModel> SearchAccounts(AccountSearchInputModel input)
+        public IQueryable<PlayerModel> SearchAccounts(AccountSearchInputModel input)
         {
             return _dbSet.Include(a => a.ProfilePhoto).Include(a => a.User)
                 .Where(a => a.User.UserName.Contains(input.NameSegment) && !input.ExcludeIds.Contains(a.IdentityUserId));

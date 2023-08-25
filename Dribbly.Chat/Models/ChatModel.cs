@@ -12,6 +12,7 @@ namespace Dribbly.Chat.Models
         public ICollection<MessageModel> Messages { get; set; } = new List<MessageModel>();
         public DateTime LastUpdateTime { get; set; }
         public string Title { get; set; }
+        public string Code { get; set; }
         public ICollection<ChatParticipantModel> Participants { get; set; }
         public ChatTypeEnum Type { get; set; }
         /// <summary>

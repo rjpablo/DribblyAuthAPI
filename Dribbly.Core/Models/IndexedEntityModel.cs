@@ -1,11 +1,10 @@
-﻿using Dribbly.Model.Account;
-using Dribbly.Service.Enums;
+﻿using Dribbly.Core.Enums;
 using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Dribbly.Model.Shared
+namespace Dribbly.Core.Models
 {
     /// <summary>
     /// Entities that can be searched globally and classes that are used for the entitystub component
@@ -23,12 +22,12 @@ namespace Dribbly.Model.Shared
     }
 
     [Table("IndexedEntities")]
-    public class IndexedEntityModel: IIndexedEntity
+    public class IndexedEntityModel : IIndexedEntity
     {
         [Key, Column(Order = 1)]
         public long Id { get; set; }
 
-        [Key, Column("Type",Order = 2)]
+        [Key, Column("Type", Order = 2)]
         public EntityTypeEnum EntityType { get; set; }
         public string Name { get; set; }
 
@@ -46,7 +45,7 @@ namespace Dribbly.Model.Shared
 
         public IndexedEntityModel() { }
 
-        public IndexedEntityModel(AccountModel account)
+        public IndexedEntityModel(AccountModel account, string username)
         {
             Id = account.Id;
             Name = account.Name;
@@ -54,7 +53,7 @@ namespace Dribbly.Model.Shared
             DateAdded = account.DateAdded;
             EntityStatus = EntityStatusEnum.Active;
             IconUrl = account.ProfilePhoto?.Url;
-            AdditionalData = JsonConvert.SerializeObject(new { username = account.Username });
+            AdditionalData = JsonConvert.SerializeObject(new { username = username });
         }
 
         public IndexedEntityModel(IIndexedEntity entity, string additionalData = null)

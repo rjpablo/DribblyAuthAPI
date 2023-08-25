@@ -7,7 +7,7 @@ namespace Dribbly.Chat.Models
     {
         public ICollection<MessageModel> Messages { get; set; }
         public string Title { get; set; }
-        public ICollection<ChatParticipantModel> Participants { get; set; }
+        public List<long> ParticipantIds { get; set; }
         public ChatTypeEnum Type { get; set; }
     }
 }

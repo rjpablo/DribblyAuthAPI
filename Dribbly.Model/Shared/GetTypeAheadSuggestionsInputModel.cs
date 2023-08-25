@@ -1,4 +1,4 @@
-﻿using Dribbly.Service.Enums;
+﻿using Dribbly.Core.Enums;
 using System.Collections.Generic;
 
 namespace Dribbly.Model.Shared

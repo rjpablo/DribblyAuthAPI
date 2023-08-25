@@ -1,4 +1,5 @@
-﻿using Dribbly.Core.Utilities;
+﻿using Dribbly.Core.Enums;
+using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Leagues;
 using Dribbly.Service.Repositories;
@@ -27,7 +28,7 @@ namespace Dribbly.Service.Services
         public async Task<LeagueModel> AddLeagueAsync(LeagueModel league)
         {
             league.AddedById = _securityUtility.GetAccountId().Value;
-            league.EntityStatus = Enums.EntityStatusEnum.Active;
+            league.EntityStatus = EntityStatusEnum.Active;
             _leaguesRepository.Add(league);
             await _context.SaveChangesAsync();
             await _indexedEntitysRepository.Add(_context, league);

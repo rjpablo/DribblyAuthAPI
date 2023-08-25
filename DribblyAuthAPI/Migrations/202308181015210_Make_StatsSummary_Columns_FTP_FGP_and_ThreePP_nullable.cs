@@ -29,6 +29,12 @@ namespace DribblyAuthAPI.Migrations
         
         public override void Down()
         {
+            Sql("DELETE FROM TournamentPlayers;");
+            Sql("DELETE FROM TeamStats;");
+            Sql("DELETE FROM PlayerStats;");
+            Sql("DELETE FROM TournamentTeams;");
+            Sql("DELETE FROM TeamMemberships;");
+            Sql("DELETE FROM StageTeams;");
             AlterColumn("dbo.TournamentPlayers", "FTP", c => c.Double(nullable: false));
             AlterColumn("dbo.TournamentPlayers", "ThreePP", c => c.Double(nullable: false));
             AlterColumn("dbo.TournamentPlayers", "FGP", c => c.Double(nullable: false));

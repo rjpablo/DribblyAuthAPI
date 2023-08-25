@@ -1,7 +1,6 @@
-﻿using Dribbly.Model.Courts;
-using Dribbly.Service.Enums;
+﻿using Dribbly.Core.Enums;
 
-namespace Dribbly.Model.Shared
+namespace Dribbly.Core.Models
 {
     public class ChoiceItemModel<TValue>
     {

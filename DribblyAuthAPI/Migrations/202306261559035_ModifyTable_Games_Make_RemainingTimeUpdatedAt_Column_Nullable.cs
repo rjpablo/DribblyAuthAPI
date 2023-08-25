@@ -12,6 +12,8 @@ namespace DribblyAuthAPI.Migrations
         
         public override void Down()
         {
+            Sql("DELETE FROM UserGameActivities");
+            Sql("DELETE FROM Games");
             AlterColumn("dbo.Games", "RemainingTimeUpdatedAt", c => c.DateTime(nullable: false));
         }
     }

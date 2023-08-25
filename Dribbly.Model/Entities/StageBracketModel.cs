@@ -12,7 +12,7 @@ namespace Dribbly.Model.Entities
         public string Name { get; set; }
         [ForeignKey(nameof(AddedBy))]
         public long AddedById { get; set; }
-        public AccountModel AddedBy { get; set; }
+        public PlayerModel AddedBy { get; set; }
         [JsonIgnore]
         public TournamentStageModel Stage { get; set; }
     }

@@ -26,7 +26,7 @@ namespace Dribbly.Model.Entities
         #region Navigational Properties
         [JsonIgnore]
         public TournamentModel Tournament { get; set; }
-        public AccountModel Account { get; set; }
+        public PlayerModel Account { get; set; }
         #endregion
     }
 }

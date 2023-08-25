@@ -38,7 +38,7 @@
 
         void SeedPermissions()
         {
-            ApplicationUser adminUser = _context.Users.FirstOrDefault(u => u.UserName.Equals("test1",StringComparison.OrdinalIgnoreCase));
+            ApplicationUser adminUser = _context.Users.FirstOrDefault(u => u.UserName.Equals("admin",StringComparison.OrdinalIgnoreCase));
             if(adminUser != null)
             {
                 List<UserPermissionModel> allPermissions =

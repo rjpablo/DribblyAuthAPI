@@ -1,4 +1,5 @@
 ﻿using Dribbly.Authentication.Services;
+using Dribbly.Core.Enums;
 using Dribbly.Core.Enums.Permissions;
 using Dribbly.Core.Exceptions;
 using Dribbly.Core.Utilities;

@@ -2,8 +2,6 @@
 using Dribbly.Core.Models;
 using Dribbly.Core.Utilities;
 using Dribbly.Model;
-using Dribbly.Model.Courts;
-using Dribbly.Model.Entities;
 using Dribbly.Model.Tournaments;
 using System;
 using System.Collections.Generic;

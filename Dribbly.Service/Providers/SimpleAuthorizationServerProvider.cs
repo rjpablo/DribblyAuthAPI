@@ -13,6 +13,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Dribbly.Authentication.Attributes;
+using Dribbly.Core.Enums;
 
 namespace Dribbly.Service.Providers
 {
@@ -98,7 +99,7 @@ namespace Dribbly.Service.Providers
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
             ApplicationUser user = null;
-            AccountModel account = null;
+            PlayerModel account = null;
             List<PermissionModel> userPermissions = new List<PermissionModel>();
 
             using (var authContext = new AuthContext())
@@ -127,7 +128,7 @@ namespace Dribbly.Service.Providers
                         {
                             _accountRepo.ActivateByUserId(user.Id.ToString());
                             var indexedAccount = authContext.IndexedEntities.Find(account.Id, account.EntityType);
-                            indexedAccount.EntityStatus = Enums.EntityStatusEnum.Active;
+                            indexedAccount.EntityStatus = EntityStatusEnum.Active;
                             await authContext.SaveChangesAsync();
                         }
                     }

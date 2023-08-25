@@ -1,4 +1,5 @@
-﻿using Dribbly.Model.Shared;
+﻿using Dribbly.Core.Models;
+using Dribbly.Model.Shared;
 using Dribbly.Service.Services.Shared;
 using System.Collections.Generic;
 using System.Threading.Tasks;

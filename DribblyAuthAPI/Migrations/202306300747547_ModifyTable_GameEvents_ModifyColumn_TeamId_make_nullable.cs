@@ -16,6 +16,9 @@ namespace DribblyAuthAPI.Migrations
         
         public override void Down()
         {
+            Sql("DELETE FROM shots");
+            Sql("DELETE FROM memberfouls");
+            Sql("DELETE FROM GameEvents");
             DropForeignKey("dbo.GameEvents", "TeamId", "dbo.Teams");
             DropIndex("dbo.GameEvents", new[] { "TeamId" });
             AlterColumn("dbo.GameEvents", "TeamId", c => c.Long(nullable: false));

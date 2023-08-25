@@ -83,7 +83,7 @@
     <Compile Include="Account\AccountViewerModel.cs" />
     <Compile Include="Account\AccountBasicInfoModel.cs" />
     <Compile Include="Account\AccountDetailsModalModel.cs" />
-    <Compile Include="Account\AccountModel.cs" />
+    <Compile Include="Account\PlayerModel.cs" />
     <Compile Include="Account\AccountsChoicesItemModel.cs" />
     <Compile Include="Account\AccountSearchInputModel.cs" />
     <Compile Include="Account\AccountSettingsModel.cs" />
@@ -150,13 +150,10 @@
     <Compile Include="Leagues\LeagueViewerModel.cs" />
     <Compile Include="Enums\JoinTeamRequestStatus.cs" />
     <Compile Include="Enums\PlayerPositionEnum.cs" />
-    <Compile Include="Enums\EntityTypeEnum.cs" />
-    <Compile Include="Enums\AccountStatusEnum.cs" />
     <Compile Include="Enums\SeasonStatusEnum.cs" />
     <Compile Include="Enums\UserActivityTypeEnum.cs" />
     <Compile Include="Enums\GameStatusEnum.cs" />
     <Compile Include="Enums\BookingStatusEnum.cs" />
-    <Compile Include="Enums\GenderEnum.cs" />
     <Compile Include="Games\AddGameModalModel.cs" />
     <Compile Include="Games\GameResultModel.cs" />
     <Compile Include="Games\UpdateGameModel.cs" />
@@ -173,7 +170,6 @@
     <Compile Include="Play\UpsertShotResultModel.cs" />
     <Compile Include="Seasons\SeasonDto.cs" />
     <Compile Include="Seasons\SeasonModel.cs" />
-    <Compile Include="Shared\IndexedEntityModel.cs" />
     <Compile Include="Shared\GenericEntityUpdateInputModel.cs" />
     <Compile Include="Shared\GetTypeAheadSuggestionsInputModel.cs" />
     <Compile Include="Teams\JoinTeamRequestInputModel.cs" />
@@ -217,7 +213,6 @@
     <Compile Include="Settings\SettingModel.cs" />
     <Compile Include="Shared\EntityBasicInfoModel.cs" />
     <Compile Include="Shared\AccountPhotoModel.cs" />
-    <Compile Include="Shared\ChoiceItemModel.cs" />
     <Compile Include="Shared\ContactModel.cs" />
     <Compile Include="Shared\CourtPhotoModel.cs" />
     <Compile Include="Shared\AccountVideoModel.cs" />

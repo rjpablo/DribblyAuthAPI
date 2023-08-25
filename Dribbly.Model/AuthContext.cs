@@ -27,7 +27,6 @@ namespace Dribbly.Model
 {
     public interface IAuthContext : IDisposable, IChatDbContext
     {
-        DbSet<AccountModel> Accounts { get; set; }
         DbSet<Client> Clients { get; set; }
         DbSet<RefreshToken> RefreshTokens { get; set; }
         DbSet<LeagueModel> Leagues { get; set; }
@@ -70,6 +69,7 @@ namespace Dribbly.Model
         DbSet<ContactModel> Contacts { get; set; }
         DbSet<CourtReviewModel> CourtReivews { get; set; }
         DbSet<PostModel> Posts { get; set; }
+        DbSet<PlayerModel> Players { get; set; }
         IDbSet<ApplicationUser> Users { get; set; }
         DbSet<IndexedEntityModel> IndexedEntities { get; set; }
 
@@ -140,6 +140,7 @@ namespace Dribbly.Model
             base.OnModelCreating(modelBuilder);
         }
 
+        public DbSet<PlayerModel> Players { get; set; }
         public DbSet<AccountModel> Accounts { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }

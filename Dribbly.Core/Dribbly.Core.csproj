@@ -49,6 +49,9 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -71,6 +74,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\EntityStatusEnum.cs" />
+    <Compile Include="Enums\EntityTypeEnum.cs" />
+    <Compile Include="Enums\GenderEnum.cs" />
     <Compile Include="Enums\MultimediaTypeEnum.cs" />
     <Compile Include="Enums\PermissionsEnum.cs" />
     <Compile Include="Exceptions\DribblyException.cs" />
@@ -80,8 +86,11 @@
     <Compile Include="Extensions\IntExtensions.cs" />
     <Compile Include="Helpers\Hash.cs" />
     <Compile Include="Helpers\Salt.cs" />
+    <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\BaseEntityModel.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\ChoiceItemModel.cs" />
+    <Compile Include="Models\IndexedEntityModel.cs" />
     <Compile Include="Models\PagedGetInputModel.cs" />
     <Compile Include="Models\MultimediaModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

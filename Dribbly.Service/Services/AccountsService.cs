@@ -1,5 +1,6 @@
 ﻿using Dribbly.Authentication.Models;
 using Dribbly.Authentication.Services;
+using Dribbly.Core.Enums;
 using Dribbly.Core.Enums.Permissions;
 using Dribbly.Core.Exceptions;
 using Dribbly.Core.Models;
@@ -37,7 +38,7 @@ using System.Web;
 
 namespace Dribbly.Service.Services
 {
-    public class AccountsService : BaseEntityService<AccountModel>, IAccountsService
+    public class AccountsService : BaseEntityService<PlayerModel>, IAccountsService
     {
         IAccountRepository _accountRepo;
         private readonly ICourtsRepository _courtsRepo;
@@ -58,7 +59,7 @@ namespace Dribbly.Service.Services
             IFileService fileService,
             IIndexedEntitysRepository indexedEntitysRepo,
             IEmailService emailSender,
-            OAuthBearerAuthenticationOptions oAuthBearerAuthenticationOptions) : base(context.Accounts, context)
+            OAuthBearerAuthenticationOptions oAuthBearerAuthenticationOptions) : base(context.Players, context)
         {
             _courtsRepo = courtsRepo;
             _context = context;
@@ -138,7 +139,7 @@ namespace Dribbly.Service.Services
         }
         #endregion
 
-        public Task<AccountModel> GetAccountByUsername(string userName)
+        public Task<PlayerModel> GetAccountByUsername(string userName)
         {
             return _accountRepo.GetAccountByUsername(userName);
         }
@@ -146,7 +147,7 @@ namespace Dribbly.Service.Services
         public async Task<AccountSettingsModel> GetAccountSettingsAsync(long userId)
         {
             AccountSettingsModel settings = new AccountSettingsModel();
-            AccountModel account = await _accountRepo.GetAccountByIdentityId(userId);
+            PlayerModel account = await _accountRepo.GetAccountByIdentityId(userId);
             if (account == null)
             {
                 throw new DribblyForbiddenException(string.Format("Did not find an account with User ID {0}", userId),
@@ -170,7 +171,7 @@ namespace Dribbly.Service.Services
 
         public async Task<IEnumerable<AccountsChoicesItemModel>> GetAccountDropDownSuggestions(AccountSearchInputModel input)
         {
-            List<AccountModel> accounts = await _accountRepo.SearchAccounts(input).ToListAsync();
+            List<PlayerModel> accounts = await _accountRepo.SearchAccounts(input).ToListAsync();
             return accounts.Select(a => new AccountsChoicesItemModel(a));
         }
 
@@ -199,7 +200,7 @@ namespace Dribbly.Service.Services
             };
         }
 
-        public async Task UpdateAccountAsync(AccountModel account)
+        public async Task UpdateAccountAsync(PlayerModel account)
         {
             _dbSet.AddOrUpdate(account);
             await _indexedEntitysRepo.Update(_context, account);
@@ -208,7 +209,7 @@ namespace Dribbly.Service.Services
 
         public async Task SetStatus(long accountId, EntityStatusEnum status)
         {
-            AccountModel account = _dbSet.Include(u => u.User).SingleOrDefault(a => a.Id == accountId);
+            PlayerModel account = _dbSet.Include(u => u.User).SingleOrDefault(a => a.Id == accountId);
             if (account == null)
             {
                 throw new DribblyObjectNotFoundException
@@ -289,7 +290,7 @@ namespace Dribbly.Service.Services
                         throw new DribblyInvalidOperationException("Registration failed.", friendlyMessage: "Registration failed. Please try again.", errors: result.Errors);
                     }
 
-                    await _AddAsync(new AccountModel
+                    await _AddAsync(new PlayerModel
                     {
                         IdentityUserId = user.Id,
                         DateAdded = DateTime.UtcNow,
@@ -397,7 +398,7 @@ namespace Dribbly.Service.Services
 
         #endregion
 
-        public async Task AddAsync(AccountModel account)
+        public async Task AddAsync(PlayerModel account)
         {
             using (var transaction = _context.Database.BeginTransaction())
             {
@@ -415,7 +416,7 @@ namespace Dribbly.Service.Services
             }
         }
 
-        private async Task _AddAsync(AccountModel account)
+        private async Task _AddAsync(PlayerModel account)
         {
             Add(account);
             await _context.SaveChangesAsync();
@@ -426,14 +427,14 @@ namespace Dribbly.Service.Services
             {
                 _context.SetEntityState(account.User.Logins.First(), EntityState.Unchanged);
             }
-            var entity = new IndexedEntityModel(account);
+            var entity = new IndexedEntityModel(account, account.Username);
             await _indexedEntitysRepo.Add(_context, entity, entity.AdditionalData);
             await _commonService.AddUserAccountActivity(UserActivityTypeEnum.CreateAccount, account.Id);
         }
 
         public async Task SetIsPublic(string userId, bool IsPublic)
         {
-            AccountModel account = await _context.Accounts.SingleOrDefaultAsync(a => a.IdentityUserId.ToString() == userId);
+            PlayerModel account = await _context.Players.SingleOrDefaultAsync(a => a.IdentityUserId.ToString() == userId);
             if (account == null)
             {
                 throw new DribblyObjectNotFoundException
@@ -470,7 +471,7 @@ namespace Dribbly.Service.Services
         public async Task<IEnumerable<MultimediaModel>> AddAccountPhotosAsync(long accountId)
         {
             HttpFileCollection files = HttpContext.Current.Request.Files;
-            AccountModel account = GetById(accountId);
+            PlayerModel account = GetById(accountId);
             List<MultimediaModel> photos = new List<MultimediaModel>();
 
             using (var transaction = _context.Database.BeginTransaction())
@@ -531,7 +532,7 @@ namespace Dribbly.Service.Services
 
         public async Task<MultimediaModel> UploadPrimaryPhotoAsync(long accountId)
         {
-            AccountModel account = GetById(accountId);
+            PlayerModel account = GetById(accountId);
             long? currentUserId = _securityUtility.GetUserId();
 
             if ((currentUserId != account.IdentityUserId) && !AuthenticationService.HasPermission(AccountPermission.UpdatePhotoNotOwned))
@@ -564,7 +565,7 @@ namespace Dribbly.Service.Services
             }
         }
 
-        private async Task<MultimediaModel> AddPhoto(AccountModel account, HttpPostedFile file)
+        private async Task<MultimediaModel> AddPhoto(PlayerModel account, HttpPostedFile file)
         {
             string uploadPath = _fileService.Upload(file, "accountPhotos/");
 
@@ -593,7 +594,7 @@ namespace Dribbly.Service.Services
 
         public async Task<IEnumerable<VideoModel>> GetAccountVideosAsync(long accountId)
         {
-            AccountModel account = await _dbSet.FirstOrDefaultAsync(c => c.Id == accountId);
+            PlayerModel account = await _dbSet.FirstOrDefaultAsync(c => c.Id == accountId);
 
             if (account == null)
             {
@@ -606,7 +607,7 @@ namespace Dribbly.Service.Services
 
         public async Task<VideoModel> AddVideoAsync(long accountId, VideoModel video, HttpPostedFile file)
         {
-            AccountModel account = await GetByIdAsync(accountId);
+            PlayerModel account = await GetByIdAsync(accountId);
 
             if (account == null)
             {
@@ -673,13 +674,13 @@ namespace Dribbly.Service.Services
 
     public interface IAccountsService
     {
-        Task<AccountModel> GetAccountByUsername(string userName);
+        Task<PlayerModel> GetAccountByUsername(string userName);
 
         Task<AccountDetailsModalModel> GetAccountDetailsModalAsync(long accountId);
 
         Task<AccountViewerModel> GetAccountViewerDataAsync(string userName);
 
-        Task AddAsync(AccountModel account);
+        Task AddAsync(PlayerModel account);
 
         Task<IEnumerable<MultimediaModel>> AddAccountPhotosAsync(long accountId);
 
@@ -689,7 +690,7 @@ namespace Dribbly.Service.Services
 
         Task<MultimediaModel> UploadPrimaryPhotoAsync(long accountId);
 
-        Task UpdateAccountAsync(AccountModel account);
+        Task UpdateAccountAsync(PlayerModel account);
 
         Task<IEnumerable<MultimediaModel>> GetAccountPhotosAsync(int accountId);
 

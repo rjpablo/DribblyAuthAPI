@@ -17,7 +17,7 @@ namespace Dribbly.Model.Shared
         [ForeignKey("Account")]
         public long AccountId { get; set; }
 
-        public virtual AccountModel Account { get; set; }
+        public virtual PlayerModel Account { get; set; }
         public virtual VideoModel Video { get; set; }
     }
 }

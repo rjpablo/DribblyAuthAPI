@@ -17,7 +17,7 @@ namespace Dribbly.Model.Accounts
         [ForeignKey("Account")]
         public long AccountId { get; set; }
 
-        public virtual AccountModel Account { get; set; }
+        public virtual PlayerModel Account { get; set; }
         public virtual MultimediaModel Photo { get; set; }
     }
 }

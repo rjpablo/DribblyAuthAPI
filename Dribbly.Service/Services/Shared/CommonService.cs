@@ -1,4 +1,5 @@
-﻿using Dribbly.Core.Models;
+﻿using Dribbly.Core.Enums;
+using Dribbly.Core.Models;
 using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Courts;
@@ -396,7 +397,7 @@ namespace Dribbly.Service.Services.Shared
                 return null;
             }
             var userId = long.Parse(stringUserId);
-            var accountId = (await _context.Accounts.SingleOrDefaultAsync(a => a.IdentityUserId == userId))?.Id;
+            var accountId = (await _context.Players.SingleOrDefaultAsync(a => a.IdentityUserId == userId))?.Id;
 
             return accountId;
         }

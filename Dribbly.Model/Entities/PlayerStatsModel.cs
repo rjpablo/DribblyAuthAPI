@@ -90,7 +90,7 @@ namespace Dribbly.Model.Entities
 
         #region Navigational Properties
         //[DataMember]
-        public AccountModel Account { get; set; }
+        public PlayerModel Account { get; set; }
         public GameModel LastGame { get; set; }
         #endregion
 

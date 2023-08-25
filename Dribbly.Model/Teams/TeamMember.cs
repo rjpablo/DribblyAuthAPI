@@ -1,4 +1,5 @@
-﻿using Dribbly.Core.Models;
+﻿using Dribbly.Core.Enums;
+using Dribbly.Core.Models;
 using Dribbly.Model.Account;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Shared;
@@ -21,7 +22,7 @@ namespace Dribbly.Model.Teams
         /// </summary>
         public DateTime? DateLeft { get; set; }
         public PlayerPositionEnum Position { get; set; }
-        public AccountModel Account { get; set; }
+        public PlayerModel Account { get; set; }
         [JsonIgnore]
         public TeamModel Team { get; set; }
 

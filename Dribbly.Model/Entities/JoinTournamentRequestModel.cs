@@ -24,7 +24,7 @@ namespace Dribbly.Model.Entities
         [JsonIgnore]
         public TournamentModel Tournament { get; set; }
         public TeamModel Team { get; set; }
-        public AccountModel AddedBy { get; set; }
+        public PlayerModel AddedBy { get; set; }
         #endregion
     }
 }

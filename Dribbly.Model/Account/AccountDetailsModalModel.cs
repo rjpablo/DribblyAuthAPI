@@ -1,10 +1,10 @@
-﻿using Dribbly.Model.Shared;
+﻿using Dribbly.Core.Models;
 
 namespace Dribbly.Model.Account
 {
     public class AccountDetailsModalModel
     {
-        public AccountModel Account { get; set; }
+        public PlayerModel Account { get; set; }
         public ChoiceItemModel<long> HomeCourtChoice { get; set; }
     }
 }

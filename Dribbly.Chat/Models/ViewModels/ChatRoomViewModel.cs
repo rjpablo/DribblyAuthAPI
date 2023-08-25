@@ -10,6 +10,7 @@ namespace Dribbly.Chat.Models.ViewModels
     {
         public long ChatId { get; set; }
         public string RoomName { get; set; }
+        public string Code { get; set; }
         public ChatTypeEnum Type { get; set; }
         public DateTime LastUpdateTime { get; set; }
         public ICollection<MessageViewModel> Messages { get; set; } = new List<MessageViewModel>();
@@ -17,13 +18,14 @@ namespace Dribbly.Chat.Models.ViewModels
         /// The number of unviewed updates
         /// </summary>
         public int UnviewedCount { get; set; }
-        public ICollection<ChatParticipantModel> Participants { get; set; }
+        public ICollection<AccountModel> Participants { get; set; }
         public MultimediaModel RoomIcon { get; set; }
 
         public ChatRoomViewModel(ChatModel chat, long forParticipantId)
         {
             ChatId = chat.Id;
             RoomName = chat.Title;
+            Code = chat.Code;
             Type = chat.Type;
             LastUpdateTime = chat.LastUpdateTime;
             foreach (var message in chat.Messages)
@@ -31,10 +33,10 @@ namespace Dribbly.Chat.Models.ViewModels
                 Messages.Add(new MessageViewModel(message, forParticipantId));
             }
             UnviewedCount = Messages.Count(m => !m.IsSender && m.Status == MessageRecipientStatusEnum.NotSeen);
-            Participants = chat.Participants;
+            Participants = chat.Participants.Select(p=>p.Participant).ToList();
             if (Type == ChatTypeEnum.Private)
             {
-                RoomName = chat.Participants.Single(p => p.ParticipantId != forParticipantId).Name;
+                RoomName = chat.Participants.Single(p => p.ParticipantId != forParticipantId).Participant.Name;
                 //RoomIcon = chat.Participants.Single(p => p.ParticipantId != forParticipantId).Photo;
             }
         }

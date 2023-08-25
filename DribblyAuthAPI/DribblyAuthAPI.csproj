@@ -903,6 +903,14 @@
     <Compile Include="Migrations\202308231538287_RenameTable_Photos_to_Multimedia.Designer.cs">
       <DependentUpon>202308231538287_RenameTable_Photos_to_Multimedia.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202308241602177_Use_AccountModel_as_ChatParticipant_and_MessageParticipant.cs" />
+    <Compile Include="Migrations\202308241602177_Use_AccountModel_as_ChatParticipant_and_MessageParticipant.Designer.cs">
+      <DependentUpon>202308241602177_Use_AccountModel_as_ChatParticipant_and_MessageParticipant.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308250530147_DropTable_ChatParticipants.cs" />
+    <Compile Include="Migrations\202308250530147_DropTable_ChatParticipants.Designer.cs">
+      <DependentUpon>202308250530147_DropTable_ChatParticipants.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1415,6 +1423,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202308231538287_RenameTable_Photos_to_Multimedia.resx">
       <DependentUpon>202308231538287_RenameTable_Photos_to_Multimedia.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308241602177_Use_AccountModel_as_ChatParticipant_and_MessageParticipant.resx">
+      <DependentUpon>202308241602177_Use_AccountModel_as_ChatParticipant_and_MessageParticipant.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308250530147_DropTable_ChatParticipants.resx">
+      <DependentUpon>202308250530147_DropTable_ChatParticipants.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

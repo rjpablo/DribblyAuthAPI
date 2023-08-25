@@ -56,6 +56,6 @@ namespace Dribbly.Model.Entities
         public GameModel Game { get; set; }
         [JsonIgnore]
         public GameTeamModel GameTeam { get; set; }
-        public AccountModel Account { get; set; }
+        public PlayerModel Account { get; set; }
     }
 }

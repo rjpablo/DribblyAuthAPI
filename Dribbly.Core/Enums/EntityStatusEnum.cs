@@ -1,4 +1,4 @@
-﻿namespace Dribbly.Service.Enums
+﻿namespace Dribbly.Core.Enums
 {
     public enum EntityStatusEnum
     {

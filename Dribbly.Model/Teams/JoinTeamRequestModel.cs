@@ -1,4 +1,5 @@
-﻿using Dribbly.Core.Models;
+﻿using Dribbly.Core.Enums;
+using Dribbly.Core.Models;
 using Dribbly.Model.Account;
 using Dribbly.Model.Enums;
 using Dribbly.Model.Shared;
@@ -16,7 +17,7 @@ namespace Dribbly.Model.Teams
         public long MemberAccountId { get; set; }
         public PlayerPositionEnum Position { get; set; }
         public JoinTeamRequestStatus Status { get; set; }
-        public AccountModel Member { get; set; }
+        public PlayerModel Member { get; set; }
         public TeamModel Team { get; set; }
 
         public EntityTypeEnum EntityType => Member.EntityType;
@@ -50,7 +51,7 @@ namespace Dribbly.Model.Teams
         /// 
         /// </summary>
         /// <param name="teamId"></param>
-        /// <param name="memberAccountId">The <see cref="AccountModel.Id"/> of the requesting member</param>
+        /// <param name="memberAccountId">The <see cref="PlayerModel.Id"/> of the requesting member</param>
         /// <param name="position"></param>
         public JoinTeamRequestModel(int teamId, long memberAccountId, PlayerPositionEnum position, int jerseyNo)
         {

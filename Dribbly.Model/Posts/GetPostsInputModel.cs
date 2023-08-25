@@ -1,4 +1,4 @@
-﻿using Dribbly.Service.Enums;
+﻿using Dribbly.Core.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace Dribbly.Model.Posts

@@ -1,10 +1,7 @@
-﻿using Dribbly.Model;
-using Dribbly.Model.Shared;
-using Dribbly.Service.Enums;
-using System.Collections.Generic;
+﻿using Dribbly.Core.Enums;
+using Dribbly.Core.Models;
+using Dribbly.Model;
 using System.Data.Entity;
-using System.Data.Entity.Migrations;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Dribbly.Service.Repositories
@@ -32,7 +29,7 @@ namespace Dribbly.Service.Repositories
         {
             if(entity.EntityType == EntityTypeEnum.Account)
             {
-                entity = await db.Accounts.Include(a => a.ProfilePhoto).Include(a => a.User).Include(a => a.HomeCourt)
+                entity = await db.Players.Include(a => a.ProfilePhoto).Include(a => a.User).Include(a => a.HomeCourt)
                 .Include(a => a.HomeCourt.PrimaryPhoto).SingleOrDefaultAsync(a => a.Id == entity.Id);
             }
             var u = db.IndexedEntities.Find(entity.Id, entity.EntityType);

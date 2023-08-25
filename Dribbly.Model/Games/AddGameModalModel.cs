@@ -1,5 +1,5 @@
-﻿using Dribbly.Model.Entities;
-using Dribbly.Model.Shared;
+﻿using Dribbly.Core.Models;
+using Dribbly.Model.Entities;
 
 namespace Dribbly.Model.Games
 {

@@ -14,6 +14,7 @@ namespace Dribbly.Chat.Data
         DbSet<MessageModel> Messages { get; set; }
         DbSet<MessageMediaModel> MessageMedia { get; set; }
         DbSet<MultimediaModel> Multimedia { get; set; }
+        DbSet<AccountModel> Accounts { get; set; }
         Database Database { get; }
         Task<int> SaveChangesAsync();
         #endregion

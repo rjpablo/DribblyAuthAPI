@@ -32,7 +32,7 @@ namespace Dribbly.Model.Entities
         public TeamModel Team { get; set; }
         [JsonIgnore]
         public GameModel Game { get; set; }
-        public AccountModel PerformedBy { get; set; }
+        public PlayerModel PerformedBy { get; set; }
         /// <summary>
         /// The shot linked to this event, if any
         /// </summary>

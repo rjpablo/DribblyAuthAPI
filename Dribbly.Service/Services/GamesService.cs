@@ -1,5 +1,7 @@
-﻿using Dribbly.Core.Exceptions;
+﻿using Dribbly.Core.Enums;
+using Dribbly.Core.Exceptions;
 using Dribbly.Core.Extensions;
+using Dribbly.Core.Models;
 using Dribbly.Core.Utilities;
 using Dribbly.Email.Services;
 using Dribbly.Model;
@@ -10,9 +12,7 @@ using Dribbly.Model.Enums;
 using Dribbly.Model.GameEvents;
 using Dribbly.Model.Games;
 using Dribbly.Model.Notifications;
-using Dribbly.Model.Play;
 using Dribbly.Model.Posts;
-using Dribbly.Model.Shared;
 using Dribbly.Model.Teams;
 using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
@@ -140,8 +140,8 @@ namespace Dribbly.Service.Services
         public async Task<DTO.GameTeam> GetGameTeamAsync(long gameId, long teamId)
         {
             TeamModel team = await _teamsRepository.Get(t => t.Id == teamId,
-                $"{nameof(TeamModel.Members)}.{nameof(TeamMembershipModel.Account)}.{nameof(AccountModel.User)}," +
-                $"{nameof(TeamModel.Members)}.{nameof(TeamMembershipModel.Account)}.{nameof(AccountModel.ProfilePhoto)}," +
+                $"{nameof(TeamModel.Members)}.{nameof(TeamMembershipModel.Account)}.{nameof(PlayerModel.User)}," +
+                $"{nameof(TeamModel.Members)}.{nameof(TeamMembershipModel.Account)}.{nameof(PlayerModel.ProfilePhoto)}," +
                 $"{nameof(TeamModel.Logo)}")
                 .SingleOrDefaultAsync();
 

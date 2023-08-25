@@ -1,5 +1,5 @@
-﻿using Dribbly.Model.Shared;
-using Dribbly.Service.Enums;
+﻿using Dribbly.Core.Enums;
+using Dribbly.Core.Models;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -25,7 +25,7 @@ namespace Dribbly.Model.Account
 
         }
 
-        public AccountBasicInfoModel(AccountModel account)
+        public AccountBasicInfoModel(PlayerModel account)
         {
             IdentityUserId = account.IdentityUserId;
             Id = account.Id;

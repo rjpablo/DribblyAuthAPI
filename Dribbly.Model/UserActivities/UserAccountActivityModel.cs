@@ -9,7 +9,7 @@ namespace Dribbly.Model.UserActivities
         [ForeignKey(nameof(Account))]
         public long AccountId { get; set; }
 
-        public AccountModel Account { get; set; }
+        public PlayerModel Account { get; set; }
 
     }
 }

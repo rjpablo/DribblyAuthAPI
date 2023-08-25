@@ -27,8 +27,9 @@ namespace Dribbly.Chat.Services
 
         public async Task<IEnumerable<ChatModel>> GetChatsAsync_backup(long userId)
         {
-            var chatIds = (await _context.ChatParticipants.Where(p => p.ParticipantId == userId).ToListAsync())
-                .Select(p => p.ChatId);
+            //var chatIds = (await _context.ChatParticipants.Where(p => p.ParticipantId == userId).ToListAsync())
+            //    .Select(p => p.ChatId);
+            var chatIds = new List<long>();
             return await _context.Chats.Include(c => c.Participants).Where(c => chatIds.Contains(c.Id))
                 .OrderByDescending(c => c.LastUpdateTime)
                 .ToListAsync();
@@ -46,24 +47,15 @@ namespace Dribbly.Chat.Services
 
         public async Task<ChatModel> GetPrivateChatAsync(long withUserId, long userId)
         {
-            var chatIds = (await _context.ChatParticipants.Where(p => p.ParticipantId == userId).ToListAsync())
-                .Select(p => p.ChatId);
+            var code = GetPrivateChatCode(new long[] { withUserId, userId });
             // we don't filter by IsTemporary here so temporary chat rooms can be opened and messages can be sent
-            var chats = await _context.Chats
-                .Include(c => c.Participants.Select(p => p.Photo))
+            var chat = await _context.Chats
+                .Include(c => c.Participants.Select(p => p.Participant.ProfilePhoto))
                 .Include(c => c.Messages.Select(m => m.Participants))
-                .Where(c => chatIds.Contains(c.Id) && c.Type == Enums.ChatTypeEnum.Private)
+                .Where(c => c.Code == code)
                 .OrderByDescending(c => c.LastUpdateTime)
-                .ToListAsync();
-            return chats.Where(c => c.Participants.Select(p => p.ParticipantId).Contains(withUserId)).SingleOrDefault();
-        }
-
-        public async Task UpdateParticipantPhoto(long participantUserId, MultimediaModel photo)
-        {
-            var participant = await _context.ChatParticipants.Where(p => p.ParticipantId == participantUserId)
-                .FirstOrDefaultAsync();
-            participant.PhotoId = photo.Id;
-            await _context.SaveChangesAsync();
+                .SingleOrDefaultAsync();
+            return chat;
         }
 
         public async Task<IEnumerable<ChatRoomViewModel>> GetChatsAsync(long userId)
@@ -74,7 +66,7 @@ namespace Dribbly.Chat.Services
                 .Include(c => c.Icon)
                 .Include(c => c.Messages.Select(m => m.Participants))
                 .Include(c => c.Messages.Select(m => m.MediaCollection.Select(cl => cl.Media)))
-                .Include(c => c.Participants.Select(p => p.Photo))
+                .Include(c => c.Participants.Select(p => p.Participant.ProfilePhoto))
                 .Where(c => chatIds.Contains(c.Id) && !c.IsTemporary && c.Type == Enums.ChatTypeEnum.Private)
                 .OrderByDescending(c => c.LastUpdateTime)
                 .ToListAsync();
@@ -83,8 +75,9 @@ namespace Dribbly.Chat.Services
 
         public async Task<ChatModel> GetChatMessagesAsync(long withUserId, long userId)
         {
-            var chatIds = (await _context.ChatParticipants.Where(p => p.ParticipantId == userId).ToListAsync())
-                .Select(p => p.ChatId);
+            //var chatIds = (await _context.ChatParticipants.Where(p => p.ParticipantId == userId).ToListAsync())
+            //    .Select(p => p.ChatId);
+            var chatIds = new List<long>();
             var chats = await _context.Chats
                 .Include(c => c.Messages.Select(m => m.Participants))
                 .Where(c => chatIds.Contains(c.Id) && c.Type == Enums.ChatTypeEnum.Private)
@@ -100,7 +93,7 @@ namespace Dribbly.Chat.Services
                 .Include(c => c.Icon)
                 .Include(c => c.Messages.Select(m => m.Participants))
                 .Include(c => c.Messages.Select(m => m.MediaCollection.Select(cl => cl.Media)))
-                .Include(c => c.Participants.Select(p => p.Photo))
+                .Include(c => c.Participants.Select(p => p.Participant.ProfilePhoto))
                 .Where(c => c.Id == chatId && c.Type == Enums.ChatTypeEnum.Private)
                 .OrderByDescending(c => c.LastUpdateTime)
                 .SingleOrDefaultAsync();
@@ -144,7 +137,7 @@ namespace Dribbly.Chat.Services
                 .Include(m => m.Messages)
                 .Include(m => m.Participants)
                 .Where(c => c.Id == message.ChatId).First();
-            var participants = _context.ChatParticipants.Where(p => p.ChatId == message.ChatId).ToList();
+            //var participants = _context.ChatParticipants.Where(p => p.ChatId == message.ChatId).ToList();
 
             try
             {
@@ -203,40 +196,48 @@ namespace Dribbly.Chat.Services
         {
             ChatModel chat = new ChatModel();
             chat.Title = input.Title;
+            var participants = await _context.Accounts.Where(a => input.ParticipantIds.Contains(a.Id)).ToListAsync();
             foreach (var message in input.Messages)
             {
                 message.SenderId = senderId;
                 message.DateAdded = DateTime.UtcNow;
                 chat.Messages.Add(message);
             }
-            foreach (var p in input.Participants)
+            chat.Participants = input.ParticipantIds.Select(p => new ChatParticipantModel
             {
-                if (p.Photo != null)
-                {
-                    p.Photo.DateAdded = DateTime.UtcNow;
-                    p.Photo.Type = Core.Enums.MultimediaTypeEnum.Photo;
-                }
-                p.DateAdded = DateTime.UtcNow;
-            }
-            chat.Participants = input.Participants;
+                DateAdded = DateTime.UtcNow,
+                ParticipantId = p
+            }).ToList();
             chat.DateAdded = DateTime.UtcNow;
             chat.LastUpdateTime = DateTime.UtcNow;
             chat.Type = Enums.ChatTypeEnum.Private;
             chat.IsTemporary = chat.Messages.Count == 0;
+            chat.Code = GetPrivateChatCode(input.ParticipantIds);
             _context.Chats.Add(chat);
-            await _context.SaveChangesAsync();
 
-            foreach (var message in input.Messages)
+            foreach (var message in chat.Messages)
             {
                 foreach (var p in chat.Participants)
                 {
-                    _context.ParticipantMessages
-                        .Add(new ParticipantMessageModel(message.Id, p.ParticipantId, p.ParticipantId == senderId));
+                    message.Participants
+                         .Add(new ParticipantMessageModel
+                         {
+                             ParticipantId = p.ParticipantId,
+                             IsSender = p.ParticipantId == message.SenderId,
+                             Status = p.ParticipantId == message.SenderId ?
+                                 Enums.MessageRecipientStatusEnum.Seen :
+                                 Enums.MessageRecipientStatusEnum.NotSeen,
+                             DateAdded = DateTime.UtcNow
+                         });
                 }
             }
 
             await _context.SaveChangesAsync();
 
+            chat = await _context.Chats
+                .Include(c => c.Participants.Select(p => p.Participant.ProfilePhoto))
+                .Include(c => c.Messages.Select(m => m.Participants.Select(p => p.Participant.ProfilePhoto)))
+                .SingleOrDefaultAsync();
 
             foreach (var message in chat.Messages)
             {
@@ -247,6 +248,11 @@ namespace Dribbly.Chat.Services
             }
 
             return chat;
+        }
+
+        private string GetPrivateChatCode(IEnumerable<long> participantIds)
+        {
+            return "pr" + participantIds.Min() + "-" + participantIds.Max();
         }
     }
 
@@ -260,6 +266,5 @@ namespace Dribbly.Chat.Services
         Task<ChatRoomViewModel> GetOrCreatePrivateChatAsync(long withUserId, CreateChatInpuModel input, long userId);
         Task<int> MarkMessageAsSeenAsync(long chatId, long messageId, long userId);
         Task<int> GetUnviewedCountAsync(long chatId, long userId);
-        Task UpdateParticipantPhoto(long participantUserId, MultimediaModel photo);
     }
 }

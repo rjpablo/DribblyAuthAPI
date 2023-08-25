@@ -7,11 +7,11 @@ namespace Dribbly.Service.Repositories
 {
     public interface IAccountRepository: IDisposable
     {
-        Task<AccountModel> GetAccountByUsername(string userName);
+        Task<PlayerModel> GetAccountByUsername(string userName);
 
-        Task<AccountModel> GetAccountByIdentityId(long userId);
+        Task<PlayerModel> GetAccountByIdentityId(long userId);
 
-        Task<AccountModel> GetAccountById(long Id);
+        Task<PlayerModel> GetAccountById(long Id);
 
         Task<AccountBasicInfoModel> GetAccountBasicInfo(long userId);
 
@@ -21,6 +21,6 @@ namespace Dribbly.Service.Repositories
 
         Task<long> GetIdentityUserAccountIdNotNullAsync(long identityUserId);
 
-        IQueryable<AccountModel> SearchAccounts(AccountSearchInputModel input);
+        IQueryable<PlayerModel> SearchAccounts(AccountSearchInputModel input);
     }
 }

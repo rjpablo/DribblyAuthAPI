@@ -1,23 +1,18 @@
 ﻿using Dribbly.Authentication.Models;
 using Dribbly.Authentication.Models.Auth;
+using Dribbly.Core.Enums;
 using Dribbly.Core.Exceptions;
 using Dribbly.Core.Models;
 using Dribbly.Email.Services;
 using Dribbly.Identity.Models;
 using Dribbly.Model.Account;
-using Dribbly.Model.Courts;
 using Dribbly.Model.DTO;
 using Dribbly.Model.DTO.Account;
-using Dribbly.Model.Entities;
 using Dribbly.Model.Shared;
-using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
 using Dribbly.Service.Services;
-using DribblyAuthAPI.API;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -52,7 +47,7 @@ namespace DribblyAuthAPI.Controllers
         [AllowAnonymous]
         [HttpGet]
         [Route("GetAccountByUsername/{userName}")]
-        public async Task<AccountModel> GetAccountByUsername(string userName)
+        public async Task<PlayerModel> GetAccountByUsername(string userName)
         {
             return await _accountService.GetAccountByUsername(userName);
         }
@@ -102,7 +97,7 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpPost, Authorize]
         [Route("UpdateAccount")]
-        public async Task UpdateAccount([FromBody] AccountModel account)
+        public async Task UpdateAccount([FromBody] PlayerModel account)
         {
             await _accountService.UpdateAccountAsync(account);
         }
@@ -230,7 +225,7 @@ namespace DribblyAuthAPI.Controllers
                 return errorResult;
             }
 
-            await _accountService.AddAsync(new AccountModel
+            await _accountService.AddAsync(new PlayerModel
             {
                 IdentityUserId = result.user.Id,
                 DateAdded = DateTime.UtcNow,

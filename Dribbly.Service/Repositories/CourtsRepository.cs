@@ -1,4 +1,5 @@
-﻿using Dribbly.Model;
+﻿using Dribbly.Core.Enums;
+using Dribbly.Model;
 using Dribbly.Model.Courts;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -24,7 +25,7 @@ namespace Dribbly.Service.Repositories
         public async Task<IEnumerable<CourtModel>> FindActiveCourtsAsync(CourtSearchInputModel input)
         {
             return await _dbSet.Where(c => c.Name.Contains(input.Name) &&
-            c.EntityStatus == Enums.EntityStatusEnum.Active) //return only active courts
+            c.EntityStatus == EntityStatusEnum.Active) //return only active courts
                 .ToListAsync();
         }
 

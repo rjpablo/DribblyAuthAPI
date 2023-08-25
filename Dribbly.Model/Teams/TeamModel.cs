@@ -1,10 +1,7 @@
-﻿using Dribbly.Core.Models;
-using Dribbly.Identity.Models;
+﻿using Dribbly.Core.Enums;
+using Dribbly.Core.Models;
 using Dribbly.Model.Account;
 using Dribbly.Model.Courts;
-using Dribbly.Model.Shared;
-using Dribbly.Service.Enums;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

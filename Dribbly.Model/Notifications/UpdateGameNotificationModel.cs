@@ -26,7 +26,7 @@ namespace Dribbly.Model.Notifications
         public string CourtName { get; set; }
 
         public GameModel Game { get; set; }
-        public AccountModel UpdatedBy { get; set; }
+        public PlayerModel UpdatedBy { get; set; }
     }
 
     [NotMapped]

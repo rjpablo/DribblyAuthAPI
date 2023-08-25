@@ -1,4 +1,5 @@
-﻿using Dribbly.Core.Exceptions;
+﻿using Dribbly.Core.Enums;
+using Dribbly.Core.Exceptions;
 using Dribbly.Core.Models;
 using Dribbly.Core.Utilities;
 using Dribbly.Model;
@@ -62,7 +63,7 @@ namespace Dribbly.Service.Services
                 try
                 {
                     var account = await _accountRepo.GetAccountById(_securityUtility.GetAccountId().Value);
-                    tournament.EntityStatus = Enums.EntityStatusEnum.Active;
+                    tournament.EntityStatus = EntityStatusEnum.Active;
                     tournament.AddedById = account.Id;
                     _tournamentsRepository.Add(tournament);
                     await _context.SaveChangesAsync();
@@ -179,7 +180,7 @@ namespace Dribbly.Service.Services
             }
             else
             {
-                entity.Games = entity.Games.Where(g => g.EntityStatus != Enums.EntityStatusEnum.Deleted).ToList();
+                entity.Games = entity.Games.Where(g => g.EntityStatus != EntityStatusEnum.Deleted).ToList();
                 return new TournamentViewerModel(entity);
             }
         }

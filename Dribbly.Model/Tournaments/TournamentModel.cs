@@ -1,11 +1,10 @@
-﻿using Dribbly.Core.Models;
+﻿using Dribbly.Core.Enums;
+using Dribbly.Core.Models;
 using Dribbly.Model.Courts;
 using Dribbly.Model.DTO;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Enums;
 using Dribbly.Model.Games;
-using Dribbly.Model.Shared;
-using Dribbly.Service.Enums;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -46,7 +45,7 @@ namespace Dribbly.Model.Tournaments
 
         public TournamentModel()
         {
-            EntityType = Service.Enums.EntityTypeEnum.Tournament;
+            EntityType = EntityTypeEnum.Tournament;
         }
 
         public void OverrideSettings(UpdateTournamentSettingsModel source)

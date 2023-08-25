@@ -1,4 +1,5 @@
-﻿using Dribbly.Core.Utilities;
+﻿using Dribbly.Core.Enums;
+using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Posts;
 using Dribbly.Model.Shared;
@@ -49,7 +50,7 @@ namespace Dribbly.Service.Services.Shared
             await _indexedEntitysRepository.Add(_context, post);
             await _commonService.AddUserPostActivity(UserActivityTypeEnum.AddPost, post.Id);
 
-            post.AddedBy = await _context.Accounts
+            post.AddedBy = await _context.Players
                 .Include(a => a.ProfilePhoto)
                 .Include(a => a.User)
                 .SingleAsync(a => a.Id == post.AddedById);

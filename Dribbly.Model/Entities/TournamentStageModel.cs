@@ -25,7 +25,7 @@ namespace Dribbly.Model.Entities
         #region Navigational Properties
         [JsonIgnore]
         public TournamentModel Tournament { get; set; }
-        public AccountModel AddedBy { get; set; }
+        public PlayerModel AddedBy { get; set; }
         #endregion
 
         public ICollection<StageBracketModel> Brackets { get; set; } = new List<StageBracketModel>();

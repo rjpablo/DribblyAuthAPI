@@ -1,4 +1,4 @@
-﻿using Dribbly.Model.Shared;
+﻿using Dribbly.Core.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dribbly.Model.Account
@@ -8,7 +8,7 @@ namespace Dribbly.Model.Account
     {
         public AccountsChoicesItemModel() { }
 
-        public AccountsChoicesItemModel(AccountModel account)
+        public AccountsChoicesItemModel(PlayerModel account)
         {
             Text = account.Username;
             Value = account.IdentityUserId;

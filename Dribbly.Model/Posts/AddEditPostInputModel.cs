@@ -1,5 +1,5 @@
-﻿using Dribbly.Model.Enums;
-using Dribbly.Service.Enums;
+﻿using Dribbly.Core.Enums;
+using Dribbly.Model.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace Dribbly.Model.Posts
