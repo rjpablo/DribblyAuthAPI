@@ -3,6 +3,6 @@
     public enum ChatTypeEnum
     {
         Private = 0,
-        Group = 1
+        Team = 1
     }
 }

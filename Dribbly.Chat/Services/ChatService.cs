@@ -1,14 +1,13 @@
-﻿using Dribbly.Chat.Hubs;
+﻿using Dribbly.Chat.Data;
+using Dribbly.Chat.Hubs;
 using Dribbly.Chat.Models;
 using Dribbly.Chat.Models.ViewModels;
-using Dribbly.Core.Models;
+using Microsoft.AspNet.SignalR;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Data.Entity;
-using Dribbly.Chat.Data;
-using Microsoft.AspNet.SignalR;
 
 namespace Dribbly.Chat.Services
 {
@@ -23,16 +22,6 @@ namespace Dribbly.Chat.Services
         {
             _context = context;
             _chat = new ChatHub();
-        }
-
-        public async Task<IEnumerable<ChatModel>> GetChatsAsync_backup(long userId)
-        {
-            //var chatIds = (await _context.ChatParticipants.Where(p => p.ParticipantId == userId).ToListAsync())
-            //    .Select(p => p.ChatId);
-            var chatIds = new List<long>();
-            return await _context.Chats.Include(c => c.Participants).Where(c => chatIds.Contains(c.Id))
-                .OrderByDescending(c => c.LastUpdateTime)
-                .ToListAsync();
         }
 
         public async Task<ChatRoomViewModel> GetOrCreatePrivateChatAsync(long withUserId, CreateChatInpuModel input, long userId)
@@ -52,7 +41,8 @@ namespace Dribbly.Chat.Services
             var chat = await _context.Chats
                 .Include(c => c.Participants.Select(p => p.Participant.ProfilePhoto))
                 .Include(c => c.Messages.Select(m => m.Participants))
-                .Where(c => c.Code == code)
+                .Include(c => c.Icon)
+                .Where(c => c.Code == chatCode)
                 .OrderByDescending(c => c.LastUpdateTime)
                 .SingleOrDefaultAsync();
             return chat;
@@ -67,23 +57,11 @@ namespace Dribbly.Chat.Services
                 .Include(c => c.Messages.Select(m => m.Participants))
                 .Include(c => c.Messages.Select(m => m.MediaCollection.Select(cl => cl.Media)))
                 .Include(c => c.Participants.Select(p => p.Participant.ProfilePhoto))
-                .Where(c => chatIds.Contains(c.Id) && !c.IsTemporary && c.Type == Enums.ChatTypeEnum.Private)
+                .Where(c => chatIds.Contains(c.Id)
+                && !c.IsTemporary) // no need to return empty conversations
                 .OrderByDescending(c => c.LastUpdateTime)
                 .ToListAsync();
             return chats.Select(c => new ChatRoomViewModel(c, userId));
-        }
-
-        public async Task<ChatModel> GetChatMessagesAsync(long withUserId, long userId)
-        {
-            //var chatIds = (await _context.ChatParticipants.Where(p => p.ParticipantId == userId).ToListAsync())
-            //    .Select(p => p.ChatId);
-            var chatIds = new List<long>();
-            var chats = await _context.Chats
-                .Include(c => c.Messages.Select(m => m.Participants))
-                .Where(c => chatIds.Contains(c.Id) && c.Type == Enums.ChatTypeEnum.Private)
-                .OrderByDescending(c => c.LastUpdateTime)
-                .ToListAsync();
-            return chats.Where(c => c.Participants.Select(p => p.ParticipantId).Contains(withUserId)).SingleOrDefault();
         }
 
         public async Task<ChatRoomViewModel> GetChatAsync(long chatId, long userId)
@@ -137,7 +115,6 @@ namespace Dribbly.Chat.Services
                 .Include(m => m.Messages)
                 .Include(m => m.Participants)
                 .Where(c => c.Id == message.ChatId).First();
-            //var participants = _context.ChatParticipants.Where(p => p.ChatId == message.ChatId).ToList();
 
             try
             {
@@ -194,60 +171,69 @@ namespace Dribbly.Chat.Services
         /// <returns></returns>
         public async Task<ChatModel> CreateChatAsync(CreateChatInpuModel input, long senderId)
         {
-            ChatModel chat = new ChatModel();
-            chat.Title = input.Title;
-            var participants = await _context.Accounts.Where(a => input.ParticipantIds.Contains(a.Id)).ToListAsync();
-            foreach (var message in input.Messages)
+            try
             {
-                message.SenderId = senderId;
-                message.DateAdded = DateTime.UtcNow;
-                chat.Messages.Add(message);
-            }
-            chat.Participants = input.ParticipantIds.Select(p => new ChatParticipantModel
-            {
-                DateAdded = DateTime.UtcNow,
-                ParticipantId = p
-            }).ToList();
-            chat.DateAdded = DateTime.UtcNow;
-            chat.LastUpdateTime = DateTime.UtcNow;
-            chat.Type = Enums.ChatTypeEnum.Private;
-            chat.IsTemporary = chat.Messages.Count == 0;
-            chat.Code = GetPrivateChatCode(input.ParticipantIds);
-            _context.Chats.Add(chat);
-
-            foreach (var message in chat.Messages)
-            {
-                foreach (var p in chat.Participants)
+                ChatModel chat = new ChatModel();
+                chat.Title = input.Title;
+                var participants = await _context.Accounts.Where(a => input.ParticipantIds.Contains(a.Id)).ToListAsync();
+                foreach (var message in input.Messages)
                 {
-                    message.Participants
-                         .Add(new ParticipantMessageModel
-                         {
-                             ParticipantId = p.ParticipantId,
-                             IsSender = p.ParticipantId == message.SenderId,
-                             Status = p.ParticipantId == message.SenderId ?
-                                 Enums.MessageRecipientStatusEnum.Seen :
-                                 Enums.MessageRecipientStatusEnum.NotSeen,
-                             DateAdded = DateTime.UtcNow
-                         });
+                    message.SenderId = senderId;
+                    message.DateAdded = DateTime.UtcNow;
+                    chat.Messages.Add(message);
                 }
-            }
-
-            await _context.SaveChangesAsync();
-
-            chat = await _context.Chats
-                .Include(c => c.Participants.Select(p => p.Participant.ProfilePhoto))
-                .Include(c => c.Messages.Select(m => m.Participants.Select(p => p.Participant.ProfilePhoto)))
-                .SingleOrDefaultAsync();
-
-            foreach (var message in chat.Messages)
-            {
-                foreach (var p in chat.Participants)
+                chat.Participants = input.ParticipantIds.Select(p => new ChatParticipantModel
                 {
-                    _chat.ReceiveMessage(p.ParticipantId.ToString(), new MessageViewModel(message, p.ParticipantId));
-                }
-            }
+                    DateAdded = DateTime.UtcNow,
+                    ParticipantId = p
+                }).ToList();
+                chat.DateAdded = DateTime.UtcNow;
+                chat.LastUpdateTime = DateTime.UtcNow;
+                chat.Type = input.Type;
+                chat.IsTemporary = chat.Messages.Count == 0;
+                chat.Code = input.Code;
+                chat.IconId = input.IconId;
+                _context.Chats.Add(chat);
 
-            return chat;
+                foreach (var message in chat.Messages)
+                {
+                    foreach (var p in chat.Participants)
+                    {
+                        message.Participants
+                             .Add(new ParticipantMessageModel
+                             {
+                                 ParticipantId = p.ParticipantId,
+                                 IsSender = p.ParticipantId == message.SenderId,
+                                 Status = p.ParticipantId == message.SenderId ?
+                                     Enums.MessageRecipientStatusEnum.Seen :
+                                     Enums.MessageRecipientStatusEnum.NotSeen,
+                                 DateAdded = DateTime.UtcNow
+                             });
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+
+                chat = await _context.Chats
+                    .Include(c => c.Participants.Select(p => p.Participant.ProfilePhoto))
+                    .Include(c => c.Messages.Select(m => m.Participants.Select(p => p.Participant.ProfilePhoto)))
+                    .SingleOrDefaultAsync(c => c.Id == chat.Id);
+
+                foreach (var message in chat.Messages)
+                {
+                    foreach (var p in chat.Participants)
+                    {
+                        _chat.ReceiveMessage(p.ParticipantId.ToString(), new MessageViewModel(message, p.ParticipantId));
+                    }
+                }
+
+                return chat;
+            }
+            catch (Exception e)
+            {
+                //TODO: log error
+                throw;
+            }
         }
 
         private string GetPrivateChatCode(IEnumerable<long> participantIds)
@@ -258,6 +244,7 @@ namespace Dribbly.Chat.Services
 
     public interface IDribblyChatService
     {
+        Task<ChatModel> GetChatByCodeAsync(string chatCode);
         Task<IEnumerable<ChatRoomViewModel>> GetChatsAsync(long userId);
         Task<ChatRoomViewModel> GetChatAsync(long chatId, long userId);
         Task<MessageModel> SendMessage(MessageModel message, long senderId);

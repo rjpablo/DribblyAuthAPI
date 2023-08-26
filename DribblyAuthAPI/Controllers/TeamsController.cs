@@ -1,4 +1,5 @@
-﻿using Dribbly.Core.Models;
+﻿using Dribbly.Chat.Models.ViewModels;
+using Dribbly.Core.Models;
 using Dribbly.Model.Courts;
 using Dribbly.Model.DTO;
 using Dribbly.Model.Shared;
@@ -47,6 +48,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task<IEnumerable<TeamMembershipModel>> GetCurrentMembers(long teamId)
         {
             return await _service.GetCurrentMembersAsync(teamId);
+        }
+
+        [HttpGet, Authorize]
+        [Route("GetTeamChat/{teamId}")]
+        public async Task<ChatRoomViewModel> GetTeamChat(long teamId)
+        {
+            return await _service.GetTeamChatAsync(teamId);
         }
 
         [HttpGet]

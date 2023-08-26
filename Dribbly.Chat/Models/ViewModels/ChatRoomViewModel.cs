@@ -33,11 +33,10 @@ namespace Dribbly.Chat.Models.ViewModels
                 Messages.Add(new MessageViewModel(message, forParticipantId));
             }
             UnviewedCount = Messages.Count(m => !m.IsSender && m.Status == MessageRecipientStatusEnum.NotSeen);
-            Participants = chat.Participants.Select(p=>p.Participant).ToList();
-            if (Type == ChatTypeEnum.Private)
+            Participants = chat.Participants.Select(p => p.Participant).ToList();
+            if(Type == ChatTypeEnum.Team)
             {
-                RoomName = chat.Participants.Single(p => p.ParticipantId != forParticipantId).Participant.Name;
-                //RoomIcon = chat.Participants.Single(p => p.ParticipantId != forParticipantId).Photo;
+                RoomIcon = chat.Icon;
             }
         }
     }

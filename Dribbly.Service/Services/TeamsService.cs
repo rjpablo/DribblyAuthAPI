@@ -25,6 +25,9 @@ using Dribbly.Model.Shared;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Enums;
 using Dribbly.Core.Enums;
+using Dribbly.Chat.Services;
+using Dribbly.Chat.Models;
+using Dribbly.Chat.Models.ViewModels;
 
 namespace Dribbly.Service.Services
 {
@@ -38,6 +41,7 @@ namespace Dribbly.Service.Services
         private readonly ICourtsRepository _courtsRepo;
         private readonly ICommonService _commonService;
         private readonly IIndexedEntitysRepository _indexedEntitysRepository;
+        private readonly IDribblyChatService _dribblyChatService;
 
         public TeamsService(IAuthContext context,
             ISecurityUtility securityUtility,
@@ -55,6 +59,7 @@ namespace Dribbly.Service.Services
             _courtsRepo = courtsRepo;
             _commonService = new CommonService(context, securityUtility);
             _indexedEntitysRepository = indexedEntitysRepository;
+            _dribblyChatService = new DribblyChatService(context);
         }
 
         public IEnumerable<TeamModel> GetAll()
@@ -106,6 +111,44 @@ namespace Dribbly.Service.Services
         public async Task<IEnumerable<TeamMembershipModel>> GetCurrentMembersAsync(long teamId)
         {
             return await GetAllMembers(teamId).Where(m => m.DateLeft == null).ToListAsync();
+        }
+
+        public async Task<ChatRoomViewModel> GetTeamChatAsync(long teamId)
+        {
+            var accountId = _securityUtility.GetAccountId().Value;
+            string code = "tm" + teamId.ToString();
+            var chat = await _dribblyChatService.GetChatByCodeAsync(code);
+
+            if (chat == null)
+            {
+                var team = await _context.Teams
+                    .Include(t => t.Members)
+                    .SingleOrDefaultAsync(t => t.Id == teamId);
+                if (team == null)
+                {
+                    throw new DribblyObjectNotFoundException($"Coulnd't find team with ID {teamId}",
+                        friendlyMessage: "Unable to find team information.");
+                }
+
+                var input = new CreateChatInpuModel
+                {
+                    Code = code,
+                    Title = team.Name,
+                    Type = Chat.Enums.ChatTypeEnum.Team,
+                    IconId = team.LogoId
+                };
+
+                input.ParticipantIds.Add(accountId);
+                foreach (var m in team.Members)
+                {
+                    input.ParticipantIds.Add(m.MemberAccountId);
+                }
+                input.ParticipantIds = input.ParticipantIds.Distinct().ToList();
+
+                chat = await _dribblyChatService.CreateChatAsync(input, accountId);
+            }
+
+            return new ChatRoomViewModel(chat, accountId);
         }
 
         public async Task RemoveMemberAsync(long teamId, long membershipId)
@@ -495,7 +538,7 @@ namespace Dribbly.Service.Services
         public async Task UpdateTeamAsync(UpdateTeamInputModel input)
         {
             var team = _context.Teams.SingleOrDefault(t => t.Id == input.Id);
-            if(team == null)
+            if (team == null)
             {
                 throw new DribblyObjectNotFoundException("Team not fould",
                     friendlyMessage: "The team's details could not be found. It may have been deleted from the system");
@@ -531,5 +574,6 @@ namespace Dribbly.Service.Services
         Task RemoveMemberAsync(long teamId, long membershipId);
         Task UpdateTeamAsync(UpdateTeamInputModel team);
         Task<MultimediaModel> UploadLogoAsync(long teamId);
+        Task<ChatRoomViewModel> GetTeamChatAsync(long teamId);
     }
 }
