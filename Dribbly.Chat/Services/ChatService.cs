@@ -2,6 +2,7 @@
 using Dribbly.Chat.Hubs;
 using Dribbly.Chat.Models;
 using Dribbly.Chat.Models.ViewModels;
+using Dribbly.Core.Exceptions;
 using Microsoft.AspNet.SignalR;
 using System;
 using System.Collections.Generic;
@@ -34,9 +35,52 @@ namespace Dribbly.Chat.Services
             return new ChatRoomViewModel(chat, userId);
         }
 
+        public async Task AddChatParticipant(string chatCode, long participantId)
+        {
+            var chat = await _context.Chats
+                .Include(c => c.Participants)
+                .SingleOrDefaultAsync(c => c.Code == chatCode);
+            if (!chat.Participants.Any(p => p.ParticipantId == participantId))
+            {
+                chat.Participants.Add(new ChatParticipantModel
+                {
+                    ChatId = chat.Id,
+                    ParticipantId = participantId,
+                    DateAdded = DateTime.UtcNow
+                });
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task RemoveChatParticipant(string chatCode, long participantId)
+        {
+            var chat = await _context.Chats
+                .Include(c => c.Participants)
+                .SingleOrDefaultAsync(c => c.Code == chatCode);
+            if (chat == null)
+            {
+                throw new DribblyObjectNotFoundException($"Unable to find chat with code '{chatCode}'");
+            }
+            var participant = await _context.ChatParticipants
+                .SingleOrDefaultAsync(p => p.ChatId == chat.Id && p.ParticipantId == participantId);
+
+            if (participant != null)
+            {
+                _context.ChatParticipants.Remove(participant);
+                await _context.SaveChangesAsync();
+            }
+
+            _hubContext.Clients.Group(participantId.ToString()).removedFromChat(chat.Id);
+        }
+
         public async Task<ChatModel> GetPrivateChatAsync(long withUserId, long userId)
         {
             var code = GetPrivateChatCode(new long[] { withUserId, userId });
+            return await GetChatByCodeAsync(code);
+        }
+
+        public async Task<ChatModel> GetChatByCodeAsync(string chatCode)
+        {
             // we don't filter by IsTemporary here so temporary chat rooms can be opened and messages can be sent
             var chat = await _context.Chats
                 .Include(c => c.Participants.Select(p => p.Participant.ProfilePhoto))
@@ -69,11 +113,10 @@ namespace Dribbly.Chat.Services
             // we don't filter by IsTemporary here. This is used to open a chat room when client receives a message
             var chat = await _context.Chats
                 .Include(c => c.Icon)
-                .Include(c => c.Messages.Select(m => m.Participants))
+                .Include(c => c.Messages.Select(m => m.Participants.Select(p => p.Participant.ProfilePhoto)))
                 .Include(c => c.Messages.Select(m => m.MediaCollection.Select(cl => cl.Media)))
                 .Include(c => c.Participants.Select(p => p.Participant.ProfilePhoto))
-                .Where(c => c.Id == chatId && c.Type == Enums.ChatTypeEnum.Private)
-                .OrderByDescending(c => c.LastUpdateTime)
+                .Where(c => c.Id == chatId)
                 .SingleOrDefaultAsync();
             return chat != null ? new ChatRoomViewModel(chat, userId) : null;
         }
@@ -86,8 +129,8 @@ namespace Dribbly.Chat.Services
             if (message != null)
             {
                 message.Status = Enums.MessageRecipientStatusEnum.Seen;
+                await _context.SaveChangesAsync();
             }
-            await _context.SaveChangesAsync();
             int unviewedCount = await GetUnviewedCountAsync(chatId, userId);
 
             _hubContext.Clients.Group(userId.ToString())
@@ -244,9 +287,11 @@ namespace Dribbly.Chat.Services
 
     public interface IDribblyChatService
     {
+        Task AddChatParticipant(string chatCode, long participantId);
         Task<ChatModel> GetChatByCodeAsync(string chatCode);
         Task<IEnumerable<ChatRoomViewModel>> GetChatsAsync(long userId);
         Task<ChatRoomViewModel> GetChatAsync(long chatId, long userId);
+        Task RemoveChatParticipant(string chatCode, long participantId);
         Task<MessageModel> SendMessage(MessageModel message, long senderId);
         Task<ChatModel> CreateChatAsync(CreateChatInpuModel chat, long senderId);
         Task<ChatModel> GetPrivateChatAsync(long withUserId, long userId);

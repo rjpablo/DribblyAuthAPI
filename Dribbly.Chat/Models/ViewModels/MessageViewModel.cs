@@ -20,17 +20,14 @@ namespace Dribbly.Chat.Models.ViewModels
         public MessageViewModel(MessageModel message, long forParticipantId)
         {
             var participant = message.Participants.SingleOrDefault(p => p.ParticipantId == forParticipantId);
-            if (participant != null)
-            {
-                MessageId = message.Id;
-                Text = message.Text;
-                SenderId = message.SenderId;
-                IsSender = participant.IsSender;
-                Status = participant.Status;
-                ChatId = message.ChatId;
-                DateSent = message.DateAdded;
-                MediaCollection = message.MediaCollection.Select(m => m.Media).ToList();
-            }
+            MessageId = message.Id;
+            Text = message.Text;
+            SenderId = message.SenderId;
+            IsSender = participant?.IsSender ?? false;
+            Status = participant?.Status ?? MessageRecipientStatusEnum.Seen;
+            ChatId = message.ChatId;
+            DateSent = message.DateAdded;
+            MediaCollection = message.MediaCollection.Select(m => m.Media).ToList();
         }
     }
 }

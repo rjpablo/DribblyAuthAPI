@@ -31,8 +31,10 @@ namespace Dribbly.Chat.Models.ViewModels
             foreach (var message in chat.Messages)
             {
                 Messages.Add(new MessageViewModel(message, forParticipantId));
+                UnviewedCount += message.Participants.Count(p => p.ParticipantId == forParticipantId
+                && message.SenderId != p.ParticipantId
+                && p.Status == MessageRecipientStatusEnum.NotSeen);
             }
-            UnviewedCount = Messages.Count(m => !m.IsSender && m.Status == MessageRecipientStatusEnum.NotSeen);
             Participants = chat.Participants.Select(p => p.Participant).ToList();
             if(Type == ChatTypeEnum.Team)
             {

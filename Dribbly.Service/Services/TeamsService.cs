@@ -154,14 +154,26 @@ namespace Dribbly.Service.Services
         public async Task RemoveMemberAsync(long teamId, long membershipId)
         {
             //TODO: validate team existence and link to memebrshipId
-
-            var member = await _context.TeamMembers.SingleOrDefaultAsync(m => m.Id == membershipId);
-            if (member == null)
+            using(var tx= _context.Database.BeginTransaction())
             {
-                throw new DribblyForbiddenException("Membership info not found.", friendlyMessage: "Unable to find membership info.");
+                try
+                {
+                    var member = await _context.TeamMembers.SingleOrDefaultAsync(m => m.Id == membershipId);
+                    if (member == null)
+                    {
+                        throw new DribblyForbiddenException("Membership info not found.", friendlyMessage: "Unable to find membership info.");
+                    }
+                    member.DateLeft = DateTime.UtcNow;
+                    await _dribblyChatService.RemoveChatParticipant("tm" + teamId, member.MemberAccountId);
+                    await _context.SaveChangesAsync();
+                    tx.Commit();
+                }
+                catch (Exception)
+                {
+                    tx.Rollback();
+                    throw;
+                }
             }
-            member.DateLeft = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
         }
 
         public async Task ProcessJoinRequestAsync(ProcessJoinTeamRequestInputModel input)
@@ -191,6 +203,7 @@ namespace Dribbly.Service.Services
                     DateAdded = DateTime.UtcNow,
                     Type = NotificationTypeEnum.JoinTeamRequestApproved
                 });
+                await _dribblyChatService.AddChatParticipant("tm" + input.Request.TeamId, input.Request.MemberAccountId);
             }
             else
             {
@@ -306,11 +319,7 @@ namespace Dribbly.Service.Services
 
         public async Task<UserTeamRelationModel> LeaveTeamAsync(long teamId)
         {
-            long? accountId = _securityUtility.GetAccountId();
-            if (!accountId.HasValue)
-            {
-                throw new UnauthorizedAccessException("Unauthenticated user attempted to leave a team.");
-            }
+            long accountId = _securityUtility.GetAccountId().Value;
             var activeMembership = _context.TeamMembers.SingleOrDefault(m => m.TeamId == teamId && m.MemberAccountId == accountId &&
             m.DateLeft == null);
             if (activeMembership == null)
@@ -320,8 +329,22 @@ namespace Dribbly.Service.Services
             }
 
             activeMembership.DateLeft = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
-            return await GetUserTeamRelationAsync(teamId, accountId.Value);
+            using (var tx = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    await _dribblyChatService.RemoveChatParticipant("tm" + teamId, accountId);
+                    await _context.SaveChangesAsync();
+                    tx.Commit();
+                    return await GetUserTeamRelationAsync(teamId, accountId);
+                }
+                catch (Exception e)
+                {
+                    //TODO: log error
+                    tx.Rollback();
+                    throw;
+                }
+            }
         }
 
         public async Task<TeamModel> GetTeamAsync(long id)
