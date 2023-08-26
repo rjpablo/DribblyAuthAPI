@@ -24,9 +24,6 @@ namespace Dribbly.Model.Account
         /// </summary>
         [ForeignKey("User")]
         public long IdentityUserId { get; set; }
-        [MaxLength(30)]
-        [NotMapped]
-        public string Username { get { return User?.UserName; } }
         [NotMapped]
         public virtual string Email { get { return User?.Email; } }
         public PlayerPositionEnum? Position { get; set; }

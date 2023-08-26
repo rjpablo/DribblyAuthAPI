@@ -181,7 +181,7 @@ namespace Dribbly.Service.Services
         {
             var userId = _securityUtility.GetUserId().Value;
             var emialUser = _userManager.FindByEmail(input.NewEmail);
-            if(emialUser != null)
+            if (emialUser != null)
             {
                 throw new DribblyInvalidOperationException("Email already taken", friendlyMessage: $"{input.NewEmail} is already in use.");
             }
@@ -296,6 +296,7 @@ namespace Dribbly.Service.Services
                         DateAdded = DateTime.UtcNow,
                         FirstName = model.FirstName,
                         LastName = model.LastName,
+                        Username = model.UserName,
                         EntityStatus = EntityStatusEnum.Active
                     });
 
@@ -379,7 +380,7 @@ namespace Dribbly.Service.Services
                 ExpiresUtc = DateTime.UtcNow.Add(tokenExpiration),
             };
 
-            var ticket = new AuthenticationTicket(identity, props);                       
+            var ticket = new AuthenticationTicket(identity, props);
             var accessToken = _oAuthBearerOptions.AccessTokenFormat.Protect(ticket);
 
             JObject tokenResponse = new JObject(

@@ -230,7 +230,8 @@ namespace DribblyAuthAPI.Controllers
                 IdentityUserId = result.user.Id,
                 DateAdded = DateTime.UtcNow,
                 FirstName = userModel.FirstName,
-                LastName = userModel.LastName
+                LastName = userModel.LastName,
+                Username = userModel.UserName
             });
 
             return Ok();
