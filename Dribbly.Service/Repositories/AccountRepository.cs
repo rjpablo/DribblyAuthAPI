@@ -21,9 +21,13 @@ namespace Dribbly.Service.Repositories
 
         public async Task<PlayerModel> GetAccountByUsername(string userName)
         {
-            PlayerModel account = await _context.Players.Include(a => a.ProfilePhoto).Include(a => a.User)
-                .Include(a => a.HomeCourt).Include(a => a.HomeCourt.PrimaryPhoto).SingleOrDefaultAsync
-                (a => a.User.UserName.Equals(userName, System.StringComparison.OrdinalIgnoreCase));
+            PlayerModel account = await _context.Players
+                .Include(a => a.ProfilePhoto)
+                .Include(a => a.User)
+                .Include(a => a.HomeCourt)
+                .Include(a => a.HomeCourt.PrimaryPhoto)
+                .Include(a => a.Highlights.Select(h => h.File))
+                .SingleOrDefaultAsync(a => a.User.UserName.Equals(userName, System.StringComparison.OrdinalIgnoreCase));
             return account;
         }
 

@@ -512,7 +512,7 @@ namespace Dribbly.Service.Services
             else
             {
                 var currentAccountId = _securityUtility.GetAccountId().Value;
-                if (courtVideo.Court.OwnerId == currentAccountId || courtVideo.Video.AddedBy == currentAccountId ||
+                if (courtVideo.Court.OwnerId == currentAccountId || courtVideo.Video.UploadedById == currentAccountId ||
                     AuthenticationService.HasPermission(CourtPermission.DeleteVideoNotOwned))
                 {
                     courtVideo.Video.DateDeleted = DateTime.UtcNow;
@@ -530,12 +530,12 @@ namespace Dribbly.Service.Services
 
         private VideoModel AddCourtVideo(long courtId, VideoModel video, HttpPostedFile file)
         {
-            string uploadPath = _fileService.Upload(file, "video/");
-            video.Src = uploadPath;
-            video.AddedBy = _securityUtility.GetAccountId().Value;
+            var accountId = _securityUtility.GetAccountId().Value;
+            string uploadPath = _fileService.Upload(file, accountId + "/court_videos/");
+            video.Url = uploadPath;
+            video.UploadedById = accountId;
             video.DateAdded = DateTime.UtcNow;
             video.Size = file.ContentLength;
-            video.Type = file.ContentType;
 
             _context.Videos.Add(video);
             _context.CourtVideos.Add(new CourtVideoModel

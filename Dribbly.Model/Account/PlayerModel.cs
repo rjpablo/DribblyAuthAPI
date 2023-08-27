@@ -2,6 +2,7 @@
 using Dribbly.Identity.Models;
 using Dribbly.Model.Accounts;
 using Dribbly.Model.Courts;
+using Dribbly.Model.Entities;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
 using Newtonsoft.Json;
@@ -34,6 +35,7 @@ namespace Dribbly.Model.Account
 
         public virtual ICollection<AccountPhotoModel> Photos { get; set; }
         public virtual ICollection<AccountVideoModel> Videos { get; set; }
+        public virtual ICollection<AccountHighlightModel> Highlights { get; set; }
         [JsonIgnore]
         public virtual ApplicationUser User { get; set; }
         public CourtModel HomeCourt { get; set; }

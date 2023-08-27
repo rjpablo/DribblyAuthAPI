@@ -144,8 +144,8 @@ namespace DribblyAuthAPI.Controllers
         #region Account Videos
 
         [HttpPost, Authorize]
-        [Route("AddAccountVideo/{accountId}")]
-        public async Task<VideoModel> AddVideo(long accountId)
+        [Route("AddAccountVideo/{accountId}/{addToHighlights}")]
+        public async Task<VideoModel> AddVideo(long accountId, bool addToHighlights = false)
         {
             HttpFileCollection files = HttpContext.Current.Request.Files;
             if (files.Count > 1)
@@ -169,7 +169,7 @@ namespace DribblyAuthAPI.Controllers
             var requestJson = await result.Contents[1].ReadAsStringAsync();
             var video = JsonConvert.DeserializeObject<VideoModel>(requestJson);
 
-            return await _accountService.AddVideoAsync(accountId, video, files[0]);
+            return await _accountService.AddVideoAsync(accountId, video, files[0], addToHighlights);
         }
 
         [HttpGet]

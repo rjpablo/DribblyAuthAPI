@@ -1,5 +1,4 @@
 ﻿using Dribbly.Model.Entities;
-using Dribbly.Model.Shared;
 
 namespace Dribbly.Model.Account
 {

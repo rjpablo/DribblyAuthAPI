@@ -606,7 +606,7 @@ namespace Dribbly.Service.Services
                 .OrderByDescending(v => v.DateAdded);
         }
 
-        public async Task<VideoModel> AddVideoAsync(long accountId, VideoModel video, HttpPostedFile file)
+        public async Task<VideoModel> AddVideoAsync(long accountId, VideoModel video, HttpPostedFile file, bool addToHighlights)
         {
             PlayerModel account = await GetByIdAsync(accountId);
 
@@ -621,7 +621,15 @@ namespace Dribbly.Service.Services
                 {
                     try
                     {
-                        AddAccountVideo(accountId, video, file);
+                        _ = await AddAccountVideo(accountId, video, file);
+                        if (addToHighlights)
+                        {
+                            _context.AccountHighlights.Add(new AccountHighlightModel
+                            {
+                                AccountId=accountId,
+                                File = video
+                            });
+                        }
                         _context.SaveChanges();
                         transaction.Commit();
                         await _commonService.AddAccountVideoActivitiesAsync(UserActivityTypeEnum.AddAccountVideo, account.Id, video);
@@ -641,22 +649,20 @@ namespace Dribbly.Service.Services
             }
         }
 
-        private VideoModel AddAccountVideo(long accountId, VideoModel video, HttpPostedFile file)
+        private async Task<VideoModel> AddAccountVideo(long accountId, VideoModel video, HttpPostedFile file)
         {
-            string uploadPath = _fileService.Upload(file, "video/");
-            video.Src = uploadPath;
-            video.AddedBy = _securityUtility.GetAccountId().Value;
+            string uploadPath = _fileService.Upload(file, accountId + "/account_videos/");
+            video.Url = uploadPath;
+            video.UploadedById = _securityUtility.GetAccountId().Value;
             video.DateAdded = DateTime.UtcNow;
             video.Size = file.ContentLength;
-            video.Type = file.ContentType;
-
             _context.Videos.Add(video);
+            await _context.SaveChangesAsync();
             _context.AccountVideos.Add(new AccountVideoModel
             {
                 AccountId = accountId,
-                VideoId = video.Id
+                Video = video
             });
-
             return video;
         }
 
@@ -701,7 +707,7 @@ namespace Dribbly.Service.Services
 
         Task<IEnumerable<PlayerStatsViewModel>> GetPlayersAsync(GetPlayersFilterModel filter);
 
-        Task<VideoModel> AddVideoAsync(long accountId, VideoModel video, HttpPostedFile file);
+        Task<VideoModel> AddVideoAsync(long accountId, VideoModel video, HttpPostedFile file, bool addToHighlights = false);
 
         Task<IEnumerable<AccountsChoicesItemModel>> GetAccountDropDownSuggestions(AccountSearchInputModel input);
 

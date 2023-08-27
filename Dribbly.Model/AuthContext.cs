@@ -62,6 +62,7 @@ namespace Dribbly.Model
         DbSet<JoinTeamRequestModel> JoinTeamRequests { get; set; }
         DbSet<UserPermissionModel> UserPermissions { get; set; }
         DbSet<AccountPhotoModel> AccountPhotos { get; set; }
+        DbSet<AccountHighlightModel> AccountHighlights { get; set; }
         DbSet<TeamPhotoModel> TeamPhotos { get; set; }
         DbSet<CourtVideoModel> CourtVideos { get; set; }
         DbSet<AccountVideoModel> AccountVideos { get; set; }
@@ -191,6 +192,7 @@ namespace Dribbly.Model
         public DbSet<JoinTeamRequestModel> JoinTeamRequests { get; set; }
         public DbSet<UserPermissionModel> UserPermissions { get; set; }
         public DbSet<AccountPhotoModel> AccountPhotos { get; set; }
+        public DbSet<AccountHighlightModel> AccountHighlights { get; set; }
         public DbSet<TeamPhotoModel> TeamPhotos { get; set; }
         public DbSet<CourtVideoModel> CourtVideos { get; set; }
         public DbSet<AccountVideoModel> AccountVideos { get; set; }
