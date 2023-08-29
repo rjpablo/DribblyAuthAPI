@@ -168,7 +168,7 @@ namespace Dribbly.Service.Services
                     await _context.SaveChangesAsync();
                     tx.Commit();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     tx.Rollback();
                     throw;
@@ -178,41 +178,54 @@ namespace Dribbly.Service.Services
 
         public async Task ProcessJoinRequestAsync(ProcessJoinTeamRequestInputModel input)
         {
-            var team = await GetTeamNotNullAsync(input.Request.TeamId);
-            if (_securityUtility.GetAccountId() != team.ManagedById)
+            using(var tx= _context.Database.BeginTransaction())
             {
-                throw new DribblyForbiddenException("Non-manager of team attempted to process a join team request.");
-            }
-
-            var isRequestPending = (await _context.JoinTeamRequests.FindAsync(input.Request.Id))?.Status == Model.Enums.JoinTeamRequestStatus.Pending;
-            if (!isRequestPending)
-            {
-                throw new DribblyForbiddenException("Attempted to process a member request multiple times.",
-                    friendlyMessageKey: "app.Eror_ProcessJoinTeamRequestAlreadyProcessed");
-            }
-
-            if (input.ShouldApprove)
-            {
-                AddMember(input.Request);
-                input.Request.Status = Model.Enums.JoinTeamRequestStatus.Approved;
-                await _commonService.AddUserJoinTeamRequestActivity(UserActivityTypeEnum.ApprovMemberRequest, input.Request.Id);
-                await _notificationsRepo.TryAddAsync(new JoinTeamRequestNotificationModel
+                try
                 {
-                    RequestId = input.Request.Id,
-                    ForUserId = input.Request.MemberAccountId,
-                    DateAdded = DateTime.UtcNow,
-                    Type = NotificationTypeEnum.JoinTeamRequestApproved
-                });
-                await _dribblyChatService.AddChatParticipant("tm" + input.Request.TeamId, input.Request.MemberAccountId);
-            }
-            else
-            {
-                input.Request.Status = Model.Enums.JoinTeamRequestStatus.Denied;
-                await _commonService.AddUserJoinTeamRequestActivity(UserActivityTypeEnum.RejectMemberRequest, input.Request.Id);
-            }
+                    var team = await GetTeamNotNullAsync(input.Request.TeamId);
+                    if (_securityUtility.GetAccountId() != team.ManagedById)
+                    {
+                        throw new DribblyForbiddenException("Non-manager of team attempted to process a join team request.");
+                    }
 
-            _context.JoinTeamRequests.AddOrUpdate(input.Request);
-            await _context.SaveChangesAsync();
+                    var isRequestPending = (await _context.JoinTeamRequests.FindAsync(input.Request.Id))?.Status == Model.Enums.JoinTeamRequestStatus.Pending;
+                    if (!isRequestPending)
+                    {
+                        throw new DribblyForbiddenException("Attempted to process a member request multiple times.",
+                            friendlyMessageKey: "app.Eror_ProcessJoinTeamRequestAlreadyProcessed");
+                    }
+
+                    if (input.ShouldApprove)
+                    {
+                        AddMember(input.Request);
+                        input.Request.Status = Model.Enums.JoinTeamRequestStatus.Approved;
+                        await _commonService.AddUserJoinTeamRequestActivity(UserActivityTypeEnum.ApprovMemberRequest, input.Request.Id);
+                        await _notificationsRepo.TryAddAsync(new JoinTeamRequestNotificationModel
+                        {
+                            RequestId = input.Request.Id,
+                            ForUserId = input.Request.MemberAccountId,
+                            DateAdded = DateTime.UtcNow,
+                            Type = NotificationTypeEnum.JoinTeamRequestApproved
+                        });
+                        await _dribblyChatService.AddChatParticipant("tm" + input.Request.TeamId, input.Request.MemberAccountId);
+                    }
+                    else
+                    {
+                        input.Request.Status = Model.Enums.JoinTeamRequestStatus.Denied;
+                        await _commonService.AddUserJoinTeamRequestActivity(UserActivityTypeEnum.RejectMemberRequest, input.Request.Id);
+                    }
+
+                    _context.JoinTeamRequests.AddOrUpdate(input.Request);
+                    await _context.SaveChangesAsync();
+                    tx.Commit();
+                }
+                catch (Exception e)
+                {
+                    // TODO: log error
+                    tx.Rollback();
+                    throw;
+                }
+            }
         }
 
         public async Task<IEnumerable<JoinTeamRequestModel>> GetJoinRequestsAsync(long teamId)

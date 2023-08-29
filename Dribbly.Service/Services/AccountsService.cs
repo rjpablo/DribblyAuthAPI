@@ -16,6 +16,7 @@ using Dribbly.Model.DTO.Account;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Enums;
 using Dribbly.Model.Shared;
+using Dribbly.Service.DTO;
 using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
 using Dribbly.Service.Services.Shared;
@@ -174,6 +175,21 @@ namespace Dribbly.Service.Services
             List<PlayerModel> accounts = await _accountRepo.SearchAccounts(input).ToListAsync();
             return accounts.Select(a => new AccountsChoicesItemModel(a));
         }
+
+        #region Games
+        public async Task<IEnumerable<GamePlayer>> GetPlayerGames(long accountId)
+        {
+            return (await _context.GamePlayers
+                .Include(p => p.TeamMembership.Account.User)
+                .Include(p => p.Game.Team1.Team.Logo)
+                .Include(p => p.Game.Team2.Team.Logo)
+                .Where(p => p.AccountId == accountId)
+                .OrderByDescending(p => p.Game.Start)
+                .ToListAsync())
+                .Select(p => new GamePlayer(p));
+
+        }
+        #endregion
 
         #region Account Updates
 
@@ -626,7 +642,7 @@ namespace Dribbly.Service.Services
                         {
                             _context.AccountHighlights.Add(new AccountHighlightModel
                             {
-                                AccountId=accountId,
+                                AccountId = accountId,
                                 File = video
                             });
                         }
@@ -688,6 +704,8 @@ namespace Dribbly.Service.Services
         Task<AccountViewerModel> GetAccountViewerDataAsync(string userName);
 
         Task AddAsync(PlayerModel account);
+
+        Task<IEnumerable<GamePlayer>> GetPlayerGames(long accountId);
 
         Task<IEnumerable<MultimediaModel>> AddAccountPhotosAsync(long accountId);
 

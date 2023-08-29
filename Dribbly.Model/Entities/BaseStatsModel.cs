@@ -41,4 +41,39 @@ namespace Dribbly.Model.Entities
         public int Steals { get; set; }
         public bool? Won { get; set; }
     }
+
+    public interface IBaseStatsModel
+    {
+        int Points { get; set; }
+        /// <summary>
+        /// field goal attempts
+        /// </summary>
+        int FGA { get; set; }
+        /// <summary>
+        /// field goals made
+        /// </summary>
+        int FGM { get; set; }
+        /// <summary>
+        /// free throw attempts
+        /// </summary>
+        int FTA { get; set; }
+        /// <summary>
+        /// free throws made
+        /// </summary>
+        int FTM { get; set; }
+        /// <summary>
+        /// 3pt attempts
+        /// </summary>
+        int ThreePA { get; set; }
+        /// <summary>
+        /// 3pts made
+        /// </summary>
+        int ThreePM { get; set; }
+        int Blocks { get; set; }
+        int Rebounds { get; set; }
+        int Assists { get; set; }
+        int Turnovers { get; set; }
+        int Steals { get; set; }
+        bool? Won { get; set; }
+    }
 }

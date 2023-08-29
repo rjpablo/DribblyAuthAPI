@@ -8,7 +8,9 @@ using Dribbly.Identity.Models;
 using Dribbly.Model.Account;
 using Dribbly.Model.DTO;
 using Dribbly.Model.DTO.Account;
+using Dribbly.Model.Entities;
 using Dribbly.Model.Shared;
+using Dribbly.Service.DTO;
 using Dribbly.Service.Repositories;
 using Dribbly.Service.Services;
 using Microsoft.AspNet.Identity;
@@ -50,6 +52,14 @@ namespace DribblyAuthAPI.Controllers
         public async Task<PlayerModel> GetAccountByUsername(string userName)
         {
             return await _accountService.GetAccountByUsername(userName);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("GetPlayerGames/{accountId}")]
+        public async Task<IEnumerable<GamePlayer>> GetPlayerGames(long accountId)
+        {
+            return await _accountService.GetPlayerGames(accountId);
         }
 
         [AllowAnonymous]

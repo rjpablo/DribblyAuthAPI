@@ -54,7 +54,7 @@ namespace Dribbly.Service.Services
             _context = context;
             _securityUtility = securityUtility;
             _emailSender = emailSender;
-            _accountRepo = new AccountRepository(context, new AuthRepository(_emailSender,context));
+            _accountRepo = new AccountRepository(context, new AuthRepository(_emailSender, context));
             _commonService = new CommonService(context, _securityUtility);
             _fileService = fileService;
             _notificationsRepo = new NotificationsRepository(context);
@@ -80,6 +80,8 @@ namespace Dribbly.Service.Services
                 .Include(g => g.Team2).Include(g => g.Team2.Team.Logo)
                 .Where(g =>
                 (!filter.TeamIds.Any() || filter.TeamIds.Contains(g.Team1.TeamId) || filter.TeamIds.Contains(g.Team2.TeamId))
+                && (!filter.PlayerIds.Any() ||
+                    _context.GamePlayers.Where(p => filter.PlayerIds.Contains(p.AccountId)).Select(p => p.GameId).Contains(g.Id))
                 && (!filter.CourdIds.Any() || filter.CourdIds.Contains(g.CourtId))
                 && (!filter.UpcomingOnly || g.Start > DateTime.UtcNow));
 
@@ -106,13 +108,13 @@ namespace Dribbly.Service.Services
 
             GameModel game = await _dbSet.Where(g => g.Id == id).Include(g => g.Court.PrimaryPhoto)
                 .Include(g => g.Team1.Team.Logo)
-                .Include(g => g.Team1.Players.Select(p=>p.TeamMembership.Account.User))
-                .Include(g => g.Team1.Players.Select(p=>p.TeamMembership.Account.ProfilePhoto))
+                .Include(g => g.Team1.Players.Select(p => p.TeamMembership.Account.User))
+                .Include(g => g.Team1.Players.Select(p => p.TeamMembership.Account.ProfilePhoto))
                 .Include(g => g.Team2.Team.Logo)
-                .Include(g => g.Team2.Players.Select(p=>p.TeamMembership.Account.User))
-                .Include(g => g.Team2.Players.Select(p=>p.TeamMembership.Account.ProfilePhoto))
-                .Include(g => g.GameEvents.Select(e=>e.PerformedBy.ProfilePhoto))
-                .Include(g => g.GameEvents.Select(e=>e.Team))
+                .Include(g => g.Team2.Players.Select(p => p.TeamMembership.Account.User))
+                .Include(g => g.Team2.Players.Select(p => p.TeamMembership.Account.ProfilePhoto))
+                .Include(g => g.GameEvents.Select(e => e.PerformedBy.ProfilePhoto))
+                .Include(g => g.GameEvents.Select(e => e.Team))
                 .Include(g => g.Court)
                 .Include(g => g.Tournament)
                 .SingleOrDefaultAsync();
@@ -131,8 +133,11 @@ namespace Dribbly.Service.Services
             TimeSpan ts = stopWatch.Elapsed;
             System.Diagnostics.Debug.WriteLine("**** GetGame execution time: " + ts.TotalSeconds.ToString());
 
-            // To avoid self-referencing loop error
-            game.Tournament.Games.Clear();
+            if (game.Tournament != null)
+            {
+                // To avoid self-referencing loop error
+                game.Tournament.Games.Clear();
+            }
 
             return game;
         }
@@ -823,7 +828,7 @@ namespace Dribbly.Service.Services
                 Type = Type
             });
 
-            if(scheduleChanged)
+            if (scheduleChanged)
             {
                 await _postsService.AddPostAsync(new AddEditPostInputModel
                 {
@@ -835,7 +840,7 @@ namespace Dribbly.Service.Services
                     AdditionalData = JsonConvert.SerializeObject(new
                     {
                         gameId = game.Id,
-                        newSchedule= game.Start
+                        newSchedule = game.Start
                     })
                 });
             }

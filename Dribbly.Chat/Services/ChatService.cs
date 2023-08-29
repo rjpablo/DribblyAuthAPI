@@ -40,7 +40,7 @@ namespace Dribbly.Chat.Services
             var chat = await _context.Chats
                 .Include(c => c.Participants)
                 .SingleOrDefaultAsync(c => c.Code == chatCode);
-            if (!chat.Participants.Any(p => p.ParticipantId == participantId))
+            if (chat != null && !chat.Participants.Any(p => p.ParticipantId == participantId))
             {
                 chat.Participants.Add(new ChatParticipantModel
                 {
@@ -57,20 +57,19 @@ namespace Dribbly.Chat.Services
             var chat = await _context.Chats
                 .Include(c => c.Participants)
                 .SingleOrDefaultAsync(c => c.Code == chatCode);
-            if (chat == null)
+            if (chat != null)
             {
-                throw new DribblyObjectNotFoundException($"Unable to find chat with code '{chatCode}'");
-            }
-            var participant = await _context.ChatParticipants
-                .SingleOrDefaultAsync(p => p.ChatId == chat.Id && p.ParticipantId == participantId);
+                var participant = await _context.ChatParticipants
+                    .SingleOrDefaultAsync(p => p.ChatId == chat.Id && p.ParticipantId == participantId);
 
-            if (participant != null)
-            {
-                _context.ChatParticipants.Remove(participant);
-                await _context.SaveChangesAsync();
-            }
+                if (participant != null)
+                {
+                    _context.ChatParticipants.Remove(participant);
+                    await _context.SaveChangesAsync();
+                }
 
-            _hubContext.Clients.Group(participantId.ToString()).removedFromChat(chat.Id);
+                _hubContext.Clients.Group(participantId.ToString()).removedFromChat(chat.Id);
+            }
         }
 
         public async Task<ChatModel> GetPrivateChatAsync(long withUserId, long userId)
