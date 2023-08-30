@@ -25,14 +25,11 @@ namespace Dribbly.Service.Repositories
                 notification.DateAdded = DateTime.UtcNow;
                 switch ((notification).Type)
                 {
-                    case NotificationTypeEnum.NewGameForOwner:
+                    // NewBookingNotification and UpdateGameNotification
                     case NotificationTypeEnum.NewGameForBooker:
-                        _context.NewGameNotifications.Add((NewGameNotificationModel)notification);
-                        break;
+                    case NotificationTypeEnum.NewGameForOwner:
                     case NotificationTypeEnum.JoinTeamRequest:
                     case NotificationTypeEnum.JoinTeamRequestApproved:
-                        _context.JoinTeamRequestNotifications.Add((JoinTeamRequestNotificationModel)notification);
-                        break;
                     case NotificationTypeEnum.NewJoinTournamentRequest:
                     case NotificationTypeEnum.JoinTournamentRequestApproved:
                     case NotificationTypeEnum.JoinTournamentRequestRejected:

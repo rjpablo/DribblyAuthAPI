@@ -98,32 +98,23 @@ namespace Dribbly.Service.Services
         {
             List<NotificationModel> resultWithDetails = new List<NotificationModel>();
 
-            // Game Booked - For Court owner
-            IEnumerable<NewBookingNotificationModel> newBookingNotifications = await GetNewBookingNotificationsAsync
-                (notifications.Where(n => n.Type == NotificationTypeEnum.NewGameForBooker || n.Type == NotificationTypeEnum.NewGameForOwner)
-                .Select(n => n.Id).ToArray());
-
             // Game Updated
             IEnumerable<UpdateGameNotificationModel> gameUpdateNotifications = await GetGameUpdateNotificationsAsync
                 (notifications.Where(n => n.Type == NotificationTypeEnum.GameUpdatedForBooker || n.Type == NotificationTypeEnum.GameUpdatedForOwner)
-                .Select(n => n.Id).ToArray());
-
-            // TODO: Add logic for New Game notifications (HOOP-46)
-
-            var joinTeamRequestNotifications = await GetJoinTeamRequestNotificationsAsync
-                (notifications.Where(n => n.Type == NotificationTypeEnum.JoinTeamRequest || n.Type == NotificationTypeEnum.JoinTeamRequestApproved)
                 .Select(n => n.Id).ToArray());
 
             var genericNotifications = notifications.Where(n =>
             {
                 return n.Type == NotificationTypeEnum.TournamentTeamRemoved ||
                 n.Type == NotificationTypeEnum.NewJoinTournamentRequest ||
+                n.Type == NotificationTypeEnum.JoinTeamRequestApproved ||
+                n.Type == NotificationTypeEnum.JoinTeamRequest ||
                 n.Type == NotificationTypeEnum.JoinTournamentRequestApproved ||
-                n.Type == NotificationTypeEnum.JoinTournamentRequestRejected;
+                n.Type == NotificationTypeEnum.JoinTournamentRequestRejected ||
+                n.Type == NotificationTypeEnum.NewGameForBooker ||
+                n.Type == NotificationTypeEnum.NewGameForOwner;
             });
             
-            resultWithDetails.AddRange(joinTeamRequestNotifications);
-            resultWithDetails.AddRange(newBookingNotifications);
             resultWithDetails.AddRange(genericNotifications);
 
             return resultWithDetails.OrderByDescending(n=>n.DateAdded);
@@ -147,52 +138,6 @@ namespace Dribbly.Service.Services
                     UpdatedById = n.UpdatedById,
                     UpdatedbyName = n.UpdatedBy.User.UserName,
                     CourtName = n.Game.Court.Name
-                })
-                .ToListAsync();
-        }
-
-        private async Task<IEnumerable<NewBookingNotificationModel>> GetNewBookingNotificationsAsync(long[] NotificationIds)
-        {
-            if (NotificationIds.Length == 0) return await Task.FromResult<IEnumerable<NewBookingNotificationModel>>
-                    (new List<NewBookingNotificationModel>());
-
-            return await _context.NewBookingNotifications
-                .Where(n => NotificationIds.Contains(n.Id))
-                .Include(n => n.Booking.Court).Include(n => n.BookedBy.User)
-                .Select(n => new NewBookingNotificationDto
-                {
-                    Id = n.Id,
-                    DateAdded = n.DateAdded,
-                    ForUserId = n.ForUserId,
-                    IsViewed = n.IsViewed,
-                    Type = n.Type,
-                    Booking = n.Booking,
-                    BookedById = n.BookedById,
-                    BookedByName = n.BookedBy.User.UserName,
-                    CourtName = n.Booking.Court.Name
-                })
-                .ToListAsync();
-        }
-
-        private async Task<IEnumerable<JoinTeamRequestNotificationViewModel>> GetJoinTeamRequestNotificationsAsync(long[] NotificationIds)
-        {
-            if (NotificationIds.Length == 0) return await Task.FromResult<IEnumerable<JoinTeamRequestNotificationViewModel>>
-                    (new List<JoinTeamRequestNotificationViewModel>());
-
-            return await _context.JoinTeamRequestNotifications
-                .Where(n => NotificationIds.Contains(n.Id)).Include(n => n.Request)
-                .Include(n => n.Request.Team).Include(n => n.Request.Member).Include(n => n.Request.Member.User)
-                .Select(n => new JoinTeamRequestNotificationViewModel
-                {
-                    Id = n.Id,
-                    DateAdded = n.DateAdded,
-                    ForUserId = n.ForUserId,
-                    IsViewed = n.IsViewed,
-                    Type = n.Type,
-                    TeamId = n.Request.TeamId, 
-                    TeamName = n.Request.Team.Name,
-                    RequestorId = n.Request.MemberAccountId,
-                    RequestorName = n.Request.Member.User.UserName
                 })
                 .ToListAsync();
         }

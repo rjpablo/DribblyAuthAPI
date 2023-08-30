@@ -28,6 +28,7 @@ using Dribbly.Core.Enums;
 using Dribbly.Chat.Services;
 using Dribbly.Chat.Models;
 using Dribbly.Chat.Models.ViewModels;
+using Newtonsoft.Json;
 
 namespace Dribbly.Service.Services
 {
@@ -154,7 +155,7 @@ namespace Dribbly.Service.Services
         public async Task RemoveMemberAsync(long teamId, long membershipId)
         {
             //TODO: validate team existence and link to memebrshipId
-            using(var tx= _context.Database.BeginTransaction())
+            using (var tx = _context.Database.BeginTransaction())
             {
                 try
                 {
@@ -178,7 +179,7 @@ namespace Dribbly.Service.Services
 
         public async Task ProcessJoinRequestAsync(ProcessJoinTeamRequestInputModel input)
         {
-            using(var tx= _context.Database.BeginTransaction())
+            using (var tx = _context.Database.BeginTransaction())
             {
                 try
                 {
@@ -200,12 +201,17 @@ namespace Dribbly.Service.Services
                         AddMember(input.Request);
                         input.Request.Status = Model.Enums.JoinTeamRequestStatus.Approved;
                         await _commonService.AddUserJoinTeamRequestActivity(UserActivityTypeEnum.ApprovMemberRequest, input.Request.Id);
-                        await _notificationsRepo.TryAddAsync(new JoinTeamRequestNotificationModel
+                        await _notificationsRepo.TryAddAsync(new NotificationModel
                         {
-                            RequestId = input.Request.Id,
                             ForUserId = input.Request.MemberAccountId,
                             DateAdded = DateTime.UtcNow,
-                            Type = NotificationTypeEnum.JoinTeamRequestApproved
+                            Type = NotificationTypeEnum.JoinTeamRequestApproved,
+                            AdditionalInfo = JsonConvert.SerializeObject(new
+                            {
+                                requestId = input.Request.Id,
+                                teamName = team.Name,
+                                teamId = team.Id
+                            })
                         });
                         await _dribblyChatService.AddChatParticipant("tm" + input.Request.TeamId, input.Request.MemberAccountId);
                     }
@@ -507,6 +513,8 @@ namespace Dribbly.Service.Services
         {
             var currentUserId = _securityUtility.GetUserId();
             var accountId = _securityUtility.GetAccountId().Value;
+            var account = _context.Accounts
+                .Single(a => a.Id == accountId);
             JoinTeamRequestModel request = new JoinTeamRequestModel(input.TeamId, accountId, input.Position, input.JerseyNo);
 
             if (await GetHasPendingJoinRequestAsync(request.TeamId, accountId))
@@ -547,12 +555,18 @@ namespace Dribbly.Service.Services
                 _context.JoinTeamRequests.Add(request);
                 await _context.SaveChangesAsync();
                 await _commonService.AddUserTeamActivity(UserActivityTypeEnum.RequestToJoinTeam, team.Id);
-                await _notificationsRepo.TryAddAsync(new JoinTeamRequestNotificationModel
+                await _notificationsRepo.TryAddAsync(new NotificationModel
                 {
-                    RequestId = request.Id,
                     ForUserId = team.ManagedById,
                     DateAdded = DateTime.UtcNow,
-                    Type = NotificationTypeEnum.JoinTeamRequest
+                    Type = NotificationTypeEnum.JoinTeamRequest,
+                    AdditionalInfo = JsonConvert.SerializeObject(new
+                    {
+                        requestId = request.Id,
+                        requestorName = account.Name,
+                        teamName = team.Name,
+                        teamId = team.Id
+                    })
                 });
             }
             return await GetUserTeamRelationAsync(team.Id);

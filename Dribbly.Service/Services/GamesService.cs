@@ -611,14 +611,18 @@ namespace Dribbly.Service.Services
                     NotificationTypeEnum Type = game.AddedById == _securityUtility.GetAccountId().Value ?
                         NotificationTypeEnum.NewGameForOwner :
                         NotificationTypeEnum.NewGameForBooker;
-                    await _notificationsRepo.TryAddAsync(new NewGameNotificationModel
+                    await _notificationsRepo.TryAddAsync(new NotificationModel
                     {
-                        GameId = game.Id,
-                        BookedById = game.AddedById,
                         ForUserId = Type == NotificationTypeEnum.NewGameForBooker ? game.AddedById :
                         (await _courtsRepo.GetOwnerId(game.CourtId)),
                         DateAdded = DateTime.UtcNow,
-                        Type = Type
+                        Type = Type,
+                        AdditionalInfo = JsonConvert.SerializeObject(new
+                        {
+                            gameId = game.Id,
+                            addedBy = account.Name,
+                            courtName = game.Court.Name
+                        })
                     });
 
                     await _postsService.AddPostAsync(new AddEditPostInputModel
