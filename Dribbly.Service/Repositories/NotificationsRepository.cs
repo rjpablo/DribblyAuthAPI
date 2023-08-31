@@ -1,5 +1,7 @@
 ﻿using Dribbly.Model;
 using Dribbly.Model.Notifications;
+using Dribbly.Service.Hubs;
+using Microsoft.AspNet.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,6 +13,7 @@ namespace Dribbly.Service.Repositories
     public class NotificationsRepository : BaseRepository<NotificationModel>, INotificationsRepository
     {
         IAuthContext _context;
+        private static IHubContext _hubContext = GlobalHost.ConnectionManager.GetHubContext<NotificationsHub>();
 
         public NotificationsRepository(IAuthContext context) : base(context.Notifications)
         {
@@ -38,6 +41,8 @@ namespace Dribbly.Service.Repositories
                         break;
                 }
                 await _context.SaveChangesAsync();
+                _hubContext.Clients.Group(notification.ForUserId.ToString())
+                    .receiveNotification(notification);
             }
             catch (Exception e)
             {

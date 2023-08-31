@@ -1,13 +1,17 @@
 ﻿//reference: http://bitoftech.net/2014/06/01/token-based-authentication-asp-net-web-api-2-owin-asp-net-identity/
+using Dribbly.Chat.Resolvers;
 using Dribbly.Model;
 using Dribbly.Service;
+using Dribbly.Service.Hubs;
 using Dribbly.Service.Providers;
 using Dribbly.Service.Services;
 using Dribbly.SMS.Services;
+using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Facebook;
 using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OAuth;
+using Newtonsoft.Json;
 using Owin;
 using System;
 using System.Data.Entity;
@@ -43,7 +47,15 @@ namespace DribblyAuthAPI.API
             //to wire up ASP.NET Web API to our Owin server pipeline
             app.UseWebApi(config);
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<AuthContext, Migrations.Configuration>());
-            Dribbly.Chat.Startup.MapSignalR(app);
+
+            #region SignalR
+            app.MapSignalR();
+            var settings = new JsonSerializerSettings();
+            settings.ContractResolver = new SignalRContractResolver();
+            var serializer = JsonSerializer.Create(settings);
+            GlobalHost.DependencyResolver.Register(typeof(JsonSerializer), () => serializer);
+            #endregion
+
             SMSService.Init();
         }
 
