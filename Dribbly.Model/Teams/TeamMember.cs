@@ -21,7 +21,6 @@ namespace Dribbly.Model.Teams
         /// If null, it means that the player is still a member of the team
         /// </summary>
         public DateTime? DateLeft { get; set; }
-        public PlayerPositionEnum Position { get; set; }
         public PlayerModel Account { get; set; }
         [JsonIgnore]
         public TeamModel Team { get; set; }

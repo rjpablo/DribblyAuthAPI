@@ -86,8 +86,7 @@ namespace Dribbly.Service.Services
                     MemberAccountId = m.MemberAccountId,
                     IsCurrentMember = m.DateLeft == null,
                     IsFormerMember = m.DateLeft != null,
-                    HasPendingJoinRequest = false,
-                    Position = m.Position
+                    HasPendingJoinRequest = false
                 })
                 .Union(context.JoinTeamRequests
                 .Select(r => new TeamMembershipViewModel
@@ -96,8 +95,7 @@ namespace Dribbly.Service.Services
                     MemberAccountId = r.MemberAccountId,
                     IsCurrentMember = false,
                     IsFormerMember = false,
-                    HasPendingJoinRequest = r.Status == Model.Enums.JoinTeamRequestStatus.Pending,
-                    Position = r.Position
+                    HasPendingJoinRequest = r.Status == Model.Enums.JoinTeamRequestStatus.Pending
                 }))
                 .Where(m => m.TeamId == teamId && (IdsCount == 0 || accountIds.Contains(m.MemberAccountId)))
                 .ToListAsync();
@@ -332,7 +330,7 @@ namespace Dribbly.Service.Services
             relation.IsCurrentMember = memberships.Any(m => m.MemberAccountId == accountId && m.IsCurrentMember);
             relation.IsFormerMember = memberships.Any(m => m.MemberAccountId == accountId && m.IsFormerMember);
             relation.HasPendingJoinRequest = memberships.Any(m => m.MemberAccountId == accountId && m.HasPendingJoinRequest);
-            relation.IsCurrentCoach = memberships.Any(m => m.MemberAccountId == accountId && m.IsCurrentMember && m.Position == PlayerPositionEnum.Coach);
+            relation.IsCurrentCoach = memberships.Any(m => m.MemberAccountId == accountId && m.IsCurrentMember);
             return relation;
         }
 
@@ -499,7 +497,6 @@ namespace Dribbly.Service.Services
             var membership = new TeamMembershipModel
             {
                 MemberAccountId = request.MemberAccountId,
-                Position = request.Position,
                 TeamId = request.TeamId,
                 DateAdded = DateTime.UtcNow,
                 JerseyNo = request.JerseyNo
@@ -515,7 +512,7 @@ namespace Dribbly.Service.Services
             var accountId = _securityUtility.GetAccountId().Value;
             var account = _context.Accounts
                 .Single(a => a.Id == accountId);
-            JoinTeamRequestModel request = new JoinTeamRequestModel(input.TeamId, accountId, input.Position, input.JerseyNo);
+            JoinTeamRequestModel request = new JoinTeamRequestModel(input.TeamId, accountId, input.JerseyNo);
 
             if (await GetHasPendingJoinRequestAsync(request.TeamId, accountId))
             {

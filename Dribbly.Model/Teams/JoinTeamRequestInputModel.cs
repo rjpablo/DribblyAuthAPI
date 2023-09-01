@@ -5,7 +5,6 @@ namespace Dribbly.Model.Teams
     public class JoinTeamRequestInputModel
     {
         public int TeamId { get; set; }
-        public PlayerPositionEnum Position { get; set; }
         public int JerseyNo { get; set; }
     }
 }

@@ -931,6 +931,10 @@
     <Compile Include="Migrations\202308270545023_CreateTable_Videos.Designer.cs">
       <DependentUpon>202308270545023_CreateTable_Videos.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202309011419369_RemoveColumns_TeamMembership.Position_and_JoinTeamRequest.Position.cs" />
+    <Compile Include="Migrations\202309011419369_RemoveColumns_TeamMembership.Position_and_JoinTeamRequest.Position.Designer.cs">
+      <DependentUpon>202309011419369_RemoveColumns_TeamMembership.Position_and_JoinTeamRequest.Position.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1464,6 +1468,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202308270545023_CreateTable_Videos.resx">
       <DependentUpon>202308270545023_CreateTable_Videos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309011419369_RemoveColumns_TeamMembership.Position_and_JoinTeamRequest.Position.resx">
+      <DependentUpon>202309011419369_RemoveColumns_TeamMembership.Position_and_JoinTeamRequest.Position.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

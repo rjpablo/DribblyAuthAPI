@@ -11,7 +11,6 @@ namespace Dribbly.Model.Teams
     {
         public long TeamId { get; set; }
         public long MemberAccountId { get; set; }
-        public PlayerPositionEnum Position { get; set; }
         public bool IsCurrentMember { get; set; }
         public bool IsFormerMember { get; set; }
         public bool IsCurrentCoach { get; set; }

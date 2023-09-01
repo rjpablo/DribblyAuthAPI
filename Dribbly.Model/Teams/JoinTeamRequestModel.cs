@@ -15,7 +15,6 @@ namespace Dribbly.Model.Teams
         public long TeamId { get; set; }
         [ForeignKey(nameof(Member))]
         public long MemberAccountId { get; set; }
-        public PlayerPositionEnum Position { get; set; }
         public JoinTeamRequestStatus Status { get; set; }
         public PlayerModel Member { get; set; }
         public TeamModel Team { get; set; }
@@ -53,11 +52,10 @@ namespace Dribbly.Model.Teams
         /// <param name="teamId"></param>
         /// <param name="memberAccountId">The <see cref="PlayerModel.Id"/> of the requesting member</param>
         /// <param name="position"></param>
-        public JoinTeamRequestModel(int teamId, long memberAccountId, PlayerPositionEnum position, int jerseyNo)
+        public JoinTeamRequestModel(int teamId, long memberAccountId, int jerseyNo)
         {
             TeamId = teamId;
             MemberAccountId = memberAccountId;
-            Position = position;
             JerseyNo = jerseyNo;
         }
     }
