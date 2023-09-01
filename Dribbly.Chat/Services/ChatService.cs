@@ -257,6 +257,7 @@ namespace Dribbly.Chat.Services
                 await _context.SaveChangesAsync();
 
                 chat = await _context.Chats
+                    .Include(c => c.Icon)
                     .Include(c => c.Participants.Select(p => p.Participant.ProfilePhoto))
                     .Include(c => c.Messages.Select(m => m.Participants.Select(p => p.Participant.ProfilePhoto)))
                     .SingleOrDefaultAsync(c => c.Id == chat.Id);
