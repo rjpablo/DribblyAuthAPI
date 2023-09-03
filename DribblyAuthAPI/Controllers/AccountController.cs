@@ -30,6 +30,7 @@ using System.Web.Http;
 namespace DribblyAuthAPI.Controllers
 {
     //TODO: Move some logic to a service. Controllers should only pass the call to a service
+    [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
@@ -77,6 +78,7 @@ namespace DribblyAuthAPI.Controllers
             return await _accountService.GetAccountDetailsModalAsync(accountId);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("GetAccountDropDownSuggestions")]
         public async Task<IEnumerable<AccountsChoicesItemModel>> GetAccountDropDownSuggestions(AccountSearchInputModel input)
@@ -85,7 +87,7 @@ namespace DribblyAuthAPI.Controllers
         }
 
         #region Account Settings
-        [HttpPost, Authorize]
+        [HttpPost]
         [Route("ReplaceEmail")]
         public async Task<IHttpActionResult> ReplaceEmail([FromBody] UpdateEmailInput input)
         {
@@ -98,28 +100,28 @@ namespace DribblyAuthAPI.Controllers
             return Ok();
         }
 
-        [HttpGet, Authorize]
+        [HttpGet]
         [Route("GetAccountSettings/{userId}")]
         public async Task<AccountSettingsModel> GetAccountSettings(long userId)
         {
             return await _accountService.GetAccountSettingsAsync(userId);
         }
 
-        [HttpPost, Authorize]
+        [HttpPost]
         [Route("UpdateAccount")]
         public async Task UpdateAccount([FromBody] PlayerModel account)
         {
             await _accountService.UpdateAccountAsync(account);
         }
 
-        [HttpPost, Authorize]
+        [HttpPost]
         [Route("SetStatus/{accountId}/{status}")]
         public async Task SetStatus(long accountId, EntityStatusEnum status)
         {
             await _accountService.SetStatus(accountId, status);
         }
 
-        [HttpPost, Authorize]
+        [HttpPost]
         [Route("SetIsPublic/{userId}/{isPublic}")]
         public async Task SetIsPublic(string userId, bool IsPublic)
         {
@@ -129,6 +131,7 @@ namespace DribblyAuthAPI.Controllers
 
         #region Players
         [HttpGet]
+        [AllowAnonymous]
         [Route("GetAccountPhotos/{accountId}")]
         public async Task<IEnumerable<MultimediaModel>> GetAccountPhotos(int accountId)
         {
@@ -144,6 +147,7 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Route("GetPlayers")]
         public async Task<IEnumerable<PlayerStatsViewModel>> GetPlayers([FromBody] GetPlayersFilterModel filter)
         {
@@ -153,7 +157,7 @@ namespace DribblyAuthAPI.Controllers
 
         #region Account Videos
 
-        [HttpPost, Authorize]
+        [HttpPost]
         [Route("AddAccountVideo/{accountId}/{addToHighlights}")]
         public async Task<VideoModel> AddVideo(long accountId, bool addToHighlights = false)
         {
@@ -183,30 +187,45 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("GetAccountVideos/{accountId}")]
         public async Task<IEnumerable<VideoModel>> GetAccountVideos(long accountId)
         {
             return await _accountService.GetAccountVideosAsync(accountId);
         }
 
+        [HttpPost]
+        [Route("RemoveHighlight/{fileId}")]
+        public async Task RemoveHighlight(long fileId)
+        {
+            await _accountService.RemoveHighlightAsync(fileId);
+        }
+
+        [HttpPost]
+        [Route("DeleteVideo/{videoId}")]
+        public async Task DeleteVideo(long videoId)
+        {
+            await _accountService.DeleteVideoAsync(videoId);
+        }
+
         #endregion
 
         #region Account Photos
-        [HttpPost, Authorize]
+        [HttpPost]
         [Route("AddAccountPhotos/{accountId}")]
         public async Task<IEnumerable<MultimediaModel>> AddAccountPhotos(long accountId)
         {
             return await _accountService.AddAccountPhotosAsync(accountId);
         }
 
-        [HttpPost, Authorize]
+        [HttpPost]
         [Route("UploadPrimaryPhoto/{accountId}")]
         public async Task<MultimediaModel> UploadPrimaryPhoto(long accountId)
         {
             return await _accountService.UploadPrimaryPhotoAsync(accountId);
         }
 
-        [HttpPost, Authorize]
+        [HttpPost]
         [Route("DeletePhoto/{photoId}/{accountId}")]
         public async Task DeletePhoto(int photoId, int accountId)
         {
@@ -397,6 +416,7 @@ namespace DribblyAuthAPI.Controllers
             await _repo.SendPasswordResetLinkAsync(input);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("ResetPassword")]
         public async Task ResetPassword(ResetPasswordModel input)

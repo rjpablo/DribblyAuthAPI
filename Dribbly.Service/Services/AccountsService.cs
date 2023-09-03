@@ -145,6 +145,18 @@ namespace Dribbly.Service.Services
             return _accountRepo.GetAccountByUsername(userName);
         }
 
+        public async Task RemoveHighlightAsync(long fileId)
+        {
+            var accountId = _securityUtility.GetAccountId();
+            var highlight = await _context.AccountHighlights
+                .SingleOrDefaultAsync(h => h.FileId == fileId && h.AccountId == accountId);
+            if (highlight != null)
+            {
+                _context.AccountHighlights.Remove(highlight);
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public async Task<AccountSettingsModel> GetAccountSettingsAsync(long userId)
         {
             AccountSettingsModel settings = new AccountSettingsModel();
@@ -682,6 +694,34 @@ namespace Dribbly.Service.Services
             return video;
         }
 
+        public async Task DeleteVideoAsync(long videoId)
+        {
+            try
+            {
+                var accountId = _securityUtility.GetAccountId();
+                var highlight = await _context.AccountHighlights.SingleOrDefaultAsync(h => h.FileId == videoId);
+                var accountVideo = await _context.AccountVideos.SingleOrDefaultAsync(v => v.VideoId == videoId);
+                var video = await _context.Videos
+                    .SingleOrDefaultAsync(v => v.Id == videoId);
+
+                if (accountVideo != null)
+                {
+                    if (video.UploadedById != accountId)
+                    {
+                        throw new DribblyForbiddenException($"account ID {accountId} tried to delete a video someone else uploaded",
+                            friendlyMessage: "You do not have permission to delete this video");
+                    }
+                    _context.AccountVideos.Remove(accountVideo);
+                    await _context.SaveChangesAsync();
+                }
+
+            }
+            catch (Exception e)
+            {
+                //TODO: log error
+                throw;
+            }
+        }
         #endregion
 
         public async Task<IEnumerable<PlayerStatsViewModel>> GetTopPlayersAsync()
@@ -704,6 +744,10 @@ namespace Dribbly.Service.Services
         Task<AccountViewerModel> GetAccountViewerDataAsync(string userName);
 
         Task AddAsync(PlayerModel account);
+
+        Task RemoveHighlightAsync(long fileId);
+
+        Task DeleteVideoAsync(long videoId);
 
         Task<IEnumerable<GamePlayer>> GetPlayerGames(long accountId);
 
