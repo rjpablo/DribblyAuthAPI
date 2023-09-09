@@ -207,6 +207,7 @@ namespace Dribbly.Service.Services
                             }
 
                             transaction.Commit();
+                            BroadcastGameStatusUpdate(game);
                         }
                         catch (Exception)
                         {
@@ -321,7 +322,7 @@ namespace Dribbly.Service.Services
 
                         #region Team Stats
                         var teammemberShip = _context.TeamMembers
-                            .Single(m => m.MemberAccountId == p.AccountId && m.TeamId == p.TeamMembership.TeamId);
+                            .Single(m => m.MemberAccountId == p.AccountId && m.TeamId == p.TeamMembership.TeamId && !m.DateLeft.HasValue);
                         teammemberShip.UpdateStats(allGameStats.Where(s => s.TeamMembership.TeamId == p.TeamMembership.TeamId));
                         teammemberShip.SetOverallScore();
                         #endregion
@@ -399,9 +400,10 @@ namespace Dribbly.Service.Services
 
                     _context.SaveChanges();
                     tx.Commit();
+                    BroadcastGameStatusUpdate(game);
                     await _commonService.AddUserGameActivity(UserActivityTypeEnum.EndGame, game.Id);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     tx.Rollback();
                     throw;
@@ -511,6 +513,7 @@ namespace Dribbly.Service.Services
                     }
                 }
                 #endregion
+                BroadcastGameStatusUpdate(game);
             }
             else
             {
@@ -875,6 +878,15 @@ namespace Dribbly.Service.Services
         {
             if (gameEvent != null)
                 _hubContext.Clients.Group(gameEvent.GameId.ToString()).upsertGameEvent(gameEvent);
+        }
+
+        private void BroadcastGameStatusUpdate(GameModel game)
+        {
+            if (game != null)
+                _hubContext.Clients.Group(game.Id.ToString()).updateGameStatus(new {
+                    id = game.Id,
+                    status = game.Status
+                });
         }
     }
     public interface IGamesService

@@ -160,6 +160,7 @@ namespace Dribbly.Service.Services
                     await _context.SaveChangesAsync();
                     tx.Commit();
                     BroadcastUpsertGameEvent(result.Event);
+                    BroadcastUpdateGameScores(result.Game);
                     return result;
                 }
                 catch (Exception)
@@ -268,11 +269,12 @@ namespace Dribbly.Service.Services
 
                     transaction.Commit();
 
-                    foreach(var s in shots)
+                    foreach (var s in shots)
                     {
                         BroadcastUpsertGameEvent(s);
                     }
                     BroadcastUpsertGameEvent(input.Rebound);
+                    BroadcastUpdateGameScores(game);
 
                     return result;
                 }
@@ -429,6 +431,7 @@ namespace Dribbly.Service.Services
                     BroadcastUpsertGameEvent(input.Block);
                     BroadcastUpsertGameEvent(input.Assist);
                     BroadcastUpsertGameEvent(input.Rebound);
+                    BroadcastUpdateGameScores(game);
 
                     return result;
                 }
@@ -495,6 +498,7 @@ namespace Dribbly.Service.Services
                     tx.Commit();
 
                     events.ForEach(evt => BroadcastDeleteGameEvent(evt));
+                    BroadcastUpdateGameScores(result.Game);
 
                     return result;
                 }
@@ -517,6 +521,18 @@ namespace Dribbly.Service.Services
             gameTeam.Turnovers++;
             await _context.SaveChangesAsync();
             BroadcastUpsertGameEvent(turnover);
+        }
+
+        private void BroadcastUpdateGameScores(GameModel game)
+        {
+            if (game != null)
+                _hubContext.Clients.Group(game.Id.ToString())
+                    .updateScores(new
+                    {
+                        id = game.Id,
+                        team1Score = game.Team1Score,
+                        team2Score = game.Team2Score
+                    });
         }
 
         private void BroadcastUpsertGameEvent(GameEventModel gameEvent)
