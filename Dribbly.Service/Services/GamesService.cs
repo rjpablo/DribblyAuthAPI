@@ -15,8 +15,10 @@ using Dribbly.Model.Notifications;
 using Dribbly.Model.Posts;
 using Dribbly.Model.Teams;
 using Dribbly.Service.Enums;
+using Dribbly.Service.Hubs;
 using Dribbly.Service.Repositories;
 using Dribbly.Service.Services.Shared;
+using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -44,6 +46,7 @@ namespace Dribbly.Service.Services
         private readonly IShotsRepository _shotsRepository;
         private readonly IGamePlayersRepository _gamePlayerRepo;
         private readonly ISharedPostsService _postsService;
+        private static IHubContext _hubContext = GlobalHost.ConnectionManager.GetHubContext<GameHub>();
 
         public GamesService(IAuthContext context,
             ISecurityUtility securityUtility,
@@ -698,7 +701,8 @@ namespace Dribbly.Service.Services
                         TeamId = input.TeamId,
                         Period = input.Period,
                         ClockTime = input.ClockTime,
-                        DateAdded = DateTime.UtcNow
+                        DateAdded = DateTime.UtcNow,
+                        AdditionalData = JsonConvert.SerializeObject(new { isOfficial = input.Type == TimeoutTypeEnum.Official })
                     };
 
                     if (!(input.Type == TimeoutTypeEnum.Official))
@@ -731,9 +735,9 @@ namespace Dribbly.Service.Services
                     _context.GameEvents.Attach(timeout);
                     _context.SetEntityState(timeout, EntityState.Added);
                     await _context.SaveChangesAsync();
-
                     transaction.Commit();
 
+                    BroadcastUpsertGameEvent(timeout);
                     return result;
                 }
                 catch (Exception)
@@ -865,6 +869,12 @@ namespace Dribbly.Service.Services
             }
 
             await _context.SaveChangesAsync();
+        }
+
+        private void BroadcastUpsertGameEvent(GameEventModel gameEvent)
+        {
+            if (gameEvent != null)
+                _hubContext.Clients.Group(gameEvent.GameId.ToString()).upsertGameEvent(gameEvent);
         }
     }
     public interface IGamesService

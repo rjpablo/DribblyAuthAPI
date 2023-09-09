@@ -28,12 +28,6 @@ namespace Dribbly.Model.Entities
             get { return base.Id; }
             set { base.Id = value; }
         }
-        [NotMapped]
-        public new DateTime DateAdded
-        {
-            get { return base.DateAdded; }
-            set { base.DateAdded = value; }
-        }
 
         #region Navigational Properties
         [JsonIgnore]

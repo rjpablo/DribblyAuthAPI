@@ -1,4 +1,5 @@
 ﻿using Dribbly.Core.Exceptions;
+using Dribbly.Core.Models;
 using Dribbly.Core.Utilities;
 using Dribbly.Model;
 using Dribbly.Model.Entities;
@@ -7,7 +8,9 @@ using Dribbly.Model.Fouls;
 using Dribbly.Model.GameEvents;
 using Dribbly.Model.Games;
 using Dribbly.Model.Play;
+using Dribbly.Service.Hubs;
 using Dribbly.Service.Repositories;
+using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -28,6 +31,7 @@ namespace Dribbly.Service.Services
         private readonly IGamePlayersRepository _gamePlayersRepository;
         private readonly IBaseRepository<GameEventModel> _gameEventsRepo;
         private readonly IShotsRepository _shotsRepository;
+        private static IHubContext _hubContext = GlobalHost.ConnectionManager.GetHubContext<GameHub>();
 
         public GameEventsService(IAuthContext context,
             ISecurityUtility securityUtility,
@@ -95,7 +99,6 @@ namespace Dribbly.Service.Services
                         shot.AdditionalData = JsonConvert.SerializeObject(new { points = input.Points });
                         await _context.SaveChangesAsync();
 
-
                     }
                     if (input.Type == GameEventTypeEnum.FoulCommitted)
                     {
@@ -156,10 +159,12 @@ namespace Dribbly.Service.Services
                     result.Players = await _gamePlayersRepository.UpdateGamePlayerStats(accountIdsToUpdate.Distinct().ToList(), result.Game);
                     await _context.SaveChangesAsync();
                     tx.Commit();
+                    BroadcastUpsertGameEvent(result.Event);
                     return result;
                 }
                 catch (Exception)
                 {
+                    BroadcastDeleteGameEvent(result.Event);
                     tx.Rollback();
                     throw;
                 }
@@ -176,6 +181,7 @@ namespace Dribbly.Service.Services
                     List<long> accountIdsToUpdate = new List<long>();
                     accountIdsToUpdate.Add(input.PerformedById.Value);
                     ShotModel shot = null;
+                    List<ShotModel> shots = new List<ShotModel>();
                     GameModel game = await _gamesRepository.Get(g => g.Id == input.GameId,
                         $"{nameof(GameModel.Team1)},{nameof(GameModel.Team2)}")
                         .FirstOrDefaultAsync();
@@ -203,6 +209,7 @@ namespace Dribbly.Service.Services
                         _context.SetEntityState(shot.Game, EntityState.Unchanged);
                         shot.DateAdded = DateTime.UtcNow;
                         _shotsRepository.Add(shot);
+                        shots.Add(shot);
                     }
                     await _context.SaveChangesAsync();
 
@@ -252,14 +259,21 @@ namespace Dribbly.Service.Services
                         var reboundersTeam = game.Team1.TeamId == input.Rebound.TeamId ? game.Team1 : game.Team2;
                         reboundersTeam.Rebounds++;
                         await _context.SaveChangesAsync();
-                        if(reboundersTeam != shootersTeam)
+                        if (reboundersTeam != shootersTeam)
                         {
                             result.Teams.Add(reboundersTeam);
                         }
                         result.Players.Add(reboundedBy);
                     }
-                    
+
                     transaction.Commit();
+
+                    foreach(var s in shots)
+                    {
+                        BroadcastUpsertGameEvent(s);
+                    }
+                    BroadcastUpsertGameEvent(input.Rebound);
+
                     return result;
                 }
                 catch (Exception e)
@@ -410,6 +424,12 @@ namespace Dribbly.Service.Services
 
                     transaction.Commit();
 
+                    BroadcastUpsertGameEvent(input.Shot);
+                    BroadcastUpsertGameEvent(input.Foul);
+                    BroadcastUpsertGameEvent(input.Block);
+                    BroadcastUpsertGameEvent(input.Assist);
+                    BroadcastUpsertGameEvent(input.Rebound);
+
                     return result;
                 }
                 catch (Exception e)
@@ -473,6 +493,9 @@ namespace Dribbly.Service.Services
                     result.Players = await _gamePlayersRepository.UpdateGamePlayerStats(playersToUpdate.Distinct().ToList(), result.Game);
 
                     tx.Commit();
+
+                    events.ForEach(evt => BroadcastDeleteGameEvent(evt));
+
                     return result;
                 }
                 catch (Exception)
@@ -493,6 +516,19 @@ namespace Dribbly.Service.Services
                             .SingleOrDefaultAsync(t => t.TeamId == turnover.TeamId && t.GameId == turnover.GameId);
             gameTeam.Turnovers++;
             await _context.SaveChangesAsync();
+            BroadcastUpsertGameEvent(turnover);
+        }
+
+        private void BroadcastUpsertGameEvent(GameEventModel gameEvent)
+        {
+            if (gameEvent != null)
+                _hubContext.Clients.Group(gameEvent.GameId.ToString()).upsertGameEvent(gameEvent);
+        }
+
+        private void BroadcastDeleteGameEvent(GameEventModel gameEvent)
+        {
+            if (gameEvent != null)
+                _hubContext.Clients.Group(gameEvent.GameId.ToString()).deleteGameEvent(gameEvent);
         }
     }
 

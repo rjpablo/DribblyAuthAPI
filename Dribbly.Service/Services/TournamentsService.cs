@@ -523,51 +523,58 @@ namespace Dribbly.Service.Services
 
         public async Task<TournamentTeamModel> ProcessJoinRequestAsync(long requestId, bool shouldApprove)
         {
-            var accountId = _securityUtility.GetAccountId().Value;
-            var request = await _context.JoinTournamentRequests.Include(r => r.Team)
-                        .Include(r => r.Tournament).Include(r => r.AddedBy.User)
-                        .SingleAsync(r => r.Id == requestId);
-
-            if (request == null)
+            try
             {
-                throw new DribblyInvalidOperationException("Join tournament request not found.",
-                    friendlyMessage: "The request no longer exists. I may have been cancelled or already processed.");
-            }
-            else if (request.Tournament.AddedById != accountId)
-            {
-                throw new DribblyForbiddenException($"Non-tournament manager tried to process join request. Request ID: {requestId}, Account ID: {accountId}",
-                    friendlyMessage: "Forbidden! You do not have sufficient access to perform this action.");
-            }
+                var accountId = _securityUtility.GetAccountId().Value;
+                var request = await _context.JoinTournamentRequests.Include(r => r.Team)
+                            .Include(r => r.Tournament).Include(r => r.AddedBy.User)
+                            .SingleAsync(r => r.Id == requestId);
 
-            TournamentTeamModel tournamentTeam = null;
-            if (shouldApprove)
-            {
-                tournamentTeam = await _context.TournamentTeams
-                    .SingleOrDefaultAsync(t => t.TeamId == request.TeamId && t.TournamentId == request.TournamentId);
-
-                if (tournamentTeam == null)
+                if (request == null)
                 {
-                    tournamentTeam = new TournamentTeamModel
-                    {
-                        TeamId = request.TeamId,
-                        TournamentId = request.TournamentId,
-                        DateAdded = DateTime.UtcNow
-                    };
-                    _context.TournamentTeams.Add(tournamentTeam);
-                    _ = await AddJoinTournamentNotification(request, NotificationTypeEnum.JoinTournamentRequestApproved);
-                    await _context.SaveChangesAsync();
-                    tournamentTeam = await _context.TournamentTeams.Include(t => t.Team.Logo)
-                        .SingleAsync(t => t.TeamId == request.TeamId && t.TournamentId == request.TournamentId);
+                    throw new DribblyInvalidOperationException("Join tournament request not found.",
+                        friendlyMessage: "The request no longer exists. I may have been cancelled or already processed.");
                 }
-            }
-            else
-            {
-                _ = AddJoinTournamentNotification(request, NotificationTypeEnum.JoinTournamentRequestRejected);
-            }
+                else if (request.Tournament.AddedById != accountId)
+                {
+                    throw new DribblyForbiddenException($"Non-tournament manager tried to process join request. Request ID: {requestId}, Account ID: {accountId}",
+                        friendlyMessage: "Forbidden! You do not have sufficient access to perform this action.");
+                }
 
-            _context.JoinTournamentRequests.Remove(request);
-            await _context.SaveChangesAsync();
-            return tournamentTeam;
+                TournamentTeamModel tournamentTeam = null;
+                if (shouldApprove)
+                {
+                    tournamentTeam = await _context.TournamentTeams
+                        .SingleOrDefaultAsync(t => t.TeamId == request.TeamId && t.TournamentId == request.TournamentId);
+
+                    if (tournamentTeam == null)
+                    {
+                        tournamentTeam = new TournamentTeamModel
+                        {
+                            TeamId = request.TeamId,
+                            TournamentId = request.TournamentId,
+                            DateAdded = DateTime.UtcNow
+                        };
+                        _context.TournamentTeams.Add(tournamentTeam);
+                        _ = await AddJoinTournamentNotification(request, NotificationTypeEnum.JoinTournamentRequestApproved);
+                        await _context.SaveChangesAsync();
+                        tournamentTeam = await _context.TournamentTeams.Include(t => t.Team.Logo)
+                            .SingleAsync(t => t.TeamId == request.TeamId && t.TournamentId == request.TournamentId);
+                    }
+                }
+                else
+                {
+                    _ = AddJoinTournamentNotification(request, NotificationTypeEnum.JoinTournamentRequestRejected);
+                }
+
+                _context.JoinTournamentRequests.Remove(request);
+                await _context.SaveChangesAsync();
+                return tournamentTeam;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         public async Task RemoveTournamentTeamAsync(long tournamentId, long teamId)
