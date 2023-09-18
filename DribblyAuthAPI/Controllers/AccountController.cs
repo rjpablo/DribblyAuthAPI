@@ -332,11 +332,12 @@ namespace DribblyAuthAPI.Controllers
 
         }
 
+        // Used to test if the client's access token is valid
         [Authorize]
-        [Route("Test")]
-        public async Task<bool> Test()
+        [Route("VerifyToken")]
+        public bool VerifyToken()
         {
-            return await Task.FromResult<bool>(true);
+            return true;
         }
 
         [AllowAnonymous]
