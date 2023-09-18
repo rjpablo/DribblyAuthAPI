@@ -158,7 +158,7 @@ namespace Dribbly.Service.Providers
                         "as:client_id", (context.ClientId == null) ? string.Empty : context.ClientId
                     },
                     {
-                        "userName", context.UserName
+                        "username", context.UserName
                     },
                     {
                         "userId", user.Id.ToString()

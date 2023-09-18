@@ -400,6 +400,7 @@ namespace Dribbly.Service.Services
 
             identity.AddClaim(new Claim(ClaimTypes.Name, userName));
             identity.AddClaim(new Claim("userId", account.IdentityUserId.ToString()));
+            identity.AddClaim(new Claim("accountId", account.Id.ToString()));
             identity.AddClaim(new Claim("role", "user"));
 
             var props = new AuthenticationProperties()
@@ -413,8 +414,9 @@ namespace Dribbly.Service.Services
 
             JObject tokenResponse = new JObject(
                                         new JProperty("hasRegistered", true),
-                                        new JProperty("userName", userName),
+                                        new JProperty("username", userName),
                                         new JProperty("userId", account.IdentityUserId),
+                                        new JProperty("accountId", account.Id),
                                         new JProperty("access_token", accessToken),
                                         new JProperty("token_type", "bearer"),
                                         new JProperty("expires_in", tokenExpiration.TotalSeconds.ToString()),
