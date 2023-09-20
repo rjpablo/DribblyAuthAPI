@@ -261,7 +261,9 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Exceptions\ExceptionLogger.cs" />
     <Compile Include="Filters\DribblyExceptionsFilter.cs" />
+    <Compile Include="Exceptions\GlobalExceptionHandler.cs" />
     <Compile Include="Migrations\201907141720333_InitialCreate.cs" />
     <Compile Include="Migrations\201907141720333_InitialCreate.Designer.cs">
       <DependentUpon>201907141720333_InitialCreate.cs</DependentUpon>

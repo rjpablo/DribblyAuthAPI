@@ -22,9 +22,9 @@ namespace DribblyAuthAPI.Filters
         {
             long logId = await _logger.LogExceptionAsync(context.Exception);
             if (context.Exception is DribblyException)
-            {               
+            {
                 var ex = (DribblyException)context.Exception;
-                ex.LogId = logId;
+                ex.Data["logId"] = logId;
                 context.Response = context.Request
                     .CreateErrorResponse(ex.StatusCode, ex.Message, ex);
                 var formatter = new JsonMediaTypeFormatter();

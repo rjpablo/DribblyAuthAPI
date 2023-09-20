@@ -1,10 +1,12 @@
 ﻿using Dribbly.Service.Services;
+using DribblyAuthAPI.Exceptions;
 using DribblyAuthAPI.Filters;
 using Newtonsoft.Json.Serialization;
 using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Web.Http.ExceptionHandling;
 
 namespace DribblyAuthAPI
 {
@@ -22,6 +24,9 @@ namespace DribblyAuthAPI
 
             // Global Filters
             config.Filters.Add(new DribblyExceptionsFilter((ILogsService)config.DependencyResolver.GetService(typeof(ILogsService))));
+            config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler());
+            config.Services.Replace(typeof(IExceptionLogger), new DribblyExceptionLogger());
+            config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.LocalOnly;
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
