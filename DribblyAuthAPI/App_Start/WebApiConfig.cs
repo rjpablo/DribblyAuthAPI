@@ -4,6 +4,7 @@ using Newtonsoft.Json.Serialization;
 using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace DribblyAuthAPI
 {
@@ -30,6 +31,9 @@ namespace DribblyAuthAPI
 
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            var corsAttr = new EnableCorsAttribute("*", "*", "*");
+            config.EnableCors(corsAttr);
         }
     }
 }
