@@ -419,7 +419,11 @@ namespace Dribbly.Service.Services
 
         public async Task UpdateStatusAsync(long gameId, GameStatusEnum toStatus)
         {
-            GameModel game = await _context.Games.Include(g => g.Tournament)
+            GameModel game = await _context.Games
+                .Include(g => g.Tournament)
+                .Include(g => g.Team1)
+                .Include(g => g.Team2)
+                .Include(g => g.GameEvents)
                 .SingleOrDefaultAsync(g => g.Id == gameId);
             var currentAccountId = _securityUtility.GetAccountId();
             if (game.AddedById == currentAccountId || (game.Tournament?.AddedById == currentAccountId))
@@ -465,6 +469,13 @@ namespace Dribbly.Service.Services
                     {
                         game.Status = GameStatusEnum.WaitingToStart;
                         game.End = DateTime.UtcNow;
+                        game.RemainingTime = game.RegulationPeriodDuration * 60 * 1000;
+                        game.RemainingShotTime = game.DefaultShotClockDuration * 1000;
+                        game.Team1Score = 0;
+                        game.Team2Score = 0;
+                        game.Team1.Points = 0;
+                        game.Team2.Points = 0;
+                        _context.GameEvents.RemoveRange(game.GameEvents);
                         await _commonService.AddUserGameActivity(UserActivityTypeEnum.EndGame, game.Id);
                         await _context.SaveChangesAsync();
                     }
@@ -821,6 +832,7 @@ namespace Dribbly.Service.Services
                 game.OffensiveRebondShotClockDuration = input.OffensiveRebondShotClockDuration;
                 game.IsLive = false;
                 game.RemainingShotTime = game.DefaultShotClockDuration * 1000;
+                game.RegulationPeriodDuration = input.RegulationPeriodDuration;
             }
 
 
