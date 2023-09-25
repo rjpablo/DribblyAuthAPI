@@ -1,4 +1,5 @@
-﻿using Dribbly.Model.DTO;
+﻿using Dribbly.Core.Models;
+using Dribbly.Model.DTO;
 using Dribbly.Model.GameEvents;
 using Dribbly.Model.Games;
 using Dribbly.Model.Play;
@@ -37,10 +38,10 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpGet, Authorize]
-        [Route("CurrentUserIsGameManager/{gameId}")]
-        public async Task<bool> CurrentUserIsGameManager(long gameId)
+        [Route("CanTrackGame/{gameId}")]
+        public async Task<bool> CanTrackGame(long gameId)
         {
-            return await _service.CurrentUserIsGameManagerAsync(gameId);
+            return await _service.CanTrackGameAsync(gameId);
         }
 
         [HttpGet]
@@ -68,7 +69,7 @@ namespace DribblyAuthAPI.Controllers
 
         [HttpPost]
         [Route("GetAddGameModal")]
-        public async Task<AddGameModalModel> GetAddGameModalAsync([FromBody]GetAddGameModalInputModel input)
+        public async Task<AddGameModalModel> GetAddGameModalAsync([FromBody] GetAddGameModalInputModel input)
         {
             return await _service.GetAddGameModalAsync(input);
         }
@@ -169,6 +170,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task SetNextPossession(long gameId, int nextPossession)
         {
             await _service.SetNextPossessionAsync(gameId, nextPossession);
+        }
+
+        [HttpPost, Authorize]
+        [Route("SetTimekeeper/{gameId}/{timekeeperId?}")]
+        public async Task<AccountModel> SetTimeKeeper(long gameId, long? timekeeperId)
+        {
+            return await _service.SetTimekeeperAsync(gameId, timekeeperId);
         }
     }
 }

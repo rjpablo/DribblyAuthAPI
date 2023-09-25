@@ -944,6 +944,10 @@
     <Compile Include="Migrations\202309062211046_Sync_TournamentTeam.DateAdded_with_DB.Designer.cs">
       <DependentUpon>202309062211046_Sync_TournamentTeam.DateAdded_with_DB.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202309251230329_AddColumn_Games_TimekeeperId.cs" />
+    <Compile Include="Migrations\202309251230329_AddColumn_Games_TimekeeperId.Designer.cs">
+      <DependentUpon>202309251230329_AddColumn_Games_TimekeeperId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1483,6 +1487,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202309062211046_Sync_TournamentTeam.DateAdded_with_DB.resx">
       <DependentUpon>202309062211046_Sync_TournamentTeam.DateAdded_with_DB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309251230329_AddColumn_Games_TimekeeperId.resx">
+      <DependentUpon>202309251230329_AddColumn_Games_TimekeeperId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -114,7 +114,8 @@ namespace Dribbly.Service.Services
                 n.Type == NotificationTypeEnum.JoinTournamentRequestApproved ||
                 n.Type == NotificationTypeEnum.JoinTournamentRequestRejected ||
                 n.Type == NotificationTypeEnum.NewGameForBooker ||
-                n.Type == NotificationTypeEnum.NewGameForOwner;
+                n.Type == NotificationTypeEnum.NewGameForOwner ||
+                n.Type == NotificationTypeEnum.AssignedAsTimekeeper;
             });
             
             resultWithDetails.AddRange(genericNotifications);

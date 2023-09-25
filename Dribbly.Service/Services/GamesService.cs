@@ -120,6 +120,7 @@ namespace Dribbly.Service.Services
                 .Include(g => g.GameEvents.Select(e => e.Team))
                 .Include(g => g.Court)
                 .Include(g => g.Tournament)
+                .Include(g => g.Timekeeper.ProfilePhoto)
                 .SingleOrDefaultAsync();
 
             if (game != null)
@@ -411,10 +412,10 @@ namespace Dribbly.Service.Services
             }
         }
 
-        public async Task<bool> CurrentUserIsGameManagerAsync(long gameId)
+        public async Task<bool> CanTrackGameAsync(long gameId)
         {
             var accountId = _securityUtility.GetAccountId().Value;
-            return await _context.Games.AnyAsync(g => g.Id == gameId && g.AddedById == accountId);
+            return await _context.Games.AnyAsync(g => g.Id == gameId && (g.AddedById == accountId || g.TimekeeperId == accountId));
         }
 
         public async Task UpdateStatusAsync(long gameId, GameStatusEnum toStatus)
@@ -809,6 +810,65 @@ namespace Dribbly.Service.Services
             }
         }
 
+        public async Task<AccountModel> SetTimekeeperAsync(long gameId, long? timekeeperId)
+        {
+            using (var tx = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    AccountModel timeKeeper = null;
+                    var accountId = _securityUtility.GetAccountId();
+                    if (timekeeperId.HasValue)
+                    {
+                        timeKeeper = await _context.Accounts.Include(a => a.ProfilePhoto)
+                            .SingleOrDefaultAsync(a => a.Id == timekeeperId);
+                        if (timeKeeper == null)
+                        {
+                            throw new DribblyObjectNotFoundException($"Account with ID {timekeeperId} not found",
+                                friendlyMessage: "Time keeper's info could not be found");
+                        }
+                    }
+                    GameModel game = await _dbSet.Include(g => g.Court).SingleOrDefaultAsync(g => g.Id == gameId);
+                    if (game == null)
+                    {
+                        throw new DribblyObjectNotFoundException($"Game with ID {gameId} could not be found",
+                              friendlyMessage: "Game details could not be found");
+                    }
+                    else if (game.AddedById != accountId.Value)
+                    {
+                        throw new DribblyForbiddenException($"Account with ID {accountId} attempted to modify game with ID {gameId} without permission.",
+                              friendlyMessage: "The requested action is forbidden.");
+                    }
+
+                    game.TimekeeperId = timekeeperId;
+                    await _context.SaveChangesAsync();
+
+                    if (timekeeperId.HasValue)
+                    {
+                        await _notificationsRepo.TryAddAsync(new NotificationModel
+                        {
+                            ForUserId = timekeeperId.Value,
+                            DateAdded = DateTime.UtcNow,
+                            Type = NotificationTypeEnum.AssignedAsTimekeeper,
+                            AdditionalInfo = JsonConvert.SerializeObject(new
+                            {
+                                gameId = game.Id,
+                                gameTitle = game.Title ?? "Untitled Game"
+                            })
+                        });
+                    }
+
+                    tx.Commit();
+                    return timeKeeper;
+                }
+                catch (Exception)
+                {
+                    tx.Rollback();
+                    throw;
+                }
+            }
+        }
+
         public async Task<GameModel> UpdateGameAsync(UpdateGameModel input)
         {
             GameModel game = await _dbSet.Include(g => g.Court).SingleOrDefaultAsync(g => g.Id == input.Id);
@@ -895,7 +955,8 @@ namespace Dribbly.Service.Services
         private void BroadcastGameStatusUpdate(GameModel game)
         {
             if (game != null)
-                _hubContext.Clients.Group(game.Id.ToString()).updateGameStatus(new {
+                _hubContext.Clients.Group(game.Id.ToString()).updateGameStatus(new
+                {
                     id = game.Id,
                     status = game.Status
                 });
@@ -917,7 +978,7 @@ namespace Dribbly.Service.Services
 
         Task<GameModel> AddGameAsync(AddGameInputModel input);
 
-        Task<bool> CurrentUserIsGameManagerAsync(long gameId);
+        Task<bool> CanTrackGameAsync(long gameId);
 
         Task EndGameAsync(long gameId, long winningTeamId);
 
@@ -944,5 +1005,7 @@ namespace Dribbly.Service.Services
         Task SetBonusStatusAsync(long gameTeamId, bool isInBonus);
 
         Task UpdateLineupAsync(UpdateLineupInputModel input);
+
+        Task<AccountModel> SetTimekeeperAsync(long gameId, long? timekeeperId);
     }
 }

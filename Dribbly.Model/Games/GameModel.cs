@@ -3,8 +3,6 @@ using Dribbly.Core.Models;
 using Dribbly.Model.Account;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Entities;
-using Dribbly.Model.Shared;
-using Dribbly.Model.Teams;
 using Dribbly.Model.Tournaments;
 using Dribbly.Service.Enums;
 using Newtonsoft.Json;
@@ -82,7 +80,10 @@ namespace Dribbly.Model.Games
         /// <summary>
         /// Whether or not the ball was live when the remainingTime was last updated
         /// </summary>
-        public bool IsLive { get; set; }        
+        public bool IsLive { get; set; }
+
+        [ForeignKey(nameof(Timekeeper))]
+        public long? TimekeeperId { get; set; }
 
         #endregion MappedColumns
 
@@ -107,6 +108,8 @@ namespace Dribbly.Model.Games
         public virtual CourtModel Court { get; set; }
 
         public virtual AccountBasicInfoModel AddedBy { get; set; }
+
+        public AccountModel Timekeeper { get; set; }
 
         public virtual GameTeamModel Team1 { get; set; }
 

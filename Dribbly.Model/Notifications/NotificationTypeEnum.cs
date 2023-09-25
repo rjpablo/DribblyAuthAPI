@@ -22,6 +22,10 @@ namespace Dribbly.Model.Notifications
         /// Notification for court owner when a booker updates a game
         /// </summary>
         GameUpdatedForOwner = 3,
+        /// <summary>
+        /// Notification for the assigned time keeper of a game
+        /// </summary>
+        AssignedAsTimekeeper = 4,
 
         #endregion
 
