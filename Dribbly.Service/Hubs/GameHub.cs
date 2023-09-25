@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.SignalR;
+﻿using Dribbly.Model.Games;
+using Microsoft.AspNet.SignalR;
 using System.Threading.Tasks;
 
 namespace Dribbly.Service.Hubs
@@ -8,6 +9,16 @@ namespace Dribbly.Service.Hubs
         public async Task JoinGroup(string connectionId, string groupName)
         {
             await Groups.Add(connectionId, groupName);
+        }
+
+        public void UpdateClock(UpdateGameTimeRemainingInput input)
+        {
+            Clients.OthersInGroup(input.GameId.ToString()).UpdateClock(input);
+        }
+
+        public void UpdatePeriod(dynamic input)
+        {
+            Clients.OthersInGroup(input.gameId.ToString()).updatePeriod(input);
         }
     }
 
