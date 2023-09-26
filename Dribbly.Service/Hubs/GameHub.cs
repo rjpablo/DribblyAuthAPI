@@ -20,6 +20,11 @@ namespace Dribbly.Service.Hubs
         {
             Clients.OthersInGroup(input.gameId.ToString()).updatePeriod(input);
         }
+
+        public void SetTol(dynamic input)
+        {
+            Clients.OthersInGroup(input.gameId.ToString()).setTol(input);
+        }
     }
 
     public interface IGameHub
