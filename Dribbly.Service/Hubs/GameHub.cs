@@ -25,6 +25,21 @@ namespace Dribbly.Service.Hubs
         {
             Clients.OthersInGroup(input.gameId.ToString()).setTol(input);
         }
+
+        public void SetBonus(dynamic input)
+        {
+            Clients.OthersInGroup(input.gameId.ToString()).setBonus(input);
+        }
+
+        public void SetNextPossession(dynamic input)
+        {
+            Clients.OthersInGroup(input.gameId.ToString()).setNextPossession(input);
+        }
+
+        public void SetTeamFoulCount(dynamic input)
+        {
+            Clients.OthersInGroup(input.gameId.ToString()).setTeamFoulCount(input);
+        }
     }
 
     public interface IGameHub
