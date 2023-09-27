@@ -185,7 +185,7 @@ namespace Dribbly.Service.Services
         {
             GameModel game = await _context.Games.SingleOrDefaultAsync(g => g.Id == input.GameId);
             var currentAccountId = _securityUtility.GetAccountId();
-            if (game.AddedById == currentAccountId)
+            if (game.AddedById == currentAccountId || game.TimekeeperId == currentAccountId)
             {
                 if (game.Status == GameStatusEnum.WaitingToStart)
                 {
@@ -193,7 +193,6 @@ namespace Dribbly.Service.Services
                     {
                         try
                         {
-
                             game.Status = GameStatusEnum.Started;
                             game.Start = input.StartedAt;
                             game.RemainingTimeUpdatedAt = input.StartedAt;
@@ -427,7 +426,7 @@ namespace Dribbly.Service.Services
                 .Include(g => g.GameEvents)
                 .SingleOrDefaultAsync(g => g.Id == gameId);
             var currentAccountId = _securityUtility.GetAccountId();
-            if (game.AddedById == currentAccountId || (game.Tournament?.AddedById == currentAccountId))
+            if (game.AddedById == currentAccountId || game.TimekeeperId == currentAccountId || (game.Tournament?.AddedById == currentAccountId))
             {
                 #region Starting Game
                 if (toStatus == GameStatusEnum.Started)

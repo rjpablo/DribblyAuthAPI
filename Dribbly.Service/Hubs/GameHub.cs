@@ -45,6 +45,11 @@ namespace Dribbly.Service.Hubs
         {
             Clients.OthersInGroup(input.gameId.ToString()).setScores(input);
         }
+
+        public void SetTeamLineup(dynamic input)
+        {
+            Clients.OthersInGroup(input.gameId.ToString()).setTeamLineup(input);
+        }
     }
 
     public interface IGameHub
