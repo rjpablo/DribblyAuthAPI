@@ -401,6 +401,7 @@ namespace Dribbly.Service.Services
             identity.AddClaim(new Claim(ClaimTypes.Name, userName));
             identity.AddClaim(new Claim("userId", account.IdentityUserId.ToString()));
             identity.AddClaim(new Claim("accountId", account.Id.ToString()));
+            identity.AddClaim(new Claim("profilePicture", account.ProfilePhoto?.Url));
             identity.AddClaim(new Claim("role", "user"));
 
             var props = new AuthenticationProperties()

@@ -165,6 +165,9 @@ namespace Dribbly.Service.Providers
                     },
                     {
                         "accountId", account.Id.ToString()
+                    },
+                    {
+                        "profilePicture", account.ProfilePhoto?.Url
                     }
                 });
 
