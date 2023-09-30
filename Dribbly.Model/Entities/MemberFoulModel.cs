@@ -21,5 +21,14 @@ namespace Dribbly.Model.Entities
         {
             Type = Enums.GameEventTypeEnum.FoulCommitted;
         }
+
+        public void Update(MemberFoulModel e)
+        {
+            FoulId = e.FoulId;
+            IsOffensive = e.IsOffensive;
+            IsTechnical = e.IsTechnical;
+            IsFlagrant = e.IsFlagrant;
+            base.Update(e);
+        }
     }
 }

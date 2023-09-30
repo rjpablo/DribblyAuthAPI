@@ -146,8 +146,8 @@ namespace Dribbly.Service.Services
                         await _context.SaveChangesAsync();
                     }
 
-                    result.Event = _context.GameEvents.Include(g => g.PerformedBy.ProfilePhoto)
-                            .Include(g => g.PerformedBy.User).Single(e => e.Id == input.Id);
+                    result.Events.Add(_context.GameEvents.Include(g => g.PerformedBy.ProfilePhoto)
+                            .Include(g => g.PerformedBy.User).Single(e => e.Id == input.Id));
                     result.Game = await _gamesRepository.UpdateGameStats(input.GameId, input.Type);
                     result.Teams = new List<GameTeamModel> { result.Game.Team1, result.Game.Team2 };
                     accountIdsToUpdate.Add(input.PerformedById.Value);
@@ -159,13 +159,12 @@ namespace Dribbly.Service.Services
                     result.Players = await _gamePlayersRepository.UpdateGamePlayerStats(accountIdsToUpdate.Distinct().ToList(), result.Game);
                     await _context.SaveChangesAsync();
                     tx.Commit();
-                    BroadcastUpsertGameEvent(result.Event);
+                    BroadcastUpsertGameEvent(result.Events[0]);
                     BroadcastUpdateGameScores(result.Game);
                     return result;
                 }
                 catch (Exception)
                 {
-                    BroadcastDeleteGameEvent(result.Event);
                     tx.Rollback();
                     throw;
                 }
@@ -305,11 +304,18 @@ namespace Dribbly.Service.Services
                 {
                     _context.SetEntityState(input.Shot.Game, EntityState.Unchanged);
                     input.Shot.Type = input.Shot.IsMiss ?
-                        Model.Enums.GameEventTypeEnum.ShotMissed :
-                        Model.Enums.GameEventTypeEnum.ShotMade;
+                       GameEventTypeEnum.ShotMissed :
+                        GameEventTypeEnum.ShotMade;
                     input.Shot.AdditionalData = JsonConvert.SerializeObject(new { points = input.Shot.Points });
                     input.Shot.DateAdded = DateTime.UtcNow;
-                    _shotsRepository.Add(input.Shot);
+                    if (input.IsEdit)
+                    {
+                        _context.SetEntityState(input.Shot, EntityState.Modified);
+                    }
+                    else
+                    {
+                        _shotsRepository.Add(input.Shot);
+                    }
                     await _context.SaveChangesAsync();
 
                     var gamePlayer = _context.GamePlayers.SingleOrDefault(g => g.TeamMembership.Account.Id == input.Shot.PerformedById
@@ -444,6 +450,190 @@ namespace Dribbly.Service.Services
 
         }
 
+        public async Task<UpdateGameEventResultModel> UpdateShotAsync(ShotDetailsInputModel input)
+        {
+            GameModel game = await _gamesRepository.Get(g => g.Id == input.Shot.GameId,
+                $"{nameof(GameModel.Team1)},{nameof(GameModel.Team2)}")
+                .FirstOrDefaultAsync();
+            var shootersTeam = game.Team1.TeamId == input.Shot.TeamId ? game.Team1 : game.Team2;
+            var opponentTeam = game.Team1.TeamId != shootersTeam.TeamId ? game.Team1 : game.Team2;
+            UpdateGameEventResultModel result = new UpdateGameEventResultModel();
+            List<long> accountIdsToUpdate = new List<long>();
+
+            if (game == null)
+            {
+                throw new DribblyObjectNotFoundException($"A game with ID {input.Shot.Game.Id} does not exist.");
+            }
+
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var origShot = _context.Shots.SingleOrDefault(p => p.Id == input.Shot.Id);
+                    if (origShot == null)
+                    {
+                        throw new DribblyObjectNotFoundException("Could not find shot to update.",
+                            friendlyMessage: "The shot details could not be found.");
+                    }
+                    accountIdsToUpdate.Add(origShot.PerformedById.Value);
+                    accountIdsToUpdate.Add(input.Shot.PerformedById.Value);
+                    input.Shot.Type = input.Shot.IsMiss ?
+                       GameEventTypeEnum.ShotMissed :
+                        GameEventTypeEnum.ShotMade;
+                    input.Shot.AdditionalData = JsonConvert.SerializeObject(new { points = input.Shot.Points });
+                    origShot.Update(input.Shot);
+                    await _context.SaveChangesAsync();
+
+                    result.Events.Add(input.Shot);
+
+                    if (input.WithFoul)
+                    {
+                        if (input.Foul.IsDeleted)
+                        {
+                            result.Events.Add(input.Foul);
+                            _context.SetEntityState(input.Foul, EntityState.Deleted);
+                        }
+                        else if (input.Foul.IsModified)
+                        {
+                            var origFoul = await _context.MemberFouls.SingleOrDefaultAsync(f => f.Id == input.Foul.Id);
+                            accountIdsToUpdate.Add(origFoul.PerformedById.Value);
+                            accountIdsToUpdate.Add(input.Foul.PerformedById.Value);
+                            input.Foul.AdditionalData = JsonConvert.SerializeObject(new { foulName = input.Foul.Foul.Name, foulId = input.Foul.FoulId });
+                            origFoul.Update(input.Foul);
+                            result.Events.Add(input.Foul);
+                        }
+                        else if (input.Foul.IsNew)
+                        {
+                            _context.SetEntityState(input.Foul.PerformedBy, EntityState.Unchanged);
+                            _context.SetEntityState(input.Foul.Foul, EntityState.Unchanged);
+                            input.Foul.AdditionalData = JsonConvert.SerializeObject(new { foulName = input.Foul.Foul.Name, foulId = input.Foul.FoulId });
+                            _gameEventsRepo.Upsert(input.Foul);
+                            result.Events.Add(input.Foul);
+                        }
+                    }
+
+                    if (input.WithBlock)
+                    {
+                        if (input.Block.IsDeleted)
+                        {
+                            result.Events.Add(input.Block);
+                            _context.SetEntityState(input.Block, EntityState.Deleted);
+                        }
+                        else if (input.Block.IsModified)
+                        {
+                            var origBlock = await _context.GameEvents.SingleOrDefaultAsync(e => e.Id == input.Block.Id);
+                            if (origBlock == null)
+                            {
+                                throw new DribblyObjectNotFoundException($"Block with ID {input.Block.Id} does not exist",
+                                    friendlyMessage: "The block details could not be found.");
+                            }
+                            accountIdsToUpdate.Add(origBlock.PerformedById.Value);
+                            accountIdsToUpdate.Add(input.Block.PerformedById.Value);
+                            origBlock.Update(input.Block);
+                            result.Events.Add(input.Block);
+                        }
+                        else if (input.Block.IsNew)
+                        {
+                            input.Block.PerformedBy = null;
+                            _gameEventsRepo.Upsert(input.Block);
+                            result.Events.Add(input.Block);
+                        }
+                    }
+
+                    if (input.WithAssist)
+                    {
+                        if (input.Assist.IsDeleted)
+                        {
+                            result.Events.Add(input.Assist);
+                            _context.SetEntityState(input.Assist, EntityState.Deleted);
+                        }
+                        else if (input.Assist.IsModified)
+                        {
+                            var origBlock = await _context.GameEvents.SingleOrDefaultAsync(e => e.Id == input.Assist.Id);
+                            if (origBlock == null)
+                            {
+                                throw new DribblyObjectNotFoundException($"Assist with ID {input.Assist.Id} does not exist",
+                                    friendlyMessage: "The assist details could not be found.");
+                            }
+                            accountIdsToUpdate.Add(origBlock.PerformedById.Value);
+                            accountIdsToUpdate.Add(input.Assist.PerformedById.Value);
+                            origBlock.Update(input.Assist);
+                            result.Events.Add(input.Assist);
+                        }
+                        else if (input.Assist.IsNew)
+                        {
+                            input.Assist.PerformedBy = null;
+                            _gameEventsRepo.Upsert(input.Assist);
+                            result.Events.Add(input.Assist);
+                        }
+                    }
+
+                    if (input.WithRebound)
+                    {
+                        if (input.Rebound.IsDeleted)
+                        {
+                            result.Events.Add(input.Rebound);
+                            _context.SetEntityState(input.Rebound, EntityState.Deleted);
+                        }
+                        else if (input.Rebound.IsModified)
+                        {
+                            var origBlock = await _context.GameEvents.SingleOrDefaultAsync(e => e.Id == input.Rebound.Id);
+                            if (origBlock == null)
+                            {
+                                throw new DribblyObjectNotFoundException($"Rebound with ID {input.Rebound.Id} does not exist",
+                                    friendlyMessage: "The rebound details could not be found.");
+                            }
+                            accountIdsToUpdate.Add(origBlock.PerformedById.Value);
+                            accountIdsToUpdate.Add(input.Rebound.PerformedById.Value);
+                            origBlock.Update(input.Rebound);
+                            result.Events.Add(input.Rebound);
+                        }
+                        else if (input.Rebound.IsNew)
+                        {
+                            input.Rebound.PerformedBy = null;
+                            _gameEventsRepo.Upsert(input.Rebound);
+                            result.Events.Add(input.Rebound);
+                        }
+                    }
+                    await _context.SaveChangesAsync();
+
+                    result.Game = await _gamesRepository.UpdateGameStats(input.Shot.GameId);
+                    result.Teams = new List<GameTeamModel> { result.Game.Team1, result.Game.Team2 };
+
+                    result.Players = await _gamePlayersRepository.UpdateGamePlayerStats(accountIdsToUpdate.Distinct().ToList(), result.Game);
+                    await _context.SaveChangesAsync();
+
+                    transaction.Commit();
+
+                    foreach (var e in result.Events)
+                    {
+                        if (e.IsModified)
+                        {
+                            BroadcastUpsertGameEvent(e);
+                        }
+                        else if (e.IsDeleted)
+                        {
+                            BroadcastDeleteGameEvent(e);
+                        }
+                        else
+                        {
+                            BroadcastUpsertGameEvent(e);
+                        }
+                    }
+
+                    BroadcastUpdateGameScores(game);
+
+                    return result;
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw e;
+                }
+            }
+
+        }
+
         public async Task<UpdateGameEventResultModel> DeleteAsync(long gameEventId)
         {
             //TODO: Only the game manager should be allowed to perform this action
@@ -557,5 +747,6 @@ namespace Dribbly.Service.Services
         Task RecordTurnoverAsync(GameEventModel turnover);
         Task<UpsertShotResultModel> RecordShotAsync(ShotDetailsInputModel input);
         Task<UpdateGameEventResultModel> UpsertFreeThrowAsync(UpsertFreeThrowInputModel input);
+        Task<UpdateGameEventResultModel> UpdateShotAsync(ShotDetailsInputModel input);
     }
 }

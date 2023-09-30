@@ -13,5 +13,12 @@ namespace Dribbly.Model.Games
         public ShotTypeEnum ShotType { get; set; }
         #endregion
 
+        public void Update(ShotModel e)
+        {
+            Points = e.Points;
+            IsMiss = e.IsMiss;
+            ShotType = e.ShotType;
+            base.Update(e);
+        }
     }
 }

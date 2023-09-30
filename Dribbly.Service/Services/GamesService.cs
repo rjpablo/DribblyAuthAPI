@@ -116,7 +116,6 @@ namespace Dribbly.Service.Services
                 .Include(g => g.Team2.Team.Logo)
                 .Include(g => g.Team2.Players.Select(p => p.TeamMembership.Account.User))
                 .Include(g => g.Team2.Players.Select(p => p.TeamMembership.Account.ProfilePhoto))
-                .Include(g => g.GameEvents.Select(e => e.PerformedBy.ProfilePhoto))
                 .Include(g => g.GameEvents.Select(e => e.Team))
                 .Include(g => g.Court)
                 .Include(g => g.Tournament)

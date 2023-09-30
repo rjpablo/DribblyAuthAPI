@@ -63,6 +63,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost]
+        [Route("UpdateShot")]
+        public async Task<UpdateGameEventResultModel> UpdateShot(ShotDetailsInputModel input)
+        {
+            return await _service.UpdateShotAsync(input);
+        }
+
+        [HttpPost]
         [Route("Delete/{gameEventId}")]
         public async Task<UpdateGameEventResultModel> Delete(long gameEventId)
         {

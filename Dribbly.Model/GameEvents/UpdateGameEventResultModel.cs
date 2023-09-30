@@ -9,7 +9,7 @@ namespace Dribbly.Model.Entities
         /// <summary>
         /// The updated event
         /// </summary>
-        public GameEventModel Event { get; set; }
+        public List<GameEventModel> Events { get; set; } = new List<GameEventModel>();
         public GameModel Game { get; set; }
         /// <summary>
         /// The collection of teams that were affected

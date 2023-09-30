@@ -44,5 +44,28 @@ namespace Dribbly.Model.Entities
         {
             Type = type;
         }
+
+        #region Unmapped Properties
+        [NotMapped]
+        public bool IsDeleted { get; set; }
+        [NotMapped]
+        public bool IsModified { get; set; }
+        [NotMapped]
+        public bool IsNew { get; set; }
+        #endregion
+
+        public virtual void Update(GameEventModel e)
+        {
+            TeamId = e.TeamId;
+            PerformedById = e.PerformedById;
+            Type = e.Type;
+            AdditionalData = e.AdditionalData;
+            Period = e.Period;
+            ClockTime = e.ClockTime;
+            ShotId = e.ShotId;
+            IsDeleted = e.IsDeleted;
+            IsModified = e.IsModified;
+            IsNew = e.IsNew;
+        }
     }
 }
