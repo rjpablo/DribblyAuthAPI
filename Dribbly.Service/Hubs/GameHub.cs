@@ -21,6 +21,11 @@ namespace Dribbly.Service.Hubs
             Clients.OthersInGroup(input.gameId.ToString()).updatePeriod(input);
         }
 
+        public void SoundBuzzer(dynamic input)
+        {
+            Clients.OthersInGroup(input.gameId.ToString()).soundBuzzer(input);
+        }
+
         public void SetTol(dynamic input)
         {
             Clients.OthersInGroup(input.gameId.ToString()).setTol(input);

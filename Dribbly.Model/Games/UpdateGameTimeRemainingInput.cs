@@ -11,7 +11,7 @@ namespace Dribbly.Model.Games
         public long GameId { get; set; }
         public int TimeRemaining { get; set; }
         public int ShotTimeRemaining { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
         public bool IsLive { get; set; }
     }
 }
