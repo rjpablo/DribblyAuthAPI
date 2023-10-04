@@ -59,6 +59,7 @@ namespace DribblyAuthAPI
             container.RegisterType<IGameEventsService, GameEventsService>();
             container.RegisterType<IDribblyChatService, DribblyChatService>();
             container.RegisterType<IMultimediaService, MultimediaService>();
+            container.RegisterType<IGroupsService, GroupsService>();
             container.RegisterType<IChatDbContext, AuthContext>();
             container.RegisterInstance(Startup.OAuthBearerOptions);
 

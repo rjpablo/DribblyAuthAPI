@@ -8,6 +8,7 @@
         Team = 3,
         Post = 4,
         League = 5,
-        Tournament = 6
+        Tournament = 6,
+        Group = 7
     }
 }

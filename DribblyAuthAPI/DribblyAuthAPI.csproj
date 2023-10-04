@@ -244,6 +244,7 @@
     <Compile Include="Controllers\ContactsController.cs" />
     <Compile Include="Controllers\GameEventsController.cs" />
     <Compile Include="Controllers\ChatsController.cs" />
+    <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\TournamentsController.cs" />
     <Compile Include="Controllers\SeasonsController.cs" />
     <Compile Include="Controllers\LeaguesController.cs" />
@@ -948,6 +949,10 @@
     <Compile Include="Migrations\202309251230329_AddColumn_Games_TimekeeperId.Designer.cs">
       <DependentUpon>202309251230329_AddColumn_Games_TimekeeperId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202310040018456_AddTables_Groups_and_GroupMembers.cs" />
+    <Compile Include="Migrations\202310040018456_AddTables_Groups_and_GroupMembers.Designer.cs">
+      <DependentUpon>202310040018456_AddTables_Groups_and_GroupMembers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1490,6 +1495,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202309251230329_AddColumn_Games_TimekeeperId.resx">
       <DependentUpon>202309251230329_AddColumn_Games_TimekeeperId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310040018456_AddTables_Groups_and_GroupMembers.resx">
+      <DependentUpon>202310040018456_AddTables_Groups_and_GroupMembers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

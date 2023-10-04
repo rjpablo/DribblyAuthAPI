@@ -8,6 +8,7 @@ using Dribbly.Model.Accounts;
 using Dribbly.Model.Bookings;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Entities;
+using Dribbly.Model.Entities.Groups;
 using Dribbly.Model.Fouls;
 using Dribbly.Model.Games;
 using Dribbly.Model.Leagues;
@@ -73,6 +74,11 @@ namespace Dribbly.Model
         DbSet<PlayerModel> Players { get; set; }
         IDbSet<ApplicationUser> Users { get; set; }
         DbSet<IndexedEntityModel> IndexedEntities { get; set; }
+
+        #region Groups
+        DbSet<GroupModel> Groups { get; set; }
+        DbSet<GroupMemberModel> GroupMembers { get; set; }
+        #endregion
 
         #region User Activites
         DbSet<UserActivityModel> UserActivities { get; set; }
@@ -210,6 +216,11 @@ namespace Dribbly.Model
             entry.State = state;
             return entry;
         }
+
+        #region Groups
+        public DbSet<GroupModel> Groups { get; set; }
+        public DbSet<GroupMemberModel> GroupMembers { get; set; }
+        #endregion
 
         #region User Activites
         public DbSet<UserActivityModel> UserActivities { get; set; }
