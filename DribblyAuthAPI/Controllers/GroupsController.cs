@@ -29,6 +29,13 @@ namespace DribblyAuthAPI.Controllers
 
         //POSTs
         [HttpPost]
+        [Route("CancelJoinRequest/{groupId}")]
+        public async Task CancelJoinRequest(long groupId)
+        {
+            await _service.CancelJoinRequest(groupId);
+        }
+
+        [HttpPost]
         [Route("CreateGroup")]
         public async Task<GroupModel> CreateGroup(AddEditGroupInputModel input)
         {
@@ -36,17 +43,24 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost]
-        [Route("UpdateGroup")]
-        public async Task<GroupModel> UpdateGroup(AddEditGroupInputModel input)
+        [Route("JoinGroup/{groupId}")]
+        public async Task JoinGroup(long groupId)
         {
-            return await _service.UpdateGroupAsync(input);
+            await _service.JoinGroupAsync(groupId);
         }
 
-        [HttpPost, Authorize]
+        [HttpPost]
         [Route("SetLogo/{groupId}")]
         public async Task<MultimediaModel> SetLogo(long groupId)
         {
             return await _service.SetLogoAsync(groupId);
+        }
+
+        [HttpPost]
+        [Route("UpdateGroup")]
+        public async Task<GroupModel> UpdateGroup(AddEditGroupInputModel input)
+        {
+            return await _service.UpdateGroupAsync(input);
         }
     }
 }

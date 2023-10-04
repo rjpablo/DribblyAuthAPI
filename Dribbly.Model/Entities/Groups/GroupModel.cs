@@ -20,5 +20,6 @@ namespace Dribbly.Model.Entities.Groups
         public MultimediaModel Logo { get; set; }
         public AccountModel AddedBy { get; set; }
         public ICollection<GroupMemberModel> Members { get; set; } = new List<GroupMemberModel>();
+        public ICollection<JoinGroupRequest> JoinRequests { get; set; } = new List<JoinGroupRequest>();
     }
 }

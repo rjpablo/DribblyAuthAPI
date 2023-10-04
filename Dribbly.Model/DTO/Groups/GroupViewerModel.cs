@@ -4,9 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dribbly.Model.DTO.Groups
 {
     [NotMapped]
-    public class GroupViewerModel:GroupModel
+    public class GroupViewerModel : GroupModel
     {
         public bool IsAdmin { get; set; }
+        public GroupUserRelationship UserRelationship { get; set; }
         public GroupViewerModel(GroupModel source, long? forAccountId)
         {
             {
@@ -21,6 +22,7 @@ namespace Dribbly.Model.DTO.Groups
                 AddedBy = source.AddedBy;
                 Members = source.Members;
                 IsAdmin = forAccountId == source.AddedById;
+                UserRelationship = new GroupUserRelationship(source, forAccountId);
             }
         }
     }

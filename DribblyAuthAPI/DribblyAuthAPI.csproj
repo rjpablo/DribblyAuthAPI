@@ -953,6 +953,10 @@
     <Compile Include="Migrations\202310040018456_AddTables_Groups_and_GroupMembers.Designer.cs">
       <DependentUpon>202310040018456_AddTables_Groups_and_GroupMembers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202310041211561_CreateTable_JoinGroupRequests.cs" />
+    <Compile Include="Migrations\202310041211561_CreateTable_JoinGroupRequests.Designer.cs">
+      <DependentUpon>202310041211561_CreateTable_JoinGroupRequests.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1498,6 +1502,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202310040018456_AddTables_Groups_and_GroupMembers.resx">
       <DependentUpon>202310040018456_AddTables_Groups_and_GroupMembers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310041211561_CreateTable_JoinGroupRequests.resx">
+      <DependentUpon>202310041211561_CreateTable_JoinGroupRequests.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

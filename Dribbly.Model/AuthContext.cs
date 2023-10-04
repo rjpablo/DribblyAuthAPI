@@ -78,6 +78,7 @@ namespace Dribbly.Model
         #region Groups
         DbSet<GroupModel> Groups { get; set; }
         DbSet<GroupMemberModel> GroupMembers { get; set; }
+        DbSet<JoinGroupRequest> JoinGroupRequests { get; set; }
         #endregion
 
         #region User Activites
@@ -220,6 +221,7 @@ namespace Dribbly.Model
         #region Groups
         public DbSet<GroupModel> Groups { get; set; }
         public DbSet<GroupMemberModel> GroupMembers { get; set; }
+        public DbSet<JoinGroupRequest> JoinGroupRequests { get; set; }
         #endregion
 
         #region User Activites

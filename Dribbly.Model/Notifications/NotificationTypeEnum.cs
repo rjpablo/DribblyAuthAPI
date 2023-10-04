@@ -59,5 +59,10 @@ namespace Dribbly.Model.Notifications
         JoinTournamentRequestRejected = 62,
         TournamentTeamRemoved = 63,
         #endregion
+
+        #region Group-Related 80-99
+        JoinGroupRequest = 80,
+        JoinGroupRequestApproved = 81,
+        #endregion
     }
 }

@@ -13,6 +13,8 @@ using System.Linq;
 using Dribbly.Core.Exceptions;
 using Dribbly.Core.Models;
 using System.Web;
+using Dribbly.Model.Notifications;
+using Newtonsoft.Json;
 
 namespace Dribbly.Service.Services
 {
@@ -75,6 +77,79 @@ namespace Dribbly.Service.Services
             }
         }
 
+        public async Task CancelJoinRequest(long groupId)
+        {
+            var accountId = _securityUtility.GetAccountId();
+            var request = await _context.JoinGroupRequests
+                .SingleOrDefaultAsync(r => r.RequestorId == accountId && r.GroupId == groupId);
+            if (request != null)
+            {
+                _context.JoinGroupRequests.Remove(request);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task JoinGroupAsync(long groupId)
+        {
+            using (var tx = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var accountId = _securityUtility.GetAccountId().Value;
+                    var account = await _context.Accounts.SingleOrDefaultAsync(a => a.Id == accountId);
+                    if (account == null)
+                    {
+                        throw new DribblyObjectNotFoundException($"Couldn't find account with ID {accountId}",
+                            friendlyMessageKey: "Account details could not be found.");
+                    }
+                    var group = await _context.Groups
+                        .Include(g => g.JoinRequests)
+                        .SingleOrDefaultAsync(g => g.Id == groupId);
+                    if (group == null)
+                    {
+                        throw new DribblyObjectNotFoundException($"Group with ID {groupId} not found.",
+                            "The group's info could not be found. It may have been deleted.");
+                    }
+
+                    if (group.JoinRequests.Any(g => g.RequestorId == accountId))
+                    {
+                        throw new DribblyInvalidOperationException($"Account ID {accountId} tried to request duplicate join group request. Group ID: {groupId}",
+                            friendlyMessageKey: "You already currently have a pending request to join this group");
+                    }
+
+                    var request = new JoinGroupRequest
+                    {
+                        RequestorId = accountId,
+                        GroupId = groupId,
+                        DateAdded = DateTime.UtcNow
+                    };
+                    _context.JoinGroupRequests.Add(request);
+                    await _context.SaveChangesAsync();
+
+                    await _notificationsRepo.TryAddAsync(new NotificationModel
+                    {
+                        ForUserId = group.AddedById,
+                        DateAdded = DateTime.UtcNow,
+                        Type = NotificationTypeEnum.JoinGroupRequest,
+                        AdditionalInfo = JsonConvert.SerializeObject(new
+                        {
+                            requestId = request.Id,
+                            requestorName = account.Name,
+                            groupName = group.Name,
+                            groupId = group.Id
+                        })
+                    });
+                    await _indexedEntitysRepository.Update(_context, group);
+                    tx.Commit();
+                }
+                catch (Exception)
+                {
+                    tx.Rollback();
+                    throw;
+                }
+            }
+        }
+
         public async Task<GroupModel> UpdateGroupAsync(AddEditGroupInputModel input)
         {
             using (var tx = _context.Database.BeginTransaction())
@@ -108,8 +183,19 @@ namespace Dribbly.Service.Services
             var model = await _context.Groups
                 .Include(g => g.Logo)
                 .Include(g => g.Members.Select(m => m.Account.ProfilePhoto))
+                .Include(g => g.JoinRequests)
                 .SingleOrDefaultAsync(g => g.Id == groupId);
             return new GroupViewerModel(model, accountId);
+        }
+
+        public async Task<GroupUserRelationship> GetGroupUserRelationshipAsync(long groupId)
+        {
+            var accountId = _securityUtility.GetAccountId();
+            var group = await _context.Groups
+                .Include(g => g.JoinRequests)
+                .Include(g => g.Members.Select(m => m.Account.ProfilePhoto))
+                .SingleOrDefaultAsync(g => g.Id == groupId);
+            return new GroupUserRelationship(group, accountId);
         }
 
         public async Task<MultimediaModel> SetLogoAsync(long groupId)
@@ -165,8 +251,10 @@ namespace Dribbly.Service.Services
     }
     public interface IGroupsService
     {
+        Task CancelJoinRequest(long groupId);
         Task<GroupModel> CreateGroupAsync(AddEditGroupInputModel input);
         Task<GroupViewerModel> GetGroupViewerData(long groupId);
+        Task JoinGroupAsync(long groupId);
         Task<MultimediaModel> SetLogoAsync(long groupId);
         Task<GroupModel> UpdateGroupAsync(AddEditGroupInputModel input);
     }

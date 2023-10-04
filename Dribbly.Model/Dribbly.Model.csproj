@@ -106,6 +106,8 @@
     <Compile Include="DTO\GetTournamentTeamsInputModel.cs" />
     <Compile Include="DTO\Groups\AddEditGroupInputModel.cs" />
     <Compile Include="DTO\Groups\GroupViewerModel.cs" />
+    <Compile Include="DTO\Groups\GroupUserRelationship.cs" />
+    <Compile Include="Entities\Groups\JoinGroupRequest.cs" />
     <Compile Include="DTO\PlayerStatsViewModel.cs" />
     <Compile Include="DTO\SetStageTeamsInputModel.cs" />
     <Compile Include="DTO\TeamStatsViewModel.cs" />
