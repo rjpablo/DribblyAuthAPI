@@ -89,6 +89,31 @@ namespace Dribbly.Service.Services
             }
         }
 
+        public async Task LeaveGroupAsync(long groupId)
+        {
+            using (var tx = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var accountId = _securityUtility.GetAccountId().Value;
+                    var membership = await _context.GroupMembers
+                        .SingleOrDefaultAsync(m => m.GroupId == groupId && m.AccountId == accountId);
+
+                    if(membership != null)
+                    {
+                        _context.GroupMembers.Remove(membership);
+                        await _context.SaveChangesAsync();
+                        tx.Commit();
+                    }
+                }
+                catch (Exception)
+                {
+                    tx.Rollback();
+                    throw;
+                }
+            }
+        }
+
         public async Task JoinGroupAsync(long groupId)
         {
             using (var tx = _context.Database.BeginTransaction())
@@ -345,6 +370,7 @@ namespace Dribbly.Service.Services
         Task<GroupModel> CreateGroupAsync(AddEditGroupInputModel input);
         Task<GroupViewerModel> GetGroupViewerData(long groupId);
         Task JoinGroupAsync(long groupId);
+        Task LeaveGroupAsync(long groupId);
         Task ProcessJoinRequestAsync(long requestId, bool isApproved);
         Task RemoveMemberAsync(long groupId, long accountId);
         Task<MultimediaModel> SetLogoAsync(long groupId);

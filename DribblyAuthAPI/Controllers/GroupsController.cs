@@ -64,6 +64,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost]
+        [Route("LeaveGroup/{groupId}")]
+        public async Task LeaveGroupAsync(long groupId)
+        {
+            await _service.LeaveGroupAsync(groupId);
+        }
+
+        [HttpPost]
         [Route("SetLogo/{groupId}")]
         public async Task<MultimediaModel> SetLogo(long groupId)
         {
