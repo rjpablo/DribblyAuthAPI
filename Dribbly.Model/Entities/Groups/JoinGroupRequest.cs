@@ -1,4 +1,5 @@
 ﻿using Dribbly.Core.Models;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dribbly.Model.Entities.Groups
@@ -11,6 +12,7 @@ namespace Dribbly.Model.Entities.Groups
         [ForeignKey(nameof(Group))]
         public long GroupId { get; set; }
         public AccountModel Requestor { get; set; }
+        [JsonIgnore]
         public GroupModel Group { get; set; }
     }
 }

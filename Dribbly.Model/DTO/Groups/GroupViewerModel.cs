@@ -23,6 +23,7 @@ namespace Dribbly.Model.DTO.Groups
                 Members = source.Members;
                 IsAdmin = forAccountId == source.AddedById;
                 UserRelationship = new GroupUserRelationship(source, forAccountId);
+                JoinRequests = source.JoinRequests;
             }
         }
     }

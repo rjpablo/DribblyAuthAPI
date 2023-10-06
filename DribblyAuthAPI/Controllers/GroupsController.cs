@@ -36,6 +36,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost]
+        [Route("ProcessJoinRequest/{requestId}/{isApproved}")]
+        public async Task ProcessJoinRequestAsync(long requestId, bool isApproved)
+        {
+            await _service.ProcessJoinRequestAsync(requestId, isApproved);
+        }
+
+        [HttpPost]
         [Route("CreateGroup")]
         public async Task<GroupModel> CreateGroup(AddEditGroupInputModel input)
         {

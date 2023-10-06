@@ -1,4 +1,5 @@
 ﻿using Dribbly.Core.Models;
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,6 +16,7 @@ namespace Dribbly.Model.Entities.Groups
         [Column(Order = 2), Key]
         public long GroupId { get; set; }
         public AccountModel Account { get; set; }
+        [JsonIgnore]
         public GroupModel Group { get; set; }
         public DateTime DateJoined { get; set; }
         public string Name { get => Account.Name; }

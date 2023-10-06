@@ -183,7 +183,7 @@ namespace Dribbly.Service.Services
             var model = await _context.Groups
                 .Include(g => g.Logo)
                 .Include(g => g.Members.Select(m => m.Account.ProfilePhoto))
-                .Include(g => g.JoinRequests)
+                .Include(g => g.JoinRequests.Select(r => r.Requestor.ProfilePhoto))
                 .SingleOrDefaultAsync(g => g.Id == groupId);
             return new GroupViewerModel(model, accountId);
         }
@@ -248,6 +248,66 @@ namespace Dribbly.Service.Services
 
             return photo;
         }
+
+        public async Task ProcessJoinRequestAsync(long requestId, bool isApproved)
+        {
+            using (var tx = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var request = await _context.JoinGroupRequests.SingleOrDefaultAsync(r => r.Id == requestId);
+                    var accountId = _securityUtility.GetAccountId().Value;
+                    if (request == null)
+                    {
+                        throw new DribblyObjectNotFoundException($"Unable to find request with ID {requestId}.",
+                            friendlyMessageKey: "The join request does not exist");
+                    }
+
+                    var group = await _context.Groups.SingleAsync(g => g.Id == request.GroupId);
+                    var isAdmin = group.AddedById == accountId;
+                    if (!isAdmin)
+                    {
+                        throw new DribblyForbiddenException("Non-admin of group attempted to process a join request.",
+                            friendlyMessageKey: "You do not have the permission to process this request.");
+                    }
+
+                    if (isApproved)
+                    {
+                        var member = new GroupMemberModel
+                        {
+                            AccountId = request.RequestorId,
+                            GroupId = request.GroupId,
+                            DateJoined = DateTime.UtcNow
+                        };
+
+                        _context.GroupMembers.Add(member);
+
+                        //TODO: log user activity
+                        await _notificationsRepo.TryAddAsync(new NotificationModel
+                        {
+                            ForUserId = accountId,
+                            DateAdded = DateTime.UtcNow,
+                            Type = NotificationTypeEnum.JoinGroupRequestApproved,
+                            AdditionalInfo = JsonConvert.SerializeObject(new
+                            {
+                                groupName = group.Name,
+                                groupId = group.Id
+                            })
+                        });
+                    }
+
+                    _context.JoinGroupRequests.Remove(request);
+                    await _context.SaveChangesAsync();
+                    tx.Commit();
+                }
+                catch (Exception e)
+                {
+                    // TODO: log error
+                    tx.Rollback();
+                    throw;
+                }
+            }
+        }
     }
     public interface IGroupsService
     {
@@ -255,6 +315,7 @@ namespace Dribbly.Service.Services
         Task<GroupModel> CreateGroupAsync(AddEditGroupInputModel input);
         Task<GroupViewerModel> GetGroupViewerData(long groupId);
         Task JoinGroupAsync(long groupId);
+        Task ProcessJoinRequestAsync(long requestId, bool isApproved);
         Task<MultimediaModel> SetLogoAsync(long groupId);
         Task<GroupModel> UpdateGroupAsync(AddEditGroupInputModel input);
     }
