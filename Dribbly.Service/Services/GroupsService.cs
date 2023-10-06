@@ -315,7 +315,7 @@ namespace Dribbly.Service.Services
                         //TODO: log user activity
                         await _notificationsRepo.TryAddAsync(new NotificationModel
                         {
-                            ForUserId = accountId,
+                            ForUserId = request.RequestorId,
                             DateAdded = DateTime.UtcNow,
                             Type = NotificationTypeEnum.JoinGroupRequestApproved,
                             AdditionalInfo = JsonConvert.SerializeObject(new
