@@ -150,6 +150,36 @@ namespace Dribbly.Service.Services
             }
         }
 
+        public async Task RemoveMemberAsync(long groupId, long accountId)
+        {
+            using (var tx = _context.Database.BeginTransaction())
+            {
+                try
+                {                    
+                    var member = await _context.GroupMembers
+                        .Include(m => m.Group)
+                        .SingleOrDefaultAsync(m => m.GroupId == groupId && m.AccountId == accountId);
+                    if(member != null)
+                    {
+                        var accountid = _securityUtility.GetAccountId();
+                        if (member.Group.AddedById != accountid)
+                        {
+                            throw new DribblyForbiddenException($"Non-admin tried to remove group member. Group ID: {member.GroupId}, Account ID: {accountId}",
+                                friendlyMessage: "You do not have permission to remove members from this group");
+                        }
+                        _context.GroupMembers.Remove(member);
+                        await _context.SaveChangesAsync();
+                        tx.Commit();
+                    }
+                }
+                catch (Exception)
+                {
+                    tx.Rollback();
+                    throw;
+                }
+            }
+        }
+
         public async Task<GroupModel> UpdateGroupAsync(AddEditGroupInputModel input)
         {
             using (var tx = _context.Database.BeginTransaction())
@@ -316,6 +346,7 @@ namespace Dribbly.Service.Services
         Task<GroupViewerModel> GetGroupViewerData(long groupId);
         Task JoinGroupAsync(long groupId);
         Task ProcessJoinRequestAsync(long requestId, bool isApproved);
+        Task RemoveMemberAsync(long groupId, long accountId);
         Task<MultimediaModel> SetLogoAsync(long groupId);
         Task<GroupModel> UpdateGroupAsync(AddEditGroupInputModel input);
     }

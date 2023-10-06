@@ -36,6 +36,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost]
+        [Route("RemoveMember/{groupId}/{accountId}")]
+        public async Task RemoveMember(long groupId, long accountId)
+        {
+            await _service.RemoveMemberAsync(groupId, accountId);
+        }
+
+        [HttpPost]
         [Route("ProcessJoinRequest/{requestId}/{isApproved}")]
         public async Task ProcessJoinRequestAsync(long requestId, bool isApproved)
         {
