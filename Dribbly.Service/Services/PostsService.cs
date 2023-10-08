@@ -5,6 +5,7 @@ using Dribbly.Core.Exceptions;
 using Dribbly.Core.Utilities;
 using Dribbly.Email.Services;
 using Dribbly.Model;
+using Dribbly.Model.Entities;
 using Dribbly.Model.Posts;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
@@ -89,13 +90,45 @@ namespace Dribbly.Service.Services
 
         public async Task<PostModel> UpdatePost(AddEditPostInputModel input)
         {
-            PostModel post = _context.Posts.SingleOrDefault(p => p.Id == input.Id);
+            PostModel post = _context.Posts
+                .Include(p=>p.Files)
+                .SingleOrDefault(p => p.Id == input.Id);
             if (_securityUtility.IsCurrentAccount(post.AddedById))
             {
+                var origFileIds = post.Files.Select(f => f.FileId).ToList();
+                var newFileIds = input.FileIds.Where(id => !origFileIds.Contains(id)).ToList();
+                var fileIdsToDelete = origFileIds.Where(id => !input.FileIds.Contains(id)).ToList();
+                //remove deleted files
+                foreach(var id in fileIdsToDelete)
+                {
+                    var file = post.Files.Single(f => f.FileId == id);
+                    post.Files.Remove(file);
+                    _context.PostFiles.Remove(file);
+                }
+                // assign Order
+                int order = 1;
+                foreach(var id in input.FileIds)
+                {
+                    PostFile file = post.Files.SingleOrDefault(f => f.FileId == id);
+                    if(file == null) // new added file
+                    {
+                        file = new PostFile
+                        {
+                            FileId = id,
+                            PostId = post.Id
+                        };
+                        post.Files.Add(file);
+                    }
+                    file.Order = order++;
+                }
                 post.Content = input.Content;
                 await _context.SaveChangesAsync();
                 await _indexedEntitysRepository.Update(_context, post);
                 await _commonService.AddUserPostActivity(UserActivityTypeEnum.UpdatePost, post.Id);
+                post.Files = await _context.PostFiles
+                    .Include(f => f.File)
+                    .Where(f => f.PostId == post.Id)
+                    .ToListAsync();
                 return post;
             }
             else
