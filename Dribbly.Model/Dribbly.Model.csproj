@@ -125,6 +125,7 @@
     <Compile Include="Entities\Groups\GroupModel.cs" />
     <Compile Include="Entities\JoinTournamentRequestModel.cs" />
     <Compile Include="Entities\PlayerStatsModel.cs" />
+    <Compile Include="Entities\PostFile.cs" />
     <Compile Include="Entities\StageBracketModel.cs" />
     <Compile Include="Entities\StageTeamModel.cs" />
     <Compile Include="Entities\TeamStatsModel.cs" />

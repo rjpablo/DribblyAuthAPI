@@ -71,6 +71,7 @@ namespace Dribbly.Model
         DbSet<ContactModel> Contacts { get; set; }
         DbSet<CourtReviewModel> CourtReivews { get; set; }
         DbSet<PostModel> Posts { get; set; }
+        DbSet<PostFile> PostFiles { get; set; }
         DbSet<PlayerModel> Players { get; set; }
         IDbSet<ApplicationUser> Users { get; set; }
         DbSet<IndexedEntityModel> IndexedEntities { get; set; }
@@ -207,6 +208,7 @@ namespace Dribbly.Model
         public DbSet<ContactModel> Contacts { get; set; }
         public DbSet<CourtReviewModel> CourtReivews { get; set; }
         public DbSet<PostModel> Posts { get; set; }
+        public DbSet<PostFile> PostFiles { get; set; }
         public DbSet<IndexedEntityModel> IndexedEntities { get; set; }
 
         public DbEntityEntry SetEntityState(object entity, EntityState state)

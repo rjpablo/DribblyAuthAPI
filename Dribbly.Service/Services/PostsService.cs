@@ -60,8 +60,10 @@ namespace Dribbly.Service.Services
                 postOnIdLong = input.PostedOnId;
             }
             var posts = await _context.Posts
-                .Include(p=>p.AddedBy.User)
-                .Include(p=>p.AddedBy.ProfilePhoto)
+                .Include(p => p.AddedBy.User)
+                .Include(p => p.AddedBy.ProfilePhoto)
+                .Include(p => p.Files.Select(f => f.File))
+                .OrderByDescending(p => p.DateAdded)
                 .Where(p => p.PostedOnType == input.PostedOnType && p.PostedOnId == postOnIdLong &&
                 p.EntityStatus == EntityStatusEnum.Active && (!input.CeilingPostId.HasValue || p.Id < input.CeilingPostId))
                 .Take(input.GetCount).OrderByDescending(p => p.Id).ToListAsync();
