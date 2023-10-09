@@ -1,4 +1,5 @@
 ﻿using Dribbly.Core.Models;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,6 +17,7 @@ namespace Dribbly.Model.Courts
         [ForeignKey("Court")]
         public long CourtId { get; set; }
 
+        [JsonIgnore]
         public virtual CourtModel Court { get; set; }
         public virtual MultimediaModel Photo { get; set; }
     }
