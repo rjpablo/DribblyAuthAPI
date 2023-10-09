@@ -1,4 +1,5 @@
-﻿using Dribbly.Core.Exceptions;
+﻿using Dribbly.Core.Enums;
+using Dribbly.Core.Exceptions;
 using Dribbly.Core.Models;
 using Dribbly.Core.Utilities;
 using Dribbly.Model;
@@ -48,7 +49,7 @@ namespace Dribbly.Service.Services
                         MultimediaModel photo = new MultimediaModel
                         {
                             Url = uploadPath,
-                            Type = Core.Enums.MultimediaTypeEnum.Photo,
+                            Type = files[i].ContentType.StartsWith("video/")? MultimediaTypeEnum.Video : MultimediaTypeEnum.Photo,
                             DateAdded = DateTime.UtcNow
                         };
                         _context.Multimedia.Add(photo);
