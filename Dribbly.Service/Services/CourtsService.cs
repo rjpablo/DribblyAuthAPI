@@ -72,7 +72,11 @@ namespace Dribbly.Service.Services
 
         public async Task<CourtDetailsViewModel> GetCourtAsync(long id)
         {
-            CourtModel court = _context.Courts.Include(p => p.PrimaryPhoto).Include(p => p.Contact).SingleOrDefault(p => p.Id == id);
+            CourtModel court = await _context.Courts.Include(p => p.PrimaryPhoto)
+                .Include(p => p.Contact)
+                .Include(c=>c.Photos.Select(p=>p.Photo))
+                .SingleOrDefaultAsync(p => p.Id == id);
+            court.Photos = court.Photos.Where(p => p.Photo.DateDeleted == null).ToList();
             var result = new CourtDetailsViewModel(court);
             if(result.EntityStatus == EntityStatusEnum.Deleted)
             {

@@ -47,9 +47,9 @@ namespace Dribbly.Model.Courts
 
         public string AdditionalInfo { get; set; }
 
-        public virtual ICollection<CourtPhotoModel> Photos { get; set; }
+        public virtual ICollection<CourtPhotoModel> Photos { get; set; } = new List<CourtPhotoModel>();
 
-        public virtual ICollection<CourtVideoModel> Videos { get; set; }
+        public virtual ICollection<CourtVideoModel> Videos { get; set; } = new List<CourtVideoModel>();
 
         public virtual ContactModel Contact { get; set; }
 
