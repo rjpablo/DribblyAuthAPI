@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace Dribbly.Service.Services
 {
@@ -51,21 +50,12 @@ namespace Dribbly.Service.Services
         /// <returns></returns>
         public async Task<IEnumerable<PostModel>> GetPosts(GetPostsInputModel input)
         {
-            long? postOnIdLong;
-            if (input.PostedOnType == EntityTypeEnum.Account)
-            {
-                postOnIdLong = await _accountRepo.GetIdentityUserAccountId(input.PostedOnId);
-            }
-            else
-            {
-                postOnIdLong = input.PostedOnId;
-            }
             var posts = await _context.Posts
                 .Include(p => p.AddedBy.User)
                 .Include(p => p.AddedBy.ProfilePhoto)
                 .Include(p => p.Files.Select(f => f.File))
                 .OrderByDescending(p => p.DateAdded)
-                .Where(p => p.PostedOnType == input.PostedOnType && p.PostedOnId == postOnIdLong &&
+                .Where(p => p.PostedOnType == input.PostedOnType && p.PostedOnId == input.PostedOnId &&
                 p.EntityStatus == EntityStatusEnum.Active && (!input.CeilingPostId.HasValue || p.Id < input.CeilingPostId))
                 .Take(input.GetCount).OrderByDescending(p => p.Id).ToListAsync();
 
