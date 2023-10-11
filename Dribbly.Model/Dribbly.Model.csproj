@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5FE646E5-BAB0-4635-9161-671F0D73CBCC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dribbly.Model</RootNamespace>
+    <AssemblyName>Dribbly.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Test\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Local|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Local\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DataAnnotationsExtensions, Version=5.0.1.27, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DataAnnotationsExtensions.5.0.1.27\lib\NETFramework40\DataAnnotationsExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.3\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account\AccountViewerModel.cs" />
+    <Compile Include="Account\AccountBasicInfoModel.cs" />
+    <Compile Include="Account\AccountDetailsModalModel.cs" />
+    <Compile Include="Account\PlayerModel.cs" />
+    <Compile Include="Account\AccountsChoicesItemModel.cs" />
+    <Compile Include="Account\AccountSearchInputModel.cs" />
+    <Compile Include="Account\AccountSettingsModel.cs" />
+    <Compile Include="AuthContext.cs" />
+    <Compile Include="Constants\Fouls.cs" />
+    <Compile Include="Courts\CourtDetailsViewModel.cs" />
+    <Compile Include="Courts\CourtReviewModalModel.cs" />
+    <Compile Include="Courts\CourtReviewModel.cs" />
+    <Compile Include="Courts\CourtModel.cs" />
+    <Compile Include="Courts\CourtSearchInputModel.cs" />
+    <Compile Include="DTO\Account\UpdateEmailInput.cs" />
+    <Compile Include="DTO\AddTournamentStageInputModel.cs" />
+    <Compile Include="DTO\GamePlayer.cs" />
+    <Compile Include="DTO\GameTeam.cs" />
+    <Compile Include="DTO\GetAddGameModalInputModel.cs" />
+    <Compile Include="DTO\GetTeamsFilterModel.cs" />
+    <Compile Include="DTO\GetPlayersFilterModel.cs" />
+    <Compile Include="DTO\GetGamesFilterModel.cs" />
+    <Compile Include="DTO\GetTournamentPlayersInputModel.cs" />
+    <Compile Include="DTO\GetTournamentTeamsInputModel.cs" />
+    <Compile Include="DTO\Groups\AddEditGroupInputModel.cs" />
+    <Compile Include="DTO\Groups\GroupViewerModel.cs" />
+    <Compile Include="DTO\Groups\GroupUserRelationship.cs" />
+    <Compile Include="Entities\Groups\JoinGroupRequest.cs" />
+    <Compile Include="DTO\PlayerStatsViewModel.cs" />
+    <Compile Include="DTO\SetStageTeamsInputModel.cs" />
+    <Compile Include="DTO\TeamStatsViewModel.cs" />
+    <Compile Include="DTO\UpdateTeamInputModel.cs" />
+    <Compile Include="DTO\UpdateTournamentSettingsModel.cs" />
+    <Compile Include="Entities\AccountHighlights.cs" />
+    <Compile Include="Entities\BaseGameSettingsModel.cs" />
+    <Compile Include="Entities\BaseStatsModel.cs" />
+    <Compile Include="Entities\BaseStatsSummaryModel.cs" />
+    <Compile Include="Entities\BaseTeamStatsModel.cs" />
+    <Compile Include="Entities\GameEventModel.cs" />
+    <Compile Include="Entities\GamePlayer.cs" />
+    <Compile Include="Entities\GameTeam.cs" />
+    <Compile Include="Entities\Groups\GroupMemberModel.cs" />
+    <Compile Include="Entities\Groups\GroupModel.cs" />
+    <Compile Include="Entities\JoinTournamentRequestModel.cs" />
+    <Compile Include="Entities\PlayerStatsModel.cs" />
+    <Compile Include="Entities\PostFile.cs" />
+    <Compile Include="Entities\StageBracketModel.cs" />
+    <Compile Include="Entities\StageTeamModel.cs" />
+    <Compile Include="Entities\TeamStatsModel.cs" />
+    <Compile Include="Entities\TournamentPhotoModel.cs" />
+    <Compile Include="Entities\TournamentStageModel.cs" />
+    <Compile Include="Entities\TournamentPlayerModel.cs" />
+    <Compile Include="Entities\TournamentTeamModel.cs" />
+    <Compile Include="Enums\EjectionStatusEnum.cs" />
+    <Compile Include="Enums\FoulTypeEnum.cs" />
+    <Compile Include="Enums\GameEventTypeEnum.cs" />
+    <Compile Include="Enums\PostTypeEnum.cs" />
+    <Compile Include="Enums\ShotTypeEnum.cs" />
+    <Compile Include="Enums\SortDirectionEnum.cs" />
+    <Compile Include="Enums\StageStatusEnum.cs" />
+    <Compile Include="Enums\GetPlayersSortByEnum.cs" />
+    <Compile Include="Enums\StatEnum.cs" />
+    <Compile Include="Enums\TimeoutTypeEnum.cs" />
+    <Compile Include="Enums\TournamentStatusEnum.cs" />
+    <Compile Include="Enums\TurnoverCauseEnum.cs" />
+    <Compile Include="Fouls\FoulModel.cs" />
+    <Compile Include="Entities\MemberFoulModel.cs" />
+    <Compile Include="Fouls\UpsertFoulResultModel.cs" />
+    <Compile Include="GameEvents\UpdateGameEventResultModel.cs" />
+    <Compile Include="GameEvents\UpdateGameEventInputModel.cs" />
+    <Compile Include="GameEvents\RecordTimeoutInputModel.cs" />
+    <Compile Include="GameEvents\RecordTimeoutResultModel.cs" />
+    <Compile Include="GameEvents\UpsertFreeThrowInputModel.cs" />
+    <Compile Include="Games\StartGameInputModel.cs" />
+    <Compile Include="Games\UpdateGameTimeRemainingInput.cs" />
+    <Compile Include="Games\UpdateLineupInputModel.cs" />
+    <Compile Include="Leagues\LeagueViewerModel.cs" />
+    <Compile Include="Enums\JoinTeamRequestStatus.cs" />
+    <Compile Include="Enums\PlayerPositionEnum.cs" />
+    <Compile Include="Enums\SeasonStatusEnum.cs" />
+    <Compile Include="Enums\UserActivityTypeEnum.cs" />
+    <Compile Include="Enums\GameStatusEnum.cs" />
+    <Compile Include="Enums\BookingStatusEnum.cs" />
+    <Compile Include="Games\AddGameModalModel.cs" />
+    <Compile Include="Games\GameResultModel.cs" />
+    <Compile Include="Games\UpdateGameModel.cs" />
+    <Compile Include="Leagues\LeagueModel.cs" />
+    <Compile Include="Logs\ExceptionLog.cs" />
+    <Compile Include="Notifications\JoinTeamRequestNotificationModel.cs" />
+    <Compile Include="Notifications\UpdateGameNotificationModel.cs" />
+    <Compile Include="Notifications\NewGameNotificationModel.cs" />
+    <Compile Include="Play\AssistResultModel.cs" />
+    <Compile Include="Play\ReboundResultModel.cs" />
+    <Compile Include="Play\BlockResultModel.cs" />
+    <Compile Include="Play\ShotDetailsInputModel.cs" />
+    <Compile Include="Play\ShotModel.cs" />
+    <Compile Include="Play\UpsertShotResultModel.cs" />
+    <Compile Include="Seasons\SeasonDto.cs" />
+    <Compile Include="Seasons\SeasonModel.cs" />
+    <Compile Include="Shared\GenericEntityUpdateInputModel.cs" />
+    <Compile Include="Shared\GetTypeAheadSuggestionsInputModel.cs" />
+    <Compile Include="Teams\JoinTeamRequestInputModel.cs" />
+    <Compile Include="Teams\TeamPhotoModel.cs" />
+    <Compile Include="Teams\ITeamMemberListItem.cs" />
+    <Compile Include="Teams\JoinTeamRequestModel.cs" />
+    <Compile Include="Teams\JoinTeamRequestResultModel.cs" />
+    <Compile Include="Teams\ProcessJoinTeamRequestInputModel.cs" />
+    <Compile Include="Teams\TeamFollowingModel.cs" />
+    <Compile Include="Teams\TeamMember.cs" />
+    <Compile Include="Teams\TeamMembershipViewModel.cs" />
+    <Compile Include="Teams\TeamViewerDataModel.cs" />
+    <Compile Include="Teams\TeamModel.cs" />
+    <Compile Include="Teams\UserTeamRelationModel.cs" />
+    <Compile Include="Tournaments\GetTournamentsInputModel.cs" />
+    <Compile Include="Tournaments\TournamentViewerModel.cs" />
+    <Compile Include="Tournaments\TournamentModel.cs" />
+    <Compile Include="UserActivities\TeamPhotoActivityModel.cs" />
+    <Compile Include="UserActivities\CourtVideoActivityModel.cs" />
+    <Compile Include="UserActivities\CourtPhotoActivityModel.cs" />
+    <Compile Include="UserActivities\UserJoinTeamRequestActivityModel.cs" />
+    <Compile Include="UserActivities\UserTeamActivityModel.cs" />
+    <Compile Include="UserActivities\UserGameActivityModel.cs" />
+    <Compile Include="UserActivities\UserContactActivityModel.cs" />
+    <Compile Include="UserActivities\AccountVideoActivity.cs" />
+    <Compile Include="UserActivities\AccountPhotoActivityModel.cs" />
+    <Compile Include="UserActivities\UserAccountActivityModel.cs" />
+    <Compile Include="UserActivities\UserCourtActivityModel.cs" />
+    <Compile Include="UserActivities\UserPostActivityModel.cs" />
+    <Compile Include="UserActivities\UserActivityModel.cs" />
+    <Compile Include="Posts\GetPostsInputModel.cs" />
+    <Compile Include="Posts\AddEditPostInputModel.cs" />
+    <Compile Include="Posts\PostModel.cs" />
+    <Compile Include="Games\AddGameInputModel.cs" />
+    <Compile Include="Games\GameModel.cs" />
+    <Compile Include="Logs\ErrorLogModel.cs" />
+    <Compile Include="Notifications\NewBookingNotificationModel.cs" />
+    <Compile Include="Notifications\GetNewNotificationsResultModel.cs" />
+    <Compile Include="Notifications\UnviewedCountModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\SettingModel.cs" />
+    <Compile Include="Shared\EntityBasicInfoModel.cs" />
+    <Compile Include="Shared\AccountPhotoModel.cs" />
+    <Compile Include="Shared\ContactModel.cs" />
+    <Compile Include="Shared\CourtPhotoModel.cs" />
+    <Compile Include="Shared\AccountVideoModel.cs" />
+    <Compile Include="Shared\CourtVideoModel.cs" />
+    <Compile Include="Courts\CourtFollowingModel.cs" />
+    <Compile Include="Notifications\NotificationModel.cs" />
+    <Compile Include="Bookings\BookingModel.cs" />
+    <Compile Include="Shared\EventModel.cs" />
+    <Compile Include="Shared\FollowResultModel.cs" />
+    <Compile Include="Notifications\NotificationTypeEnum.cs" />
+    <Compile Include="Shared\PhoneVerificationResultModel.cs" />
+    <Compile Include="Shared\ReviewModel.cs" />
+    <Compile Include="Shared\VideoModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dribbly.Authentication\Dribbly.Authentication.csproj">
+      <Project>{2b76e33b-6725-4567-9f2b-23b09396f799}</Project>
+      <Name>Dribbly.Authentication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dribbly.Chat\Dribbly.Chat.csproj">
+      <Project>{4a21e360-455b-462e-b7e7-e0a3ae229271}</Project>
+      <Name>Dribbly.Chat</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dribbly.Core\Dribbly.Core.csproj">
+      <Project>{8A887A9E-E256-4A63-ABE3-F8657B04E011}</Project>
+      <Name>Dribbly.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dribbly.Identity\Dribbly.Identity.csproj">
+      <Project>{06719069-2DB1-4144-B39D-A0FE7F5431F9}</Project>
+      <Name>Dribbly.Identity</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -45,21 +45,54 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="gfoidl.Base64, Version=1.1.1501.1, Culture=neutral, PublicKeyToken=6a1c26790d4ba8ae, processorArchitecture=MSIL">
+      <HintPath>..\packages\gfoidl.Base64.1.1.1\lib\net45\gfoidl.Base64.dll</HintPath>
+    </Reference>
+    <Reference Include="JsonWebToken, Version=1.9.4.0, Culture=neutral, PublicKeyToken=7ef232d6ee17cdab, processorArchitecture=MSIL">
+      <HintPath>..\packages\JsonWebToken.1.9.4\lib\net461\JsonWebToken.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.0.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.0.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.3\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.0.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.4.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.4.3\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.2\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Connections.Abstractions, Version=3.1.32.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Connections.Abstractions.3.1.32\lib\netstandard2.0\Microsoft.AspNetCore.Connections.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Features, Version=3.1.32.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.Features.3.1.32\lib\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.SignalR.Common, Version=3.1.32.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.SignalR.Common.3.1.32\lib\netstandard2.0\Microsoft.AspNetCore.SignalR.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=3.1.32.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.3.1.32\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options, Version=3.1.32.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.3.1.32\lib\netstandard2.0\Microsoft.Extensions.Options.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=3.1.32.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.3.1.32\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Owin, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.4.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
     </Reference>
@@ -69,31 +102,87 @@
     <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Security, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin.Security.Cookies, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Security.Cookies.2.1.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security.Facebook, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.2.1.0\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Security.Facebook, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.4.0.1\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security.Google, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.Google.2.1.0\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Security.Google, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.4.0.1\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin.Security.OAuth, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Security.OAuth.2.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.7.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IO.Pipelines, Version=4.0.2.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Pipelines.4.7.5\lib\net461\System.IO.Pipelines.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.9\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
-    <Reference Include="System.Web.Cors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Cors.5.0.0\lib\net45\System.Web.Cors.dll</HintPath>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.1\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Cng, Version=4.3.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Cng.4.7.0\lib\net461\System.Security.Cryptography.Cng.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=4.0.5.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.4.7.2\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.4.7.2\lib\net461\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Cors, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.9\lib\net45\System.Web.Cors.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -104,12 +193,16 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    <Reference Include="System.Web.Http, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.9\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.9\lib\net45\System.Web.Http.Cors.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http.Owin, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.7\lib\net45\System.Web.Http.Owin.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -117,6 +210,15 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Unity.Abstractions, Version=5.11.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.3\lib\net46\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.3\lib\net46\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.WebApi, Version=5.4.0.0, Culture=neutral, PublicKeyToken=43da31bc42a85347, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.WebAPI.5.4.0\lib\net45\Unity.WebApi.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -130,14 +232,39 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.config" />
+    <Content Include="Files\Upload\files\uploads\court\202002092212248386114.jpg" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\MultimediaController.cs" />
+    <Compile Include="Controllers\ContactsController.cs" />
+    <Compile Include="Controllers\GameEventsController.cs" />
+    <Compile Include="Controllers\ChatsController.cs" />
+    <Compile Include="Controllers\GroupsController.cs" />
+    <Compile Include="Controllers\TournamentsController.cs" />
+    <Compile Include="Controllers\SeasonsController.cs" />
+    <Compile Include="Controllers\LeaguesController.cs" />
+    <Compile Include="Controllers\TeamsController.cs" />
+    <Compile Include="Controllers\PostsController.cs" />
+    <Compile Include="Controllers\GamesController.cs" />
+    <Compile Include="Controllers\NotificationsController.cs" />
+    <Compile Include="Controllers\PermissionsController.cs" />
+    <Compile Include="Controllers\LogsController.cs" />
+    <Compile Include="Controllers\BookingsController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Controllers\CourtsController.cs" />
     <Compile Include="Controllers\RefreshTokensController.cs" />
-    <Compile Include="Enums\ApplicationTypesEnum.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Helper.cs" />
+    <Compile Include="Controllers\SharedController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Exceptions\ExceptionLogger.cs" />
+    <Compile Include="Filters\DribblyExceptionsFilter.cs" />
+    <Compile Include="Exceptions\GlobalExceptionHandler.cs" />
     <Compile Include="Migrations\201907141720333_InitialCreate.cs" />
     <Compile Include="Migrations\201907141720333_InitialCreate.Designer.cs">
       <DependentUpon>201907141720333_InitialCreate.cs</DependentUpon>
@@ -146,28 +273,717 @@
     <Compile Include="Migrations\201910072231505_addRefreshTokenEntities.Designer.cs">
       <DependentUpon>201910072231505_addRefreshTokenEntities.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001121758333_add-court-model.cs" />
+    <Compile Include="Migrations\202001121758333_add-court-model.Designer.cs">
+      <DependentUpon>202001121758333_add-court-model.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001121807288_AddTestCourt.cs" />
+    <Compile Include="Migrations\202001121807288_AddTestCourt.Designer.cs">
+      <DependentUpon>202001121807288_AddTestCourt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001131222447_AddCourtCityProperty.cs" />
+    <Compile Include="Migrations\202001131222447_AddCourtCityProperty.Designer.cs">
+      <DependentUpon>202001131222447_AddCourtCityProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001172142089_renameCourtCityToAddress.cs" />
+    <Compile Include="Migrations\202001172142089_renameCourtCityToAddress.Designer.cs">
+      <DependentUpon>202001172142089_renameCourtCityToAddress.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001221440087_CourtModel_RemoveAddressAddLatitudeLongitudeIsPublic.cs" />
+    <Compile Include="Migrations\202001221440087_CourtModel_RemoveAddressAddLatitudeLongitudeIsPublic.Designer.cs">
+      <DependentUpon>202001221440087_CourtModel_RemoveAddressAddLatitudeLongitudeIsPublic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001260306542_CourtModel_Add_AdditionalInfo.cs" />
+    <Compile Include="Migrations\202001260306542_CourtModel_Add_AdditionalInfo.Designer.cs">
+      <DependentUpon>202001260306542_CourtModel_Add_AdditionalInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002071345227_AddSettings.cs" />
+    <Compile Include="Migrations\202002071345227_AddSettings.Designer.cs">
+      <DependentUpon>202002071345227_AddSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002081135557_CourtModel_ChangeOwnerIdTypeToString.cs" />
+    <Compile Include="Migrations\202002081135557_CourtModel_ChangeOwnerIdTypeToString.Designer.cs">
+      <DependentUpon>202002081135557_CourtModel_ChangeOwnerIdTypeToString.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002161412347_Add_PhotoModelAndCourtPhotoModel.cs" />
+    <Compile Include="Migrations\202002161412347_Add_PhotoModelAndCourtPhotoModel.Designer.cs">
+      <DependentUpon>202002161412347_Add_PhotoModelAndCourtPhotoModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002232111481_Add_GameModelAndEventModel.cs" />
+    <Compile Include="Migrations\202002232111481_Add_GameModelAndEventModel.Designer.cs">
+      <DependentUpon>202002232111481_Add_GameModelAndEventModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003081640272_Add_PhotoModel_DateDeletedField.cs" />
+    <Compile Include="Migrations\202003081640272_Add_PhotoModel_DateDeletedField.Designer.cs">
+      <DependentUpon>202003081640272_Add_PhotoModel_DateDeletedField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003262158473_Modify_Events_UpdateConstraints.cs" />
+    <Compile Include="Migrations\202003262158473_Modify_Events_UpdateConstraints.Designer.cs">
+      <DependentUpon>202003262158473_Modify_Events_UpdateConstraints.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003292009438_AspNetUsers_Add_SaltColumn.cs" />
+    <Compile Include="Migrations\202003292009438_AspNetUsers_Add_SaltColumn.Designer.cs">
+      <DependentUpon>202003292009438_AspNetUsers_Add_SaltColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004032225050_aspNetUsers_drop_discriminatorColumn.cs" />
+    <Compile Include="Migrations\202004032225050_aspNetUsers_drop_discriminatorColumn.Designer.cs">
+      <DependentUpon>202004032225050_aspNetUsers_drop_discriminatorColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004121706035_Add_Accounts_Table.cs" />
+    <Compile Include="Migrations\202004121706035_Add_Accounts_Table.Designer.cs">
+      <DependentUpon>202004121706035_Add_Accounts_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004261031577_Modify_Accounts_Add_HeightInches_and_Sex_fields.cs" />
+    <Compile Include="Migrations\202004261031577_Modify_Accounts_Add_HeightInches_and_Sex_fields.Designer.cs">
+      <DependentUpon>202004261031577_Modify_Accounts_Add_HeightInches_and_Sex_fields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004261216071_Modify_Accounts_Add_ContactNo_and_BirthDate_fields.cs" />
+    <Compile Include="Migrations\202004261216071_Modify_Accounts_Add_ContactNo_and_BirthDate_fields.Designer.cs">
+      <DependentUpon>202004261216071_Modify_Accounts_Add_ContactNo_and_BirthDate_fields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004261422407_Modify_Accounts_Make_Sex_and_BirthDate_nullable.cs" />
+    <Compile Include="Migrations\202004261422407_Modify_Accounts_Make_Sex_and_BirthDate_nullable.Designer.cs">
+      <DependentUpon>202004261422407_Modify_Accounts_Make_Sex_and_BirthDate_nullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005242138489_Modify_CourtModel_MakeRatePerHourNonNullable.cs" />
+    <Compile Include="Migrations\202005242138489_Modify_CourtModel_MakeRatePerHourNonNullable.Designer.cs">
+      <DependentUpon>202005242138489_Modify_CourtModel_MakeRatePerHourNonNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006080709300_Add_ClientLogsTable.cs" />
+    <Compile Include="Migrations\202006080709300_Add_ClientLogsTable.Designer.cs">
+      <DependentUpon>202006080709300_Add_ClientLogsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006271943216_Add_UserPermissionsTable.cs" />
+    <Compile Include="Migrations\202006271943216_Add_UserPermissionsTable.Designer.cs">
+      <DependentUpon>202006271943216_Add_UserPermissionsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007042218406_AddAccountPhotos.cs" />
+    <Compile Include="Migrations\202007042218406_AddAccountPhotos.Designer.cs">
+      <DependentUpon>202007042218406_AddAccountPhotos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007062131170_Modify_CourtModel_RemovePrimaryPhotoUrlAndAddPrimaryPhotoId.cs" />
+    <Compile Include="Migrations\202007062131170_Modify_CourtModel_RemovePrimaryPhotoUrlAndAddPrimaryPhotoId.Designer.cs">
+      <DependentUpon>202007062131170_Modify_CourtModel_RemovePrimaryPhotoUrlAndAddPrimaryPhotoId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007121758051_Add_Videos_and_CourtVideos.cs" />
+    <Compile Include="Migrations\202007121758051_Add_Videos_and_CourtVideos.Designer.cs">
+      <DependentUpon>202007121758051_Add_Videos_and_CourtVideos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007142305359_Add_AccountVideos.cs" />
+    <Compile Include="Migrations\202007142305359_Add_AccountVideos.Designer.cs">
+      <DependentUpon>202007142305359_Add_AccountVideos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007160003204_Modify_CourtModel_Added_DateDeleted_Column.cs" />
+    <Compile Include="Migrations\202007160003204_Modify_CourtModel_Added_DateDeleted_Column.Designer.cs">
+      <DependentUpon>202007160003204_Modify_CourtModel_Added_DateDeleted_Column.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007190947464_Modify_CourtModel_Rename_IsPublic_To_IsFreeToPlay_And_AddMobileNumber.cs" />
+    <Compile Include="Migrations\202007190947464_Modify_CourtModel_Rename_IsPublic_To_IsFreeToPlay_And_AddMobileNumber.Designer.cs">
+      <DependentUpon>202007190947464_Modify_CourtModel_Rename_IsPublic_To_IsFreeToPlay_And_AddMobileNumber.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007200441036_Modify_CourtModel_Change_MobileNumber_To_ContactId.cs" />
+    <Compile Include="Migrations\202007200441036_Modify_CourtModel_Change_MobileNumber_To_ContactId.Designer.cs">
+      <DependentUpon>202007200441036_Modify_CourtModel_Change_MobileNumber_To_ContactId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007260244022_Add_CourtFollowings.cs" />
+    <Compile Include="Migrations\202007260244022_Add_CourtFollowings.Designer.cs">
+      <DependentUpon>202007260244022_Add_CourtFollowings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008011657355_Modify_Account_Add_FK_Constrant_To_AspNetUsers.cs" />
+    <Compile Include="Migrations\202008011657355_Modify_Account_Add_FK_Constrant_To_AspNetUsers.Designer.cs">
+      <DependentUpon>202008011657355_Modify_Account_Add_FK_Constrant_To_AspNetUsers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008021053443_Modify_Events_Add_BookedById.cs" />
+    <Compile Include="Migrations\202008021053443_Modify_Events_Add_BookedById.Designer.cs">
+      <DependentUpon>202008021053443_Modify_Events_Add_BookedById.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008081205482_Modify_Accounts_Rename_Sex_To_Gender.cs" />
+    <Compile Include="Migrations\202008081205482_Modify_Accounts_Rename_Sex_To_Gender.Designer.cs">
+      <DependentUpon>202008081205482_Modify_Accounts_Rename_Sex_To_Gender.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008081254053_Modify_Accounts_Add_Status_Column.cs" />
+    <Compile Include="Migrations\202008081254053_Modify_Accounts_Add_Status_Column.Designer.cs">
+      <DependentUpon>202008081254053_Modify_Accounts_Add_Status_Column.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008151610128_Modify_Accounts_Add_IsPublic.cs" />
+    <Compile Include="Migrations\202008151610128_Modify_Accounts_Add_IsPublic.Designer.cs">
+      <DependentUpon>202008151610128_Modify_Accounts_Add_IsPublic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008300955046_Add_Tables_BookedGameNotifications_and_Notications.cs" />
+    <Compile Include="Migrations\202008300955046_Add_Tables_BookedGameNotifications_and_Notications.Designer.cs">
+      <DependentUpon>202008300955046_Add_Tables_BookedGameNotifications_and_Notications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009010358307_Modify_GameBookedNofications_Add_FK_Constraint_To_AspNetUsers.cs" />
+    <Compile Include="Migrations\202009010358307_Modify_GameBookedNofications_Add_FK_Constraint_To_AspNetUsers.Designer.cs">
+      <DependentUpon>202009010358307_Modify_GameBookedNofications_Add_FK_Constraint_To_AspNetUsers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010111823073_Add_CourtReviews_Table.cs" />
+    <Compile Include="Migrations\202010111823073_Add_CourtReviews_Table.Designer.cs">
+      <DependentUpon>202010111823073_Add_CourtReviews_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010112002547_Modify_Courts_Rating_Column_DataType_To_Double.cs" />
+    <Compile Include="Migrations\202010112002547_Modify_Courts_Rating_Column_DataType_To_Double.Designer.cs">
+      <DependentUpon>202010112002547_Modify_Courts_Rating_Column_DataType_To_Double.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010120555221_Modify_Events_Add_Columns_HasReviewed_And_Status.cs" />
+    <Compile Include="Migrations\202010120555221_Modify_Events_Add_Columns_HasReviewed_And_Status.Designer.cs">
+      <DependentUpon>202010120555221_Modify_Events_Add_Columns_HasReviewed_And_Status.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010120647408_Modify_CourtReviews_Table_Add_EventId.cs" />
+    <Compile Include="Migrations\202010120647408_Modify_CourtReviews_Table_Add_EventId.Designer.cs">
+      <DependentUpon>202010120647408_Modify_CourtReviews_Table_Add_EventId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010190154432_Rename_Table_GameBookedNotifications_To_NewBookingNotifications.cs" />
+    <Compile Include="Migrations\202010190154432_Rename_Table_GameBookedNotifications_To_NewBookingNotifications.Designer.cs">
+      <DependentUpon>202010190154432_Rename_Table_GameBookedNotifications_To_NewBookingNotifications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010190310179_Rename_Table_Events_To_Bookings.cs" />
+    <Compile Include="Migrations\202010190310179_Rename_Table_Events_To_Bookings.Designer.cs">
+      <DependentUpon>202010190310179_Rename_Table_Events_To_Bookings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010190333389_Update_Table_CourtReviews_Rename_Column_EventId_To_BookingId.cs" />
+    <Compile Include="Migrations\202010190333389_Update_Table_CourtReviews_Rename_Column_EventId_To_BookingId.Designer.cs">
+      <DependentUpon>202010190333389_Update_Table_CourtReviews_Rename_Column_EventId_To_BookingId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010190732151_Modify_NewBookingNotifications_Rename_Game_To_Booking.cs" />
+    <Compile Include="Migrations\202010190732151_Modify_NewBookingNotifications_Rename_Game_To_Booking.Designer.cs">
+      <DependentUpon>202010190732151_Modify_NewBookingNotifications_Rename_Game_To_Booking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010242128221_Delete_Table_Games.cs" />
+    <Compile Include="Migrations\202010242128221_Delete_Table_Games.Designer.cs">
+      <DependentUpon>202010242128221_Delete_Table_Games.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010242149197_Add_Table_Games.cs" />
+    <Compile Include="Migrations\202010242149197_Add_Table_Games.Designer.cs">
+      <DependentUpon>202010242149197_Add_Table_Games.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010310125596_Modify_Table_Games_Make_Column_End_Nullable.cs" />
+    <Compile Include="Migrations\202010310125596_Modify_Table_Games_Make_Column_End_Nullable.Designer.cs">
+      <DependentUpon>202010310125596_Modify_Table_Games_Make_Column_End_Nullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011012324413_Add_Table_Posts.cs" />
+    <Compile Include="Migrations\202011012324413_Add_Table_Posts.Designer.cs">
+      <DependentUpon>202011012324413_Add_Table_Posts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011021302436_Update_Table_Posts_Add_Column_Status.cs" />
+    <Compile Include="Migrations\202011021302436_Update_Table_Posts_Add_Column_Status.Designer.cs">
+      <DependentUpon>202011021302436_Update_Table_Posts_Add_Column_Status.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011070131403_Add_Table_ExceptionLogs.cs" />
+    <Compile Include="Migrations\202011070131403_Add_Table_ExceptionLogs.Designer.cs">
+      <DependentUpon>202011070131403_Add_Table_ExceptionLogs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011080050560_Add_Tables_UserActivities_And_UserPostActivities.cs" />
+    <Compile Include="Migrations\202011080050560_Add_Tables_UserActivities_And_UserPostActivities.Designer.cs">
+      <DependentUpon>202011080050560_Add_Tables_UserActivities_And_UserPostActivities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011090119008_Add_Tables_UserAccountActivities_And_AccountPhotoActivities.cs" />
+    <Compile Include="Migrations\202011090119008_Add_Tables_UserAccountActivities_And_AccountPhotoActivities.Designer.cs">
+      <DependentUpon>202011090119008_Add_Tables_UserAccountActivities_And_AccountPhotoActivities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011090159081_Add_Table_AccountVideoActivities.cs" />
+    <Compile Include="Migrations\202011090159081_Add_Table_AccountVideoActivities.Designer.cs">
+      <DependentUpon>202011090159081_Add_Table_AccountVideoActivities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011100104365_Add_Table_UserContactActivities.cs" />
+    <Compile Include="Migrations\202011100104365_Add_Table_UserContactActivities.Designer.cs">
+      <DependentUpon>202011100104365_Add_Table_UserContactActivities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011100300060_Add_Tables_For_Court_And_GameRelated_User_Activities.cs" />
+    <Compile Include="Migrations\202011100300060_Add_Tables_For_Court_And_GameRelated_User_Activities.Designer.cs">
+      <DependentUpon>202011100300060_Add_Tables_For_Court_And_GameRelated_User_Activities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011110253530_Remove_Dependency_Between_AspNetUsers_And_NewBookingNotifications.cs" />
+    <Compile Include="Migrations\202011110253530_Remove_Dependency_Between_AspNetUsers_And_NewBookingNotifications.Designer.cs">
+      <DependentUpon>202011110253530_Remove_Dependency_Between_AspNetUsers_And_NewBookingNotifications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011110300171_Remove_FK_And_Indeces_From_Identity_Tables.cs" />
+    <Compile Include="Migrations\202011110300171_Remove_FK_And_Indeces_From_Identity_Tables.Designer.cs">
+      <DependentUpon>202011110300171_Remove_FK_And_Indeces_From_Identity_Tables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011110302039_Remove_PKs_From_Identity_Tables.cs" />
+    <Compile Include="Migrations\202011110302039_Remove_PKs_From_Identity_Tables.Designer.cs">
+      <DependentUpon>202011110302039_Remove_PKs_From_Identity_Tables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011110313504_Alter_Columns.cs" />
+    <Compile Include="Migrations\202011110313504_Alter_Columns.Designer.cs">
+      <DependentUpon>202011110313504_Alter_Columns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011110316090_Readd_PKs_For_Identity_Tables.cs" />
+    <Compile Include="Migrations\202011110316090_Readd_PKs_For_Identity_Tables.Designer.cs">
+      <DependentUpon>202011110316090_Readd_PKs_For_Identity_Tables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011110318239_Readd_FKs_And_Indeces_To_Identity_Tables.cs" />
+    <Compile Include="Migrations\202011110318239_Readd_FKs_And_Indeces_To_Identity_Tables.Designer.cs">
+      <DependentUpon>202011110318239_Readd_FKs_And_Indeces_To_Identity_Tables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011110325558_Readd_Dependency_Of_Tables_Accounts_And_NewBookingNotifications_To_AspNetUsers.cs" />
+    <Compile Include="Migrations\202011110325558_Readd_Dependency_Of_Tables_Accounts_And_NewBookingNotifications_To_AspNetUsers.Designer.cs">
+      <DependentUpon>202011110325558_Readd_Dependency_Of_Tables_Accounts_And_NewBookingNotifications_To_AspNetUsers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011120241495_Update_App_Tables_To_Match_Changes_In_Identity_Tables.cs" />
+    <Compile Include="Migrations\202011120241495_Update_App_Tables_To_Match_Changes_In_Identity_Tables.Designer.cs">
+      <DependentUpon>202011120241495_Update_App_Tables_To_Match_Changes_In_Identity_Tables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011140240370_Update_Table_Games_Add_Column_Status.cs" />
+    <Compile Include="Migrations\202011140240370_Update_Table_Games_Add_Column_Status.Designer.cs">
+      <DependentUpon>202011140240370_Update_Table_Games_Add_Column_Status.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011230427551_Modify_Table_Accounts_Add_Columns_Position_And_HomeCourtId.cs" />
+    <Compile Include="Migrations\202011230427551_Modify_Table_Accounts_Add_Columns_Position_And_HomeCourtId.Designer.cs">
+      <DependentUpon>202011230427551_Modify_Table_Accounts_Add_Columns_Position_And_HomeCourtId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011231350366_Add_Table_IndexEntities.cs" />
+    <Compile Include="Migrations\202011231350366_Add_Table_IndexEntities.Designer.cs">
+      <DependentUpon>202011231350366_Add_Table_IndexEntities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011241620522_Add_Tables_Teams_And_UserTeamActivities.cs" />
+    <Compile Include="Migrations\202011241620522_Add_Tables_Teams_And_UserTeamActivities.Designer.cs">
+      <DependentUpon>202011241620522_Add_Tables_Teams_And_UserTeamActivities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011281624186_Modify_Table_IndexexEntities_Rename_Column_Status_To_EntityStatus.cs" />
+    <Compile Include="Migrations\202011281624186_Modify_Table_IndexexEntities_Rename_Column_Status_To_EntityStatus.Designer.cs">
+      <DependentUpon>202011281624186_Modify_Table_IndexexEntities_Rename_Column_Status_To_EntityStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011282111022_Add_Tables_TeamMembers_And_JoinTeamRequests.cs" />
+    <Compile Include="Migrations\202011282111022_Add_Tables_TeamMembers_And_JoinTeamRequests.Designer.cs">
+      <DependentUpon>202011282111022_Add_Tables_TeamMembers_And_JoinTeamRequests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011291215416_Add_Table_JoinTeamRequestNotifications_And_Modify_Table_Team_Add_Column_ManagedById.cs" />
+    <Compile Include="Migrations\202011291215416_Add_Table_JoinTeamRequestNotifications_And_Modify_Table_Team_Add_Column_ManagedById.Designer.cs">
+      <DependentUpon>202011291215416_Add_Table_JoinTeamRequestNotifications_And_Modify_Table_Team_Add_Column_ManagedById.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012050241244_Add_Table_UserJoinTeamRequestActivities.cs" />
+    <Compile Include="Migrations\202012050241244_Add_Table_UserJoinTeamRequestActivities.Designer.cs">
+      <DependentUpon>202012050241244_Add_Table_UserJoinTeamRequestActivities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012140602383_Modify_Table_Accounts_Add_Column_Rating.cs" />
+    <Compile Include="Migrations\202012140602383_Modify_Table_Accounts_Add_Column_Rating.Designer.cs">
+      <DependentUpon>202012140602383_Modify_Table_Accounts_Add_Column_Rating.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012300013116_Modify_Table_Games_Add_ForeignKey_For_Team1_And_Team2.cs" />
+    <Compile Include="Migrations\202012300013116_Modify_Table_Games_Add_ForeignKey_For_Team1_And_Team2.Designer.cs">
+      <DependentUpon>202012300013116_Modify_Table_Games_Add_ForeignKey_For_Team1_And_Team2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101161542310_Add_Table_TeamPhotos.cs" />
+    <Compile Include="Migrations\202101161542310_Add_Table_TeamPhotos.Designer.cs">
+      <DependentUpon>202101161542310_Add_Table_TeamPhotos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101161720099_Add_Table_TeamPhotoActivities.cs" />
+    <Compile Include="Migrations\202101161720099_Add_Table_TeamPhotoActivities.Designer.cs">
+      <DependentUpon>202101161720099_Add_Table_TeamPhotoActivities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101252047354_Modify_Table_Teams_Add_Column_IsOpen.cs" />
+    <Compile Include="Migrations\202101252047354_Modify_Table_Teams_Add_Column_IsOpen.Designer.cs">
+      <DependentUpon>202101252047354_Modify_Table_Teams_Add_Column_IsOpen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202102031957071_Update_Table_Games_Add_Columns_Team1Score_And_Team2Score.cs" />
+    <Compile Include="Migrations\202102031957071_Update_Table_Games_Add_Columns_Team1Score_And_Team2Score.Designer.cs">
+      <DependentUpon>202102031957071_Update_Table_Games_Add_Columns_Team1Score_And_Team2Score.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111261644414_Add__DevHelpers_SP_DeleteUserByUserName_Stored_Proc.cs" />
+    <Compile Include="Migrations\202111261644414_Add__DevHelpers_SP_DeleteUserByUserName_Stored_Proc.Designer.cs">
+      <DependentUpon>202111261644414_Add__DevHelpers_SP_DeleteUserByUserName_Stored_Proc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112112017439_Add_Table_NewGameNotifications.cs" />
+    <Compile Include="Migrations\202112112017439_Add_Table_NewGameNotifications.Designer.cs">
+      <DependentUpon>202112112017439_Add_Table_NewGameNotifications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306120113388_ModifyTable_TeamMemberships_AddColumn_JerseyNo.cs" />
+    <Compile Include="Migrations\202306120113388_ModifyTable_TeamMemberships_AddColumn_JerseyNo.Designer.cs">
+      <DependentUpon>202306120113388_ModifyTable_TeamMemberships_AddColumn_JerseyNo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306121106445_AddTable_Shots.cs" />
+    <Compile Include="Migrations\202306121106445_AddTable_Shots.Designer.cs">
+      <DependentUpon>202306121106445_AddTable_Shots.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306121332188_ModifyTable_Games_DefaultScoresToZero.cs" />
+    <Compile Include="Migrations\202306121332188_ModifyTable_Games_DefaultScoresToZero.Designer.cs">
+      <DependentUpon>202306121332188_ModifyTable_Games_DefaultScoresToZero.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306141010259_AddTable_Leagues.cs" />
+    <Compile Include="Migrations\202306141010259_AddTable_Leagues.Designer.cs">
+      <DependentUpon>202306141010259_AddTable_Leagues.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306141621376_AddTable_Seasons.cs" />
+    <Compile Include="Migrations\202306141621376_AddTable_Seasons.Designer.cs">
+      <DependentUpon>202306141621376_AddTable_Seasons.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306201457004_AddTable_Tournaments.cs" />
+    <Compile Include="Migrations\202306201457004_AddTable_Tournaments.Designer.cs">
+      <DependentUpon>202306201457004_AddTable_Tournaments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306210553285_ModifyTable_Games_AddColumnTournamentId.cs" />
+    <Compile Include="Migrations\202306210553285_ModifyTable_Games_AddColumnTournamentId.Designer.cs">
+      <DependentUpon>202306210553285_ModifyTable_Games_AddColumnTournamentId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306221259528_ModifyTable_Games_AddColumns_CurrentPeriod_RemainingTime_and_IsTimed.cs" />
+    <Compile Include="Migrations\202306221259528_ModifyTable_Games_AddColumns_CurrentPeriod_RemainingTime_and_IsTimed.Designer.cs">
+      <DependentUpon>202306221259528_ModifyTable_Games_AddColumns_CurrentPeriod_RemainingTime_and_IsTimed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306221442055_ModifyTable_Games_AddColumn_RemainingTimeUpdatedAt.cs" />
+    <Compile Include="Migrations\202306221442055_ModifyTable_Games_AddColumn_RemainingTimeUpdatedAt.Designer.cs">
+      <DependentUpon>202306221442055_ModifyTable_Games_AddColumn_RemainingTimeUpdatedAt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306221538320_ModifyTable_Games_AddColumn_IsLive.cs" />
+    <Compile Include="Migrations\202306221538320_ModifyTable_Games_AddColumn_IsLive.Designer.cs">
+      <DependentUpon>202306221538320_ModifyTable_Games_AddColumn_IsLive.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306231347504_ModifyTable_Games_AddColumns_RemainingShotTime_and_DefaultShotClockDuration.cs" />
+    <Compile Include="Migrations\202306231347504_ModifyTable_Games_AddColumns_RemainingShotTime_and_DefaultShotClockDuration.Designer.cs">
+      <DependentUpon>202306231347504_ModifyTable_Games_AddColumns_RemainingShotTime_and_DefaultShotClockDuration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306231607349_ModifyTable_Games_AddColumn_OffensiveRebondShotClock.cs" />
+    <Compile Include="Migrations\202306231607349_ModifyTable_Games_AddColumn_OffensiveRebondShotClock.Designer.cs">
+      <DependentUpon>202306231607349_ModifyTable_Games_AddColumn_OffensiveRebondShotClock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306241501535_AddTables_MemberFouls_Fouls_and_GameEvents.cs" />
+    <Compile Include="Migrations\202306241501535_AddTables_MemberFouls_Fouls_and_GameEvents.Designer.cs">
+      <DependentUpon>202306241501535_AddTables_MemberFouls_Fouls_and_GameEvents.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306260411386_ModifyTable_Games_AddColumn_PersonalFoulLimit_and_TechnicalFoulLimit.cs" />
+    <Compile Include="Migrations\202306260411386_ModifyTable_Games_AddColumn_PersonalFoulLimit_and_TechnicalFoulLimit.Designer.cs">
+      <DependentUpon>202306260411386_ModifyTable_Games_AddColumn_PersonalFoulLimit_and_TechnicalFoulLimit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306261254435_AddTables_GameTeams_and_GamePlayers.cs" />
+    <Compile Include="Migrations\202306261254435_AddTables_GameTeams_and_GamePlayers.Designer.cs">
+      <DependentUpon>202306261254435_AddTables_GameTeams_and_GamePlayers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306261447460_ModifyTable_Games_RemoveColumns_Team1Id_and_Team2Id.cs" />
+    <Compile Include="Migrations\202306261447460_ModifyTable_Games_RemoveColumns_Team1Id_and_Team2Id.Designer.cs">
+      <DependentUpon>202306261447460_ModifyTable_Games_RemoveColumns_Team1Id_and_Team2Id.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306261457296_ModifyTable_Games_AddColumns_Team1Id_and_Team2Id.cs" />
+    <Compile Include="Migrations\202306261457296_ModifyTable_Games_AddColumns_Team1Id_and_Team2Id.Designer.cs">
+      <DependentUpon>202306261457296_ModifyTable_Games_AddColumns_Team1Id_and_Team2Id.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306261518111_ModifyTable_GamePlayers_DeleteColumns_Name_and_JerseyNo.cs" />
+    <Compile Include="Migrations\202306261518111_ModifyTable_GamePlayers_DeleteColumns_Name_and_JerseyNo.Designer.cs">
+      <DependentUpon>202306261518111_ModifyTable_GamePlayers_DeleteColumns_Name_and_JerseyNo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306261559035_ModifyTable_Games_Make_RemainingTimeUpdatedAt_Column_Nullable.cs" />
+    <Compile Include="Migrations\202306261559035_ModifyTable_Games_Make_RemainingTimeUpdatedAt_Column_Nullable.Designer.cs">
+      <DependentUpon>202306261559035_ModifyTable_Games_Make_RemainingTimeUpdatedAt_Column_Nullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306280851026_ModifyTable_MemberFouls_AddColumn_IsFlagrant.cs" />
+    <Compile Include="Migrations\202306280851026_ModifyTable_MemberFouls_AddColumn_IsFlagrant.Designer.cs">
+      <DependentUpon>202306280851026_ModifyTable_MemberFouls_AddColumn_IsFlagrant.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306280921313_ModifyTable_GamePlayers_RemoveColumn_IsEjected_AddColumn_EjectionStatus.cs" />
+    <Compile Include="Migrations\202306280921313_ModifyTable_GamePlayers_RemoveColumn_IsEjected_AddColumn_EjectionStatus.Designer.cs">
+      <DependentUpon>202306280921313_ModifyTable_GamePlayers_RemoveColumn_IsEjected_AddColumn_EjectionStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306281347423_DropTable_Shots.cs" />
+    <Compile Include="Migrations\202306281347423_DropTable_Shots.Designer.cs">
+      <DependentUpon>202306281347423_DropTable_Shots.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306281350048_AddTable_Shots1.cs" />
+    <Compile Include="Migrations\202306281350048_AddTable_Shots1.Designer.cs">
+      <DependentUpon>202306281350048_AddTable_Shots1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306281422030_ModifyTable_GameEvents_AddColumns_Period_and_ClockTime.cs" />
+    <Compile Include="Migrations\202306281422030_ModifyTable_GameEvents_AddColumns_Period_and_ClockTime.Designer.cs">
+      <DependentUpon>202306281422030_ModifyTable_GameEvents_AddColumns_Period_and_ClockTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306290448537_ModifyTable_GamePlayers_AddColumn_Blocks.cs" />
+    <Compile Include="Migrations\202306290448537_ModifyTable_GamePlayers_AddColumn_Blocks.Designer.cs">
+      <DependentUpon>202306290448537_ModifyTable_GamePlayers_AddColumn_Blocks.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306290839010_ModifyTable_GameEvents_AddColumn_ShotId.cs" />
+    <Compile Include="Migrations\202306290839010_ModifyTable_GameEvents_AddColumn_ShotId.Designer.cs">
+      <DependentUpon>202306290839010_ModifyTable_GameEvents_AddColumn_ShotId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306300721148_ModifyTable_GameEvents_ModifyColumn_PerformedById_make_nullable.cs" />
+    <Compile Include="Migrations\202306300721148_ModifyTable_GameEvents_ModifyColumn_PerformedById_make_nullable.Designer.cs">
+      <DependentUpon>202306300721148_ModifyTable_GameEvents_ModifyColumn_PerformedById_make_nullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306300747547_ModifyTable_GameEvents_ModifyColumn_TeamId_make_nullable.cs" />
+    <Compile Include="Migrations\202306300747547_ModifyTable_GameEvents_ModifyColumn_TeamId_make_nullable.Designer.cs">
+      <DependentUpon>202306300747547_ModifyTable_GameEvents_ModifyColumn_TeamId_make_nullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306301045054_ModifyTable_Games_AddColumn_NextPOssession.cs" />
+    <Compile Include="Migrations\202306301045054_ModifyTable_Games_AddColumn_NextPOssession.Designer.cs">
+      <DependentUpon>202306301045054_ModifyTable_Games_AddColumn_NextPOssession.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307010605358_ModifyTable_GameTeams_AddColumns_TimeoutsLeft_FullTimeoutsUsed_ShortTimeoutsUsed.cs" />
+    <Compile Include="Migrations\202307010605358_ModifyTable_GameTeams_AddColumns_TimeoutsLeft_FullTimeoutsUsed_ShortTimeoutsUsed.Designer.cs">
+      <DependentUpon>202307010605358_ModifyTable_GameTeams_AddColumns_TimeoutsLeft_FullTimeoutsUsed_ShortTimeoutsUsed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307010613221_ModifyTable_Games_AddColumns_TotalTimeoutLimit_FullTimeoutLimit_ShortTimeoutLimit.cs" />
+    <Compile Include="Migrations\202307010613221_ModifyTable_Games_AddColumns_TotalTimeoutLimit_FullTimeoutLimit_ShortTimeoutLimit.Designer.cs">
+      <DependentUpon>202307010613221_ModifyTable_Games_AddColumns_TotalTimeoutLimit_FullTimeoutLimit_ShortTimeoutLimit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307020712494_ModifyTable_Games_AddColumn_IsInBonus.cs" />
+    <Compile Include="Migrations\202307020712494_ModifyTable_Games_AddColumn_IsInBonus.Designer.cs">
+      <DependentUpon>202307020712494_ModifyTable_Games_AddColumn_IsInBonus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307031047139_DropTable_NewBookingNotifications.cs" />
+    <Compile Include="Migrations\202307031047139_DropTable_NewBookingNotifications.Designer.cs">
+      <DependentUpon>202307031047139_DropTable_NewBookingNotifications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307031048333_CreateTable_NewBookingNotifications.cs" />
+    <Compile Include="Migrations\202307031048333_CreateTable_NewBookingNotifications.Designer.cs">
+      <DependentUpon>202307031048333_CreateTable_NewBookingNotifications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307040900167_ModifyTable_Tournaments_AddColumns_DefaultCourtId_and_LogoId.cs" />
+    <Compile Include="Migrations\202307040900167_ModifyTable_Tournaments_AddColumns_DefaultCourtId_and_LogoId.Designer.cs">
+      <DependentUpon>202307040900167_ModifyTable_Tournaments_AddColumns_DefaultCourtId_and_LogoId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307040956237_ModifyTable_AddColumns_NumberOfRegulationPeriods_RegulationPeriodDuration_OvertimePeriodDuration.cs" />
+    <Compile Include="Migrations\202307040956237_ModifyTable_AddColumns_NumberOfRegulationPeriods_RegulationPeriodDuration_OvertimePeriodDuration.Designer.cs">
+      <DependentUpon>202307040956237_ModifyTable_AddColumns_NumberOfRegulationPeriods_RegulationPeriodDuration_OvertimePeriodDuration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307050516527_ModifyTable_GameTeams_AddColumn_Score.cs" />
+    <Compile Include="Migrations\202307050516527_ModifyTable_GameTeams_AddColumn_Score.Designer.cs">
+      <DependentUpon>202307050516527_ModifyTable_GameTeams_AddColumn_Score.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307061420375_ModifyTable_JoinTeamRequests_AddColumn_JerseyNo.cs" />
+    <Compile Include="Migrations\202307061420375_ModifyTable_JoinTeamRequests_AddColumn_JerseyNo.Designer.cs">
+      <DependentUpon>202307061420375_ModifyTable_JoinTeamRequests_AddColumn_JerseyNo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307070327451_ModifyTable_Accounts_AddColumn_FirstName_and_LastName.cs" />
+    <Compile Include="Migrations\202307070327451_ModifyTable_Accounts_AddColumn_FirstName_and_LastName.Designer.cs">
+      <DependentUpon>202307070327451_ModifyTable_Accounts_AddColumn_FirstName_and_LastName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307071741372_ModifyTable_GamePlayers_AddColumn_IsInGame.cs" />
+    <Compile Include="Migrations\202307071741372_ModifyTable_GamePlayers_AddColumn_IsInGame.Designer.cs">
+      <DependentUpon>202307071741372_ModifyTable_GamePlayers_AddColumn_IsInGame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307090625215_ModifyTable_Games_AddColumn_UsesRunningClock.cs" />
+    <Compile Include="Migrations\202307090625215_ModifyTable_Games_AddColumn_UsesRunningClock.Designer.cs">
+      <DependentUpon>202307090625215_ModifyTable_Games_AddColumn_UsesRunningClock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307111210288_ModifyTable_Tournaments_AddColumn_EntityStatus.cs" />
+    <Compile Include="Migrations\202307111210288_ModifyTable_Tournaments_AddColumn_EntityStatus.Designer.cs">
+      <DependentUpon>202307111210288_ModifyTable_Tournaments_AddColumn_EntityStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307111314111_ModifyTable_IndexedEntities_AddColumn_AdditionalData.cs" />
+    <Compile Include="Migrations\202307111314111_ModifyTable_IndexedEntities_AddColumn_AdditionalData.Designer.cs">
+      <DependentUpon>202307111314111_ModifyTable_IndexedEntities_AddColumn_AdditionalData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307130917529_ModifyTable_Shots_DropColumn_TakenById.cs" />
+    <Compile Include="Migrations\202307130917529_ModifyTable_Shots_DropColumn_TakenById.Designer.cs">
+      <DependentUpon>202307130917529_ModifyTable_Shots_DropColumn_TakenById.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307181646112_ModifyTable_GamePlayers_AddAdditionalStatColumns.cs" />
+    <Compile Include="Migrations\202307181646112_ModifyTable_GamePlayers_AddAdditionalStatColumns.Designer.cs">
+      <DependentUpon>202307181646112_ModifyTable_GamePlayers_AddAdditionalStatColumns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307191651510_ModifyTable_GamePlayers_AddColumns_AccountId_and_PlayTimeMs.cs" />
+    <Compile Include="Migrations\202307191651510_ModifyTable_GamePlayers_AddColumns_AccountId_and_PlayTimeMs.Designer.cs">
+      <DependentUpon>202307191651510_ModifyTable_GamePlayers_AddColumns_AccountId_and_PlayTimeMs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307191655021_ModifyTable_GamePlayers_ModifyColumn_AccountId_MakeNonNullable.cs" />
+    <Compile Include="Migrations\202307191655021_ModifyTable_GamePlayers_ModifyColumn_AccountId_MakeNonNullable.Designer.cs">
+      <DependentUpon>202307191655021_ModifyTable_GamePlayers_ModifyColumn_AccountId_MakeNonNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307191658154_CreateTable_PlayerStats.cs" />
+    <Compile Include="Migrations\202307191658154_CreateTable_PlayerStats.Designer.cs">
+      <DependentUpon>202307191658154_CreateTable_PlayerStats.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307200651199_ModifyTable_PlayerStats_AddColumn_PlayTimeMs.cs" />
+    <Compile Include="Migrations\202307200651199_ModifyTable_PlayerStats_AddColumn_PlayTimeMs.Designer.cs">
+      <DependentUpon>202307200651199_ModifyTable_PlayerStats_AddColumn_PlayTimeMs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307200705274_ModifyTable_PlayerStats_AddColumn_OverallScore.cs" />
+    <Compile Include="Migrations\202307200705274_ModifyTable_PlayerStats_AddColumn_OverallScore.Designer.cs">
+      <DependentUpon>202307200705274_ModifyTable_PlayerStats_AddColumn_OverallScore.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307201404281_ModifyTable_GameTeams_AddAdditionalStatsColumns.cs" />
+    <Compile Include="Migrations\202307201404281_ModifyTable_GameTeams_AddAdditionalStatsColumns.Designer.cs">
+      <DependentUpon>202307201404281_ModifyTable_GameTeams_AddAdditionalStatsColumns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307201457063_AddTable_TeamStats.cs" />
+    <Compile Include="Migrations\202307201457063_AddTable_TeamStats.Designer.cs">
+      <DependentUpon>202307201457063_AddTable_TeamStats.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307201550226_ModifyTable_TeamStats_AddColumn_OverallScore.cs" />
+    <Compile Include="Migrations\202307201550226_ModifyTable_TeamStats_AddColumn_OverallScore.Designer.cs">
+      <DependentUpon>202307201550226_ModifyTable_TeamStats_AddColumn_OverallScore.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307221320140_AddTable_JoinTournamentRequests.cs" />
+    <Compile Include="Migrations\202307221320140_AddTable_JoinTournamentRequests.Designer.cs">
+      <DependentUpon>202307221320140_AddTable_JoinTournamentRequests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307221321299_ModifyTable_Notifications_AddColumn_AdditionalInfo.cs" />
+    <Compile Include="Migrations\202307221321299_ModifyTable_Notifications_AddColumn_AdditionalInfo.Designer.cs">
+      <DependentUpon>202307221321299_ModifyTable_Notifications_AddColumn_AdditionalInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307221603170_CreateTable_TournamentTeams.cs" />
+    <Compile Include="Migrations\202307221603170_CreateTable_TournamentTeams.Designer.cs">
+      <DependentUpon>202307221603170_CreateTable_TournamentTeams.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307240618142_CreateTables_TournamentStages_StageTeams_and_StageBrackets.cs" />
+    <Compile Include="Migrations\202307240618142_CreateTables_TournamentStages_StageTeams_and_StageBrackets.Designer.cs">
+      <DependentUpon>202307240618142_CreateTables_TournamentStages_StageTeams_and_StageBrackets.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307250529564_ModifyTable_Games_AddColumns_StageId_and_BracketId.cs" />
+    <Compile Include="Migrations\202307250529564_ModifyTable_Games_AddColumns_StageId_and_BracketId.Designer.cs">
+      <DependentUpon>202307250529564_ModifyTable_Games_AddColumns_StageId_and_BracketId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307270839308_ModifyTable_Games_RenameColumn_OffensiveRebondShotClock_To_OffensiveRebondShotClockDuration.cs" />
+    <Compile Include="Migrations\202307270839308_ModifyTable_Games_RenameColumn_OffensiveRebondShotClock_To_OffensiveRebondShotClockDuration.Designer.cs">
+      <DependentUpon>202307270839308_ModifyTable_Games_RenameColumn_OffensiveRebondShotClock_To_OffensiveRebondShotClockDuration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307270902234_ModifyTable_Tournaments_Add_columns_for_default_game_settings.cs" />
+    <Compile Include="Migrations\202307270902234_ModifyTable_Tournaments_Add_columns_for_default_game_settings.Designer.cs">
+      <DependentUpon>202307270902234_ModifyTable_Tournaments_Add_columns_for_default_game_settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307281025441_CreateTable_TournamentPhotos.cs" />
+    <Compile Include="Migrations\202307281025441_CreateTable_TournamentPhotos.Designer.cs">
+      <DependentUpon>202307281025441_CreateTable_TournamentPhotos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307291106381_Add_Turnover_Columns.cs" />
+    <Compile Include="Migrations\202307291106381_Add_Turnover_Columns.Designer.cs">
+      <DependentUpon>202307291106381_Add_Turnover_Columns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307291702256_Add_Steal_Columns.cs" />
+    <Compile Include="Migrations\202307291702256_Add_Steal_Columns.Designer.cs">
+      <DependentUpon>202307291702256_Add_Steal_Columns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307311709281_ModifyTable_TournamentTeams_ModifyKey_DropColumn_DateAdded.cs" />
+    <Compile Include="Migrations\202307311709281_ModifyTable_TournamentTeams_ModifyKey_DropColumn_DateAdded.Designer.cs">
+      <DependentUpon>202307311709281_ModifyTable_TournamentTeams_ModifyKey_DropColumn_DateAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308011613384_CreateTable_TournamentPlayers.cs" />
+    <Compile Include="Migrations\202308011613384_CreateTable_TournamentPlayers.Designer.cs">
+      <DependentUpon>202308011613384_CreateTable_TournamentPlayers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308011628391_ModifyTable_GamePlayers_AddColumn_Won.cs" />
+    <Compile Include="Migrations\202308011628391_ModifyTable_GamePlayers_AddColumn_Won.Designer.cs">
+      <DependentUpon>202308011628391_ModifyTable_GamePlayers_AddColumn_Won.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308021057233_ModifyTable_TouranmentPlayers_AddColumn_JerseyNo.cs" />
+    <Compile Include="Migrations\202308021057233_ModifyTable_TouranmentPlayers_AddColumn_JerseyNo.Designer.cs">
+      <DependentUpon>202308021057233_ModifyTable_TouranmentPlayers_AddColumn_JerseyNo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308090045486_ModifyTable_Teams_AddColumn_ShortName.cs" />
+    <Compile Include="Migrations\202308090045486_ModifyTable_Teams_AddColumn_ShortName.Designer.cs">
+      <DependentUpon>202308090045486_ModifyTable_Teams_AddColumn_ShortName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308090708419_ModifyTable_TeamMemberShips_Add_StatsColumns.cs" />
+    <Compile Include="Migrations\202308090708419_ModifyTable_TeamMemberShips_Add_StatsColumns.Designer.cs">
+      <DependentUpon>202308090708419_ModifyTable_TeamMemberShips_Add_StatsColumns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308090710128_ModifyTable_GameTeams_RenameColumn_Score_To_Points.cs" />
+    <Compile Include="Migrations\202308090710128_ModifyTable_GameTeams_RenameColumn_Score_To_Points.Designer.cs">
+      <DependentUpon>202308090710128_ModifyTable_GameTeams_RenameColumn_Score_To_Points.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308150918176_ModifyTable_Posts_AddColumns_Type_and_AdditionalData.cs" />
+    <Compile Include="Migrations\202308150918176_ModifyTable_Posts_AddColumns_Type_and_AdditionalData.Designer.cs">
+      <DependentUpon>202308150918176_ModifyTable_Posts_AddColumns_Type_and_AdditionalData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308151047559_ModifyTable_Posts_ModifyColumn_AddedById_add_FK_reference_to_Accounts_table.cs" />
+    <Compile Include="Migrations\202308151047559_ModifyTable_Posts_ModifyColumn_AddedById_add_FK_reference_to_Accounts_table.Designer.cs">
+      <DependentUpon>202308151047559_ModifyTable_Posts_ModifyColumn_AddedById_add_FK_reference_to_Accounts_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308171803110_ModifyTable_Shots_AddColumn_ShotType.cs" />
+    <Compile Include="Migrations\202308171803110_ModifyTable_Shots_AddColumn_ShotType.Designer.cs">
+      <DependentUpon>202308171803110_ModifyTable_Shots_AddColumn_ShotType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308171953067_Add_FTM_and_FTA_columns.cs" />
+    <Compile Include="Migrations\202308171953067_Add_FTM_and_FTA_columns.Designer.cs">
+      <DependentUpon>202308171953067_Add_FTM_and_FTA_columns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308180857324_Add_FTP_Columns.cs" />
+    <Compile Include="Migrations\202308180857324_Add_FTP_Columns.Designer.cs">
+      <DependentUpon>202308180857324_Add_FTP_Columns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308181015210_Make_StatsSummary_Columns_FTP_FGP_and_ThreePP_nullable.cs" />
+    <Compile Include="Migrations\202308181015210_Make_StatsSummary_Columns_FTP_FGP_and_ThreePP_nullable.Designer.cs">
+      <DependentUpon>202308181015210_Make_StatsSummary_Columns_FTP_FGP_and_ThreePP_nullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308230809433_Add_Chat_Tables.cs" />
+    <Compile Include="Migrations\202308230809433_Add_Chat_Tables.Designer.cs">
+      <DependentUpon>202308230809433_Add_Chat_Tables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308231521439_DropTable_Multimedia.cs" />
+    <Compile Include="Migrations\202308231521439_DropTable_Multimedia.Designer.cs">
+      <DependentUpon>202308231521439_DropTable_Multimedia.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308231524509_Link_Chat_Tables_To_PhotoModel.cs" />
+    <Compile Include="Migrations\202308231524509_Link_Chat_Tables_To_PhotoModel.Designer.cs">
+      <DependentUpon>202308231524509_Link_Chat_Tables_To_PhotoModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308231538287_RenameTable_Photos_to_Multimedia.cs" />
+    <Compile Include="Migrations\202308231538287_RenameTable_Photos_to_Multimedia.Designer.cs">
+      <DependentUpon>202308231538287_RenameTable_Photos_to_Multimedia.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308241602177_Use_AccountModel_as_ChatParticipant_and_MessageParticipant.cs" />
+    <Compile Include="Migrations\202308241602177_Use_AccountModel_as_ChatParticipant_and_MessageParticipant.Designer.cs">
+      <DependentUpon>202308241602177_Use_AccountModel_as_ChatParticipant_and_MessageParticipant.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308250530147_DropTable_ChatParticipants.cs" />
+    <Compile Include="Migrations\202308250530147_DropTable_ChatParticipants.Designer.cs">
+      <DependentUpon>202308250530147_DropTable_ChatParticipants.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308260725060_Move_Username_Column_From_PlayerModel_To_AccountModel.cs" />
+    <Compile Include="Migrations\202308260725060_Move_Username_Column_From_PlayerModel_To_AccountModel.Designer.cs">
+      <DependentUpon>202308260725060_Move_Username_Column_From_PlayerModel_To_AccountModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308270410447_Make_VideoModel_Inherit_From_MultimediaModel.cs" />
+    <Compile Include="Migrations\202308270410447_Make_VideoModel_Inherit_From_MultimediaModel.Designer.cs">
+      <DependentUpon>202308270410447_Make_VideoModel_Inherit_From_MultimediaModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308270438432_CreateTable_AccountHighlights.cs" />
+    <Compile Include="Migrations\202308270438432_CreateTable_AccountHighlights.Designer.cs">
+      <DependentUpon>202308270438432_CreateTable_AccountHighlights.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308270542172_DropTable_Videos.cs" />
+    <Compile Include="Migrations\202308270542172_DropTable_Videos.Designer.cs">
+      <DependentUpon>202308270542172_DropTable_Videos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308270545023_CreateTable_Videos.cs" />
+    <Compile Include="Migrations\202308270545023_CreateTable_Videos.Designer.cs">
+      <DependentUpon>202308270545023_CreateTable_Videos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202309011419369_RemoveColumns_TeamMembership.Position_and_JoinTeamRequest.Position.cs" />
+    <Compile Include="Migrations\202309011419369_RemoveColumns_TeamMembership.Position_and_JoinTeamRequest.Position.Designer.cs">
+      <DependentUpon>202309011419369_RemoveColumns_TeamMembership.Position_and_JoinTeamRequest.Position.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202309062211046_Sync_TournamentTeam.DateAdded_with_DB.cs" />
+    <Compile Include="Migrations\202309062211046_Sync_TournamentTeam.DateAdded_with_DB.Designer.cs">
+      <DependentUpon>202309062211046_Sync_TournamentTeam.DateAdded_with_DB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202309251230329_AddColumn_Games_TimekeeperId.cs" />
+    <Compile Include="Migrations\202309251230329_AddColumn_Games_TimekeeperId.Designer.cs">
+      <DependentUpon>202309251230329_AddColumn_Games_TimekeeperId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310040018456_AddTables_Groups_and_GroupMembers.cs" />
+    <Compile Include="Migrations\202310040018456_AddTables_Groups_and_GroupMembers.Designer.cs">
+      <DependentUpon>202310040018456_AddTables_Groups_and_GroupMembers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310041211561_CreateTable_JoinGroupRequests.cs" />
+    <Compile Include="Migrations\202310041211561_CreateTable_JoinGroupRequests.Designer.cs">
+      <DependentUpon>202310041211561_CreateTable_JoinGroupRequests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310071547496_CreateTable_PostFiles.cs" />
+    <Compile Include="Migrations\202310071547496_CreateTable_PostFiles.Designer.cs">
+      <DependentUpon>202310071547496_CreateTable_PostFiles.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AuthContext.cs" />
-    <Compile Include="Models\Client.cs" />
-    <Compile Include="Models\RefreshToken.cs" />
-    <Compile Include="Models\ExternalLoginModels.cs" />
-    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Providers\FacebookAuthProvider.cs" />
-    <Compile Include="Providers\SimpleAuthorizationServerProvider.cs" />
-    <Compile Include="Providers\SimpleRefreshTokenProvider.cs" />
-    <Compile Include="Repositories\AuthRepository.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Files\Web.config" />
     <None Include="packages.config" />
-    <None Include="Properties\PublishProfiles\Local IIS.pubxml" />
+    <None Include="Properties\PublishProfiles\Folder_Debug.pubxml" />
+    <None Include="Properties\PublishProfiles\Folder_Test.pubxml" />
+    <None Include="Properties\PublishProfiles\FTP_FhApiDev.pubxml" />
+    <None Include="Properties\PublishProfiles\Local IIS %28DribblyAuthAPI%29.pubxml" />
     <None Include="Properties\PublishProfiles\Somee File System.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <None Include="Web.Local.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
     <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Test.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
@@ -181,10 +997,582 @@
     <EmbeddedResource Include="Migrations\201910072231505_addRefreshTokenEntities.resx">
       <DependentUpon>201910072231505_addRefreshTokenEntities.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001121758333_add-court-model.resx">
+      <DependentUpon>202001121758333_add-court-model.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001121807288_AddTestCourt.resx">
+      <DependentUpon>202001121807288_AddTestCourt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001131222447_AddCourtCityProperty.resx">
+      <DependentUpon>202001131222447_AddCourtCityProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001172142089_renameCourtCityToAddress.resx">
+      <DependentUpon>202001172142089_renameCourtCityToAddress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001221440087_CourtModel_RemoveAddressAddLatitudeLongitudeIsPublic.resx">
+      <DependentUpon>202001221440087_CourtModel_RemoveAddressAddLatitudeLongitudeIsPublic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001260306542_CourtModel_Add_AdditionalInfo.resx">
+      <DependentUpon>202001260306542_CourtModel_Add_AdditionalInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002071345227_AddSettings.resx">
+      <DependentUpon>202002071345227_AddSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002081135557_CourtModel_ChangeOwnerIdTypeToString.resx">
+      <DependentUpon>202002081135557_CourtModel_ChangeOwnerIdTypeToString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002161412347_Add_PhotoModelAndCourtPhotoModel.resx">
+      <DependentUpon>202002161412347_Add_PhotoModelAndCourtPhotoModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002232111481_Add_GameModelAndEventModel.resx">
+      <DependentUpon>202002232111481_Add_GameModelAndEventModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003081640272_Add_PhotoModel_DateDeletedField.resx">
+      <DependentUpon>202003081640272_Add_PhotoModel_DateDeletedField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003262158473_Modify_Events_UpdateConstraints.resx">
+      <DependentUpon>202003262158473_Modify_Events_UpdateConstraints.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003292009438_AspNetUsers_Add_SaltColumn.resx">
+      <DependentUpon>202003292009438_AspNetUsers_Add_SaltColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004032225050_aspNetUsers_drop_discriminatorColumn.resx">
+      <DependentUpon>202004032225050_aspNetUsers_drop_discriminatorColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004121706035_Add_Accounts_Table.resx">
+      <DependentUpon>202004121706035_Add_Accounts_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004261031577_Modify_Accounts_Add_HeightInches_and_Sex_fields.resx">
+      <DependentUpon>202004261031577_Modify_Accounts_Add_HeightInches_and_Sex_fields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004261216071_Modify_Accounts_Add_ContactNo_and_BirthDate_fields.resx">
+      <DependentUpon>202004261216071_Modify_Accounts_Add_ContactNo_and_BirthDate_fields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004261422407_Modify_Accounts_Make_Sex_and_BirthDate_nullable.resx">
+      <DependentUpon>202004261422407_Modify_Accounts_Make_Sex_and_BirthDate_nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005242138489_Modify_CourtModel_MakeRatePerHourNonNullable.resx">
+      <DependentUpon>202005242138489_Modify_CourtModel_MakeRatePerHourNonNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006080709300_Add_ClientLogsTable.resx">
+      <DependentUpon>202006080709300_Add_ClientLogsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006271943216_Add_UserPermissionsTable.resx">
+      <DependentUpon>202006271943216_Add_UserPermissionsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007042218406_AddAccountPhotos.resx">
+      <DependentUpon>202007042218406_AddAccountPhotos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007062131170_Modify_CourtModel_RemovePrimaryPhotoUrlAndAddPrimaryPhotoId.resx">
+      <DependentUpon>202007062131170_Modify_CourtModel_RemovePrimaryPhotoUrlAndAddPrimaryPhotoId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007121758051_Add_Videos_and_CourtVideos.resx">
+      <DependentUpon>202007121758051_Add_Videos_and_CourtVideos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007142305359_Add_AccountVideos.resx">
+      <DependentUpon>202007142305359_Add_AccountVideos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007160003204_Modify_CourtModel_Added_DateDeleted_Column.resx">
+      <DependentUpon>202007160003204_Modify_CourtModel_Added_DateDeleted_Column.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007190947464_Modify_CourtModel_Rename_IsPublic_To_IsFreeToPlay_And_AddMobileNumber.resx">
+      <DependentUpon>202007190947464_Modify_CourtModel_Rename_IsPublic_To_IsFreeToPlay_And_AddMobileNumber.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007200441036_Modify_CourtModel_Change_MobileNumber_To_ContactId.resx">
+      <DependentUpon>202007200441036_Modify_CourtModel_Change_MobileNumber_To_ContactId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007260244022_Add_CourtFollowings.resx">
+      <DependentUpon>202007260244022_Add_CourtFollowings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008011657355_Modify_Account_Add_FK_Constrant_To_AspNetUsers.resx">
+      <DependentUpon>202008011657355_Modify_Account_Add_FK_Constrant_To_AspNetUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008021053443_Modify_Events_Add_BookedById.resx">
+      <DependentUpon>202008021053443_Modify_Events_Add_BookedById.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008081205482_Modify_Accounts_Rename_Sex_To_Gender.resx">
+      <DependentUpon>202008081205482_Modify_Accounts_Rename_Sex_To_Gender.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008081254053_Modify_Accounts_Add_Status_Column.resx">
+      <DependentUpon>202008081254053_Modify_Accounts_Add_Status_Column.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008151610128_Modify_Accounts_Add_IsPublic.resx">
+      <DependentUpon>202008151610128_Modify_Accounts_Add_IsPublic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008300955046_Add_Tables_BookedGameNotifications_and_Notications.resx">
+      <DependentUpon>202008300955046_Add_Tables_BookedGameNotifications_and_Notications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009010358307_Modify_GameBookedNofications_Add_FK_Constraint_To_AspNetUsers.resx">
+      <DependentUpon>202009010358307_Modify_GameBookedNofications_Add_FK_Constraint_To_AspNetUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010111823073_Add_CourtReviews_Table.resx">
+      <DependentUpon>202010111823073_Add_CourtReviews_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010112002547_Modify_Courts_Rating_Column_DataType_To_Double.resx">
+      <DependentUpon>202010112002547_Modify_Courts_Rating_Column_DataType_To_Double.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010120555221_Modify_Events_Add_Columns_HasReviewed_And_Status.resx">
+      <DependentUpon>202010120555221_Modify_Events_Add_Columns_HasReviewed_And_Status.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010120647408_Modify_CourtReviews_Table_Add_EventId.resx">
+      <DependentUpon>202010120647408_Modify_CourtReviews_Table_Add_EventId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010190154432_Rename_Table_GameBookedNotifications_To_NewBookingNotifications.resx">
+      <DependentUpon>202010190154432_Rename_Table_GameBookedNotifications_To_NewBookingNotifications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010190310179_Rename_Table_Events_To_Bookings.resx">
+      <DependentUpon>202010190310179_Rename_Table_Events_To_Bookings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010190333389_Update_Table_CourtReviews_Rename_Column_EventId_To_BookingId.resx">
+      <DependentUpon>202010190333389_Update_Table_CourtReviews_Rename_Column_EventId_To_BookingId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010190732151_Modify_NewBookingNotifications_Rename_Game_To_Booking.resx">
+      <DependentUpon>202010190732151_Modify_NewBookingNotifications_Rename_Game_To_Booking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010242128221_Delete_Table_Games.resx">
+      <DependentUpon>202010242128221_Delete_Table_Games.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010242149197_Add_Table_Games.resx">
+      <DependentUpon>202010242149197_Add_Table_Games.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010310125596_Modify_Table_Games_Make_Column_End_Nullable.resx">
+      <DependentUpon>202010310125596_Modify_Table_Games_Make_Column_End_Nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011012324413_Add_Table_Posts.resx">
+      <DependentUpon>202011012324413_Add_Table_Posts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011021302436_Update_Table_Posts_Add_Column_Status.resx">
+      <DependentUpon>202011021302436_Update_Table_Posts_Add_Column_Status.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011070131403_Add_Table_ExceptionLogs.resx">
+      <DependentUpon>202011070131403_Add_Table_ExceptionLogs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011080050560_Add_Tables_UserActivities_And_UserPostActivities.resx">
+      <DependentUpon>202011080050560_Add_Tables_UserActivities_And_UserPostActivities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011090119008_Add_Tables_UserAccountActivities_And_AccountPhotoActivities.resx">
+      <DependentUpon>202011090119008_Add_Tables_UserAccountActivities_And_AccountPhotoActivities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011090159081_Add_Table_AccountVideoActivities.resx">
+      <DependentUpon>202011090159081_Add_Table_AccountVideoActivities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011100104365_Add_Table_UserContactActivities.resx">
+      <DependentUpon>202011100104365_Add_Table_UserContactActivities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011100300060_Add_Tables_For_Court_And_GameRelated_User_Activities.resx">
+      <DependentUpon>202011100300060_Add_Tables_For_Court_And_GameRelated_User_Activities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011110253530_Remove_Dependency_Between_AspNetUsers_And_NewBookingNotifications.resx">
+      <DependentUpon>202011110253530_Remove_Dependency_Between_AspNetUsers_And_NewBookingNotifications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011110300171_Remove_FK_And_Indeces_From_Identity_Tables.resx">
+      <DependentUpon>202011110300171_Remove_FK_And_Indeces_From_Identity_Tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011110302039_Remove_PKs_From_Identity_Tables.resx">
+      <DependentUpon>202011110302039_Remove_PKs_From_Identity_Tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011110313504_Alter_Columns.resx">
+      <DependentUpon>202011110313504_Alter_Columns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011110316090_Readd_PKs_For_Identity_Tables.resx">
+      <DependentUpon>202011110316090_Readd_PKs_For_Identity_Tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011110318239_Readd_FKs_And_Indeces_To_Identity_Tables.resx">
+      <DependentUpon>202011110318239_Readd_FKs_And_Indeces_To_Identity_Tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011110325558_Readd_Dependency_Of_Tables_Accounts_And_NewBookingNotifications_To_AspNetUsers.resx">
+      <DependentUpon>202011110325558_Readd_Dependency_Of_Tables_Accounts_And_NewBookingNotifications_To_AspNetUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011120241495_Update_App_Tables_To_Match_Changes_In_Identity_Tables.resx">
+      <DependentUpon>202011120241495_Update_App_Tables_To_Match_Changes_In_Identity_Tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011140240370_Update_Table_Games_Add_Column_Status.resx">
+      <DependentUpon>202011140240370_Update_Table_Games_Add_Column_Status.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011230427551_Modify_Table_Accounts_Add_Columns_Position_And_HomeCourtId.resx">
+      <DependentUpon>202011230427551_Modify_Table_Accounts_Add_Columns_Position_And_HomeCourtId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011231350366_Add_Table_IndexEntities.resx">
+      <DependentUpon>202011231350366_Add_Table_IndexEntities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011241620522_Add_Tables_Teams_And_UserTeamActivities.resx">
+      <DependentUpon>202011241620522_Add_Tables_Teams_And_UserTeamActivities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011281624186_Modify_Table_IndexexEntities_Rename_Column_Status_To_EntityStatus.resx">
+      <DependentUpon>202011281624186_Modify_Table_IndexexEntities_Rename_Column_Status_To_EntityStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011282111022_Add_Tables_TeamMembers_And_JoinTeamRequests.resx">
+      <DependentUpon>202011282111022_Add_Tables_TeamMembers_And_JoinTeamRequests.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011291215416_Add_Table_JoinTeamRequestNotifications_And_Modify_Table_Team_Add_Column_ManagedById.resx">
+      <DependentUpon>202011291215416_Add_Table_JoinTeamRequestNotifications_And_Modify_Table_Team_Add_Column_ManagedById.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012050241244_Add_Table_UserJoinTeamRequestActivities.resx">
+      <DependentUpon>202012050241244_Add_Table_UserJoinTeamRequestActivities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012140602383_Modify_Table_Accounts_Add_Column_Rating.resx">
+      <DependentUpon>202012140602383_Modify_Table_Accounts_Add_Column_Rating.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012300013116_Modify_Table_Games_Add_ForeignKey_For_Team1_And_Team2.resx">
+      <DependentUpon>202012300013116_Modify_Table_Games_Add_ForeignKey_For_Team1_And_Team2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101161542310_Add_Table_TeamPhotos.resx">
+      <DependentUpon>202101161542310_Add_Table_TeamPhotos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101161720099_Add_Table_TeamPhotoActivities.resx">
+      <DependentUpon>202101161720099_Add_Table_TeamPhotoActivities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101252047354_Modify_Table_Teams_Add_Column_IsOpen.resx">
+      <DependentUpon>202101252047354_Modify_Table_Teams_Add_Column_IsOpen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102031957071_Update_Table_Games_Add_Columns_Team1Score_And_Team2Score.resx">
+      <DependentUpon>202102031957071_Update_Table_Games_Add_Columns_Team1Score_And_Team2Score.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111261644414_Add__DevHelpers_SP_DeleteUserByUserName_Stored_Proc.resx">
+      <DependentUpon>202111261644414_Add__DevHelpers_SP_DeleteUserByUserName_Stored_Proc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112112017439_Add_Table_NewGameNotifications.resx">
+      <DependentUpon>202112112017439_Add_Table_NewGameNotifications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306120113388_ModifyTable_TeamMemberships_AddColumn_JerseyNo.resx">
+      <DependentUpon>202306120113388_ModifyTable_TeamMemberships_AddColumn_JerseyNo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306121106445_AddTable_Shots.resx">
+      <DependentUpon>202306121106445_AddTable_Shots.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306121332188_ModifyTable_Games_DefaultScoresToZero.resx">
+      <DependentUpon>202306121332188_ModifyTable_Games_DefaultScoresToZero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306141010259_AddTable_Leagues.resx">
+      <DependentUpon>202306141010259_AddTable_Leagues.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306141621376_AddTable_Seasons.resx">
+      <DependentUpon>202306141621376_AddTable_Seasons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306201457004_AddTable_Tournaments.resx">
+      <DependentUpon>202306201457004_AddTable_Tournaments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306210553285_ModifyTable_Games_AddColumnTournamentId.resx">
+      <DependentUpon>202306210553285_ModifyTable_Games_AddColumnTournamentId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306221259528_ModifyTable_Games_AddColumns_CurrentPeriod_RemainingTime_and_IsTimed.resx">
+      <DependentUpon>202306221259528_ModifyTable_Games_AddColumns_CurrentPeriod_RemainingTime_and_IsTimed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306221442055_ModifyTable_Games_AddColumn_RemainingTimeUpdatedAt.resx">
+      <DependentUpon>202306221442055_ModifyTable_Games_AddColumn_RemainingTimeUpdatedAt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306221538320_ModifyTable_Games_AddColumn_IsLive.resx">
+      <DependentUpon>202306221538320_ModifyTable_Games_AddColumn_IsLive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306231347504_ModifyTable_Games_AddColumns_RemainingShotTime_and_DefaultShotClockDuration.resx">
+      <DependentUpon>202306231347504_ModifyTable_Games_AddColumns_RemainingShotTime_and_DefaultShotClockDuration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306231607349_ModifyTable_Games_AddColumn_OffensiveRebondShotClock.resx">
+      <DependentUpon>202306231607349_ModifyTable_Games_AddColumn_OffensiveRebondShotClock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306241501535_AddTables_MemberFouls_Fouls_and_GameEvents.resx">
+      <DependentUpon>202306241501535_AddTables_MemberFouls_Fouls_and_GameEvents.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306260411386_ModifyTable_Games_AddColumn_PersonalFoulLimit_and_TechnicalFoulLimit.resx">
+      <DependentUpon>202306260411386_ModifyTable_Games_AddColumn_PersonalFoulLimit_and_TechnicalFoulLimit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306261254435_AddTables_GameTeams_and_GamePlayers.resx">
+      <DependentUpon>202306261254435_AddTables_GameTeams_and_GamePlayers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306261447460_ModifyTable_Games_RemoveColumns_Team1Id_and_Team2Id.resx">
+      <DependentUpon>202306261447460_ModifyTable_Games_RemoveColumns_Team1Id_and_Team2Id.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306261457296_ModifyTable_Games_AddColumns_Team1Id_and_Team2Id.resx">
+      <DependentUpon>202306261457296_ModifyTable_Games_AddColumns_Team1Id_and_Team2Id.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306261518111_ModifyTable_GamePlayers_DeleteColumns_Name_and_JerseyNo.resx">
+      <DependentUpon>202306261518111_ModifyTable_GamePlayers_DeleteColumns_Name_and_JerseyNo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306261559035_ModifyTable_Games_Make_RemainingTimeUpdatedAt_Column_Nullable.resx">
+      <DependentUpon>202306261559035_ModifyTable_Games_Make_RemainingTimeUpdatedAt_Column_Nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306280851026_ModifyTable_MemberFouls_AddColumn_IsFlagrant.resx">
+      <DependentUpon>202306280851026_ModifyTable_MemberFouls_AddColumn_IsFlagrant.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306280921313_ModifyTable_GamePlayers_RemoveColumn_IsEjected_AddColumn_EjectionStatus.resx">
+      <DependentUpon>202306280921313_ModifyTable_GamePlayers_RemoveColumn_IsEjected_AddColumn_EjectionStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306281347423_DropTable_Shots.resx">
+      <DependentUpon>202306281347423_DropTable_Shots.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306281350048_AddTable_Shots1.resx">
+      <DependentUpon>202306281350048_AddTable_Shots1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306281422030_ModifyTable_GameEvents_AddColumns_Period_and_ClockTime.resx">
+      <DependentUpon>202306281422030_ModifyTable_GameEvents_AddColumns_Period_and_ClockTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306290448537_ModifyTable_GamePlayers_AddColumn_Blocks.resx">
+      <DependentUpon>202306290448537_ModifyTable_GamePlayers_AddColumn_Blocks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306290839010_ModifyTable_GameEvents_AddColumn_ShotId.resx">
+      <DependentUpon>202306290839010_ModifyTable_GameEvents_AddColumn_ShotId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306300721148_ModifyTable_GameEvents_ModifyColumn_PerformedById_make_nullable.resx">
+      <DependentUpon>202306300721148_ModifyTable_GameEvents_ModifyColumn_PerformedById_make_nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306300747547_ModifyTable_GameEvents_ModifyColumn_TeamId_make_nullable.resx">
+      <DependentUpon>202306300747547_ModifyTable_GameEvents_ModifyColumn_TeamId_make_nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306301045054_ModifyTable_Games_AddColumn_NextPOssession.resx">
+      <DependentUpon>202306301045054_ModifyTable_Games_AddColumn_NextPOssession.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307010605358_ModifyTable_GameTeams_AddColumns_TimeoutsLeft_FullTimeoutsUsed_ShortTimeoutsUsed.resx">
+      <DependentUpon>202307010605358_ModifyTable_GameTeams_AddColumns_TimeoutsLeft_FullTimeoutsUsed_ShortTimeoutsUsed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307010613221_ModifyTable_Games_AddColumns_TotalTimeoutLimit_FullTimeoutLimit_ShortTimeoutLimit.resx">
+      <DependentUpon>202307010613221_ModifyTable_Games_AddColumns_TotalTimeoutLimit_FullTimeoutLimit_ShortTimeoutLimit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307020712494_ModifyTable_Games_AddColumn_IsInBonus.resx">
+      <DependentUpon>202307020712494_ModifyTable_Games_AddColumn_IsInBonus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307031047139_DropTable_NewBookingNotifications.resx">
+      <DependentUpon>202307031047139_DropTable_NewBookingNotifications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307031048333_CreateTable_NewBookingNotifications.resx">
+      <DependentUpon>202307031048333_CreateTable_NewBookingNotifications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307040900167_ModifyTable_Tournaments_AddColumns_DefaultCourtId_and_LogoId.resx">
+      <DependentUpon>202307040900167_ModifyTable_Tournaments_AddColumns_DefaultCourtId_and_LogoId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307040956237_ModifyTable_AddColumns_NumberOfRegulationPeriods_RegulationPeriodDuration_OvertimePeriodDuration.resx">
+      <DependentUpon>202307040956237_ModifyTable_AddColumns_NumberOfRegulationPeriods_RegulationPeriodDuration_OvertimePeriodDuration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307050516527_ModifyTable_GameTeams_AddColumn_Score.resx">
+      <DependentUpon>202307050516527_ModifyTable_GameTeams_AddColumn_Score.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307061420375_ModifyTable_JoinTeamRequests_AddColumn_JerseyNo.resx">
+      <DependentUpon>202307061420375_ModifyTable_JoinTeamRequests_AddColumn_JerseyNo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307070327451_ModifyTable_Accounts_AddColumn_FirstName_and_LastName.resx">
+      <DependentUpon>202307070327451_ModifyTable_Accounts_AddColumn_FirstName_and_LastName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307071741372_ModifyTable_GamePlayers_AddColumn_IsInGame.resx">
+      <DependentUpon>202307071741372_ModifyTable_GamePlayers_AddColumn_IsInGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307090625215_ModifyTable_Games_AddColumn_UsesRunningClock.resx">
+      <DependentUpon>202307090625215_ModifyTable_Games_AddColumn_UsesRunningClock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307111210288_ModifyTable_Tournaments_AddColumn_EntityStatus.resx">
+      <DependentUpon>202307111210288_ModifyTable_Tournaments_AddColumn_EntityStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307111314111_ModifyTable_IndexedEntities_AddColumn_AdditionalData.resx">
+      <DependentUpon>202307111314111_ModifyTable_IndexedEntities_AddColumn_AdditionalData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307130917529_ModifyTable_Shots_DropColumn_TakenById.resx">
+      <DependentUpon>202307130917529_ModifyTable_Shots_DropColumn_TakenById.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307181646112_ModifyTable_GamePlayers_AddAdditionalStatColumns.resx">
+      <DependentUpon>202307181646112_ModifyTable_GamePlayers_AddAdditionalStatColumns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307191651510_ModifyTable_GamePlayers_AddColumns_AccountId_and_PlayTimeMs.resx">
+      <DependentUpon>202307191651510_ModifyTable_GamePlayers_AddColumns_AccountId_and_PlayTimeMs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307191655021_ModifyTable_GamePlayers_ModifyColumn_AccountId_MakeNonNullable.resx">
+      <DependentUpon>202307191655021_ModifyTable_GamePlayers_ModifyColumn_AccountId_MakeNonNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307191658154_CreateTable_PlayerStats.resx">
+      <DependentUpon>202307191658154_CreateTable_PlayerStats.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307200651199_ModifyTable_PlayerStats_AddColumn_PlayTimeMs.resx">
+      <DependentUpon>202307200651199_ModifyTable_PlayerStats_AddColumn_PlayTimeMs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307200705274_ModifyTable_PlayerStats_AddColumn_OverallScore.resx">
+      <DependentUpon>202307200705274_ModifyTable_PlayerStats_AddColumn_OverallScore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307201404281_ModifyTable_GameTeams_AddAdditionalStatsColumns.resx">
+      <DependentUpon>202307201404281_ModifyTable_GameTeams_AddAdditionalStatsColumns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307201457063_AddTable_TeamStats.resx">
+      <DependentUpon>202307201457063_AddTable_TeamStats.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307201550226_ModifyTable_TeamStats_AddColumn_OverallScore.resx">
+      <DependentUpon>202307201550226_ModifyTable_TeamStats_AddColumn_OverallScore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307221320140_AddTable_JoinTournamentRequests.resx">
+      <DependentUpon>202307221320140_AddTable_JoinTournamentRequests.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307221321299_ModifyTable_Notifications_AddColumn_AdditionalInfo.resx">
+      <DependentUpon>202307221321299_ModifyTable_Notifications_AddColumn_AdditionalInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307221603170_CreateTable_TournamentTeams.resx">
+      <DependentUpon>202307221603170_CreateTable_TournamentTeams.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307240618142_CreateTables_TournamentStages_StageTeams_and_StageBrackets.resx">
+      <DependentUpon>202307240618142_CreateTables_TournamentStages_StageTeams_and_StageBrackets.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307250529564_ModifyTable_Games_AddColumns_StageId_and_BracketId.resx">
+      <DependentUpon>202307250529564_ModifyTable_Games_AddColumns_StageId_and_BracketId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307270839308_ModifyTable_Games_RenameColumn_OffensiveRebondShotClock_To_OffensiveRebondShotClockDuration.resx">
+      <DependentUpon>202307270839308_ModifyTable_Games_RenameColumn_OffensiveRebondShotClock_To_OffensiveRebondShotClockDuration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307270902234_ModifyTable_Tournaments_Add_columns_for_default_game_settings.resx">
+      <DependentUpon>202307270902234_ModifyTable_Tournaments_Add_columns_for_default_game_settings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307281025441_CreateTable_TournamentPhotos.resx">
+      <DependentUpon>202307281025441_CreateTable_TournamentPhotos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307291106381_Add_Turnover_Columns.resx">
+      <DependentUpon>202307291106381_Add_Turnover_Columns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307291702256_Add_Steal_Columns.resx">
+      <DependentUpon>202307291702256_Add_Steal_Columns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307311709281_ModifyTable_TournamentTeams_ModifyKey_DropColumn_DateAdded.resx">
+      <DependentUpon>202307311709281_ModifyTable_TournamentTeams_ModifyKey_DropColumn_DateAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308011613384_CreateTable_TournamentPlayers.resx">
+      <DependentUpon>202308011613384_CreateTable_TournamentPlayers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308011628391_ModifyTable_GamePlayers_AddColumn_Won.resx">
+      <DependentUpon>202308011628391_ModifyTable_GamePlayers_AddColumn_Won.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308021057233_ModifyTable_TouranmentPlayers_AddColumn_JerseyNo.resx">
+      <DependentUpon>202308021057233_ModifyTable_TouranmentPlayers_AddColumn_JerseyNo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308090045486_ModifyTable_Teams_AddColumn_ShortName.resx">
+      <DependentUpon>202308090045486_ModifyTable_Teams_AddColumn_ShortName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308090708419_ModifyTable_TeamMemberShips_Add_StatsColumns.resx">
+      <DependentUpon>202308090708419_ModifyTable_TeamMemberShips_Add_StatsColumns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308090710128_ModifyTable_GameTeams_RenameColumn_Score_To_Points.resx">
+      <DependentUpon>202308090710128_ModifyTable_GameTeams_RenameColumn_Score_To_Points.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308150918176_ModifyTable_Posts_AddColumns_Type_and_AdditionalData.resx">
+      <DependentUpon>202308150918176_ModifyTable_Posts_AddColumns_Type_and_AdditionalData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308151047559_ModifyTable_Posts_ModifyColumn_AddedById_add_FK_reference_to_Accounts_table.resx">
+      <DependentUpon>202308151047559_ModifyTable_Posts_ModifyColumn_AddedById_add_FK_reference_to_Accounts_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308171803110_ModifyTable_Shots_AddColumn_ShotType.resx">
+      <DependentUpon>202308171803110_ModifyTable_Shots_AddColumn_ShotType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308171953067_Add_FTM_and_FTA_columns.resx">
+      <DependentUpon>202308171953067_Add_FTM_and_FTA_columns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308180857324_Add_FTP_Columns.resx">
+      <DependentUpon>202308180857324_Add_FTP_Columns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308181015210_Make_StatsSummary_Columns_FTP_FGP_and_ThreePP_nullable.resx">
+      <DependentUpon>202308181015210_Make_StatsSummary_Columns_FTP_FGP_and_ThreePP_nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308230809433_Add_Chat_Tables.resx">
+      <DependentUpon>202308230809433_Add_Chat_Tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308231521439_DropTable_Multimedia.resx">
+      <DependentUpon>202308231521439_DropTable_Multimedia.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308231524509_Link_Chat_Tables_To_PhotoModel.resx">
+      <DependentUpon>202308231524509_Link_Chat_Tables_To_PhotoModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308231538287_RenameTable_Photos_to_Multimedia.resx">
+      <DependentUpon>202308231538287_RenameTable_Photos_to_Multimedia.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308241602177_Use_AccountModel_as_ChatParticipant_and_MessageParticipant.resx">
+      <DependentUpon>202308241602177_Use_AccountModel_as_ChatParticipant_and_MessageParticipant.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308250530147_DropTable_ChatParticipants.resx">
+      <DependentUpon>202308250530147_DropTable_ChatParticipants.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308260725060_Move_Username_Column_From_PlayerModel_To_AccountModel.resx">
+      <DependentUpon>202308260725060_Move_Username_Column_From_PlayerModel_To_AccountModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308270410447_Make_VideoModel_Inherit_From_MultimediaModel.resx">
+      <DependentUpon>202308270410447_Make_VideoModel_Inherit_From_MultimediaModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308270438432_CreateTable_AccountHighlights.resx">
+      <DependentUpon>202308270438432_CreateTable_AccountHighlights.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308270542172_DropTable_Videos.resx">
+      <DependentUpon>202308270542172_DropTable_Videos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308270545023_CreateTable_Videos.resx">
+      <DependentUpon>202308270545023_CreateTable_Videos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309011419369_RemoveColumns_TeamMembership.Position_and_JoinTeamRequest.Position.resx">
+      <DependentUpon>202309011419369_RemoveColumns_TeamMembership.Position_and_JoinTeamRequest.Position.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309062211046_Sync_TournamentTeam.DateAdded_with_DB.resx">
+      <DependentUpon>202309062211046_Sync_TournamentTeam.DateAdded_with_DB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309251230329_AddColumn_Games_TimekeeperId.resx">
+      <DependentUpon>202309251230329_AddColumn_Games_TimekeeperId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310040018456_AddTables_Groups_and_GroupMembers.resx">
+      <DependentUpon>202310040018456_AddTables_Groups_and_GroupMembers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310041211561_CreateTable_JoinGroupRequests.resx">
+      <DependentUpon>202310041211561_CreateTable_JoinGroupRequests.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310071547496_CreateTable_PostFiles.resx">
+      <DependentUpon>202310071547496_CreateTable_PostFiles.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dribbly.Authentication\Dribbly.Authentication.csproj">
+      <Project>{2B76E33B-6725-4567-9F2B-23B09396F799}</Project>
+      <Name>Dribbly.Authentication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dribbly.Chat\Dribbly.Chat.csproj">
+      <Project>{4A21E360-455B-462E-B7E7-E0A3AE229271}</Project>
+      <Name>Dribbly.Chat</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dribbly.Core\Dribbly.Core.csproj">
+      <Project>{8a887a9e-e256-4a63-abe3-f8657b04e011}</Project>
+      <Name>Dribbly.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dribbly.Email\Dribbly.Email.csproj">
+      <Project>{29f4a3cf-4259-46a5-b53b-d4e43eab6f76}</Project>
+      <Name>Dribbly.Email</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dribbly.Identity\Dribbly.Identity.csproj">
+      <Project>{06719069-2DB1-4144-B39D-A0FE7F5431F9}</Project>
+      <Name>Dribbly.Identity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dribbly.Model\Dribbly.Model.csproj">
+      <Project>{5FE646E5-BAB0-4635-9161-671F0D73CBCC}</Project>
+      <Name>Dribbly.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dribbly.Service\Dribbly.Service.csproj">
+      <Project>{f170175a-6462-4cc7-bc99-e032a86165ba}</Project>
+      <Name>Dribbly.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dribbly.SMS\Dribbly.SMS.csproj">
+      <Project>{E15C5BC6-174C-4D8E-B323-6D756BF8E69C}</Project>
+      <Name>Dribbly.SMS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dribbly.Test\Dribbly.Test.csproj">
+      <Project>{5BC8F0F6-4D32-4B00-96CE-680AEB068622}</Project>
+      <Name>Dribbly.Test</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Local|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

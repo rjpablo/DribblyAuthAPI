@@ -1,18 +1,4 @@
-﻿using DribblyAuthAPI.API;
-using DribblyAuthAPI.Models;
-using DribblyAuthAPI.Repositories;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.OAuth;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Security.Claims;
+﻿using Dribbly.Service.Repositories;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -22,11 +8,11 @@ namespace DribblyAuthAPI.Controllers
     public class RefreshTokensController : ApiController
     {
 
-        private AuthRepository _repo = null;
+        private IAuthRepository _repo = null;
 
-        public RefreshTokensController()
+        public RefreshTokensController(IAuthRepository repo)
         {
-            _repo = new AuthRepository();
+            _repo = repo;
         }
 
         [Authorize(Users = "Admin")]
