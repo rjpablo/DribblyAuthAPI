@@ -96,7 +96,7 @@ namespace Dribbly.Model.DTO
         public double MPG { get; set; }
 
         [DataMember]
-        public long LastGameId { get; set; }
+        public long? LastGameId { get; set; }
 
         [DataMember]
         public GameModel LastGame { get; set; }

@@ -961,6 +961,10 @@
     <Compile Include="Migrations\202310071547496_CreateTable_PostFiles.Designer.cs">
       <DependentUpon>202310071547496_CreateTable_PostFiles.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202310112210305_ModifyColumn_PlayerStats.LastGameId_MakeOptional.cs" />
+    <Compile Include="Migrations\202310112210305_ModifyColumn_PlayerStats.LastGameId_MakeOptional.Designer.cs">
+      <DependentUpon>202310112210305_ModifyColumn_PlayerStats.LastGameId_MakeOptional.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1512,6 +1516,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202310071547496_CreateTable_PostFiles.resx">
       <DependentUpon>202310071547496_CreateTable_PostFiles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310112210305_ModifyColumn_PlayerStats.LastGameId_MakeOptional.resx">
+      <DependentUpon>202310112210305_ModifyColumn_PlayerStats.LastGameId_MakeOptional.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

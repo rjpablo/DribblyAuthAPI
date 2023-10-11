@@ -463,6 +463,8 @@ namespace Dribbly.Service.Services
             {
                 _context.SetEntityState(account.User.Logins.First(), EntityState.Unchanged);
             }
+            _context.PlayerStats.Add(new PlayerStatsModel(account.Id));
+            await _context.SaveChangesAsync();
             var entity = new IndexedEntityModel(account, account.Username);
             await _indexedEntitysRepo.Add(_context, entity, entity.AdditionalData);
             await _commonService.AddUserAccountActivity(UserActivityTypeEnum.CreateAccount, account.Id);
