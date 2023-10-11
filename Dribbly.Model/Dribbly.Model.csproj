@@ -140,6 +140,7 @@
     <Compile Include="Enums\ShotTypeEnum.cs" />
     <Compile Include="Enums\SortDirectionEnum.cs" />
     <Compile Include="Enums\StageStatusEnum.cs" />
+    <Compile Include="Enums\GetPlayersSortByEnum.cs" />
     <Compile Include="Enums\StatEnum.cs" />
     <Compile Include="Enums\TimeoutTypeEnum.cs" />
     <Compile Include="Enums\TournamentStatusEnum.cs" />

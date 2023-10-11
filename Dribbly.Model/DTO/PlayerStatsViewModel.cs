@@ -1,6 +1,7 @@
 ﻿using Dribbly.Core.Models;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Games;
+using System;
 using System.Runtime.Serialization;
 
 namespace Dribbly.Model.DTO
@@ -19,6 +20,10 @@ namespace Dribbly.Model.DTO
         public MultimediaModel ProfilePhoto { get; set; }
         [DataMember]
         public int? JerseyNo { get; set; }
+        [DataMember]
+        public double? HeightInches { get; set; }
+        [DataMember]
+        public DateTime DateAdded { get; set; }
 
         #endregion
 
@@ -129,6 +134,8 @@ namespace Dribbly.Model.DTO
             Username = source.Account.Username;
             ProfilePhoto = source.Account.ProfilePhoto;
             JerseyNo = source.JerseyNo;
+            HeightInches = source.Account.HeightInches;
+            DateAdded = source.Account.DateAdded;
 
             // Stats
             GP = source.GP;

@@ -95,7 +95,8 @@ namespace Dribbly.Service.Services
         {
             var query = _context.PlayerStats
                 .Include(s => s.Account.User).Include(s => s.Account.ProfilePhoto)
-                .Where(s => !filter.CourtIds.Any() || (s.Account.HomeCourtId.HasValue && filter.CourtIds.Contains(s.Account.HomeCourtId.Value)));
+                .Where(s => (!filter.CourtIds.Any() || (s.Account.HomeCourtId.HasValue && filter.CourtIds.Contains(s.Account.HomeCourtId.Value)))
+                && (!filter.JoinBeforeDate.HasValue || s.Account.DateAdded < filter.JoinBeforeDate));
             query = ApplySortingAndPaging(query, filter);
             var players = await query.ToListAsync();
             return players.Select(s => new PlayerStatsViewModel(s));
@@ -107,29 +108,32 @@ namespace Dribbly.Service.Services
             bool isAscending = filter.SortDirection == SortDirectionEnum.Ascending;
             switch (filter.SortBy)
             {
-                case StatEnum.PPG:
+                case GetPlayersSortByEnum.PPG:
                     ordered = isAscending ? query.OrderBy(s => s.PPG) : query.OrderByDescending(s => s.PPG);
                     break;
-                case StatEnum.RPG:
+                case GetPlayersSortByEnum.RPG:
                     ordered = isAscending ? query.OrderBy(s => s.RPG) : query.OrderByDescending(s => s.RPG);
                     break;
-                case StatEnum.APG:
+                case GetPlayersSortByEnum.APG:
                     ordered = isAscending ? query.OrderBy(s => s.APG) : query.OrderByDescending(s => s.APG);
                     break;
-                case StatEnum.FGP:
+                case GetPlayersSortByEnum.FGP:
                     ordered = isAscending ? query.OrderBy(s => s.FGP) : query.OrderByDescending(s => s.FGP);
                     break;
-                case StatEnum.BPG:
+                case GetPlayersSortByEnum.BPG:
                     ordered = isAscending ? query.OrderBy(s => s.BPG) : query.OrderByDescending(s => s.BPG);
                     break;
-                case StatEnum.TPG:
+                case GetPlayersSortByEnum.TPG:
                     ordered = isAscending ? query.OrderBy(s => s.TPG) : query.OrderByDescending(s => s.TPG);
                     break;
-                case StatEnum.SPG:
+                case GetPlayersSortByEnum.SPG:
                     ordered = isAscending ? query.OrderBy(s => s.SPG) : query.OrderByDescending(s => s.SPG);
                     break;
-                case StatEnum.ThreePP:
+                case GetPlayersSortByEnum.ThreePP:
                     ordered = isAscending ? query.OrderBy(s => s.ThreePP) : query.OrderByDescending(s => s.ThreePP);
+                    break;
+                case GetPlayersSortByEnum.DateJoined:
+                    ordered = isAscending ? query.OrderBy(s => s.Account.DateAdded) : query.OrderByDescending(s => s.Account.DateAdded);
                     break;
                 default:
                     ordered = isAscending ? query.OrderBy(s => s.OverallScore) : query.OrderByDescending(s => s.OverallScore);
