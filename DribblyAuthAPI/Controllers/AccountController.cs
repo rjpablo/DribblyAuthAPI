@@ -410,7 +410,7 @@ namespace DribblyAuthAPI.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost, AllowAnonymous]
         [Route("SendPasswordResetLink")]
         public async Task SendPasswordResetLinkAsync(ForgotPasswordModel input)
         {
