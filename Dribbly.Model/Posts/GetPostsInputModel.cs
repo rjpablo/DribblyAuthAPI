@@ -8,8 +8,7 @@ namespace Dribbly.Model.Posts
         [Required]
         public EntityTypeEnum PostedOnType { get; set; }
 
-        [Required]
-        public long PostedOnId { get; set; }
+        public long? PostedOnId { get; set; }
 
         public int GetCount { get; set; }
 

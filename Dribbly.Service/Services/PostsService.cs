@@ -55,7 +55,8 @@ namespace Dribbly.Service.Services
                 .Include(p => p.AddedBy.ProfilePhoto)
                 .Include(p => p.Files.Select(f => f.File))
                 .OrderByDescending(p => p.DateAdded)
-                .Where(p => p.PostedOnType == input.PostedOnType && p.PostedOnId == input.PostedOnId &&
+                .Where(p => (input.PostedOnType == EntityTypeEnum.All || (p.PostedOnType == input.PostedOnType &&
+                (!input.PostedOnId.HasValue || (p.PostedOnId == input.PostedOnId)))) &&
                 p.EntityStatus == EntityStatusEnum.Active && (!input.CeilingPostId.HasValue || p.Id < input.CeilingPostId))
                 .Take(input.GetCount).OrderByDescending(p => p.Id).ToListAsync();
 
@@ -81,7 +82,7 @@ namespace Dribbly.Service.Services
         public async Task<PostModel> UpdatePost(AddEditPostInputModel input)
         {
             PostModel post = _context.Posts
-                .Include(p=>p.Files)
+                .Include(p => p.Files)
                 .SingleOrDefault(p => p.Id == input.Id);
             if (_securityUtility.IsCurrentAccount(post.AddedById))
             {
@@ -89,7 +90,7 @@ namespace Dribbly.Service.Services
                 var newFileIds = input.FileIds.Where(id => !origFileIds.Contains(id)).ToList();
                 var fileIdsToDelete = origFileIds.Where(id => !input.FileIds.Contains(id)).ToList();
                 //remove deleted files
-                foreach(var id in fileIdsToDelete)
+                foreach (var id in fileIdsToDelete)
                 {
                     var file = post.Files.Single(f => f.FileId == id);
                     post.Files.Remove(file);
@@ -97,10 +98,10 @@ namespace Dribbly.Service.Services
                 }
                 // assign Order
                 int order = 1;
-                foreach(var id in input.FileIds)
+                foreach (var id in input.FileIds)
                 {
                     PostFile file = post.Files.SingleOrDefault(f => f.FileId == id);
-                    if(file == null) // new added file
+                    if (file == null) // new added file
                     {
                         file = new PostFile
                         {
