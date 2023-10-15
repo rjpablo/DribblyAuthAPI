@@ -113,6 +113,7 @@ namespace Dribbly.Service.Services
                     file.Order = order++;
                 }
                 post.Content = input.Content;
+                post.EmbedCode = input.EmbedCode;
                 await _context.SaveChangesAsync();
                 await _indexedEntitysRepository.Update(_context, post);
                 await _commonService.AddUserPostActivity(UserActivityTypeEnum.UpdatePost, post.Id);

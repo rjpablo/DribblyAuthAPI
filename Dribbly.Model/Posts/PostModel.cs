@@ -31,6 +31,8 @@ namespace Dribbly.Model.Posts
 
         public string Content { get; set; }
 
+        public string EmbedCode { get; set; }
+
         /// <summary>
         /// On which type of entity was this post posted
         /// </summary>
