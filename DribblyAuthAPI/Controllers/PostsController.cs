@@ -20,6 +20,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         //GETs
+        [HttpGet, AllowAnonymous]
+        [Route("GetPost/{postId}")]
+        public async Task<PostModel> GetPost(long postId)
+        {
+            return await _service.GetPostAsync(postId);
+        }
+
         [HttpPost, AllowAnonymous]
         [Route("GetPosts")]
         public async Task<IEnumerable<PostModel>> GetPosts([FromBody]GetPostsInputModel input)
