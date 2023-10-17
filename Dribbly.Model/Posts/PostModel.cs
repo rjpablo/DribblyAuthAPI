@@ -3,6 +3,7 @@ using Dribbly.Core.Models;
 using Dribbly.Model.Account;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Entities;
+using Dribbly.Model.Entities.Posts;
 using Dribbly.Model.Enums;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
@@ -51,6 +52,7 @@ namespace Dribbly.Model.Posts
         public EntityTypeEnum EntityType { get; } = EntityTypeEnum.Post;
         public string AdditionalData { get; set; }
         public ICollection<PostFile> Files { get; set; }
+        public ICollection<PostReaction> Reactions { get; set; }
 
         #endregion
 

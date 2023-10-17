@@ -9,6 +9,7 @@ using Dribbly.Model.Bookings;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Entities.Groups;
+using Dribbly.Model.Entities.Posts;
 using Dribbly.Model.Fouls;
 using Dribbly.Model.Games;
 using Dribbly.Model.Leagues;
@@ -70,8 +71,12 @@ namespace Dribbly.Model
         DbSet<VideoModel> Videos { get; set; }
         DbSet<ContactModel> Contacts { get; set; }
         DbSet<CourtReviewModel> CourtReivews { get; set; }
+        #region Posts
         DbSet<PostModel> Posts { get; set; }
         DbSet<PostFile> PostFiles { get; set; }
+        DbSet<PostReaction> PostReactions { get; set; }
+
+        #endregion
         DbSet<PlayerModel> Players { get; set; }
         IDbSet<ApplicationUser> Users { get; set; }
         DbSet<IndexedEntityModel> IndexedEntities { get; set; }
@@ -207,8 +212,11 @@ namespace Dribbly.Model
         public DbSet<VideoModel> Videos { get; set; }
         public DbSet<ContactModel> Contacts { get; set; }
         public DbSet<CourtReviewModel> CourtReivews { get; set; }
+        #region Posts
         public DbSet<PostModel> Posts { get; set; }
         public DbSet<PostFile> PostFiles { get; set; }
+        public DbSet<PostReaction> PostReactions { get; set; }
+        #endregion
         public DbSet<IndexedEntityModel> IndexedEntities { get; set; }
 
         public DbEntityEntry SetEntityState(object entity, EntityState state)

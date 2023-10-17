@@ -126,6 +126,7 @@
     <Compile Include="Entities\JoinTournamentRequestModel.cs" />
     <Compile Include="Entities\PlayerStatsModel.cs" />
     <Compile Include="Entities\PostFile.cs" />
+    <Compile Include="Entities\Posts\PostReaction.cs" />
     <Compile Include="Entities\StageBracketModel.cs" />
     <Compile Include="Entities\StageTeamModel.cs" />
     <Compile Include="Entities\TeamStatsModel.cs" />
@@ -133,10 +134,12 @@
     <Compile Include="Entities\TournamentStageModel.cs" />
     <Compile Include="Entities\TournamentPlayerModel.cs" />
     <Compile Include="Entities\TournamentTeamModel.cs" />
+    <Compile Include="Entities\UserReactionModel.cs" />
     <Compile Include="Enums\EjectionStatusEnum.cs" />
     <Compile Include="Enums\FoulTypeEnum.cs" />
     <Compile Include="Enums\GameEventTypeEnum.cs" />
     <Compile Include="Enums\PostTypeEnum.cs" />
+    <Compile Include="Enums\ReactionEnum.cs" />
     <Compile Include="Enums\ShotTypeEnum.cs" />
     <Compile Include="Enums\SortDirectionEnum.cs" />
     <Compile Include="Enums\StageStatusEnum.cs" />
@@ -177,6 +180,7 @@
     <Compile Include="Play\ShotDetailsInputModel.cs" />
     <Compile Include="Play\ShotModel.cs" />
     <Compile Include="Play\UpsertShotResultModel.cs" />
+    <Compile Include="Posts\PostReactionInput.cs" />
     <Compile Include="Seasons\SeasonDto.cs" />
     <Compile Include="Seasons\SeasonModel.cs" />
     <Compile Include="Shared\GenericEntityUpdateInputModel.cs" />

@@ -158,6 +158,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost]
+        [Route("DeleteTournament/{tournamentId}")]
+        public async Task DeleteTournamentAsync(long tournamentId)
+        {
+            await _service.DeleteTournamentAsync(tournamentId);
+        }
+
+        [HttpPost]
         [Route("RemoveTournamentTeam/{tournamentId}/{teamId}")]
         public async Task RemoveTournamentTeam(long tournamentId, long teamId)
         {

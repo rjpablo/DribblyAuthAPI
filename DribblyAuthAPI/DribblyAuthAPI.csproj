@@ -969,6 +969,10 @@
     <Compile Include="Migrations\202310150508119_AddColumn_Posts.EmbedCode.Designer.cs">
       <DependentUpon>202310150508119_AddColumn_Posts.EmbedCode.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202310161814090_CreateTable_PostReactions.cs" />
+    <Compile Include="Migrations\202310161814090_CreateTable_PostReactions.Designer.cs">
+      <DependentUpon>202310161814090_CreateTable_PostReactions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1526,6 +1530,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202310150508119_AddColumn_Posts.EmbedCode.resx">
       <DependentUpon>202310150508119_AddColumn_Posts.EmbedCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310161814090_CreateTable_PostReactions.resx">
+      <DependentUpon>202310161814090_CreateTable_PostReactions.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
