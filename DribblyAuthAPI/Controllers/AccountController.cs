@@ -122,6 +122,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost]
+        [Route("RemoveFlag/{key}")]
+        public async Task RemoveFlag(string key)
+        {
+            await _accountService.RemoveFlagAsync(key);
+        }
+
+        [HttpPost]
         [Route("SetIsPublic/{userId}/{isPublic}")]
         public async Task SetIsPublic(string userId, bool IsPublic)
         {
