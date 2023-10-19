@@ -8,7 +8,6 @@ using Dribbly.Identity.Models;
 using Dribbly.Model.Account;
 using Dribbly.Model.DTO;
 using Dribbly.Model.DTO.Account;
-using Dribbly.Model.Entities;
 using Dribbly.Model.Shared;
 using Dribbly.Service.DTO;
 using Dribbly.Service.Repositories;
@@ -112,6 +111,13 @@ namespace DribblyAuthAPI.Controllers
         public async Task UpdateAccount([FromBody] PlayerModel account)
         {
             await _accountService.UpdateAccountAsync(account);
+        }
+
+        [HttpPost]
+        [Route("SetHomeCourt/{courtId?}")]
+        public async Task SetHomeCourt(long? courtId)
+        {
+            await _accountService.SetHomeCourt(courtId);
         }
 
         [HttpPost]

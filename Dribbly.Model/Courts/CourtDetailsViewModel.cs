@@ -11,6 +11,7 @@ namespace Dribbly.Model.Courts
         public virtual AccountBasicInfoModel Owner { get; set; }
 
         public bool IsFollowed { get; set; }
+        public bool IsHomeCourt { get; set; }
 
         public long ReviewCount { get; set; }
 

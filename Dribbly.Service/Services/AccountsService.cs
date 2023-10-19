@@ -241,6 +241,14 @@ namespace Dribbly.Service.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task SetHomeCourt(long? courtId)
+        {
+            var accountId = _securityUtility.GetAccountId().Value;
+            var account = await _accountRepo.GetAccountById(accountId);
+            account.HomeCourtId = courtId;
+            await _context.SaveChangesAsync();
+        }
+
         public async Task SetStatus(long accountId, EntityStatusEnum status)
         {
             PlayerModel account = _dbSet.Include(u => u.User).SingleOrDefault(a => a.Id == accountId);
@@ -785,6 +793,7 @@ namespace Dribbly.Service.Services
         Task<MultimediaModel> UploadPrimaryPhotoAsync(long accountId);
 
         Task UpdateAccountAsync(PlayerModel account);
+        Task SetHomeCourt(long? courtId);
 
         Task<IEnumerable<MultimediaModel>> GetAccountPhotosAsync(int accountId);
 
