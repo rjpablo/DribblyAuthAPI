@@ -85,7 +85,7 @@ namespace Dribbly.Service.Services
                 (!filter.TeamIds.Any() || filter.TeamIds.Contains(g.Team1.TeamId) || filter.TeamIds.Contains(g.Team2.TeamId))
                 && (!filter.PlayerIds.Any() ||
                     _context.GamePlayers.Where(p => filter.PlayerIds.Contains(p.AccountId)).Select(p => p.GameId).Contains(g.Id))
-                && (!filter.CourdIds.Any() || filter.CourdIds.Contains(g.CourtId))
+                && (!filter.CourtIds.Any() || filter.CourtIds.Contains(g.CourtId))
                 && (!filter.UpcomingOnly || g.Start > DateTime.UtcNow));
 
             if (filter.PageSize > 0)
