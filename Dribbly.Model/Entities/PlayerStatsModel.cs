@@ -81,7 +81,7 @@ namespace Dribbly.Model.Entities
         public int PlayTimeMs { get; set; }
 
         [ForeignKey(nameof(LastGame))]
-        public long LastGameId { get; set; }
+        public long? LastGameId { get; set; }
 
         /// <summary>
         /// The player's overall score based on various stats

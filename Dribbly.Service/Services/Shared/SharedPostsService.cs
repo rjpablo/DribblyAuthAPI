@@ -44,7 +44,8 @@ namespace Dribbly.Service.Services.Shared
                 Content = input.Content,
                 EntityStatus = EntityStatusEnum.Active,
                 AdditionalData = input.AdditionalData,
-                Type = input.Type
+                Type = input.Type,
+                EmbedCode = input.EmbedCode
             };
             post.AddedById = _securityUtility.GetAccountId().Value;
             Add(post);

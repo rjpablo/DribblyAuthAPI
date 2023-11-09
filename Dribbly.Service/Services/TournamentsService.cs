@@ -369,6 +369,49 @@ namespace Dribbly.Service.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeleteTournamentAsync(long tournamentId)
+        {
+            var tournament = await _context.Tournaments.SingleOrDefaultAsync(t => t.Id == tournamentId);
+            if (tournament == null)
+            {
+                throw new DribblyObjectNotFoundException($"Tournament with ID {tournamentId} not found.",
+                    friendlyMessage: "Could not find tournament details. Please refresh the page and try again.");
+            }
+
+            var accountId = _securityUtility.GetAccountId();
+            if (tournament.AddedById != accountId)
+            {
+                throw new DribblyForbiddenException($"Unauthorized deletion of Tournament with ID {tournamentId}. Account ID: {accountId}",
+            friendlyMessage: "You do not have permission to delete this tournament.");
+            }
+
+            var games = await _context.Games.Where(g => g.TournamentId == tournamentId).ToListAsync();
+            if (games.Any(g => g.Status == GameStatusEnum.Started || g.Status == GameStatusEnum.Finished))
+            {
+                throw new DribblyInvalidOperationException($"Attempted to delete a tournament with active games Tournament ID: {tournamentId}. Account ID: {accountId}",
+                    friendlyMessage: "The tournament can no longer be deleted because it has games that are on going or already finished");
+            }
+            else if (games.Any(g => g.Status == GameStatusEnum.WaitingToStart))
+            {
+                throw new DribblyInvalidOperationException($"Attempted to delete a tournament with active games Tournament ID: {tournamentId}. Account ID: {accountId}",
+                    friendlyMessage: "The tournament can not be deleted because it has scheduled games. Please cancel the games first before deleting the tournament");
+            }
+
+            using (var tx = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    _context.Tournaments.Remove(tournament);
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception e)
+                {
+                    tx.Rollback();
+                    throw;
+                }
+            }
+        }
+
         public async Task DeleteStageAsync(long stageId)
         {
             var stage = await _context.TournamentStages
@@ -598,7 +641,7 @@ namespace Dribbly.Service.Services
                     var games = await _context.Games.Where(g => g.TournamentId == tournamentId
                     && (g.Team1.TeamId == teamId || g.Team2.TeamId == teamId)).ToListAsync();
 
-                    if(games.Any(g=>g.Status == GameStatusEnum.Started || g.Status == GameStatusEnum.Finished))
+                    if (games.Any(g => g.Status == GameStatusEnum.Started || g.Status == GameStatusEnum.Finished))
                     {
                         throw new DribblyInvalidOperationException("Tried to withdraw tournament team with finished or on-going game",
                             friendlyMessage: "Cannot remove team because it has games that have either started or finished");
@@ -675,6 +718,7 @@ namespace Dribbly.Service.Services
     {
         Task<TournamentModel> AddTournamentAsync(TournamentModel season);
         Task<TournamentViewerModel> GetTournamentViewerAsync(long tournamentId);
+        Task DeleteTournamentAsync(long tournamentId);
         Task<IEnumerable<TeamStatsViewModel>> GetTopTeamsAsync(GetTournamentTeamsInputModel input);
         Task<IEnumerable<PlayerStatsViewModel>> GetPlayersAsync(GetTournamentPlayersInputModel input);
         Task<MultimediaModel> UpdateLogoAsync(long tournamentId);

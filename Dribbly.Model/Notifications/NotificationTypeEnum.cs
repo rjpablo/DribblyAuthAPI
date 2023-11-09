@@ -64,5 +64,9 @@ namespace Dribbly.Model.Notifications
         JoinGroupRequest = 80,
         JoinGroupRequestApproved = 81,
         #endregion
+
+        #region Post-Related 100-119
+        PostReceivedReaction = 100
+        #endregion
     }
 }

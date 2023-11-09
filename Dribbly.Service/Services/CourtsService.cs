@@ -5,6 +5,7 @@ using Dribbly.Core.Exceptions;
 using Dribbly.Core.Models;
 using Dribbly.Core.Utilities;
 using Dribbly.Model;
+using Dribbly.Model.Account;
 using Dribbly.Model.Bookings;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Games;
@@ -55,7 +56,7 @@ namespace Dribbly.Service.Services
 
         public async Task<IEnumerable<CourtDetailsViewModel>> GetAllActiveAsync()
         {
-            CourtModel[] courts = await _context.Courts.Where(c=>c.EntityStatus == EntityStatusEnum.Active)
+            CourtModel[] courts = await _context.Courts.Where(c => c.EntityStatus == EntityStatusEnum.Active)
                 .Include(p => p.PrimaryPhoto).ToArrayAsync();
             List<CourtDetailsViewModel> viewModels = new List<CourtDetailsViewModel>();
 
@@ -74,17 +75,23 @@ namespace Dribbly.Service.Services
         {
             CourtModel court = await _context.Courts.Include(p => p.PrimaryPhoto)
                 .Include(p => p.Contact)
-                .Include(c=>c.Photos.Select(p=>p.Photo))
+                .Include(c => c.Photos.Select(p => p.Photo))
                 .SingleOrDefaultAsync(p => p.Id == id);
             court.Photos = court.Photos.Where(p => p.Photo.DateDeleted == null).ToList();
             var result = new CourtDetailsViewModel(court);
-            if(result.EntityStatus == EntityStatusEnum.Deleted)
+            if (result.EntityStatus == EntityStatusEnum.Deleted)
             {
                 // Do not populate other properties if court has been deleted to save some resources
                 return result;
             }
             long? currentAccountId = _securityUtility.GetAccountId();
             result.IsFollowed = _context.CourtFollowings.Any(f => currentAccountId.HasValue && f.CourtId == id && f.FollowedById == currentAccountId);
+            PlayerModel account = null;
+            if (currentAccountId.HasValue)
+            {
+                account = _context.Players.Single(a => a.Id == currentAccountId);
+                result.IsHomeCourt = id == account.HomeCourtId;
+            }
 
             Task populateOwnerTask = PopulateOwner(result);
             Task<long> followerCountTask = getFollowerCountAsync(court.Id);
@@ -257,7 +264,7 @@ namespace Dribbly.Service.Services
             CourtModel court = await _dbSet.SingleOrDefaultAsync(c => c.Id == input.Id);
             if (court.OwnerId == _securityUtility.GetAccountId().Value || AuthenticationService.HasPermission(CourtPermission.UpdateNotOwned))
             {
-                foreach(KeyValuePair<string, object> item in input.Properties)
+                foreach (KeyValuePair<string, object> item in input.Properties)
                 {
                     court[item.Key] = item.Value;
                 }
@@ -287,7 +294,7 @@ namespace Dribbly.Service.Services
         {
             var court = await _dbSet.FirstOrDefaultAsync(c => c.Id == courtId);
 
-            if(court == null)
+            if (court == null)
             {
                 throw new DribblyObjectNotFoundException($"Attempted to delete non-existent court. Court ID: {courtId}");
             }

@@ -1,4 +1,5 @@
-﻿using Dribbly.Model.Posts;
+﻿using Dribbly.Model.Enums;
+using Dribbly.Model.Posts;
 using Dribbly.Service.Enums;
 using Dribbly.Service.Services;
 using System.Collections.Generic;
@@ -19,6 +20,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         //GETs
+        [HttpGet, AllowAnonymous]
+        [Route("GetPost/{postId}")]
+        public async Task<PostModel> GetPost(long postId)
+        {
+            return await _service.GetPostAsync(postId);
+        }
+
         [HttpPost, AllowAnonymous]
         [Route("GetPosts")]
         public async Task<IEnumerable<PostModel>> GetPosts([FromBody]GetPostsInputModel input)
@@ -39,6 +47,20 @@ namespace DribblyAuthAPI.Controllers
         public async Task<PostModel> UpdatePost([FromBody]AddEditPostInputModel input)
         {
             return await _service.UpdatePost(input);
+        }
+
+        [HttpPost]
+        [Route("AddReaction")]
+        public async Task AddReaction(PostReactionInput input)
+        {
+            await _service.AddReaction(input);
+        }
+
+        [HttpPost]
+        [Route("RemoveReaction")]
+        public async Task RemoveReaction(PostReactionInput input)
+        {
+            await _service.RemoveReaction(input);
         }
 
         [HttpPost]

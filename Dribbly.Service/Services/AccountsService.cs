@@ -82,10 +82,12 @@ namespace Dribbly.Service.Services
                 throw new DribblyObjectNotFoundException($"Account with the username '{userName}' does not exist.");
             }
             var stats = await _context.PlayerStats.SingleOrDefaultAsync(s => s.AccountId == account.Id);
+            var flags = await _context.AccountFlags.Where(f => f.AccountId == account.Id).ToListAsync();
             return new AccountViewerModel
             {
                 Account = account,
-                Stats = stats
+                Stats = stats,
+                Flags = flags
             };
         }
 
@@ -236,6 +238,14 @@ namespace Dribbly.Service.Services
         {
             _dbSet.AddOrUpdate(account);
             await _indexedEntitysRepo.Update(_context, account);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SetHomeCourt(long? courtId)
+        {
+            var accountId = _securityUtility.GetAccountId().Value;
+            var account = await _accountRepo.GetAccountById(accountId);
+            account.HomeCourtId = courtId;
             await _context.SaveChangesAsync();
         }
 
@@ -463,6 +473,9 @@ namespace Dribbly.Service.Services
             {
                 _context.SetEntityState(account.User.Logins.First(), EntityState.Unchanged);
             }
+            _context.PlayerStats.Add(new PlayerStatsModel(account.Id));
+            _context.AccountFlags.Add(new AccountFlag(account.Id, "upload_primary_photo"));
+            await _context.SaveChangesAsync();
             var entity = new IndexedEntityModel(account, account.Username);
             await _indexedEntitysRepo.Add(_context, entity, entity.AdditionalData);
             await _commonService.AddUserAccountActivity(UserActivityTypeEnum.CreateAccount, account.Id);
@@ -740,6 +753,19 @@ namespace Dribbly.Service.Services
 
             return result.Select(s => new PlayerStatsViewModel(s));
         }
+
+        #region Flag
+        public async Task RemoveFlagAsync(string key)
+        {
+            var accountId = _securityUtility.GetAccountId();
+            var flag = await _context.AccountFlags.SingleOrDefaultAsync(f => f.Key == key && f.AccountId == accountId);
+            if (flag != null)
+            {
+                _context.AccountFlags.Remove(flag);
+                await _context.SaveChangesAsync();
+            }
+        }
+        #endregion
     }
 
     public interface IAccountsService
@@ -767,6 +793,7 @@ namespace Dribbly.Service.Services
         Task<MultimediaModel> UploadPrimaryPhotoAsync(long accountId);
 
         Task UpdateAccountAsync(PlayerModel account);
+        Task SetHomeCourt(long? courtId);
 
         Task<IEnumerable<MultimediaModel>> GetAccountPhotosAsync(int accountId);
 
@@ -788,5 +815,9 @@ namespace Dribbly.Service.Services
         Task<JObject> RegisterExternal(RegisterExternalBindingModel model);
         Task<ParsedExternalAccessToken> VerifyExternalAccessToken(string provider, string accessToken);
         Task<JObject> GenerateLocalAccessTokenResponseAsync(string userName);
+
+        #region Flags
+        Task RemoveFlagAsync(string key);
+        #endregion
     }
 }

@@ -40,6 +40,7 @@ namespace Dribbly.Service.Repositories
                     case NotificationTypeEnum.AssignedAsTimekeeper:
                     case NotificationTypeEnum.JoinGroupRequest:
                     case NotificationTypeEnum.JoinGroupRequestApproved:
+                    case NotificationTypeEnum.PostReceivedReaction:
                         _context.Notifications.Add((NotificationModel)notification);
                         break;
                 }

@@ -8,7 +8,6 @@ using Dribbly.Identity.Models;
 using Dribbly.Model.Account;
 using Dribbly.Model.DTO;
 using Dribbly.Model.DTO.Account;
-using Dribbly.Model.Entities;
 using Dribbly.Model.Shared;
 using Dribbly.Service.DTO;
 using Dribbly.Service.Repositories;
@@ -115,10 +114,24 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost]
+        [Route("SetHomeCourt/{courtId?}")]
+        public async Task SetHomeCourt(long? courtId)
+        {
+            await _accountService.SetHomeCourt(courtId);
+        }
+
+        [HttpPost]
         [Route("SetStatus/{accountId}/{status}")]
         public async Task SetStatus(long accountId, EntityStatusEnum status)
         {
             await _accountService.SetStatus(accountId, status);
+        }
+
+        [HttpPost]
+        [Route("RemoveFlag/{key}")]
+        public async Task RemoveFlag(string key)
+        {
+            await _accountService.RemoveFlagAsync(key);
         }
 
         [HttpPost]
@@ -410,7 +423,7 @@ namespace DribblyAuthAPI.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost, AllowAnonymous]
         [Route("SendPasswordResetLink")]
         public async Task SendPasswordResetLinkAsync(ForgotPasswordModel input)
         {

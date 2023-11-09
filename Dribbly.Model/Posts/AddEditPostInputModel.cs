@@ -23,5 +23,6 @@ namespace Dribbly.Model.Posts
         public PostTypeEnum? Type { get; set; }
         public string AdditionalData { get; set; }
         public List<long> FileIds { get; set; } = new List<long>();
+        public string EmbedCode { get; set; }
     }
 }

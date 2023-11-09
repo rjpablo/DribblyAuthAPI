@@ -6,16 +6,20 @@ using Dribbly.Core.Utilities;
 using Dribbly.Email.Services;
 using Dribbly.Model;
 using Dribbly.Model.Entities;
+using Dribbly.Model.Entities.Posts;
+using Dribbly.Model.Enums;
+using Dribbly.Model.Notifications;
 using Dribbly.Model.Posts;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Enums;
 using Dribbly.Service.Repositories;
 using Dribbly.Service.Services.Shared;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace Dribbly.Service.Services
 {
@@ -26,6 +30,7 @@ namespace Dribbly.Service.Services
         IAccountRepository _accountRepo;
         private readonly IIndexedEntitysRepository _indexedEntitysRepository;
         private readonly ISharedPostsService _sharedPostsService;
+        private readonly INotificationsRepository _notificationsRepo;
 
         ICommonService _commonService { get; }
 
@@ -39,6 +44,7 @@ namespace Dribbly.Service.Services
             _commonService = new CommonService(context, _securityUtility);
             _indexedEntitysRepository = new IndexedEntitysRepository(context);
             _sharedPostsService = new SharedPostsService(context, securityUtility, _accountRepo, _commonService, new IndexedEntitysRepository(context)); ;
+            _notificationsRepo = new NotificationsRepository(context);
         }
 
         /// <summary>
@@ -51,25 +57,29 @@ namespace Dribbly.Service.Services
         /// <returns></returns>
         public async Task<IEnumerable<PostModel>> GetPosts(GetPostsInputModel input)
         {
-            long? postOnIdLong;
-            if (input.PostedOnType == EntityTypeEnum.Account)
-            {
-                postOnIdLong = await _accountRepo.GetIdentityUserAccountId(input.PostedOnId);
-            }
-            else
-            {
-                postOnIdLong = input.PostedOnId;
-            }
             var posts = await _context.Posts
                 .Include(p => p.AddedBy.User)
                 .Include(p => p.AddedBy.ProfilePhoto)
                 .Include(p => p.Files.Select(f => f.File))
                 .OrderByDescending(p => p.DateAdded)
-                .Where(p => p.PostedOnType == input.PostedOnType && p.PostedOnId == postOnIdLong &&
+                .Include(p => p.Reactions.Select(r => r.Reactor.ProfilePhoto))
+                .Where(p => (input.PostedOnType == EntityTypeEnum.All || (p.PostedOnType == input.PostedOnType &&
+                (!input.PostedOnId.HasValue || (p.PostedOnId == input.PostedOnId)))) &&
                 p.EntityStatus == EntityStatusEnum.Active && (!input.CeilingPostId.HasValue || p.Id < input.CeilingPostId))
                 .Take(input.GetCount).OrderByDescending(p => p.Id).ToListAsync();
 
             return posts;
+        }
+
+        public async Task<PostModel> GetPostAsync(long postId)
+        {
+            return await _context.Posts
+                .Include(p => p.AddedBy.User)
+                .Include(p => p.AddedBy.ProfilePhoto)
+                .Include(p => p.Files.Select(f => f.File))
+                .OrderByDescending(p => p.DateAdded)
+                .Include(p => p.Reactions.Select(r => r.Reactor.ProfilePhoto))
+                .SingleOrDefaultAsync(p => p.Id == postId && p.EntityStatus == EntityStatusEnum.Active);
         }
 
         private async Task<EntityBasicInfoModel> GetAddedBy(PostModel post)
@@ -83,6 +93,76 @@ namespace Dribbly.Service.Services
             return null;
         }
 
+        public async Task AddReaction(PostReactionInput input)
+        {
+            using (var tx = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var accountId = _securityUtility.GetAccountId().Value;
+                    var account = await _context.Accounts.SingleOrDefaultAsync(a => a.Id == accountId);
+                    var post = await _context.Posts.SingleOrDefaultAsync(p => p.Id == input.PostId);
+                    if (post == null)
+                    {
+                        throw new DribblyObjectNotFoundException($"Could not find post with ID {input.PostId}",
+                            friendlyMessage: "The post details could not be found.");
+                    }
+
+                    if(await _context.PostReactions.AnyAsync(r=>r.PostId == input.PostId
+                    && r.ReactorId == accountId && r.Type == input.ReactionType))
+                    {
+                        return;
+                    }
+
+                    var reaction = new PostReaction
+                    {
+                        DateAdded = DateTime.UtcNow,
+                        PostId = input.PostId,
+                        Type = input.ReactionType,
+                        ReactorId = accountId
+                    };
+
+                    _context.PostReactions.Add(reaction);
+                    await _context.SaveChangesAsync();
+
+                    if (accountId != post.AddedById)
+                    {
+                        await _notificationsRepo.TryAddAsync(new NotificationModel
+                        {
+                            ForUserId = post.AddedById,
+                            DateAdded = DateTime.UtcNow,
+                            Type = NotificationTypeEnum.PostReceivedReaction,
+                            AdditionalInfo = JsonConvert.SerializeObject(new
+                            {
+                                reactionType = input.ReactionType,
+                                reactorName = account.Name,
+                                postId = post.Id
+                            })
+                        });
+                    }
+                    tx.Commit();
+                }
+                catch (Exception)
+                {
+                    tx.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        public async Task RemoveReaction(PostReactionInput input)
+        {
+            var accountId = _securityUtility.GetAccountId().Value;
+            var reactions = await _context.PostReactions
+                .Where(r => r.PostId == input.PostId && r.Type == input.ReactionType
+                && r.ReactorId == accountId).ToListAsync();
+            if (reactions.Any())
+            {
+                _context.PostReactions.RemoveRange(reactions);
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public async Task<PostModel> AddPost(AddEditPostInputModel input)
         {
             return await _sharedPostsService.AddPostAsync(input);
@@ -91,7 +171,7 @@ namespace Dribbly.Service.Services
         public async Task<PostModel> UpdatePost(AddEditPostInputModel input)
         {
             PostModel post = _context.Posts
-                .Include(p=>p.Files)
+                .Include(p => p.Files)
                 .SingleOrDefault(p => p.Id == input.Id);
             if (_securityUtility.IsCurrentAccount(post.AddedById))
             {
@@ -99,7 +179,7 @@ namespace Dribbly.Service.Services
                 var newFileIds = input.FileIds.Where(id => !origFileIds.Contains(id)).ToList();
                 var fileIdsToDelete = origFileIds.Where(id => !input.FileIds.Contains(id)).ToList();
                 //remove deleted files
-                foreach(var id in fileIdsToDelete)
+                foreach (var id in fileIdsToDelete)
                 {
                     var file = post.Files.Single(f => f.FileId == id);
                     post.Files.Remove(file);
@@ -107,10 +187,10 @@ namespace Dribbly.Service.Services
                 }
                 // assign Order
                 int order = 1;
-                foreach(var id in input.FileIds)
+                foreach (var id in input.FileIds)
                 {
                     PostFile file = post.Files.SingleOrDefault(f => f.FileId == id);
-                    if(file == null) // new added file
+                    if (file == null) // new added file
                     {
                         file = new PostFile
                         {
@@ -122,6 +202,7 @@ namespace Dribbly.Service.Services
                     file.Order = order++;
                 }
                 post.Content = input.Content;
+                post.EmbedCode = input.EmbedCode;
                 await _context.SaveChangesAsync();
                 await _indexedEntitysRepository.Update(_context, post);
                 await _commonService.AddUserPostActivity(UserActivityTypeEnum.UpdatePost, post.Id);
@@ -174,10 +255,13 @@ namespace Dribbly.Service.Services
     public interface IPostsService
     {
         Task<IEnumerable<PostModel>> GetPosts(GetPostsInputModel input);
+        Task<PostModel> GetPostAsync(long postId);
 
         Task<PostModel> AddPost(AddEditPostInputModel input);
 
         Task<PostModel> UpdatePost(AddEditPostInputModel input);
+        Task AddReaction(PostReactionInput input);
+        Task RemoveReaction(PostReactionInput input);
 
         Task<bool> DeletePost(long Id);
 
