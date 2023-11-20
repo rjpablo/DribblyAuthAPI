@@ -26,6 +26,8 @@ namespace Dribbly.Model.DTO
         [DataMember]
         public PlayerPositionEnum? Position { get; set; }
         [DataMember]
+        public CityModel City { get; set; }
+        [DataMember]
         public DateTime DateAdded { get; set; }
 
         #endregion
@@ -114,6 +116,7 @@ namespace Dribbly.Model.DTO
             ProfilePhoto = source.Account.ProfilePhoto;
             HeightInches = source.Account.HeightInches;
             Position = source.Account.Position;
+            City = source.Account.City;
 
             // Stats
             GP = source.GP;
@@ -141,6 +144,7 @@ namespace Dribbly.Model.DTO
             JerseyNo = source.JerseyNo;
             HeightInches = source.Account.HeightInches;
             Position = source.Account.Position;
+            City = source.Account.City;
             DateAdded = source.Account.DateAdded;
 
             // Stats

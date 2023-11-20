@@ -96,7 +96,7 @@ namespace Dribbly.Service.Services
         public async Task<IEnumerable<PlayerStatsViewModel>> GetPlayersAsync(GetPlayersFilterModel filter)
         {
             var query = _context.PlayerStats
-                .Include(s => s.Account.User).Include(s => s.Account.ProfilePhoto)
+                .Include(s => s.Account.User).Include(s => s.Account.ProfilePhoto).Include(s => s.Account.City)
                 .Where(s => (!filter.CourtIds.Any() || (s.Account.HomeCourtId.HasValue && filter.CourtIds.Contains(s.Account.HomeCourtId.Value)))
                 && (!filter.JoinBeforeDate.HasValue || s.Account.DateAdded < filter.JoinBeforeDate));
             query = ApplySortingAndPaging(query, filter);
@@ -773,6 +773,7 @@ namespace Dribbly.Service.Services
         public async Task<IEnumerable<PlayerStatsViewModel>> GetTopPlayersAsync()
         {
             var result = await _context.PlayerStats.Include(s => s.Account.User).Include(s => s.Account.ProfilePhoto)
+                .Include(s => s.Account.City)
                 .OrderByDescending(s => s.OverallScore)
                 .Take(10)
                 .ToListAsync();
