@@ -33,6 +33,7 @@ namespace Dribbly.Model
         DbSet<RefreshToken> RefreshTokens { get; set; }
         DbSet<LeagueModel> Leagues { get; set; }
         DbSet<SeasonModel> Seasons { get; set; }
+        DbSet<CityModel> Cities { get; set; }
 
         #region Tournaments
         DbSet<TournamentModel> Tournaments { get; set; }
@@ -154,6 +155,7 @@ namespace Dribbly.Model
 
             base.OnModelCreating(modelBuilder);
         }
+        public DbSet<CityModel> Cities { get; set; }
 
         public DbSet<PlayerModel> Players { get; set; }
         public DbSet<AccountModel> Accounts { get; set; }

@@ -236,9 +236,35 @@ namespace Dribbly.Service.Services
 
         public async Task UpdateAccountAsync(PlayerModel account)
         {
-            _dbSet.AddOrUpdate(account);
-            await _indexedEntitysRepo.Update(_context, account);
-            await _context.SaveChangesAsync();
+            using (var tx = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (account.City != null && !account.CityId.HasValue)
+                    {
+                        var city = await _context.Cities.SingleOrDefaultAsync(c => c.GoogleId == account.City.GoogleId);
+                        if (city != null)
+                        {
+                            account.CityId = city.Id;
+                        }
+                        else
+                        {
+                            _context.Cities.Add(account.City);
+                            await _context.SaveChangesAsync();
+                            account.CityId = account.City.Id;
+                        }
+                    }
+                    _dbSet.AddOrUpdate(account);
+                    await _indexedEntitysRepo.Update(_context, account);
+                    await _context.SaveChangesAsync();
+                    tx.Commit();
+                }
+                catch (Exception e)
+                {
+                    tx.Rollback();
+                    throw;
+                }
+            }
         }
 
         public async Task SetHomeCourt(long? courtId)

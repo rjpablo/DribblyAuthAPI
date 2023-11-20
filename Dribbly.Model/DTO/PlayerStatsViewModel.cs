@@ -1,6 +1,7 @@
 ﻿using Dribbly.Core.Models;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Games;
+using Dribbly.Service.Enums;
 using System;
 using System.Runtime.Serialization;
 
@@ -22,6 +23,8 @@ namespace Dribbly.Model.DTO
         public int? JerseyNo { get; set; }
         [DataMember]
         public double? HeightInches { get; set; }
+        [DataMember]
+        public PlayerPositionEnum? Position { get; set; }
         [DataMember]
         public DateTime DateAdded { get; set; }
 
@@ -109,6 +112,8 @@ namespace Dribbly.Model.DTO
             Name = source.Account.Name;
             Username = source.Account.Username;
             ProfilePhoto = source.Account.ProfilePhoto;
+            HeightInches = source.Account.HeightInches;
+            Position = source.Account.Position;
 
             // Stats
             GP = source.GP;
@@ -135,6 +140,7 @@ namespace Dribbly.Model.DTO
             ProfilePhoto = source.Account.ProfilePhoto;
             JerseyNo = source.JerseyNo;
             HeightInches = source.Account.HeightInches;
+            Position = source.Account.Position;
             DateAdded = source.Account.DateAdded;
 
             // Stats

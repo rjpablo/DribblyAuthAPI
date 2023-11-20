@@ -30,6 +30,8 @@ namespace Dribbly.Model.Account
         public PlayerPositionEnum? Position { get; set; }
         [ForeignKey(nameof(HomeCourt))]
         public long? HomeCourtId { get; set; }
+        [ForeignKey(nameof(City))]
+        public long? CityId { get; set; }
         public double? HeightInches { get; set; }
         public double? Rating { get; set; }
 
@@ -39,6 +41,7 @@ namespace Dribbly.Model.Account
         [JsonIgnore]
         public virtual ApplicationUser User { get; set; }
         public CourtModel HomeCourt { get; set; }
+        public CityModel City { get; set; }
 
         public AccountBasicInfoModel ToBasicInfo()
         {
