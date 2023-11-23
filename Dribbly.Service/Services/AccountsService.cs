@@ -98,7 +98,9 @@ namespace Dribbly.Service.Services
             var query = _context.PlayerStats
                 .Include(s => s.Account.User).Include(s => s.Account.ProfilePhoto).Include(s => s.Account.City)
                 .Where(s => (!filter.CourtIds.Any() || (s.Account.HomeCourtId.HasValue && filter.CourtIds.Contains(s.Account.HomeCourtId.Value)))
-                && (!filter.JoinBeforeDate.HasValue || s.Account.DateAdded < filter.JoinBeforeDate));
+                && (!filter.JoinBeforeDate.HasValue || s.Account.DateAdded < filter.JoinBeforeDate)
+                && (filter.Position == null || s.Account.Position == filter.Position)
+                && (string.IsNullOrEmpty(filter.PlaceId) || s.Account.City.GoogleId == filter.PlaceId));
             query = ApplySortingAndPaging(query, filter);
             var players = await query.ToListAsync();
             return players.Select(s => new PlayerStatsViewModel(s));
