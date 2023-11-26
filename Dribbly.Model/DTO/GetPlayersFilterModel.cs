@@ -14,5 +14,7 @@ namespace Dribbly.Model.DTO
         public DateTime? JoinBeforeDate { get; set; }
         public PlayerPositionEnum? Position { get; set; }
         public string PlaceId { get; set; }
+        public int? MinHeightInches { get; set; }
+        public int? MaxHeightInches { get; set; }
     }
 }

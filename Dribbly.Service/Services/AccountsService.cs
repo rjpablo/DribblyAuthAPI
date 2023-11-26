@@ -100,7 +100,9 @@ namespace Dribbly.Service.Services
                 .Where(s => (!filter.CourtIds.Any() || (s.Account.HomeCourtId.HasValue && filter.CourtIds.Contains(s.Account.HomeCourtId.Value)))
                 && (!filter.JoinBeforeDate.HasValue || s.Account.DateAdded < filter.JoinBeforeDate)
                 && (filter.Position == null || s.Account.Position == filter.Position)
-                && (string.IsNullOrEmpty(filter.PlaceId) || s.Account.City.GoogleId == filter.PlaceId));
+                && (string.IsNullOrEmpty(filter.PlaceId) || s.Account.City.GoogleId == filter.PlaceId)
+                && ((filter.MinHeightInches == null || s.Account.HeightInches >= filter.MinHeightInches) &&
+                (filter.MaxHeightInches == null || s.Account.HeightInches <= filter.MaxHeightInches)));
             query = ApplySortingAndPaging(query, filter);
             var players = await query.ToListAsync();
             return players.Select(s => new PlayerStatsViewModel(s));
