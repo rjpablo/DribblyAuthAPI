@@ -42,6 +42,8 @@ namespace Dribbly.Model.Account
         public virtual ApplicationUser User { get; set; }
         public CourtModel HomeCourt { get; set; }
         public CityModel City { get; set; }
+        public string FbLink { get; set; }
+        public string IgLink { get; set; }
 
         public AccountBasicInfoModel ToBasicInfo()
         {
