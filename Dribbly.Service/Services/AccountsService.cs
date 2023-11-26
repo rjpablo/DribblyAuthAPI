@@ -96,9 +96,13 @@ namespace Dribbly.Service.Services
         public async Task<IEnumerable<PlayerStatsViewModel>> GetPlayersAsync(GetPlayersFilterModel filter)
         {
             var query = _context.PlayerStats
-                .Include(s => s.Account.User).Include(s => s.Account.ProfilePhoto)
+                .Include(s => s.Account.User).Include(s => s.Account.ProfilePhoto).Include(s => s.Account.City)
                 .Where(s => (!filter.CourtIds.Any() || (s.Account.HomeCourtId.HasValue && filter.CourtIds.Contains(s.Account.HomeCourtId.Value)))
-                && (!filter.JoinBeforeDate.HasValue || s.Account.DateAdded < filter.JoinBeforeDate));
+                && (!filter.JoinBeforeDate.HasValue || s.Account.DateAdded < filter.JoinBeforeDate)
+                && (filter.Position == null || s.Account.Position == filter.Position)
+                && (string.IsNullOrEmpty(filter.PlaceId) || s.Account.City.GoogleId == filter.PlaceId)
+                && ((filter.MinHeightInches == null || s.Account.HeightInches >= filter.MinHeightInches) &&
+                (filter.MaxHeightInches == null || s.Account.HeightInches <= filter.MaxHeightInches)));
             query = ApplySortingAndPaging(query, filter);
             var players = await query.ToListAsync();
             return players.Select(s => new PlayerStatsViewModel(s));
@@ -236,9 +240,35 @@ namespace Dribbly.Service.Services
 
         public async Task UpdateAccountAsync(PlayerModel account)
         {
-            _dbSet.AddOrUpdate(account);
-            await _indexedEntitysRepo.Update(_context, account);
-            await _context.SaveChangesAsync();
+            using (var tx = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (account.City != null && !account.CityId.HasValue)
+                    {
+                        var city = await _context.Cities.SingleOrDefaultAsync(c => c.GoogleId == account.City.GoogleId);
+                        if (city != null)
+                        {
+                            account.CityId = city.Id;
+                        }
+                        else
+                        {
+                            _context.Cities.Add(account.City);
+                            await _context.SaveChangesAsync();
+                            account.CityId = account.City.Id;
+                        }
+                    }
+                    _dbSet.AddOrUpdate(account);
+                    await _indexedEntitysRepo.Update(_context, account);
+                    await _context.SaveChangesAsync();
+                    tx.Commit();
+                }
+                catch (Exception e)
+                {
+                    tx.Rollback();
+                    throw;
+                }
+            }
         }
 
         public async Task SetHomeCourt(long? courtId)
@@ -747,6 +777,7 @@ namespace Dribbly.Service.Services
         public async Task<IEnumerable<PlayerStatsViewModel>> GetTopPlayersAsync()
         {
             var result = await _context.PlayerStats.Include(s => s.Account.User).Include(s => s.Account.ProfilePhoto)
+                .Include(s => s.Account.City)
                 .OrderByDescending(s => s.OverallScore)
                 .Take(10)
                 .ToListAsync();

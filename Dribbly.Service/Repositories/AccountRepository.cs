@@ -24,6 +24,7 @@ namespace Dribbly.Service.Repositories
             PlayerModel account = await _context.Players
                 .Include(a => a.ProfilePhoto)
                 .Include(a => a.User)
+                .Include(a => a.City)
                 .Include(a => a.HomeCourt)
                 .Include(a => a.HomeCourt.PrimaryPhoto)
                 .Include(a => a.Highlights.Select(h => h.File))
@@ -49,7 +50,11 @@ namespace Dribbly.Service.Repositories
         /// <returns></returns>
         public async Task<PlayerModel> GetAccountById(long Id)
         {
-            return await _context.Players.Include(a => a.ProfilePhoto).Include(a => a.User).Include(a => a.HomeCourt)
+            return await _context.Players
+                .Include(a => a.ProfilePhoto)
+                .Include(a => a.User)
+                .Include(a => a.City)
+                .Include(a => a.HomeCourt)
                 .Include(a => a.HomeCourt.PrimaryPhoto).SingleOrDefaultAsync(a => a.Id == Id);
         }
 

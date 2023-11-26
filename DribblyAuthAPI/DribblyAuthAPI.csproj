@@ -977,6 +977,14 @@
     <Compile Include="Migrations\202310180606369_CreatTable_AccountFlags.Designer.cs">
       <DependentUpon>202310180606369_CreatTable_AccountFlags.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202311191810092_AddTable_Cities.cs" />
+    <Compile Include="Migrations\202311191810092_AddTable_Cities.Designer.cs">
+      <DependentUpon>202311191810092_AddTable_Cities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202311191813410_AddForeignKey_PlayerCity.cs" />
+    <Compile Include="Migrations\202311191813410_AddForeignKey_PlayerCity.Designer.cs">
+      <DependentUpon>202311191813410_AddForeignKey_PlayerCity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1540,6 +1548,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202310180606369_CreatTable_AccountFlags.resx">
       <DependentUpon>202310180606369_CreatTable_AccountFlags.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202311191810092_AddTable_Cities.resx">
+      <DependentUpon>202311191810092_AddTable_Cities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202311191813410_AddForeignKey_PlayerCity.resx">
+      <DependentUpon>202311191813410_AddForeignKey_PlayerCity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
