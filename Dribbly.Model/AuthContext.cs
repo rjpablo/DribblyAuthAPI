@@ -73,6 +73,7 @@ namespace Dribbly.Model
         DbSet<VideoModel> Videos { get; set; }
         DbSet<ContactModel> Contacts { get; set; }
         DbSet<CourtReviewModel> CourtReivews { get; set; }
+        DbSet<CommentModel> Comments { get; set; }
         #region Posts
         DbSet<PostModel> Posts { get; set; }
         DbSet<PostFile> PostFiles { get; set; }
@@ -216,6 +217,7 @@ namespace Dribbly.Model
         public DbSet<VideoModel> Videos { get; set; }
         public DbSet<ContactModel> Contacts { get; set; }
         public DbSet<CourtReviewModel> CourtReivews { get; set; }
+        public DbSet<CommentModel> Comments { get; set; }
         #region Posts
         public DbSet<PostModel> Posts { get; set; }
         public DbSet<PostFile> PostFiles { get; set; }

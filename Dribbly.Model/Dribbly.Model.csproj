@@ -88,6 +88,8 @@
     <Compile Include="Account\AccountSearchInputModel.cs" />
     <Compile Include="Account\AccountSettingsModel.cs" />
     <Compile Include="AuthContext.cs" />
+    <Compile Include="Comments\AddCommentInputModel.cs" />
+    <Compile Include="Comments\GetCommentsInputModel.cs" />
     <Compile Include="Constants\Fouls.cs" />
     <Compile Include="Courts\CourtDetailsViewModel.cs" />
     <Compile Include="Courts\CourtReviewModalModel.cs" />
@@ -128,6 +130,7 @@
     <Compile Include="Entities\JoinTournamentRequestModel.cs" />
     <Compile Include="Entities\PlayerStatsModel.cs" />
     <Compile Include="Entities\PostFile.cs" />
+    <Compile Include="Entities\CommentModel.cs" />
     <Compile Include="Entities\Posts\PostReaction.cs" />
     <Compile Include="Entities\StageBracketModel.cs" />
     <Compile Include="Entities\StageTeamModel.cs" />
@@ -137,6 +140,7 @@
     <Compile Include="Entities\TournamentPlayerModel.cs" />
     <Compile Include="Entities\TournamentTeamModel.cs" />
     <Compile Include="Entities\UserReactionModel.cs" />
+    <Compile Include="Enums\CommentedOnTypeEnum.cs" />
     <Compile Include="Enums\EjectionStatusEnum.cs" />
     <Compile Include="Enums\FoulTypeEnum.cs" />
     <Compile Include="Enums\GameEventTypeEnum.cs" />
