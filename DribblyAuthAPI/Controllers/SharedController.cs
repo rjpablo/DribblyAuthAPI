@@ -1,4 +1,5 @@
-﻿using Dribbly.Core.Models;
+﻿using Dribbly.Core.Enums;
+using Dribbly.Core.Models;
 using Dribbly.Model.Shared;
 using Dribbly.Service.Services.Shared;
 using System.Collections.Generic;
@@ -24,6 +25,13 @@ namespace DribblyAuthAPI.Controllers
             ([FromBody] GetTypeAheadSuggestionsInputModel input)
         {
             return await _commonService.GetTypeAheadSuggestionsAsync(input);
+        }
+
+        [HttpGet, AllowAnonymous]
+        [Route("GetIndexedEntity/{entityType}/{id?}")]
+        public async Task<IndexedEntityModel> GetIndexedEntity(EntityTypeEnum entityType, long? id)
+        {
+            return await _commonService.GetIndexedEntity(id, entityType);
         }
     }
 }
