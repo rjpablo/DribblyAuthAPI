@@ -1,8 +1,6 @@
-﻿using Dribbly.Core.Models;
+﻿using Dribbly.Core.Enums;
+using Dribbly.Core.Models;
 using Dribbly.Model.Account;
-using Dribbly.Model.Enums;
-using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dribbly.Model.Entities
@@ -13,7 +11,7 @@ namespace Dribbly.Model.Entities
         public string Message { get; set; }
         [ForeignKey(nameof(AddedBy))]
         public long AddedById { get; set; }
-        public CommentedOnTypeEnum CommentedOnType { get; set; }
+        public EntityTypeEnum CommentedOnType { get; set; }
         public long CommentedOnId { get; set; }
         public PlayerModel AddedBy { get; set; }
     }

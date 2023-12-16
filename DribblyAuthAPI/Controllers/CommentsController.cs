@@ -32,5 +32,12 @@ namespace DribblyAuthAPI.Controllers
         {
             return await _service.AddComment(input);
         }
+
+        [HttpPost]
+        [Route("Delete/{commentId}")]
+        public async Task DeleteComment(long commentId)
+        {
+            await _service.DeleteComment(commentId);
+        }
     }
 }

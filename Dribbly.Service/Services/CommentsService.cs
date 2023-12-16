@@ -1,4 +1,5 @@
-﻿using Dribbly.Core.Utilities;
+﻿using Dribbly.Core.Exceptions;
+using Dribbly.Core.Utilities;
 using Dribbly.Email.Services;
 using Dribbly.Model;
 using Dribbly.Model.Account;
@@ -52,6 +53,22 @@ namespace Dribbly.Service.Services
             return comments;
         }
 
+        public async Task DeleteComment(long commentId)
+        {
+            var user = _securityUtility.GetAccountId();
+            var comment = _context.Comments.SingleOrDefault(c => c.Id == commentId);
+            if(comment != null)
+            {
+                if(comment.AddedById != user)
+                {
+                    throw new DribblyForbiddenException("Tried to delete comment without sufficient persmission",
+                        friendlyMessage: "You don't have sufficient access to delete this comment");
+                }
+                _context.Comments.Remove(comment);
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public async Task<CommentModel> AddComment(AddCommentInputModel input)
         {
             var user = _securityUtility.GetAccountId();
@@ -77,5 +94,6 @@ namespace Dribbly.Service.Services
     {
         Task<CommentModel> AddComment(AddCommentInputModel input);
         Task<IEnumerable<CommentModel>> GetComments(GetCommentsInputModel input);
+        Task DeleteComment(long commentId);
     }
 }
