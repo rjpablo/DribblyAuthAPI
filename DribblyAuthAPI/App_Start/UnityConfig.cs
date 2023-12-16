@@ -60,6 +60,7 @@ namespace DribblyAuthAPI
             container.RegisterType<IDribblyChatService, DribblyChatService>();
             container.RegisterType<IMultimediaService, MultimediaService>();
             container.RegisterType<IGroupsService, GroupsService>();
+            container.RegisterType<ICommentsService, CommentsService>();
             container.RegisterType<IChatDbContext, AuthContext>();
             container.RegisterInstance(Startup.OAuthBearerOptions);
 

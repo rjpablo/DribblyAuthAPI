@@ -155,6 +155,14 @@ namespace Dribbly.Service.Services
             return _accountRepo.GetAccountByUsername(userName);
         }
 
+        public async Task<IndexedEntityModel> GetAccountEntity(string username)
+        {
+            var account = await _context.Players.SingleOrDefaultAsync(p => p.Username == username);
+            if (account == null) throw new ObjectNotFoundException($"Player not found");
+
+            return await _context.IndexedEntities.SingleOrDefaultAsync(e => e.Id == account.Id && e.EntityType == EntityTypeEnum.Account);
+        }
+
         public async Task RemoveHighlightAsync(long fileId)
         {
             var accountId = _securityUtility.GetAccountId();
@@ -816,6 +824,8 @@ namespace Dribbly.Service.Services
         Task<IEnumerable<GamePlayer>> GetPlayerGames(long accountId);
 
         Task<IEnumerable<MultimediaModel>> AddAccountPhotosAsync(long accountId);
+
+        Task<IndexedEntityModel> GetAccountEntity(string username);
 
         Task ReplaceEmailAsync(UpdateEmailInput input);
 

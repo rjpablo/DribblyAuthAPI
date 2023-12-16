@@ -56,6 +56,14 @@ namespace DribblyAuthAPI.Controllers
 
         [AllowAnonymous]
         [HttpGet]
+        [Route("GetAccountEntity/{userName}")]
+        public async Task<IndexedEntityModel> GetAccountEntity(string username)
+        {
+            return await _accountService.GetAccountEntity(username);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
         [Route("GetPlayerGames/{accountId}")]
         public async Task<IEnumerable<GamePlayer>> GetPlayerGames(long accountId)
         {

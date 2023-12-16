@@ -7,7 +7,6 @@ using Dribbly.Email.Services;
 using Dribbly.Model;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Entities.Posts;
-using Dribbly.Model.Enums;
 using Dribbly.Model.Notifications;
 using Dribbly.Model.Posts;
 using Dribbly.Model.Shared;

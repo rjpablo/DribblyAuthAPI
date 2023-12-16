@@ -245,11 +245,12 @@
     <Compile Include="Controllers\GameEventsController.cs" />
     <Compile Include="Controllers\ChatsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
+    <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\TournamentsController.cs" />
     <Compile Include="Controllers\SeasonsController.cs" />
     <Compile Include="Controllers\LeaguesController.cs" />
     <Compile Include="Controllers\TeamsController.cs" />
-    <Compile Include="Controllers\PostsController.cs" />
+    <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\GamesController.cs" />
     <Compile Include="Controllers\NotificationsController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
@@ -985,6 +986,18 @@
     <Compile Include="Migrations\202311191813410_AddForeignKey_PlayerCity.Designer.cs">
       <DependentUpon>202311191813410_AddForeignKey_PlayerCity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202311261131502_AddColumn_Players.FbLink.cs" />
+    <Compile Include="Migrations\202311261131502_AddColumn_Players.FbLink.Designer.cs">
+      <DependentUpon>202311261131502_AddColumn_Players.FbLink.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202311261151244_AddColumn_Players.IgLink.cs" />
+    <Compile Include="Migrations\202311261151244_AddColumn_Players.IgLink.Designer.cs">
+      <DependentUpon>202311261151244_AddColumn_Players.IgLink.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202311280319068_AddTable_Comments.cs" />
+    <Compile Include="Migrations\202311280319068_AddTable_Comments.Designer.cs">
+      <DependentUpon>202311280319068_AddTable_Comments.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1554,6 +1567,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202311191813410_AddForeignKey_PlayerCity.resx">
       <DependentUpon>202311191813410_AddForeignKey_PlayerCity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202311261131502_AddColumn_Players.FbLink.resx">
+      <DependentUpon>202311261131502_AddColumn_Players.FbLink.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202311261151244_AddColumn_Players.IgLink.resx">
+      <DependentUpon>202311261151244_AddColumn_Players.IgLink.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202311280319068_AddTable_Comments.resx">
+      <DependentUpon>202311280319068_AddTable_Comments.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
