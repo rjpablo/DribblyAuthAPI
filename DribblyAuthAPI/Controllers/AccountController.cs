@@ -8,6 +8,7 @@ using Dribbly.Identity.Models;
 using Dribbly.Model.Account;
 using Dribbly.Model.DTO;
 using Dribbly.Model.DTO.Account;
+using Dribbly.Model.Enums;
 using Dribbly.Model.Shared;
 using Dribbly.Service.DTO;
 using Dribbly.Service.Repositories;
@@ -165,6 +166,14 @@ namespace DribblyAuthAPI.Controllers
         public async Task<IEnumerable<PlayerStatsViewModel>> GetTopPlayers()
         {
             return await _accountService.GetTopPlayersAsync();
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("GetAccountsWithLocation/{accountType}")]
+        public async Task<IEnumerable<AccountModel>> GetAccountsWithLocation(AccountTypeEnum accountType = AccountTypeEnum.Player)
+        {
+            return await _accountService.GetAccountsWithLocation(accountType);
         }
 
         [HttpPost]

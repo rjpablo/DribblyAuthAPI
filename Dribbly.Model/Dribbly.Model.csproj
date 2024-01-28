@@ -140,6 +140,7 @@
     <Compile Include="Entities\TournamentPlayerModel.cs" />
     <Compile Include="Entities\TournamentTeamModel.cs" />
     <Compile Include="Entities\UserReactionModel.cs" />
+    <Compile Include="Enums\AccountTypeEnum.cs" />
     <Compile Include="Enums\CommentedOnTypeEnum.cs" />
     <Compile Include="Enums\EjectionStatusEnum.cs" />
     <Compile Include="Enums\FoulTypeEnum.cs" />

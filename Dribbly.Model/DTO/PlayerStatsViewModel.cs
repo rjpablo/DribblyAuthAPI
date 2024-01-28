@@ -28,6 +28,10 @@ namespace Dribbly.Model.DTO
         [DataMember]
         public CityModel City { get; set; }
         [DataMember]
+        public double? Latitude { get; set; }
+        [DataMember]
+        public double? Longitude { get; set; }
+        [DataMember]
         public DateTime DateAdded { get; set; }
 
         #endregion
@@ -117,6 +121,8 @@ namespace Dribbly.Model.DTO
             HeightInches = source.Account.HeightInches;
             Position = source.Account.Position;
             City = source.Account.City;
+            Latitude = source.Account.Latitude;
+            Longitude = source.Account.Longitude;
 
             // Stats
             GP = source.GP;

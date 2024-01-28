@@ -793,6 +793,12 @@ namespace Dribbly.Service.Services
             return result.Select(s => new PlayerStatsViewModel(s));
         }
 
+        public async Task<IEnumerable<AccountModel>> GetAccountsWithLocation(AccountTypeEnum accountType = AccountTypeEnum.Player)
+        {
+            return await _context.Accounts.Include(a => a.ProfilePhoto).Where(a => a.Latitude != null && a.Longitude != null)
+                .ToListAsync();
+        }
+
         #region Flag
         public async Task RemoveFlagAsync(string key)
         {
@@ -853,6 +859,7 @@ namespace Dribbly.Service.Services
         Task SetIsPublic(string userId, bool IsPublic);
 
         Task<IEnumerable<PlayerStatsViewModel>> GetTopPlayersAsync();
+        Task<IEnumerable<AccountModel>> GetAccountsWithLocation(AccountTypeEnum accountType = AccountTypeEnum.Player);
         Task<JObject> RegisterExternal(RegisterExternalBindingModel model);
         Task<ParsedExternalAccessToken> VerifyExternalAccessToken(string provider, string accessToken);
         Task<JObject> GenerateLocalAccessTokenResponseAsync(string userName);

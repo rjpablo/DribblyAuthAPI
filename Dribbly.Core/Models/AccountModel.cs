@@ -35,6 +35,8 @@ namespace Dribbly.Core.Models
                 return age;
             }
         }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
         public string ContactNo { get; set; }
         public DateTime? BirthDate { get; set; }
         [ForeignKey("ProfilePhoto")]
