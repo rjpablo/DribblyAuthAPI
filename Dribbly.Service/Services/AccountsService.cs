@@ -381,7 +381,9 @@ namespace Dribbly.Service.Services
                         FirstName = model.FirstName,
                         LastName = model.LastName,
                         Username = model.UserName,
-                        EntityStatus = EntityStatusEnum.Active
+                        EntityStatus = EntityStatusEnum.Active,
+                        Latitude = model.Latitude,
+                        Longitude = model.Longitude
                     });
 
                     //generate access token response

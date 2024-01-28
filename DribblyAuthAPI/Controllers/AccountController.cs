@@ -290,7 +290,9 @@ namespace DribblyAuthAPI.Controllers
                 DateAdded = DateTime.UtcNow,
                 FirstName = userModel.FirstName,
                 LastName = userModel.LastName,
-                Username = userModel.UserName
+                Username = userModel.UserName,
+                Latitude = userModel.Latitude,
+                Longitude = userModel.Longitude
             });
 
             return Ok();

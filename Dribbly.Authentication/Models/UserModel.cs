@@ -27,5 +27,9 @@ namespace Dribbly.Authentication.Models
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public double? Latitude { get; set; }
+
+        public double? Longitude { get; set; }
     }
 }
