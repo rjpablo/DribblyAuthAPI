@@ -145,8 +145,12 @@ namespace Dribbly.Service.Services
                     ordered = isAscending ? query.OrderBy(s => s.OverallScore) : query.OrderByDescending(s => s.OverallScore);
                     break;
             }
-            return ordered.Skip(filter.PageSize * (filter.Page - 1))
+            if (filter.PageSize > 0)
+            {
+                return ordered.Skip(filter.PageSize * (filter.Page - 1))
                 .Take(filter.PageSize);
+            }
+            return ordered;
         }
         #endregion
 
