@@ -1002,6 +1002,10 @@
     <Compile Include="Migrations\202401260736109_AddColumns_Account.Latitude_and_Account.Longitude.Designer.cs">
       <DependentUpon>202401260736109_AddColumns_Account.Latitude_and_Account.Longitude.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202401281122200_Populate_Account.Latitude_and_Account.Longitude.cs" />
+    <Compile Include="Migrations\202401281122200_Populate_Account.Latitude_and_Account.Longitude.Designer.cs">
+      <DependentUpon>202401281122200_Populate_Account.Latitude_and_Account.Longitude.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1583,6 +1587,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202401260736109_AddColumns_Account.Latitude_and_Account.Longitude.resx">
       <DependentUpon>202401260736109_AddColumns_Account.Latitude_and_Account.Longitude.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202401281122200_Populate_Account.Latitude_and_Account.Longitude.resx">
+      <DependentUpon>202401281122200_Populate_Account.Latitude_and_Account.Longitude.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
