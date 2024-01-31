@@ -37,6 +37,7 @@ namespace Dribbly.Core.Models
         }
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
+        public bool HideLocation { get; set; }
         public string ContactNo { get; set; }
         public DateTime? BirthDate { get; set; }
         [ForeignKey("ProfilePhoto")]

@@ -32,6 +32,8 @@ namespace Dribbly.Model.DTO
         [DataMember]
         public double? Longitude { get; set; }
         [DataMember]
+        public bool HideLocation { get; set; }
+        [DataMember]
         public DateTime DateAdded { get; set; }
 
         #endregion
@@ -123,6 +125,7 @@ namespace Dribbly.Model.DTO
             City = source.Account.City;
             Latitude = source.Account.Latitude;
             Longitude = source.Account.Longitude;
+            HideLocation = source.Account.HideLocation;
 
             // Stats
             GP = source.GP;
