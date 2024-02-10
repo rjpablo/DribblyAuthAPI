@@ -83,6 +83,7 @@ namespace Dribbly.Model
         DbSet<PlayerModel> Players { get; set; }
         IDbSet<ApplicationUser> Users { get; set; }
         DbSet<IndexedEntityModel> IndexedEntities { get; set; }
+        DbSet<FeaturedEntity> FeaturedEntities { get; set; }
 
         #region Groups
         DbSet<GroupModel> Groups { get; set; }
@@ -224,6 +225,7 @@ namespace Dribbly.Model
         public DbSet<PostReaction> PostReactions { get; set; }
         #endregion
         public DbSet<IndexedEntityModel> IndexedEntities { get; set; }
+        public DbSet<FeaturedEntity> FeaturedEntities { get; set; }
 
         public DbEntityEntry SetEntityState(object entity, EntityState state)
         {

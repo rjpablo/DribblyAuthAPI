@@ -1010,6 +1010,10 @@
     <Compile Include="Migrations\202401311046307_AddColumn_Account.HideLocation.Designer.cs">
       <DependentUpon>202401311046307_AddColumn_Account.HideLocation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202402102145588_AddTable_FeaturedEntities.cs" />
+    <Compile Include="Migrations\202402102145588_AddTable_FeaturedEntities.Designer.cs">
+      <DependentUpon>202402102145588_AddTable_FeaturedEntities.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1597,6 +1601,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202401311046307_AddColumn_Account.HideLocation.resx">
       <DependentUpon>202401311046307_AddColumn_Account.HideLocation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402102145588_AddTable_FeaturedEntities.resx">
+      <DependentUpon>202402102145588_AddTable_FeaturedEntities.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

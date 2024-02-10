@@ -16,5 +16,6 @@ namespace Dribbly.Model.DTO
         public string PlaceId { get; set; }
         public int? MinHeightInches { get; set; }
         public int? MaxHeightInches { get; set; }
+        public bool IsFeatured { get; set; }
     }
 }

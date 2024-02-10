@@ -111,6 +111,7 @@
     <Compile Include="DTO\Groups\GroupUserRelationship.cs" />
     <Compile Include="Entities\AccountFlag.cs" />
     <Compile Include="Entities\CityModel.cs" />
+    <Compile Include="Entities\FeaturedEntity.cs" />
     <Compile Include="Entities\Groups\JoinGroupRequest.cs" />
     <Compile Include="DTO\PlayerStatsViewModel.cs" />
     <Compile Include="DTO\SetStageTeamsInputModel.cs" />
