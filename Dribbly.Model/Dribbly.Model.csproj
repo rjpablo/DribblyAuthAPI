@@ -110,6 +110,7 @@
     <Compile Include="DTO\Groups\GroupViewerModel.cs" />
     <Compile Include="DTO\Groups\GroupUserRelationship.cs" />
     <Compile Include="Entities\AccountFlag.cs" />
+    <Compile Include="Entities\Blogs\BlogModel.cs" />
     <Compile Include="Entities\CityModel.cs" />
     <Compile Include="Entities\FeaturedEntity.cs" />
     <Compile Include="Entities\Groups\JoinGroupRequest.cs" />

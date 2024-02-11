@@ -47,6 +47,7 @@ namespace DribblyAuthAPI
             container.RegisterType<INotificationsRepository, NotificationsRepository>();
             container.RegisterType<INotificationsService, NotificationsService>();
             container.RegisterType<IPostsService, PostsService>();
+            container.RegisterType<IBlogsService, BlogsService>();
             container.RegisterType<ICommonService, CommonService>();
             container.RegisterType<IIndexedEntitysRepository, IndexedEntitysRepository>();
             container.RegisterType<ITeamsRepository, TeamsRepository>();

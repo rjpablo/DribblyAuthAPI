@@ -8,6 +8,7 @@ using Dribbly.Model.Accounts;
 using Dribbly.Model.Bookings;
 using Dribbly.Model.Courts;
 using Dribbly.Model.Entities;
+using Dribbly.Model.Entities.Blogs;
 using Dribbly.Model.Entities.Groups;
 using Dribbly.Model.Entities.Posts;
 using Dribbly.Model.Fouls;
@@ -120,6 +121,10 @@ namespace Dribbly.Model
         DbSet<NewGameNotificationModel> NewGameNotifications { get; set; }
         DbSet<UpdateGameNotificationModel> UpdateGameNotifications { get; set; }
         DbSet<JoinTeamRequestNotificationModel> JoinTeamRequestNotifications { get; set; }
+        #endregion
+
+        #region Blogs
+        IDbSet<BlogModel> Blogs { get; set; }
         #endregion
         DbEntityEntry Entry(object entity);
         DbEntityEntry SetEntityState(object entity, EntityState state);
@@ -273,6 +278,9 @@ namespace Dribbly.Model
         public DbSet<JoinTeamRequestNotificationModel> JoinTeamRequestNotifications { get; set; }
         #endregion
 
+        #region Blogs
+        public IDbSet<BlogModel> Blogs { get; set; }
+        #endregion
         public static AuthContext Create()
         {
             return new AuthContext();

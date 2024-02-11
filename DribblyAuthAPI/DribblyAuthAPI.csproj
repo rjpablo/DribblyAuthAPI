@@ -240,6 +240,7 @@
   <ItemGroup>
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\BlogsController.cs" />
     <Compile Include="Controllers\MultimediaController.cs" />
     <Compile Include="Controllers\ContactsController.cs" />
     <Compile Include="Controllers\GameEventsController.cs" />
@@ -1014,6 +1015,14 @@
     <Compile Include="Migrations\202402102145588_AddTable_FeaturedEntities.Designer.cs">
       <DependentUpon>202402102145588_AddTable_FeaturedEntities.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202402110833219_AddTable_Blogs.cs" />
+    <Compile Include="Migrations\202402110833219_AddTable_Blogs.Designer.cs">
+      <DependentUpon>202402110833219_AddTable_Blogs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202402111158550_AddColumns_VisitCount_and_LastModified_toTable_BlogModel.cs" />
+    <Compile Include="Migrations\202402111158550_AddColumns_VisitCount_and_LastModified_toTable_BlogModel.Designer.cs">
+      <DependentUpon>202402111158550_AddColumns_VisitCount_and_LastModified_toTable_BlogModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1604,6 +1613,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202402102145588_AddTable_FeaturedEntities.resx">
       <DependentUpon>202402102145588_AddTable_FeaturedEntities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402110833219_AddTable_Blogs.resx">
+      <DependentUpon>202402110833219_AddTable_Blogs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402111158550_AddColumns_VisitCount_and_LastModified_toTable_BlogModel.resx">
+      <DependentUpon>202402111158550_AddColumns_VisitCount_and_LastModified_toTable_BlogModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

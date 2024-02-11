@@ -11,7 +11,7 @@ namespace Dribbly.Service.Services
     public class BaseEntityService<T> : BaseService<T> where T : BaseEntityModel
     {
         IAuthContext _context;
-        public BaseEntityService(DbSet<T> dbSet,
+        public BaseEntityService(IDbSet<T> dbSet,
         IAuthContext context) : base(dbSet)
         {
             _dbSet = dbSet;

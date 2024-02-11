@@ -11,8 +11,8 @@ namespace Dribbly.Service.Services
 {
     public class BaseService<T> where T : BaseModel
     {
-        protected DbSet<T> _dbSet;
-        public BaseService(DbSet<T> dbSet)
+        protected IDbSet<T> _dbSet;
+        public BaseService(IDbSet<T> dbSet)
         {
             _dbSet = dbSet;
         }
