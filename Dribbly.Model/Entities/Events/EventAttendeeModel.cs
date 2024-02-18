@@ -18,6 +18,10 @@ namespace Dribbly.Model.Entities.Events
         public DateTime DateJoined { get; set; }
         public bool IsApproved { get; set; }
         public bool IsAdmin { get; set; }
+        [NotMapped]
+        public string Name => Account?.Name;
+        [NotMapped]
+        public string IconUrl => Account?.ProfilePhoto?.Url;
         public AccountModel Account { get; set; }
         [JsonIgnore]
         public EventModel Event { get; set; }

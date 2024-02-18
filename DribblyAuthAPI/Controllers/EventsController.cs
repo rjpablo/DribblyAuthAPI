@@ -26,6 +26,14 @@ namespace DribblyAuthAPI.Controllers
         {
             return await _service.GetEventViewerData(eventId);
         }
+        
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetEventEntity/{eventId}")]
+        public async Task<IIndexedEntity> GetEventEntity(long eventId)
+        {
+            return await _service.GetEventEntity(eventId);
+        }
 
         //POSTs
         [HttpPost]
@@ -36,10 +44,10 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost]
-        [Route("RemoveMember/{eventId}/{accountId}")]
-        public async Task RemoveMember(long eventId, long accountId)
+        [Route("RemoveAttendee/{eventId}/{accountId}")]
+        public async Task RemoveAttendee(long eventId, long accountId)
         {
-            await _service.RemoveMemberAsync(eventId, accountId);
+            await _service.RemoveAttendeeAsync(eventId, accountId);
         }
 
         [HttpPost]

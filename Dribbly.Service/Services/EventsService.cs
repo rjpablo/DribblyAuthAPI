@@ -81,6 +81,14 @@ namespace Dribbly.Service.Services
             }
         }
 
+        public async Task<IIndexedEntity> GetEventEntity(long eventId)
+        {
+            var evt = await _context.Events.Include(e => e.Logo)
+                .SingleOrDefaultAsync(e=>e.Id == eventId);
+            return evt;
+
+        }
+
         public async Task CancelJoinRequest(long eventId)
         {
             var accountId = _securityUtility.GetAccountId();
@@ -151,25 +159,27 @@ namespace Dribbly.Service.Services
                         AccountId = accountId,
                         EventId = eventId,
                         DateJoined = DateTime.UtcNow,
-                        IsApproved = false
+                        IsApproved = accountId == evt.AddedById
                     };
                     _context.EventAttendees.Add(request);
                     await _context.SaveChangesAsync();
 
-                    await _notificationsRepo.TryAddAsync(new NotificationModel
+                    if(accountId != evt.AddedById)
                     {
-                        ForUserId = evt.AddedById,
-                        DateAdded = DateTime.UtcNow,
-                        Type = NotificationTypeEnum.JoinEventRequest,
-                        AdditionalInfo = JsonConvert.SerializeObject(new
+                        await _notificationsRepo.TryAddAsync(new NotificationModel
                         {
-                            requestId = request.Id,
-                            requestorName = account.Name,
-                            eventName = evt.Name,
-                            eventId = evt.Id
-                        })
-                    });
-                    await _indexedEntitysRepository.Update(_context, evt);
+                            ForUserId = evt.AddedById,
+                            DateAdded = DateTime.UtcNow,
+                            Type = NotificationTypeEnum.JoinEventRequest,
+                            AdditionalInfo = JsonConvert.SerializeObject(new
+                            {
+                                requestId = request.Id,
+                                requestorName = account.Name,
+                                eventTitle = evt.Title,
+                                eventId = evt.Id
+                            })
+                        });
+                    }
                     tx.Commit();
                 }
                 catch (Exception)
@@ -180,7 +190,7 @@ namespace Dribbly.Service.Services
             }
         }
 
-        public async Task RemoveMemberAsync(long eventId, long accountId)
+        public async Task RemoveAttendeeAsync(long eventId, long accountId)
         {
             using (var tx = _context.Database.BeginTransaction())
             {
@@ -354,13 +364,16 @@ namespace Dribbly.Service.Services
                             Type = NotificationTypeEnum.JoinEventRequestApproved,
                             AdditionalInfo = JsonConvert.SerializeObject(new
                             {
-                                eventName = evt.Name,
+                                eventTitle = evt.Title,
                                 eventId = evt.Id
                             })
                         });
                     }
+                    else
+                    {
+                        _context.EventAttendees.Remove(request);
+                    }
 
-                    _context.EventAttendees.Remove(request);
                     await _context.SaveChangesAsync();
                     tx.Commit();
                 }
@@ -381,8 +394,9 @@ namespace Dribbly.Service.Services
         Task JoinEventAsync(long eventId);
         Task LeaveEventAsync(long eventId);
         Task ProcessJoinRequestAsync(long requestId, bool isApproved);
-        Task RemoveMemberAsync(long eventId, long accountId);
+        Task RemoveAttendeeAsync(long eventId, long accountId);
         Task<MultimediaModel> SetLogoAsync(long eventId);
         Task<EventModel> UpdateEventAsync(AddEditEventInputModel input);
+        Task<IIndexedEntity> GetEventEntity(long eventId);
     }
 }
