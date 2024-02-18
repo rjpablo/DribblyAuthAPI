@@ -241,6 +241,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BlogsController.cs" />
+    <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\MultimediaController.cs" />
     <Compile Include="Controllers\ContactsController.cs" />
     <Compile Include="Controllers\GameEventsController.cs" />
@@ -1023,6 +1024,18 @@
     <Compile Include="Migrations\202402111158550_AddColumns_VisitCount_and_LastModified_toTable_BlogModel.Designer.cs">
       <DependentUpon>202402111158550_AddColumns_VisitCount_and_LastModified_toTable_BlogModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202402160239304_AddTables_Events_and_EventAttendees.cs" />
+    <Compile Include="Migrations\202402160239304_AddTables_Events_and_EventAttendees.Designer.cs">
+      <DependentUpon>202402160239304_AddTables_Events_and_EventAttendees.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202402180954377_RenameFK_Events_CourtId.cs" />
+    <Compile Include="Migrations\202402180954377_RenameFK_Events_CourtId.Designer.cs">
+      <DependentUpon>202402180954377_RenameFK_Events_CourtId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202402181006574_AddColumn_Events.CourtId.cs" />
+    <Compile Include="Migrations\202402181006574_AddColumn_Events.CourtId.Designer.cs">
+      <DependentUpon>202402181006574_AddColumn_Events.CourtId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1619,6 +1632,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202402111158550_AddColumns_VisitCount_and_LastModified_toTable_BlogModel.resx">
       <DependentUpon>202402111158550_AddColumns_VisitCount_and_LastModified_toTable_BlogModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402160239304_AddTables_Events_and_EventAttendees.resx">
+      <DependentUpon>202402160239304_AddTables_Events_and_EventAttendees.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402180954377_RenameFK_Events_CourtId.resx">
+      <DependentUpon>202402180954377_RenameFK_Events_CourtId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402181006574_AddColumn_Events.CourtId.resx">
+      <DependentUpon>202402181006574_AddColumn_Events.CourtId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

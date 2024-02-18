@@ -146,6 +146,7 @@
     <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\ContactsService.cs" />
     <Compile Include="Services\GameEventsService.cs" />
+    <Compile Include="Services\EventsService.cs" />
     <Compile Include="Services\GroupsService.cs" />
     <Compile Include="Services\CommentsService.cs" />
     <Compile Include="Services\BlogsService.cs" />

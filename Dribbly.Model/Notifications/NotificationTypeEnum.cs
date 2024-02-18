@@ -66,7 +66,12 @@ namespace Dribbly.Model.Notifications
         #endregion
 
         #region Post-Related 100-119
-        PostReceivedReaction = 100
+        PostReceivedReaction = 100,
+        #endregion
+
+        #region Events 120-139
+        JoinEventRequest = 120,
+        JoinEventRequestApproved = 121,
         #endregion
     }
 }

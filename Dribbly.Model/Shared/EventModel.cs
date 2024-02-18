@@ -8,39 +8,39 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dribbly.Model.Shared
 {
-    public class EventModel : BaseEntityModel
-    {
-        [Required]
-        public DateTime Start { get; set; }
+    //public class EventModel : BaseEntityModel
+    //{
+    //    [Required]
+    //    public DateTime Start { get; set; }
 
-        [Required]
-        public DateTime End { get; set; }
+    //    [Required]
+    //    public DateTime End { get; set; }
 
-        [MinLength(5)]
-        public string Title { get; set; }
+    //    [MinLength(5)]
+    //    public string Title { get; set; }
 
-        [Required]
-        public long AddedBy { get; set; }
+    //    [Required]
+    //    public long AddedBy { get; set; }
 
-        [ForeignKey("Court"), Required]
-        public long CourtId { get; set; }
+    //    [ForeignKey("Court"), Required]
+    //    public long CourtId { get; set; }
 
-        public long BookedById { get; set; }
+    //    public long BookedById { get; set; }
 
-        /// <summary>
-        /// Whether or not the user who booked this booking has reviewed the court based on this booking.
-        /// </summary>
-        public bool HasReviewed { get; set; }
+    //    /// <summary>
+    //    /// Whether or not the user who booked this booking has reviewed the court based on this booking.
+    //    /// </summary>
+    //    public bool HasReviewed { get; set; }
 
-        public BookingStatusEnum Status { get; set; }
+    //    public BookingStatusEnum Status { get; set; }
 
-        //public string BookedFor { get; set; }
+    //    //public string BookedFor { get; set; }
 
-        // navigation properties
-        public virtual CourtModel Court { get; set; }
+    //    // navigation properties
+    //    public virtual CourtModel Court { get; set; }
 
-        public virtual AccountBasicInfoModel BookedBy { get; set; }
+    //    public virtual AccountBasicInfoModel BookedBy { get; set; }
 
-        public virtual AccountsChoicesItemModel BookedByChoice { get; set; }
-    }
+    //    public virtual AccountsChoicesItemModel BookedByChoice { get; set; }
+    //}
 }
