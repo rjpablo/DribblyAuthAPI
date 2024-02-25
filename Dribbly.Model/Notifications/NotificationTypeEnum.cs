@@ -70,8 +70,12 @@ namespace Dribbly.Model.Notifications
         #endregion
 
         #region Events 120-139
+        // someone requested to join an event you are hosting (requires approval)
         JoinEventRequest = 120,
+        // your request to join an event has been approved by the host
         JoinEventRequestApproved = 121,
+        // a user joined an event that you are hosting (no approval required)
+        JoinedEvent = 122
         #endregion
     }
 }

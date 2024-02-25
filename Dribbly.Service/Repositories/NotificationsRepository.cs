@@ -39,6 +39,7 @@ namespace Dribbly.Service.Repositories
                     case NotificationTypeEnum.TournamentTeamRemoved:
                     case NotificationTypeEnum.AssignedAsTimekeeper:
                     case NotificationTypeEnum.JoinEventRequest:
+                    case NotificationTypeEnum.JoinedEvent:
                     case NotificationTypeEnum.JoinEventRequestApproved:
                     case NotificationTypeEnum.JoinGroupRequest:
                     case NotificationTypeEnum.JoinGroupRequestApproved:

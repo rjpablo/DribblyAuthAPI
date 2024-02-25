@@ -163,6 +163,7 @@ namespace Dribbly.Service.Services
                     var evt = await _context.Events
                         .Include(g => g.Attendees)
                         .SingleOrDefaultAsync(g => g.Id == eventId);
+                    var isHost = accountId == evt.AddedById;
                     if (evt == null)
                     {
                         throw new DribblyObjectNotFoundException($"Event with ID {eventId} not found.",
@@ -180,18 +181,18 @@ namespace Dribbly.Service.Services
                         AccountId = accountId,
                         EventId = eventId,
                         DateJoined = DateTime.UtcNow,
-                        IsApproved = !evt.RequireApproval || accountId == evt.AddedById
+                        IsApproved = !evt.RequireApproval || isHost
                     };
                     _context.EventAttendees.Add(request);
                     await _context.SaveChangesAsync();
 
-                    if (accountId != evt.AddedById)
+                    if (!isHost)
                     {
                         await _notificationsRepo.TryAddAsync(new NotificationModel
                         {
                             ForUserId = evt.AddedById,
                             DateAdded = DateTime.UtcNow,
-                            Type = NotificationTypeEnum.JoinEventRequest,
+                            Type = evt.RequireApproval ? NotificationTypeEnum.JoinEventRequest : NotificationTypeEnum.JoinedEvent,
                             AdditionalInfo = JsonConvert.SerializeObject(new
                             {
                                 requestId = request.Id,
