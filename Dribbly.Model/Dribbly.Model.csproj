@@ -98,6 +98,7 @@
     <Compile Include="Courts\CourtSearchInputModel.cs" />
     <Compile Include="DTO\Account\UpdateEmailInput.cs" />
     <Compile Include="DTO\AddTournamentStageInputModel.cs" />
+    <Compile Include="DTO\Events\GetEventsInputModel.cs" />
     <Compile Include="DTO\GamePlayer.cs" />
     <Compile Include="DTO\GameTeam.cs" />
     <Compile Include="DTO\GetAddGameModalInputModel.cs" />

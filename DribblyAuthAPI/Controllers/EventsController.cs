@@ -2,6 +2,7 @@
 using Dribbly.Model.DTO.Events;
 using Dribbly.Model.Entities.Events;
 using Dribbly.Service.Services;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -36,6 +37,14 @@ namespace DribblyAuthAPI.Controllers
         }
 
         //POSTs
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("GetEvents")]
+        public async Task<IEnumerable<EventViewerModel>> GetEvents(GetEventsInputModel input)
+        {
+            return await _service.GetEvents(input);
+        }
+
         [HttpPost]
         [Route("CancelJoinRequest/{eventId}")]
         public async Task CancelJoinRequest(long eventId)

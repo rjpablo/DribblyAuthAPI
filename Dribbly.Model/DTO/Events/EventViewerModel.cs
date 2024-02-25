@@ -22,6 +22,7 @@ namespace Dribbly.Model.DTO.Events
                 AddedBy = source.AddedBy;
                 EntityStatus = source.EntityStatus;
                 Description = source.Description;
+                RequireApproval = source.RequireApproval;
                 Logo = source.Logo;
                 AddedBy = source.AddedBy;
                 Attendees = source.Attendees;

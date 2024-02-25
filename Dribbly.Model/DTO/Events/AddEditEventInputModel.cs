@@ -10,5 +10,6 @@ namespace Dribbly.Model.DTO.Events
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public long CourtId { get; set; }
+        public bool RequireApproval { get; set; }
     }
 }

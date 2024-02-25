@@ -35,6 +35,11 @@ namespace Dribbly.Model.Entities.Events
 
         public string Description { get; set; }
 
+        /// <summary>
+        /// Participants need to be approved
+        /// </summary>
+        public bool RequireApproval { get; set; } = true;
+
         [ForeignKey(nameof(AddedBy))]
         public long AddedById { get; set; }
         public AccountModel AddedBy { get; set; }

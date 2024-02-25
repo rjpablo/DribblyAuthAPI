@@ -15,6 +15,8 @@ using Dribbly.Core.Models;
 using System.Web;
 using Dribbly.Model.Notifications;
 using Newtonsoft.Json;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Dribbly.Service.Services
 {
@@ -49,6 +51,24 @@ namespace Dribbly.Service.Services
             _dribblyChatService = new DribblyChatService(context);
         }
 
+        public async Task<IEnumerable<EventViewerModel>> GetEvents(GetEventsInputModel input)
+        {
+            var accountId = _securityUtility.GetAccountId();
+            var q = _context.Events.Include(e => e.Logo)
+                .Include(e => e.Attendees)
+                .Include(e => e.Court)
+                .Where(e => !input.UpcomingOnly || (e.EndDate.HasValue && e.EndDate > DateTime.UtcNow)
+                || (!e.EndDate.HasValue && e.StartDate > DateTime.UtcNow));
+
+            if (input.PageSize > 0)
+            {
+                q = q.Skip((input.Page - 1) * input.PageSize)
+                    .Take(input.PageSize);
+            }
+            return (await q.OrderByDescending(e => e.StartDate).ToListAsync())
+                .Select(e => new EventViewerModel(e, accountId));
+        }
+
         public async Task<EventModel> CreateEventAsync(AddEditEventInputModel input)
         {
             using (var tx = _context.Database.BeginTransaction())
@@ -64,7 +84,8 @@ namespace Dribbly.Service.Services
                         DateAdded = DateTime.UtcNow,
                         StartDate = input.StartDate,
                         EndDate = input.EndDate,
-                        CourtId = input.CourtId
+                        CourtId = input.CourtId,
+                        RequireApproval = input.RequireApproval
                     };
                     evt.EntityStatus = EntityStatusEnum.Active;
                     Add(evt);
@@ -84,7 +105,7 @@ namespace Dribbly.Service.Services
         public async Task<IIndexedEntity> GetEventEntity(long eventId)
         {
             var evt = await _context.Events.Include(e => e.Logo)
-                .SingleOrDefaultAsync(e=>e.Id == eventId);
+                .SingleOrDefaultAsync(e => e.Id == eventId);
             return evt;
 
         }
@@ -159,12 +180,12 @@ namespace Dribbly.Service.Services
                         AccountId = accountId,
                         EventId = eventId,
                         DateJoined = DateTime.UtcNow,
-                        IsApproved = accountId == evt.AddedById
+                        IsApproved = !evt.RequireApproval || accountId == evt.AddedById
                     };
                     _context.EventAttendees.Add(request);
                     await _context.SaveChangesAsync();
 
-                    if(accountId != evt.AddedById)
+                    if (accountId != evt.AddedById)
                     {
                         await _notificationsRepo.TryAddAsync(new NotificationModel
                         {
@@ -238,6 +259,7 @@ namespace Dribbly.Service.Services
                     evt.StartDate = input.StartDate;
                     evt.EndDate = input.EndDate;
                     evt.CourtId = input.CourtId;
+                    evt.RequireApproval = input.RequireApproval;
                     await _context.SaveChangesAsync();
                     await _indexedEntitysRepository.Update(_context, evt);
                     tx.Commit();
@@ -256,7 +278,7 @@ namespace Dribbly.Service.Services
             var accountId = _securityUtility.GetAccountId();
             var model = await _context.Events
                 .Include(g => g.Logo)
-                .Include(g=>g.AddedBy.ProfilePhoto)
+                .Include(g => g.AddedBy.ProfilePhoto)
                 .Include(g => g.Attendees.Select(m => m.Account.ProfilePhoto))
                 .Include(g => g.Court)
                 .SingleOrDefaultAsync(g => g.Id == eventId);
@@ -391,6 +413,7 @@ namespace Dribbly.Service.Services
         Task CancelJoinRequest(long eventId);
         Task<EventModel> CreateEventAsync(AddEditEventInputModel input);
         Task<EventViewerModel> GetEventViewerData(long eventId);
+        Task<IEnumerable<EventViewerModel>> GetEvents(GetEventsInputModel input);
         Task JoinEventAsync(long eventId);
         Task LeaveEventAsync(long eventId);
         Task ProcessJoinRequestAsync(long requestId, bool isApproved);
