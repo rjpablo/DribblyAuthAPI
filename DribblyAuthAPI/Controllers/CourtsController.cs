@@ -31,7 +31,13 @@ namespace DribblyAuthAPI.Controllers
         {
             return await _service.GetAllActiveAsync();
         }
-
+        
+        [HttpGet]
+        [Route("GetFeaturedCourts")]
+        public async Task<IEnumerable<CourtDetailsViewModel>> GetFeaturedCourts()
+        {
+            return await _service.GetFeaturedCourts();
+        }
 
         [HttpGet]
         [Route("GetCourt/{id}")]

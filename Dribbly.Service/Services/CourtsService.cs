@@ -54,21 +54,39 @@ namespace Dribbly.Service.Services
 
         #region Generic Court methods
 
-        public async Task<IEnumerable<CourtDetailsViewModel>> GetAllActiveAsync()
+        public async Task<IEnumerable<CourtDetailsViewModel>> GetAllActiveAsync(List<long> courtIds = null)
         {
-            CourtModel[] courts = await _context.Courts.Where(c => c.EntityStatus == EntityStatusEnum.Active)
-                .Include(p => p.PrimaryPhoto).ToArrayAsync();
-            List<CourtDetailsViewModel> viewModels = new List<CourtDetailsViewModel>();
-
-            foreach (var court in courts)
+            try
             {
-                CourtDetailsViewModel vm = new CourtDetailsViewModel(court);
-                //vm.FollowerCount = await getFollowerCountAsync(court.Id);
-                //await PopulateOwner(vm);
-                viewModels.Add(vm);
-            }
+                courtIds = courtIds == null ? new List<long>() : courtIds;
+                CourtModel[] courts = await _context.Courts.Where(c => c.EntityStatus == EntityStatusEnum.Active
+                && (!courtIds.Any() || courtIds.Contains(c.Id)))
+                    .Include(p => p.PrimaryPhoto).ToArrayAsync();
+                List<CourtDetailsViewModel> viewModels = new List<CourtDetailsViewModel>();
 
-            return viewModels;
+                foreach (var court in courts)
+                {
+                    CourtDetailsViewModel vm = new CourtDetailsViewModel(court);
+                    //vm.FollowerCount = await getFollowerCountAsync(court.Id);
+                    //await PopulateOwner(vm);
+                    viewModels.Add(vm);
+                }
+
+                return viewModels;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<CourtDetailsViewModel>> GetFeaturedCourts()
+        {
+            var courtIds = await _context.FeaturedEntities.Where(e => e.EntityType == EntityTypeEnum.Court)
+                .Select(e => e.EntityId).ToListAsync();
+            return (await GetAllActiveAsync(courtIds))
+                .OrderByDescending(c => c.DateAdded)
+                .Take(10);
         }
 
         public async Task<CourtDetailsViewModel> GetCourtAsync(long id)
@@ -563,7 +581,9 @@ namespace Dribbly.Service.Services
 
     public interface ICourtsService
     {
-        Task<IEnumerable<CourtDetailsViewModel>> GetAllActiveAsync();
+        Task<IEnumerable<CourtDetailsViewModel>> GetAllActiveAsync(List<long> courtIds = null);
+
+        Task<IEnumerable<CourtDetailsViewModel>> GetFeaturedCourts();
 
         Task<CourtDetailsViewModel> GetCourtAsync(long id);
 
