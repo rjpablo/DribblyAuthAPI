@@ -10,5 +10,6 @@ namespace Dribbly.Model.Entities
         public long EntityId { get; set; }
         [Column(Order = 2), Key]
         public EntityTypeEnum EntityType { get; set; }
+        public int? Order { get; set; }
     }
 }

@@ -1040,6 +1040,10 @@
     <Compile Include="Migrations\202402250954390_AddColumn_RequireApproval_ToTable_Events.Designer.cs">
       <DependentUpon>202402250954390_AddColumn_RequireApproval_ToTable_Events.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202402252353569_AddColumn_Order_ToTable_FeaturedEntity.cs" />
+    <Compile Include="Migrations\202402252353569_AddColumn_Order_ToTable_FeaturedEntity.Designer.cs">
+      <DependentUpon>202402252353569_AddColumn_Order_ToTable_FeaturedEntity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -1648,6 +1652,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202402250954390_AddColumn_RequireApproval_ToTable_Events.resx">
       <DependentUpon>202402250954390_AddColumn_RequireApproval_ToTable_Events.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402252353569_AddColumn_Order_ToTable_FeaturedEntity.resx">
+      <DependentUpon>202402252353569_AddColumn_Order_ToTable_FeaturedEntity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

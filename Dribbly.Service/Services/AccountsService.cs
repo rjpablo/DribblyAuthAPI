@@ -103,8 +103,8 @@ namespace Dribbly.Service.Services
                 && (string.IsNullOrEmpty(filter.PlaceId) || s.Account.City.GoogleId == filter.PlaceId)
                 && ((filter.MinHeightInches == null || s.Account.HeightInches >= filter.MinHeightInches) &&
                 (filter.MaxHeightInches == null || s.Account.HeightInches <= filter.MaxHeightInches))
-                && (!filter.IsFeatured || _context.FeaturedEntities.Where(f=>f.EntityType == EntityTypeEnum.Account)
-                .Select(p=>p.EntityId).Contains(s.AccountId)));
+                && (!filter.IsFeatured || _context.FeaturedEntities.Where(f => f.EntityType == EntityTypeEnum.Account)
+                .Select(p => p.EntityId).Contains(s.AccountId)));
             query = ApplySortingAndPaging(query, filter);
             var players = await query.ToListAsync();
             return players.Select(s => new PlayerStatsViewModel(s));
@@ -114,38 +114,45 @@ namespace Dribbly.Service.Services
         {
             IOrderedQueryable<PlayerStatsModel> ordered = null;
             bool isAscending = filter.SortDirection == SortDirectionEnum.Ascending;
-            switch (filter.SortBy)
+            if (filter.IsFeatured)
             {
-                case GetPlayersSortByEnum.PPG:
-                    ordered = isAscending ? query.OrderBy(s => s.PPG) : query.OrderByDescending(s => s.PPG);
-                    break;
-                case GetPlayersSortByEnum.RPG:
-                    ordered = isAscending ? query.OrderBy(s => s.RPG) : query.OrderByDescending(s => s.RPG);
-                    break;
-                case GetPlayersSortByEnum.APG:
-                    ordered = isAscending ? query.OrderBy(s => s.APG) : query.OrderByDescending(s => s.APG);
-                    break;
-                case GetPlayersSortByEnum.FGP:
-                    ordered = isAscending ? query.OrderBy(s => s.FGP) : query.OrderByDescending(s => s.FGP);
-                    break;
-                case GetPlayersSortByEnum.BPG:
-                    ordered = isAscending ? query.OrderBy(s => s.BPG) : query.OrderByDescending(s => s.BPG);
-                    break;
-                case GetPlayersSortByEnum.TPG:
-                    ordered = isAscending ? query.OrderBy(s => s.TPG) : query.OrderByDescending(s => s.TPG);
-                    break;
-                case GetPlayersSortByEnum.SPG:
-                    ordered = isAscending ? query.OrderBy(s => s.SPG) : query.OrderByDescending(s => s.SPG);
-                    break;
-                case GetPlayersSortByEnum.ThreePP:
-                    ordered = isAscending ? query.OrderBy(s => s.ThreePP) : query.OrderByDescending(s => s.ThreePP);
-                    break;
-                case GetPlayersSortByEnum.DateJoined:
-                    ordered = isAscending ? query.OrderBy(s => s.Account.DateAdded) : query.OrderByDescending(s => s.Account.DateAdded);
-                    break;
-                default:
-                    ordered = isAscending ? query.OrderBy(s => s.OverallScore) : query.OrderByDescending(s => s.OverallScore);
-                    break;
+                ordered = query.OrderByDescending(a => a.Account.DateAdded);
+            }
+            else
+            {
+                switch (filter.SortBy)
+                {
+                    case GetPlayersSortByEnum.PPG:
+                        ordered = isAscending ? query.OrderBy(s => s.PPG) : query.OrderByDescending(s => s.PPG);
+                        break;
+                    case GetPlayersSortByEnum.RPG:
+                        ordered = isAscending ? query.OrderBy(s => s.RPG) : query.OrderByDescending(s => s.RPG);
+                        break;
+                    case GetPlayersSortByEnum.APG:
+                        ordered = isAscending ? query.OrderBy(s => s.APG) : query.OrderByDescending(s => s.APG);
+                        break;
+                    case GetPlayersSortByEnum.FGP:
+                        ordered = isAscending ? query.OrderBy(s => s.FGP) : query.OrderByDescending(s => s.FGP);
+                        break;
+                    case GetPlayersSortByEnum.BPG:
+                        ordered = isAscending ? query.OrderBy(s => s.BPG) : query.OrderByDescending(s => s.BPG);
+                        break;
+                    case GetPlayersSortByEnum.TPG:
+                        ordered = isAscending ? query.OrderBy(s => s.TPG) : query.OrderByDescending(s => s.TPG);
+                        break;
+                    case GetPlayersSortByEnum.SPG:
+                        ordered = isAscending ? query.OrderBy(s => s.SPG) : query.OrderByDescending(s => s.SPG);
+                        break;
+                    case GetPlayersSortByEnum.ThreePP:
+                        ordered = isAscending ? query.OrderBy(s => s.ThreePP) : query.OrderByDescending(s => s.ThreePP);
+                        break;
+                    case GetPlayersSortByEnum.DateJoined:
+                        ordered = isAscending ? query.OrderBy(s => s.Account.DateAdded) : query.OrderByDescending(s => s.Account.DateAdded);
+                        break;
+                    default:
+                        ordered = isAscending ? query.OrderBy(s => s.OverallScore) : query.OrderByDescending(s => s.OverallScore);
+                        break;
+                }
             }
             if (filter.PageSize > 0)
             {
