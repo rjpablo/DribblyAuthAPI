@@ -91,6 +91,7 @@
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\ChoiceItemModel.cs" />
     <Compile Include="Models\IndexedEntityModel.cs" />
+    <Compile Include="Models\LatLng.cs" />
     <Compile Include="Models\PagedGetInputModel.cs" />
     <Compile Include="Models\MultimediaModel.cs" />
     <Compile Include="Models\PlaceModel.cs" />

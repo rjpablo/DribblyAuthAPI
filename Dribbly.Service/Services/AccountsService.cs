@@ -259,6 +259,14 @@ namespace Dribbly.Service.Services
             };
         }
 
+        public async Task SetLocationAsync(long accountId, LatLng latLng)
+        {
+            var account = await _context.Accounts.FindAsync(accountId);
+            account.Latitude = latLng.Lat;
+            account.Longitude = latLng.Lng;
+            await _context.SaveChangesAsync();
+        }
+
         public async Task UpdateAccountAsync(PlayerModel account)
         {
             using (var tx = _context.Database.BeginTransaction())
@@ -872,7 +880,7 @@ namespace Dribbly.Service.Services
         Task SetStatus(long accountId, EntityStatusEnum status);
 
         Task SetIsPublic(string userId, bool IsPublic);
-
+        Task SetLocationAsync(long accountId, LatLng latLng);
         Task<IEnumerable<PlayerStatsViewModel>> GetTopPlayersAsync();
         Task<IEnumerable<AccountModel>> GetAccountsWithLocation(AccountTypeEnum accountType = AccountTypeEnum.Player);
         Task<JObject> RegisterExternal(RegisterExternalBindingModel model);

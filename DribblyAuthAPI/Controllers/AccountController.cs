@@ -137,6 +137,13 @@ namespace DribblyAuthAPI.Controllers
         }
 
         [HttpPost]
+        [Route("SetLocation/{accountId}")]
+        public async Task SetLocation(long accountId, [FromBody] LatLng latLng)
+        {
+            await _accountService.SetLocationAsync(accountId, latLng);
+        }
+
+        [HttpPost]
         [Route("RemoveFlag/{key}")]
         public async Task RemoveFlag(string key)
         {
