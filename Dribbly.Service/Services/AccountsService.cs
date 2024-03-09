@@ -104,7 +104,9 @@ namespace Dribbly.Service.Services
                 && ((filter.MinHeightInches == null || s.Account.HeightInches >= filter.MinHeightInches) &&
                 (filter.MaxHeightInches == null || s.Account.HeightInches <= filter.MaxHeightInches))
                 && (!filter.IsFeatured || _context.FeaturedEntities.Where(f => f.EntityType == EntityTypeEnum.Account)
-                .Select(p => p.EntityId).Contains(s.AccountId)));
+                .Select(p => p.EntityId).Contains(s.AccountId))
+                && (_context.IndexedEntities.Where(f => f.EntityType == EntityTypeEnum.Account && f.EntityStatus == EntityStatusEnum.Active)
+                .Select(p => p.Id).Contains(s.AccountId)));
             query = ApplySortingAndPaging(query, filter);
             var players = await query.ToListAsync();
             return players.Select(s => new PlayerStatsViewModel(s));
