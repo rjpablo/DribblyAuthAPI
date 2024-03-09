@@ -17,6 +17,7 @@ namespace Dribbly.Authentication.Models
         public string Email { get; set; }
 
         [Required]
+        [RegularExpression(@"^[a-zA-Z0-9]{5,20}$", ErrorMessage = "Username must 5-20 alphanumeric characters")]
         public string UserName { get; set; }
 
         [Required]
