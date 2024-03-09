@@ -1,5 +1,6 @@
 ﻿using Dribbly.Core.Enums;
 using Dribbly.Model.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -24,5 +25,6 @@ namespace Dribbly.Model.Posts
         public string AdditionalData { get; set; }
         public List<long> FileIds { get; set; } = new List<long>();
         public string EmbedCode { get; set; }
+        public DateTime? DateAdded { get; set; }
     }
 }

@@ -60,12 +60,13 @@ namespace Dribbly.Service.Services
                 .Include(p => p.AddedBy.User)
                 .Include(p => p.AddedBy.ProfilePhoto)
                 .Include(p => p.Files.Select(f => f.File))
-                .OrderByDescending(p => p.DateAdded)
                 .Include(p => p.Reactions.Select(r => r.Reactor.ProfilePhoto))
+                .OrderByDescending(p => p.DateAdded)
                 .Where(p => (input.PostedOnType == EntityTypeEnum.All || (p.PostedOnType == input.PostedOnType &&
                 (!input.PostedOnId.HasValue || (p.PostedOnId == input.PostedOnId)))) &&
-                p.EntityStatus == EntityStatusEnum.Active && (!input.CeilingPostId.HasValue || p.Id < input.CeilingPostId))
-                .Take(input.GetCount).OrderByDescending(p => p.Id).ToListAsync();
+                p.EntityStatus == EntityStatusEnum.Active && (!input.AddedBefore.HasValue || p.DateAdded < input.AddedBefore))
+                .Take(input.GetCount)
+                .ToListAsync();
 
             return posts;
         }

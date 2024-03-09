@@ -1,4 +1,5 @@
 ﻿using Dribbly.Core.Enums;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Dribbly.Model.Posts
@@ -12,6 +13,6 @@ namespace Dribbly.Model.Posts
 
         public int GetCount { get; set; }
 
-        public long? CeilingPostId { get; set; }
+        public DateTime? AddedBefore { get; set; }
     }
 }

@@ -8,9 +8,11 @@
         #endregion
 
         #region Tounaments (11-20)
-        TournamentCreated = 11
+        TournamentCreated = 11,
         #endregion
 
-
+        #region Accounts (21-30)
+        AccountHighlightAdded = 21,
+        #endregion
     }
 }

@@ -10,11 +10,11 @@ using Dribbly.Identity.Models;
 using Dribbly.Model;
 using Dribbly.Model.Account;
 using Dribbly.Model.Accounts;
-using Dribbly.Model.Courts;
 using Dribbly.Model.DTO;
 using Dribbly.Model.DTO.Account;
 using Dribbly.Model.Entities;
 using Dribbly.Model.Enums;
+using Dribbly.Model.Posts;
 using Dribbly.Model.Shared;
 using Dribbly.Service.DTO;
 using Dribbly.Service.Enums;
@@ -31,7 +31,6 @@ using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -51,6 +50,7 @@ namespace Dribbly.Service.Services
         ISecurityUtility _securityUtility;
         private ApplicationUserManager _userManager;
         private OAuthBearerAuthenticationOptions _oAuthBearerOptions;
+        private readonly ISharedPostsService _postsService;
 
         public AccountsService(IAuthContext context,
             IAccountRepository accountRepo,
@@ -72,6 +72,7 @@ namespace Dribbly.Service.Services
             _securityUtility = securityUtility;
             _userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
             _oAuthBearerOptions = oAuthBearerAuthenticationOptions;
+            _postsService = new SharedPostsService(context, securityUtility, _accountRepo, _commonService, new IndexedEntitysRepository(context));
         }
 
         public async Task<AccountViewerModel> GetAccountViewerDataAsync(string userName)
@@ -740,6 +741,16 @@ namespace Dribbly.Service.Services
                                 AccountId = accountId,
                                 File = video
                             });
+
+                            var post = await _postsService.AddPostAsync(new AddEditPostInputModel
+                            {
+                                PostedOnType = EntityTypeEnum.Account,
+                                PostedOnId = accountId,
+                                AddedByType = EntityTypeEnum.Account,
+                                Content = "",
+                                Type = PostTypeEnum.AccountHighlightAdded,
+                                FileIds = new List<long> { video.Id }
+                            }); 
                         }
                         _context.SaveChanges();
                         transaction.Commit();
